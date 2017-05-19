@@ -16,3 +16,7 @@ npm-debug.log
 # System Files
 .DS_Store
 Thumbs.db
+
+# Webstorm
+**/.idea/workspace.xml 
+**/.idea/tasks.xml
