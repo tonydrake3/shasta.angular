@@ -20,3 +20,5 @@ Thumbs.db
 # Webstorm
 **/.idea/workspace.xml 
 **/.idea/tasks.xml
+**/.idea/copyright
+**/.idea/vcs.xml
