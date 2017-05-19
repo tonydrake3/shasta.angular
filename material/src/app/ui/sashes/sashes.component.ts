@@ -1,0 +1,22 @@
+import { Component } from '@angular/core';
+import { UIService } from '../ui.service'
+
+@Component({
+    selector: 'my-ui-sashes',
+    styles: [],
+    templateUrl: './sashes.component.html',
+})
+
+export class UISashesComponent {
+    products;
+
+    constructor(private uiService: UIService) {}
+
+    getProducts(): void {
+        this.products = this.uiService.getProducts();
+    }
+
+    ngOnInit(): void {
+        this.getProducts();
+    }
+}
