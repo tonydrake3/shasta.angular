@@ -103,21 +103,22 @@ $teal:   #5bc0de !default;
 $pink:   #ff5b77 !default;
 $purple: #7E57C2 !default; // Deep Purple 400
 $esub-yellow:   #FBB812 !default;
-$esub-gray:     #F4F4F4 !default; //#DED9D5 !default;
+$esub-gray:     #DED9D5 !default;
+$esub-blue:     #019CFF !default;
 
 // Create grayscale
-$gray-darker:               #222 !default;
-$gray-dark:                 #292b2c !default;
-$gray:                      #464a4c !default;
-$gray-light:                #636c72 !default;
-$gray-lighter:              #eceeef !default;
-$gray-lightest:             #f7f7f9 !default;
+$gray-darker:               #7f7c7a !default;
+$gray-dark:                 #bebab6 !default;
+$gray:                      #DED9D5 !default;
+$gray-light:                #eae5e1 !default;
+$gray-lighter:              #f1ece7 !default;
+$gray-lightest:             #f7f1ed !default;
 
 // Reassign color vars to semantic color scheme
-$brand-primary:             $blue !default;
+$brand-primary:             $esub-blue !default;
 $brand-success:             $green !default;  // Accent
-$brand-info:                #00BCD4 !default; // Cyan 500
-$brand-info-alt:            $purple !default;
+$brand-info:                $blue !default; // Cyan 500
+$brand-info-alt:            $esub-gray !default;
 $brand-warning:             $orange !default;
 $brand-danger:              $red !default;
 $brand-inverse:             $gray-dark !default;

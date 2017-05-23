@@ -25,7 +25,7 @@
 .bg-color-light { @include bg-style($white, $body-color); }
 .bg-color-white { @include bg-style(#fff, $body-color); }
 
-.bg-color-gray { @include bg-style($esub-gray, $body-color); }
+.bg-color-gray { @include bg-style($brand-esub, $body-color); } //esub-gray
 .bg-color-dark { @include bg-style($dark, #fff); }
 .bg-color-primary { @include bg-style($brand-primary, #fff); }
 .bg-color-success { @include bg-style($brand-success, #fff); }
