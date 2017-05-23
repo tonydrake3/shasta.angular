@@ -2,10 +2,10 @@
 // --------------------------------------------------
 $light_nav_text_color:                $body-color;
 $light_nav_link_hover_bg:             transparent; //#f6f6f6;
-$light_nav_link_hover_color:          $brand-primary;
-$light_nav_link_active_bg:            transparent;
+$light_nav_link_hover_color:          $body-color; //$brand-primary;
+$light_nav_link_active_bg:            $white; //transparent;
 $light_nav_link_active_color:         $brand-primary;
-$light_nav_link_open_bg:              rgba(0,0,0,.05);      // vertical nav only
+$light_nav_link_open_bg:              $white; //rgba(0,0,0,.05);      // vertical nav only
 $light_nav_link_open_color:           $light_nav_link_active_color;   // vertical nav only
 
 $light_nav_sub_nav_bg:                $light_nav_link_open_bg;

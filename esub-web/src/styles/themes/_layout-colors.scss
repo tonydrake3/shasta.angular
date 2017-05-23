@@ -2,10 +2,11 @@
 
 // .bg-color-dark is the default, there's no need for additional style
 .app-sidebar.bg-color-dark {}
-// 
+//
 .app-sidebar.bg-color-light {
     .nav {
         // General
+        background-color: $brand-esub;
         color: $light_nav_text_color;
         a {
             color: $light_nav_text_color;
@@ -35,11 +36,11 @@
                 > a:focus {
                     background-color: $light_nav_link_open_bg;
                     color: $light_nav_link_open_color;
-                }                        
+                }
                 > .icon-has-ul { color: $light_nav_link_active_color; }
             }
 
-            // overrides Bootstrap 
+            // overrides Bootstrap
             > a:focus {
                 background-color: $light_nav_link_active_bg;
             }
@@ -74,7 +75,7 @@
                         color: $light_nav_sub_link_active_color;
                     }
                 }
-            } 
+            }
         }
 
         // sub3 menu

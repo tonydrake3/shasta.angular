@@ -102,6 +102,8 @@ $blue:   #2196F3 !default; // Blue 500
 $teal:   #5bc0de !default;
 $pink:   #ff5b77 !default;
 $purple: #7E57C2 !default; // Deep Purple 400
+$esub-yellow:   #FBB812 !default;
+$esub-gray:     #F4F4F4 !default; //#DED9D5 !default;
 
 // Create grayscale
 $gray-darker:               #222 !default;
@@ -119,6 +121,10 @@ $brand-info-alt:            $purple !default;
 $brand-warning:             $orange !default;
 $brand-danger:              $red !default;
 $brand-inverse:             $gray-dark !default;
+$brand-esub:                $esub-yellow !default;
+$brand-pending:             $yellow !default;
+$brand-approved:            $green !default;
+$brand-rejected:            $red !default;
 
 
 // Options
