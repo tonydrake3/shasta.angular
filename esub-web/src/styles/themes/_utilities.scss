@@ -33,7 +33,7 @@
 .bg-color-info-alt { @include bg-style($brand-info-alt, #fff); }
 .bg-color-warning { @include bg-style($brand-warning, $body-color); }
 .bg-color-danger { @include bg-style($brand-danger, #fff); }
-
+.bg-color-esub { @include bg-style($brand-esub, $body-color);}
 
 // for mdl-data-table
 .mdl-data-table tbody {
