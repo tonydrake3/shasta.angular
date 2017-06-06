@@ -1,0 +1,18 @@
+.app-header {
+  li.profile-icon {
+    margin: 0 30px;
+
+    .chevron-holder {
+      position: absolute;
+      top: 0;
+      left: 45px;
+
+      i {
+        position: relative;
+        // TODO convert to mixin with vendor prefix
+        transform: rotate(90deg);
+        vertical-align: middle;
+      }
+    }
+  }
+}
