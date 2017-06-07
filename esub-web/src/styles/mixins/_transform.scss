@@ -1,0 +1,11 @@
+// Transforms
+
+@mixin transform($args...) {
+  -webkit-transform: $args; /* Ch <36, Saf 5.1+, iOS < 9.2, An =<4.4.4 */
+    -ms-transform: $args; /* IE 9 */
+        transform: $args; /* IE 10, Fx 16+, Op 12.1+ */
+}
+
+@mixin rotate($deg) {
+  @include transform(rotate($deg));
+}

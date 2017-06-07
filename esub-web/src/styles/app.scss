@@ -6,6 +6,11 @@
 ;
 
 @import
+// Mixins
+    "mixins/transform"
+;
+
+@import
 // Pages
     "pages/demo"
 ,   "pages/auth"
@@ -18,5 +23,6 @@
 ,   "pages/about"
 ,   "pages/terms"
 ,   "pages/blog"
-;
+,   "pages/header"
 
+;
