@@ -11,6 +11,8 @@ $l_gray_dark:   $gray-dark; // for nav
 // screen
 $l_screen_md_min: map-get($grid-breakpoints, lg);
 $l_screen_sm_max: (map-get($grid-breakpoints, lg) - 1);
+$l_screen_xs_max: (map-get($grid-breakpoints, md) - 1);
+$l_screen_xxs_max: (map-get($grid-breakpoints, sm) - 1);
 
 // zindex
 $l_zindex_page_container_mobile: 100;
@@ -75,6 +77,3 @@ $nav_sub3_bg:                         rgba(0,0,0,.1);
 // in real project, simply change '$l_sidebar_width' to any value u want
 $l_sidebar_width_sm:               220px;
 $l_sidebar_width_lg:               280px;
-
-
-
