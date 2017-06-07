@@ -10,12 +10,25 @@
     li {
         .header-btn {
             &.md-button {
-                margin: 0 15px;
+                margin: -6px 15px 0 15px;
                 line-height: $l_header_height;
                 border-radius: 0;
                 min-width: 52px;
                 @media only screen and (min-width: $l_screen_md_min) {
                     min-width: 60px;
+                }
+
+                // tighten header buttons as width decreases
+                @media (max-width: $l_screen_sm_max) {
+                  margin: -6px 5px 0 5px;
+                }
+                @media (max-width: $l_screen_xs_max) {
+                  margin: -6px 0 0 0;
+                }
+
+                .mat-button-focus-overlay,
+                .mat-button-ripple {
+                  margin-bottom: -6px;
                 }
 
                 > .material-icons {
@@ -57,6 +70,13 @@
             }
         }
 
+        // hide certain header items at min width
+        // TODO throw them into the profile dropdown
+        @media(max-width: $l_screen_xxs_max) {
+          &:not(.header-sticky) {
+            display: none;
+          }
+        }
     }
 }
 
