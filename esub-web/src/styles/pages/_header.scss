@@ -43,13 +43,12 @@
   li.notification-icon {
 
     button.md-button {
-      // TODO clean up into mixins and variables
       padding-top: 10px;
-      box-shadow: 1px 0px 5px 2px rgba(0, 0, 0, 0.5);
-      border: solid 2px #ffffff;
+      box-shadow: 1px 0px 5px 2px rgba($true-black, 0.5);
+      border: solid 2px $true-white;
       border-bottom-left-radius: 6px;
       border-bottom-right-radius: 6px;
-      background-color: #FBB812;
+      background-color: $yellow-40;
       min-width: 70px;
 
       .material-icons,
@@ -67,21 +66,22 @@
 
     // notification icon
     .notifications-counter {
-      // TODO clean up and sassify
-
       > span {
-        color: white;
-        background-color: black;
-        font-family: SANS-SERIF;
         display: block;
         height: 22px;
         width: 22px;
         border-radius: 50%;
+        color: $true-white;
+        background-color: $black;
+        @extend .title-bold;
         margin-top: -5px;
         font-size: 20px;
         line-height: 21px;
-        font-weight: bold;
       }
     }
+  }
+
+  .top-nav-right .material-icons {
+    color: $black;
   }
 }

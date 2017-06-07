@@ -35,10 +35,8 @@
               </li>
               <li class="list-inline-item header-sticky notification-icon">
                   <button md-button class="md-button header-btn" [mdMenuTriggerFor]="appNotification">
-                      <!-- <i class="material-icons  md-32">notifications_none</i> -->
-                      <i class="material-icons notifications-counter"><span>0</span></i>
+                      <i class="material-icons notifications-counter"><span>{{notificationCount}}</span></i>
                       <div class="header-btn-label"><label>Notifications</label></div>
-                      <!-- <span class="badge">3</span> -->
                   </button>
                   <md-menu #appNotification="mdMenu" x-position="after" y-position="below" overlapTrigger="false">
                       <md-list dense>

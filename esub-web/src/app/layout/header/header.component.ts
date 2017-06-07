@@ -9,8 +9,10 @@ import { APPCONFIG } from '../../config'
 
 export class AppHeaderComponent {
     AppConfig: any;
+    public notificationCount: number;
 
     ngOnInit() {
         this.AppConfig = APPCONFIG;
+        this.notificationCount = 2;
     }
 }

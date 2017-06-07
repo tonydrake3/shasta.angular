@@ -1,11 +1,41 @@
+// core colors
+
+$white: #f4f4f4;
+$true-white: #ffffff;
+$black: #333333;
+$true-black: #000000;
+$warm-grey: #929292;
+
+// theme colors
+
 $orangey-yellow: #fcb712;
 $tomato: #eb4343;
-$black-60: rgba(0, 0, 0, 0.6);
-$black: #333333;
-$warm-grey: #929292;
 $butterscotch: #ffc63b;
-$white: #f4f4f4;
 $frog-green: #31c40a;
 $dark-sky-blue: #2094de;
-$black-10: rgba(51, 51, 51, 0.1);
-$black-25: rgba(51, 51, 51, 0.25);
+
+// ^^ don't change the above, for new colors use below setup
+
+// gray variants
+$gray: $warm-grey;
+$gray-20: #8f8e94;
+$gray-40: #6d6d72;
+
+// black variants
+$black-10: rgba($black, 0.1);
+$black-25: rgba($black, 0.25);
+$black-60: rgba($true-black, 0.6);
+
+// yellow variants
+$yellow: $orangey-yellow;
+$yellow-30: $butterscotch;
+$yellow-40: #FBB812;
+
+// red variants
+$red: $tomato;
+
+// green variants
+$green: $frog-green;
+
+// blue variants
+$blue: $dark-sky-blue;
