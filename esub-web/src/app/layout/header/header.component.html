@@ -34,32 +34,13 @@
                 </button>
               </li>
               <li class="list-inline-item header-sticky notification-icon">
-                  <button md-button class="md-button header-btn" [mdMenuTriggerFor]="appNotification">
+                  <button md-button class="md-button header-btn">
                       <i class="material-icons notifications-counter"><span>{{notificationCount}}</span></i>
                       <div class="header-btn-label"><label>Notifications</label></div>
                   </button>
-                  <md-menu #appNotification="mdMenu" x-position="after" y-position="below" overlapTrigger="false">
-                      <md-list dense>
-                          <md-list-item>
-                              <md-icon md-list-avatar>mail_outline</md-icon>
-                              <h4 md-line>New mail from David</h4>
-                              <p md-line class="text-muted">5 minutes ago</p>
-                          </md-list-item>
-                          <md-list-item>
-                              <md-icon md-list-avatar>chat_bubble_outline</md-icon>
-                              <h4 md-line>Message from Jane</h4>
-                              <p md-line class="text-muted">15 minutes ago</p>
-                          </md-list-item>
-                          <md-list-item>
-                              <md-icon md-list-avatar>person_outline</md-icon>
-                              <h4 md-line>New member John joined</h4>
-                              <p md-line class="text-muted">1 hour ago</p>
-                          </md-list-item>
-                      </md-list>
-                  </md-menu>
               </li>
               <li class="profile-icon header-sticky">
-                  <button md-button class="md-button header-btn" [routerLink]="['/app/page/about']">
+                  <button md-button class="md-button header-btn">
                       <img src="assets/images/g1.jpg" alt="" class="rounded-circle img30_30">
                       <div class="chevron-holder">
                         <i class="material-icons">chevron_right</i>
