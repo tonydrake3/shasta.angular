@@ -1,9 +1,9 @@
 
 function makeAppConfig() {
-    let date = new Date();
-    let year = date.getFullYear();
+    const date = new Date();
+    const year = date.getFullYear();
 
-    let AppConfig = {
+    const AppConfig = {
         brand: 'eSUB',
         user: 'Lisa',
         year: year,

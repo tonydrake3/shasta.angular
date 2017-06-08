@@ -1,18 +1,17 @@
-import { Directive, ElementRef, Input, HostListener } from '@angular/core';
+import { Directive, ElementRef, Input, HostListener, AfterViewInit, OnChanges, OnDestroy } from '@angular/core';
 import echarts from 'echarts';
 import 'echarts/theme/macarons';
 
-@Directive({ selector: '[myECharts]' })
+@Directive({ selector: '[esubECharts]' })
 
-export class EChartsDirective {
+export class EChartsDirective implements AfterViewInit, OnChanges, OnDestroy {
     el: ElementRef;
-    constructor(el: ElementRef) {
-        this.el = el;
-    }
-
     @Input() EChartsOptions: any;
     private myChart;
 
+    constructor(el: ElementRef) {
+        this.el = el;
+    }
 
     ngAfterViewInit() {
         this.myChart = echarts.init(this.el.nativeElement, 'macarons');
@@ -31,7 +30,7 @@ export class EChartsDirective {
 
     @HostListener('window:resize')
     onResize() {
-        if(this.myChart) {
+        if (this.myChart) {
             this.myChart.resize();
         }
     }
