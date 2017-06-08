@@ -10,7 +10,6 @@ import { PageLayoutFullscreenComponent } from './page-layouts/fullscreen/fullscr
 const AppRoutes: Routes = [
     { path: '', redirectTo: '/app/dashboard', pathMatch: 'full' },
     { path: 'app', component: LayoutComponent },
-    { path: 'extra', loadChildren: './extra-pages/extra-pages.module#ExtraPagesModule' },
     { path: 'fullscreen', component: PageLayoutFullscreenComponent },
     { path: '**', redirectTo: '/app/dashboard', pathMatch: 'full' },
 ];

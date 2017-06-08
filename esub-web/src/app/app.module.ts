@@ -21,11 +21,6 @@ import { AppSidenavMenuComponent } from './layout/sidenav/sidenav-menu/sidenav-m
 import { AccordionNavDirective } from './layout/sidenav/sidenav-menu/accordion-nav.directive';
 import { AppendSubmenuIconDirective } from './layout/sidenav/sidenav-menu/append-submenu-icon.directive';
 import { HighlightActiveItemsDirective } from './layout/sidenav/sidenav-menu/highlight-active-items.directive';
-// Customizer
-import { AppCustomizerComponent } from './layout/customizer/customizer.component';
-import { ToggleQuickviewDirective } from './layout/customizer/toggle-quickview.directive';
-// Footer
-import { AppFooterComponent } from './layout/footer/footer.component';
 // Search Overaly
 import { AppSearchOverlayComponent } from './layout/search-overlay/search-overlay.component';
 import { SearchOverlayDirective } from './layout/search-overlay/search-overlay.directive';
@@ -71,16 +66,11 @@ import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
         AccordionNavDirective,
         AppendSubmenuIconDirective,
         HighlightActiveItemsDirective,
-        // Customizer
-        AppCustomizerComponent,
-        ToggleQuickviewDirective,
-        // Footer
-        AppFooterComponent,
         // Search overlay
         AppSearchOverlayComponent,
         SearchOverlayDirective,
         OpenSearchOverlaylDirective,
-        // 
+        //
         DashboardComponent,
         // Pages
         PageLayoutFullscreenComponent,
