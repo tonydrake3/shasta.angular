@@ -5,7 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "test": "ng test",
+    "test": "snyk test && ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
@@ -88,7 +88,8 @@
     "webpack-dev-server": "~2.3.0",
     "webpack-dll-bundles-plugin": "^1.0.0-beta.5",
     "webpack-merge": "^4.1.0",
-    "yargs": "^7.0.2"
+    "yargs": "^7.0.2",
+    "snyk": "^1.34.3"
   },
   "engines": {
     "node": ">=6.9.0",
