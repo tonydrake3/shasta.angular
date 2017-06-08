@@ -1,9 +1,9 @@
-import { Directive, ElementRef } from '@angular/core';
+import { Directive, ElementRef, AfterViewInit } from '@angular/core';
 import { LayoutService } from '../layout.service'
 
-@Directive({ selector: '[myOpenSearchOverlay]' })
+@Directive({ selector: '[esubOpenSearchOverlay]' })
 
-export class OpenSearchOverlaylDirective {
+export class OpenSearchOverlaylDirective implements AfterViewInit {
 
     constructor(private el: ElementRef, private layoutService: LayoutService) {}
 

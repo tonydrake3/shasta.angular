@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-    selector: 'my-page-layout-centered',
+    selector: 'esub-page-layout-centered',
     styles: [],
     templateUrl: './centered.component.html'
 })

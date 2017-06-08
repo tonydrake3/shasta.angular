@@ -1,13 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { APPCONFIG } from '../../config'
 
 @Component({
-    selector: 'my-app-header',
+    selector: 'esub-app-header',
     styles: [],
     templateUrl: './header.component.html'
 })
 
-export class AppHeaderComponent {
+export class AppHeaderComponent implements OnInit {
     AppConfig: any;
     public notificationCount: number;
 

@@ -1,4 +1,4 @@
-<nav class="app-sidebar" myAutoCloseMobileNav
+<nav class="app-sidebar" esubAutoCloseMobileNav
      [ngClass]="{'bg-color-light': ['31','32','33','34','35','36'].indexOf(AppConfig.colorOption) >= 0,
                  'bg-color-dark': ['31','32','33','34','35','36'].indexOf(AppConfig.colorOption) < 0 }">
 
@@ -21,12 +21,6 @@
     </section>
 
     <section class="sidebar-content">
-        <my-app-sidenav-menu></my-app-sidenav-menu>
-    </section>
-
-    <section class="sidebar-footer">
-        <ul class="nav">
-            <li><a md-button aria-label="menu" target="_blank" [href]="AppConfig.productLink" ><i class="nav-icon material-icons">help</i><span class="nav-text"><span>Help</span> & <span>Support</span></span></a></li>
-        </ul>
+        <esub-app-sidenav-menu></esub-app-sidenav-menu>
     </section>
 </nav>

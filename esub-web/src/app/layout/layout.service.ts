@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Subject }    from 'rxjs/Subject';
+import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export class LayoutService {
     private preloaderStateSource = new Subject<string>();
+    private searchOverlaySource = new Subject<string>();
+
+    searchOverlayState$ = this.searchOverlaySource.asObservable();
 
     preloaderState$ = this.preloaderStateSource.asObservable();
 
@@ -11,11 +14,6 @@ export class LayoutService {
         // console.log('preloader state: ' + state)
         this.preloaderStateSource.next(state);
     }
-
-
-    private searchOverlaySource = new Subject<string>();
-
-    searchOverlayState$ = this.searchOverlaySource.asObservable();
 
     updateSearchOverlayState(state: string) {
         // console.log('overlay state: ' + state)

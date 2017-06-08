@@ -1,5 +1,5 @@
 import * as jQuery from 'jquery';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router, NavigationEnd } from '@angular/router';
 import { APPCONFIG } from './config'
@@ -16,11 +16,11 @@ import 'styles/ui.scss';
 import 'styles/app.scss';
 
 @Component({
-    selector: 'app-root',
+    selector: 'esub-root',
     templateUrl: './app.component.html',
     providers: [LayoutService],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
     AppConfig: any;
     constructor(private router: Router) { }
 
