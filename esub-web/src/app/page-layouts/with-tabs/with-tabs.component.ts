@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-    selector: 'my-page-layout-with-tabs',
+    selector: 'esub-page-layout-with-tabs',
     styles: [],
     templateUrl: './with-tabs.component.html'
 })

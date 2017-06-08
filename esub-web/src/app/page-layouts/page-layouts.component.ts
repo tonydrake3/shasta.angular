@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-    selector: 'my-page-layouts',
+    selector: 'esub-page-layouts',
     styles: [],
     template: `<router-outlet></router-outlet>`
 })

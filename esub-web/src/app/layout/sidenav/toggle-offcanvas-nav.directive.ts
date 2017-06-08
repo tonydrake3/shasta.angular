@@ -1,9 +1,9 @@
-import { Directive, ElementRef } from '@angular/core';
+import { Directive, ElementRef, AfterViewInit } from '@angular/core';
 
 // off-canvas sidebar for mobile, and this is the trigger
-@Directive({ selector: '[myToggleOffcanvasNav]' })
+@Directive({ selector: '[esubToggleOffcanvasNav]' })
 
-export class ToggleOffcanvasNavDirective {
+export class ToggleOffcanvasNavDirective implements AfterViewInit {
     el: ElementRef;
     constructor(el: ElementRef) {
         this.el = el;
@@ -21,8 +21,3 @@ export class ToggleOffcanvasNavDirective {
         })
     }
 }
-
-
-
-
-

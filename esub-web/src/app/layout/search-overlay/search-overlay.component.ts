@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { APPCONFIG } from '../../config'
 
 @Component({
-    selector: 'my-app-search-overlay',
+    selector: 'esub-app-search-overlay',
     styles: [],
     templateUrl: './search-overlay.component.html'
 })

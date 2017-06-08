@@ -1,13 +1,13 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { APPCONFIG } from '../../config'
 
 @Component({
-    selector: 'my-app-sidenav',
+    selector: 'esub-app-sidenav',
     styles: [],
     templateUrl: './sidenav.component.html'
 })
 
-export class AppSidenavComponent {
+export class AppSidenavComponent implements OnInit {
     AppConfig;
 
     ngOnInit() {

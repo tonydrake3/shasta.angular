@@ -1,15 +1,15 @@
-import { Directive, ElementRef, Input } from '@angular/core';
+import { Directive, ElementRef, Input, AfterViewInit } from '@angular/core';
 import 'jquery-slimscroll/jquery.slimscroll.min.js';
 
-@Directive({ selector: '[mySlimScroll]' })
+@Directive({ selector: '[esubSlimScroll]' })
 
-export class SlimScrollDirective {
+export class SlimScrollDirective implements AfterViewInit {
+    @Input() scrollHeight: string;
     el: ElementRef;
+
     constructor(el: ElementRef) {
         this.el = el;
     }
-
-    @Input() scrollHeight: string;
 
     ngAfterViewInit() {
         const $el = $(this.el.nativeElement);
