@@ -1,7 +1,5 @@
 <ul class="nav" esubAccordionNav esubAppendSubmenuIcon esubSlimScroll esubHighlightActiveItems>
 
-  <!-- <li><a md-button><i class="nav-icon material-icons">project</i><span class="nav-text">Projects</span></a></li> -->
-
   <li>
     <a md-button><i class="nav-icon material-icons">av_timer</i><span class="nav-text">Time &amp; Expenses</span></a>
     <ul>
@@ -12,16 +10,10 @@
   </li>
 
   <li *ngFor="let navLink of navigationLinks">
-    <a md-button>
+    <a md-button [routerLink]="['/app/trackpoint', navLink.$id]">
       <i *ngIf="navLink.iconName" class="nav-icon material-icons">{{navLink.iconName}}</i>
       <span class="nav-text">{{navLink.Title}}</span>
     </a>
   </li>
-
-  <!-- <li><a md-button><i class="nav-icon material-icons">project</i><span class="nav-text">Contacts</span></a></li>
-  <li><a md-button><i class="nav-icon material-icons">project</i><span class="nav-text">Scheduling</span></a></li>
-  <li><a md-button><i class="nav-icon material-icons">project</i><span class="nav-text">Resource Management</span></a></li>
-  <li><a md-button><i class="nav-icon material-icons">project</i><span class="nav-text">Activity Log</span></a></li>
-  <li><a md-button><i class="nav-icon material-icons">project</i><span class="nav-text">Settings</span></a></li> -->
 
 </ul>

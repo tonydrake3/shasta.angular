@@ -9,7 +9,8 @@ const routes: Routes = [
         component: LayoutComponent,
         children: [
             { path: '', redirectTo: '/app/dashboard', pathMatch: 'full' },
-            { path: 'dashboard', component: DashboardComponent }
+            { path: 'dashboard', component: DashboardComponent },
+            { path: 'trackpoint', loadChildren: '../trackpoint/trackpoint.module#TrackpointModule' }
         ]
     }
 ];

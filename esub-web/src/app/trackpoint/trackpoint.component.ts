@@ -1,4 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Params } from '@angular/router';
+
+import { NavigationLink } from '../models/NavigationLink';
+
+// TODO delete me
+import { DEVMockDataService } from '../shared/DEV-mock-data.service';
 
 @Component({
     selector: 'esub-trackpoint',
@@ -7,17 +13,28 @@ import { Component } from '@angular/core';
 })
 
 export class TrackpointComponent {
-  constructor() {
-    console.log('TrackpointComponent constructor');
-  }
+  constructor() { }
 }
 
 @Component({
-  templateUrl: './dashboard.component.html'
+  templateUrl: './trackpoint.component.html'
 })
 
-export class TrackpointNavigationComponent {
-  constructor() {
-    console.log('TrackpointNavigationComponent constructor');
+export class TrackpointNavigationComponent implements OnInit {
+  public page: string;
+
+  constructor(private route: ActivatedRoute, private devMockDataService: DEVMockDataService) { }
+
+  ngOnInit(): void {
+    this.route.params
+      .subscribe(params => {
+        const trackPointId = params['id'];
+
+        this.devMockDataService.navLinks.forEach((navLink: NavigationLink) => {
+          if (navLink.$id === trackPointId) {
+            this.page = JSON.stringify(navLink);
+          }
+        });
+      });
   }
 }

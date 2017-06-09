@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-import { NavigationLink} from '../../../models/NavigationLink';
+import { NavigationLink } from '../../../models/NavigationLink';
 
 // TODO delete me
 import { DEVMockDataService } from '../../../shared/DEV-mock-data.service';
@@ -14,7 +14,8 @@ import { DEVMockDataService } from '../../../shared/DEV-mock-data.service';
 export class AppSidenavMenuComponent {
   public navigationLinks: NavigationLink[];
 
-  constructor(public devMockDataService: DEVMockDataService) {
+  constructor(private devMockDataService: DEVMockDataService) {
+    // TODO move to real service once available
     this.navigationLinks = devMockDataService.navLinks;
   }
 }
