@@ -10,7 +10,7 @@
     li {
         .header-btn {
             &.md-button {
-                margin: 0;
+                margin: -6px 15px 0 15px;
                 line-height: $l_header_height;
                 border-radius: 0;
                 min-width: 52px;
@@ -18,8 +18,26 @@
                     min-width: 60px;
                 }
 
+                // tighten header buttons as width decreases
+                @media (max-width: $l_screen_sm_max) {
+                  margin: -6px 5px 0 5px;
+                }
+                @media (max-width: $l_screen_xs_max) {
+                  margin: -6px 0 0 0;
+                }
+
+                .mat-button-focus-overlay,
+                .mat-button-ripple {
+                  margin-bottom: -6px;
+                }
+
                 > .material-icons {
                     vertical-align: middle;
+                }
+
+                // icon sizing for header icons
+                .material-icons.md-32 {
+                  font-size: 32px;
                 }
 
                 .badge {
@@ -29,9 +47,36 @@
                     right: 3px;
                     color: inherit;
                 }
+
+                // position label below icon
+                .header-btn-label {
+                  position: absolute;
+                  left: 50%;
+
+                  label {
+                    position: relative;
+                    display: block;
+                    line-height: 0;
+                    margin-top: -10px;
+                    left: -50%;
+                    font-size: 10px;
+
+                    // if there's text below a badged icon, re-position the badge
+                    & ~ .badge {
+                      right: 25px;
+                    }
+                  }
+                }
             }
         }
 
+        // hide certain header items at min width
+        // TODO throw them into the profile dropdown
+        @media(max-width: $l_screen_xxs_max) {
+          &:not(.header-sticky) {
+            display: none;
+          }
+        }
     }
 }
 

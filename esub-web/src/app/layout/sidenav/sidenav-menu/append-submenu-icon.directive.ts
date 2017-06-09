@@ -1,8 +1,8 @@
-import { Directive, ElementRef } from '@angular/core';
+import { Directive, ElementRef, AfterViewInit } from '@angular/core';
 
-@Directive({ selector: '[myAppendSubmenuIcon]' })
+@Directive({ selector: '[esubAppendSubmenuIcon]' })
 
-export class AppendSubmenuIconDirective {
+export class AppendSubmenuIconDirective implements AfterViewInit {
     el: ElementRef;
     constructor(el: ElementRef) {
         this.el = el;
@@ -14,4 +14,3 @@ export class AppendSubmenuIconDirective {
         $el.find('.prepend-icon').prepend('<i class="material-icons">keyboard_arrow_right</i>');
     }
 }
-

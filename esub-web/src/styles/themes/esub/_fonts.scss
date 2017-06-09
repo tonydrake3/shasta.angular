@@ -1,188 +1,94 @@
-h1 {
-	font-family: Roboto;
-	font-size: 16px;
-	font-weight: 300;
-	text-align: center;
-	color: $black;
+// font builders
+
+@mixin font-stack($size, $weight, $color) {
+	@content;
+	font-size: $size;
+	font-weight: $weight;
+	color: $color;
 }
 
-h1 {
-	font-family: Roboto;
-	font-size: 16px;
-	font-weight: 300;
-	text-align: center;
-	color: $black;
+@mixin roboto-font-stack($size, $weight, $color) {
+	@include font-stack($size, $weight, $color) {
+		font-family: Roboto;
+	}
 }
 
-h2 {
-	font-family: Roboto;
-	font-size: 12px;
-	font-weight: 300;
-	text-align: center;
-	color: $black;
+@mixin SFUIText-font-stack($size, $weight, $color) {
+	@include font-stack($size, $weight, $color) {
+		font-family: SFUIText;
+	}
 }
 
-h3 {
-	font-family: Roboto;
-	font-size: 10.5px;
-	font-weight: 300;
-	color: $black;
+// heading defs
+
+h1, .h1 {
+	@include roboto-font-stack(16px, 300, $black);
 }
 
-h3 {
-	font-family: Roboto;
-	font-size: 10.5px;
-	font-weight: 300;
-	color: $black;
+h2, .h2 {
+	@include roboto-font-stack(12px, 300, $black);
 }
 
-.title-bold {
-	font-family: Roboto;
-	font-size: 8.5px;
-	font-weight: bold;
-	text-align: center;
-	color: $black;
+h3, .h3 {
+	@include roboto-font-stack(10.5px, 300, $black);
 }
 
-.calendar-days {
-	font-family: Roboto;
-	font-size: 8.5px;
-	font-weight: bold;
-	text-align: center;
-	color: $black;
-}
-
-.calendar-days-blocked {
-	font-family: Roboto;
-	font-size: 8.5px;
-	font-weight: bold;
-	text-align: center;
-	color: $black;
-}
+// title
 
 .title-bold {
-	font-family: Roboto;
-	font-size: 8.5px;
-	font-weight: bold;
-	text-align: center;
-	color: $black;
-}
-
-.calendar-days-blocked {
-	font-family: Roboto;
-	font-size: 8.5px;
-	font-weight: bold;
-	text-align: center;
-	color: $black;
-}
-
-.calendar-days {
-	font-family: Roboto;
-	font-size: 8.5px;
-	font-weight: bold;
-	text-align: center;
-	color: $black;
-}
-
-.cell-title {
-	font-family: Roboto;
-	font-size: 8.5px;
-	font-weight: 500;
-	color: #030303;
+	@include roboto-font-stack(8.5px, bold, $black);
 }
 
 .title-reg {
-	font-family: Roboto;
-	font-size: 8.5px;
-	text-align: center;
-	color: $black;
-}
-
-.title-reg {
-	font-family: Roboto;
-	font-size: 8.5px;
-	text-align: center;
-	color: $black;
+	@include roboto-font-stack(8.5px, normal, $black);
 }
 
 .title-light {
-	font-family: Roboto;
-	font-size: 8.5px;
-	font-weight: 300;
-	text-align: center;
-	color: $black;
-}
-
-.title-light {
-	font-family: Roboto;
-	font-size: 8.5px;
-	font-weight: 300;
-	text-align: center;
-	color: $black;
-}
-
-.cell-copy {
-	font-family: Roboto;
-	font-size: 7.5px;
-	color: #8f8e94;
-}
-
-.cell-subtitle {
-	font-family: Roboto;
-	font-size: 7.5px;
-	color: $black;
-}
-
-.cell-copy {
-	font-family: Roboto;
-	font-size: 7.5px;
-	color: #8f8e94;
-}
-
-.comment-detail {
-	font-family: Roboto;
-	font-size: 7px;
-	font-weight: bold;
-	color: $warm-grey;
-}
-
-.cell-description {
-	font-family: SFUIText;
-	font-size: 6.5px;
-	letter-spacing: -0px;
-	color: #6d6d72;
+	@include roboto-font-stack(8.5px, 300, $black);
 }
 
 .small-titles {
-	font-family: Roboto;
-	font-size: 6px;
-	font-weight: bold;
+	@include roboto-font-stack(6px, bold, $black);
 	letter-spacing: 0.2px;
-	text-align: center;
-	color: $black;
-}
-
-.small-titles {
-	font-family: Roboto;
-	font-size: 6px;
-	font-weight: bold;
-	letter-spacing: 0.2px;
-	text-align: center;
-	color: $black;
 }
 
 .nav-subtitle {
-	font-family: Roboto;
-	font-size: 6px;
-	text-align: center;
-	color: #000000;
+	@include roboto-font-stack(6px, normal, $true-black);
 }
 
+// cell
+
+.cell-title {
+	@include roboto-font-stack(8.5px, 500, $true-black);
+}
+
+.cell-copy {
+	@include roboto-font-stack(7.5px, normal, $gray-20);
+}
+
+.cell-subtitle {
+	@include roboto-font-stack(7.5px, normal, $black);
+}
+
+.cell-description {
+	@include SFUIText-font-stack(6.5px, normal, $gray-40);
+	letter-spacing: -0px;
+}
+
+// comment
+
+.comment-detail {
+	@include roboto-font-stack(7px, bold, $warm-grey);
+}
+
+// misc
+
 .tab-bar-text {
-	font-family: Roboto;
-	font-size: 5px;
-	font-weight: 500;
+	@include roboto-font-stack(5px, 500, $black);
 	letter-spacing: 0.1px;
-	text-align: center;
-	color: $black;
+}
+
+.calendar-days,
+.calendar-days-blocked {
+	@include roboto-font-stack(8.5px, bold, $black);
 }

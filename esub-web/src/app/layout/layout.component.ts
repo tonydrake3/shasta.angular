@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 
 @Component({
-    selector: 'my-app-layout',
+    selector: 'esub-app-layout',
     templateUrl: './layout.component.html',
 })
 export class LayoutComponent {
-    constructor(){}
+    constructor() {}
 }

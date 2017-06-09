@@ -1,8 +1,8 @@
-import { Directive, ElementRef } from '@angular/core';
+import { Directive, ElementRef, AfterViewInit } from '@angular/core';
 
-@Directive({ selector: '[myAccordionNav]' })
+@Directive({ selector: '[esubAccordionNav]' })
 
-export class AccordionNavDirective {
+export class AccordionNavDirective implements AfterViewInit {
     el: ElementRef;
     constructor(el: ElementRef) {
         this.el = el;
@@ -27,24 +27,24 @@ export class AccordionNavDirective {
         // Accordion nav
         $nav.on('click', function(e) {
 
-            let target = e.target;
-            let $parentLi = $(target).closest('li') // closest, insead of parent, so it still works when click on i icons
+            const target = e.target;
+            const $parentLi = $(target).closest('li') // closest, insead of parent, so it still works when click on i icons
             if (!$parentLi.length) return; // return if doesn't click on li
-            let $subUl = $parentLi.children('ul')
+            const $subUl = $parentLi.children('ul')
 
 
             // let depth = $subUl.parents().length; // but some li has no sub ul, so...
-            let depth = $parentLi.parents().length + 1;
-            
+            const depth = $parentLi.parents().length + 1;
+
             // filter out all elements (except target) at current depth or greater
-            let allAtDepth = $nav.find('ul').filter(function() {
-                if($(this).parents().length >= depth && this !== $subUl.get(0)) {
-                    return true; 
+            const allAtDepth = $nav.find('ul').filter(function() {
+                if ($(this).parents().length >= depth && this !== $subUl.get(0)) {
+                    return true;
                 }
             })
             allAtDepth.slideUp(slideTime).closest('li').removeClass('open');
 
-            // Toggle target 
+            // Toggle target
             if ( $parentLi.has('ul').length ) {
                 $parentLi.toggleClass('open');
             }
@@ -53,8 +53,3 @@ export class AccordionNavDirective {
         })
     }
 }
-
-
-
-
-
