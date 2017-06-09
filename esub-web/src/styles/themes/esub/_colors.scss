@@ -1,3 +1,6 @@
+// color scaffolding
+//
+
 // core colors
 
 $white: #f4f4f4;
@@ -28,8 +31,10 @@ $black-60: rgba($true-black, 0.6);
 
 // yellow variants
 $yellow: $orangey-yellow;
+$yellow-10: #fedc89;
 $yellow-30: $butterscotch;
 $yellow-40: #FBB812;
+$yellow-80: #fdc641;
 
 // red variants
 $red: $tomato;
@@ -39,3 +44,10 @@ $green: $frog-green;
 
 // blue variants
 $blue: $dark-sky-blue;
+
+// component specific colors
+//
+
+$nav-link-active: $yellow;
+$sub-nav-link-odd: $yellow-10;
+$sub-nav-link-even: $yellow-80;
