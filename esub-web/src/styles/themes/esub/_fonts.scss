@@ -52,6 +52,10 @@ h3, .h3 {
 	letter-spacing: 0.2px;
 }
 
+.nav-link {
+	@include roboto-font-stack(15px, normal, $black);
+}
+
 .nav-subtitle {
 	@include roboto-font-stack(6px, normal, $true-black);
 }

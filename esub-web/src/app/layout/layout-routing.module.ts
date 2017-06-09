@@ -10,7 +10,8 @@ const routes: Routes = [
         children: [
             { path: '', redirectTo: '/app/dashboard', pathMatch: 'full' },
             { path: 'dashboard', component: DashboardComponent },
-            { path: 'trackpoint', loadChildren: '../trackpoint/trackpoint.module#TrackpointModule' }
+            { path: 'trackpoint', loadChildren: '../trackpoint/trackpoint.module#TrackpointModule' },
+            { path: 'time-expenses', loadChildren: '../time-expenses/time-expenses.module#TimeExpensesModule' }
         ]
     }
 ];

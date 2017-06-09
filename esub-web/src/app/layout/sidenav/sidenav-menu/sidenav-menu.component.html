@@ -1,14 +1,18 @@
 <ul class="nav" esubAccordionNav esubAppendSubmenuIcon esubSlimScroll esubHighlightActiveItems>
 
+  <!-- time & expenses specific links -->
   <li>
     <a md-button><i class="nav-icon material-icons">av_timer</i><span class="nav-text">Time &amp; Expenses</span></a>
     <ul>
-      <li><a md-button class="md-button prepend-icon"><span>Timesheets</span></a></li>
-      <li><a md-button class="md-button prepend-icon"><span>Time Management</span></a></li>
-      <li><a md-button class="md-button prepend-icon"><span>Expense Management</span></a></li>
+      <li *ngFor="let timeLink of timeExpensesLinks">
+        <a md-button class="md-button" [routerLink]="['/app/time-expenses', timeLink.route]">
+          <span>{{timeLink.title}}</span>
+        </a>
+      </li>
     </ul>
   </li>
 
+  <!-- legacy links generated for trackpoint -->
   <li *ngFor="let navLink of navigationLinks">
     <a md-button [routerLink]="['/app/trackpoint', navLink.$id]">
       <i *ngIf="navLink.iconName" class="nav-icon material-icons">{{navLink.iconName}}</i>
