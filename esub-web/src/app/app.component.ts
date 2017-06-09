@@ -4,6 +4,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Router, NavigationEnd } from '@angular/router';
 import { APPCONFIG } from './config'
 import { LayoutService } from './layout/layout.service'
+import { AuthenticationService } from './shared/services/authentication/authentication.service';
 
 // 3rd
 import 'styles/font-awesome.scss';
@@ -22,7 +23,11 @@ import 'styles/app.scss';
 })
 export class AppComponent {
     AppConfig: any;
-    constructor(private router: Router) { }
+    constructor(private router: Router, private authenticationService: AuthenticationService) {
+
+        this.authenticationService.login('manager@esub.com', 'Test1234');
+
+    }
 
     ngOnInit() {
         this.AppConfig = APPCONFIG;
@@ -34,5 +39,6 @@ export class AppComponent {
             }
             document.body.scrollTop = 0;
         });
+
     }
 }
