@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { EChartsDirective } from './echarts.directive';
 import { SlimScrollDirective } from './slim-scroll.directive';
 
+import { DEVMockDataService } from './DEV-mock-data.service';
+
 
 @NgModule({
     imports: [],
@@ -13,6 +15,9 @@ import { SlimScrollDirective } from './slim-scroll.directive';
     exports: [
         EChartsDirective,
         SlimScrollDirective,
+    ],
+    providers: [
+      DEVMockDataService
     ]
 })
 

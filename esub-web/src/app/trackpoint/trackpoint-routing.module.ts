@@ -1,4 +1,4 @@
-import { Routes, RouterModule }  from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
 
 import { TrackpointComponent, TrackpointNavigationComponent } from './trackpoint.component';
 
