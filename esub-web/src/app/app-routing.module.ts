@@ -5,13 +5,21 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 
 // Page Layouts
 import { PageLayoutFullscreenComponent } from './page-layouts/fullscreen/fullscreen.component';
+import { AuthGuard } from './shared/services/authentication/auth-guard.service';
+import { LoginComponent } from './login/login.component';
 
 
 const AppRoutes: Routes = [
-    { path: '', redirectTo: '/app/dashboard', pathMatch: 'full' },
-    { path: 'app', component: LayoutComponent },
-    { path: 'fullscreen', component: PageLayoutFullscreenComponent },
-    { path: '**', redirectTo: '/app/dashboard', pathMatch: 'full' },
+    {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full'
+    },
+    {
+        path: 'login',
+        component: LoginComponent
+    },
+    // { path: '**', component: PageNotFound },
 ];
 
 export const AppRoutingModule = RouterModule.forRoot(AppRoutes, {useHash: true});

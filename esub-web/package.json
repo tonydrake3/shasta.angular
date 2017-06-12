@@ -80,17 +80,17 @@
     "raw-loader": "^0.5.1",
     "rimraf": "^2.6.1",
     "sass-loader": "^6.0.3",
+    "snyk": "^1.34.3",
     "style-loader": "^0.16.1",
     "ts-helpers": "^1.1.2",
     "ts-node": "^3.0.2",
     "tslib": "^1.6.0",
-    "tslint": "^5.0.0",
-    "typescript": "~2.3.3",
+    "tslint": "^5.4.3",
+    "typescript": "^2.3.4",
     "webpack-dev-server": "~2.3.0",
     "webpack-dll-bundles-plugin": "^1.0.0-beta.5",
     "webpack-merge": "^4.1.0",
-    "yargs": "^7.0.2",
-    "snyk": "^1.34.3"
+    "yargs": "^7.0.2"
   },
   "engines": {
     "node": ">=6.9.0",
