@@ -23,11 +23,7 @@ import 'styles/app.scss';
 })
 export class AppComponent implements OnInit {
     AppConfig: any;
-    constructor(private router: Router, private authenticationService: AuthenticationService) {
-
-        this.authenticationService.login('manager@esub.com', 'Test1234');
-
-    }
+    constructor(private router: Router, private authenticationService: AuthenticationService) {}
 
     ngOnInit() {
         this.AppConfig = APPCONFIG;
