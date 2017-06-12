@@ -10,7 +10,6 @@ export class BaseHttpService {
 
     constructor (private _http: Http) {}
 
-    //TODO: Add mechanism to load Token from sessionStorage
     addHeaders(headers: Headers) {
 
         let authenticationData = JSON.parse(sessionStorage.getItem('authentication'));
@@ -20,11 +19,13 @@ export class BaseHttpService {
 
             headers.append('Authorization', 'Bearer ' + authenticationData.access_token);
         }
+        //TODO: Consider config for this?
         headers.append('X-Esub-Tenant', '1');
     }
 
     addFormHeaders (headers: Headers) {
 
+        //TODO: Consider config for this?
         headers.append('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
         headers.append('Accept', 'application/json');
     }
