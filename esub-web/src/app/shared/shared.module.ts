@@ -17,17 +17,15 @@ import { DEVMockDataService } from './DEV-mock-data.service';
         SlimScrollDirective,
     ],
     providers: [
+        AuthGuard,
         AuthenticationService,
         AuthorizationService,
-        AuthGuard,
+        DEVMockDataService,
         UserService
     ],
     exports: [
         EChartsDirective,
         SlimScrollDirective,
-    ],
-    providers: [
-      DEVMockDataService
     ]
 })
 
