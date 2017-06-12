@@ -7,6 +7,8 @@ import { AuthorizationService } from './services/authorization/authorization.ser
 import { UserService } from "./services/user/user.service";
 import { AuthGuard } from "./services/authentication/auth-guard.service";
 
+import { DEVMockDataService } from './DEV-mock-data.service';
+
 
 @NgModule({
     imports: [],
@@ -23,6 +25,9 @@ import { AuthGuard } from "./services/authentication/auth-guard.service";
     exports: [
         EChartsDirective,
         SlimScrollDirective,
+    ],
+    providers: [
+      DEVMockDataService
     ]
 })
 
