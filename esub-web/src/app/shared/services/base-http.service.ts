@@ -15,9 +15,9 @@ export class BaseHttpService {
 
         let authenticationData = JSON.parse(sessionStorage.getItem('authentication'));
 
-        console.log("AuthData", authenticationData);
-        if(authenticationData) {
-            console.log("AuthData", authenticationData.access_token);
+        // console.log("AuthData", authenticationData);
+        if(authenticationData && authenticationData.access_token) {
+
             headers.append('Authorization', 'Bearer ' + authenticationData.access_token);
         }
         headers.append('X-Esub-Tenant', '1');

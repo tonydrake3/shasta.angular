@@ -38,6 +38,8 @@ import { SharedModule } from './shared/shared.module';
 // hmr
 import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
 import {AuthenticationService} from "./shared/services/authentication/authentication.service";
+import {AuthGuard} from "./shared/services/authentication/auth-guard.service";
+import {LoginComponent} from "./login/login.component";
 
 @NgModule({
     imports: [
@@ -73,11 +75,13 @@ import {AuthenticationService} from "./shared/services/authentication/authentica
         OpenSearchOverlaylDirective,
         //
         DashboardComponent,
+        LoginComponent,
         // Pages
         PageLayoutFullscreenComponent,
     ],
     providers: [
-      AuthenticationService
+        AuthenticationService,
+        AuthGuard
     ],
     bootstrap: [AppComponent]
 })

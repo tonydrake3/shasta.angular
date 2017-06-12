@@ -12,7 +12,7 @@ export class AuthenticationService extends BaseHttpService {
         super(_httpPassthrough);
     }
 
-    login(username: string, password: string) {
+    login (username: string, password: string) {
 
         let url = 'http://api.sandbox.shasta.esubonline.com/Identity/Token';
         let payload = {
@@ -21,17 +21,28 @@ export class AuthenticationService extends BaseHttpService {
           password : password
         };
 
-        return super.postForm(url, payload)
-            .subscribe(
-                data => {
+        return super.postForm(url, payload);
+    }
 
-                    sessionStorage.setItem('authentication', JSON.stringify(data));
+    isLoggedIn (): boolean {
 
-                    this._authorizationService.getPermissions();
-                },
-                error => {
-                    console.log("Error");
-                }
-            );
+        let authenticationData = JSON.parse(sessionStorage.getItem('authentication'));
+
+        // console.log("AuthData", authenticationData);
+        if(authenticationData && authenticationData.access_token) return true;
+
+        return false;
+
+    }
+
+    getToken (): string {
+
+        let authenticationData = JSON.parse(sessionStorage.getItem('authentication'));
+
+        // console.log("AuthData", authenticationData);
+        if(authenticationData && authenticationData.access_token) return authenticationData.access_token;
+
+        return null;
+
     }
 }

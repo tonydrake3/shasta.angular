@@ -1,23 +1,26 @@
 import { Injectable } from '@angular/core';
+import { Http } from '@angular/http';
+
 import { BaseHttpService } from "../base-http.service";
 import { AuthorizationResponse } from "../../models/response/authorizationResponse";
-import { Http } from '@angular/http';
+import { UserService } from "../user/user.service";
 
 @Injectable ()
 export class AuthorizationService extends BaseHttpService {
 
-    constructor(private _httpPassthrough: Http) {
+    constructor(private _httpPassthrough: Http, private _userService: UserService) {
         super(_httpPassthrough);
     }
 
     getPermissions() {
 
         let url = 'http://api.sandbox.shasta.esubonline.com/Identity/Authorization';
-        console.log("getPermissions");
+        // console.log("getPermissions");
         return super.get(url)
             .subscribe(
                 data => {
                     console.log("getPermissions response", <AuthorizationResponse> data);
+
                 },
                 error => {
                     console.log("Error");
