@@ -1,3 +1,1 @@
-/**
- * Created by eSUB on 6/8/2017.
- */
+import { Injectable } from '@angular/core';

@@ -27,17 +27,16 @@ export class LoginComponent {
                     sessionStorage.setItem('authentication', JSON.stringify(data));
 
                     if (this._authenticationService.isLoggedIn()) {
+                        this._authorizationService.getPermissions();
                         this._route.queryParams
                             .map(qp => qp['redirectTo'])
                             .subscribe(
                                 redirectTo => {
                                     const url = redirectTo ? [redirectTo] : ['/'];
-                                    console.log(url);
                                     this._router.navigate(url);
                                 } ,
                                 error => console.log(error)
                             );
-                        this._authorizationService.getPermissions();
                     }
 
                 },

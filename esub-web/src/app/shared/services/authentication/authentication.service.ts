@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 
-import { BaseHttpService } from "../base-http.service";
-import { AuthenticationResponse } from "../../models/response/authenticationResponse";
-import { AuthorizationService } from "../authorization/authorization.service";
+import { BaseHttpService } from '../base-http.service';
+import { AuthorizationService } from '../authorization/authorization.service';
 
 @Injectable ()
 export class AuthenticationService extends BaseHttpService {
@@ -14,34 +13,45 @@ export class AuthenticationService extends BaseHttpService {
 
     login (username: string, password: string) {
 
-        //TODO: Replace with Config Service call to build URL
-        let url = 'http://api.sandbox.shasta.esubonline.com/Identity/Token';
-        let payload = {
+        // TODO: Replace with Config Service call to build URL
+        const url = 'http://api.sandbox.shasta.esubonline.com/Identity/Token';
+        const payload = {
           grant_type: 'password',
           username : username,
           password : password
         };
 
         return super.postForm(url, payload);
+
     }
 
     isLoggedIn (): boolean {
 
-        let authenticationData = JSON.parse(sessionStorage.getItem('authentication'));
+        const authenticationData = JSON.parse(sessionStorage.getItem('authentication'));
 
         // console.log("AuthData", authenticationData);
-        if(authenticationData && authenticationData.access_token) return true;
+        if (authenticationData && authenticationData.access_token) return true;
 
         return false;
 
     }
 
+    logout () {
+
+        if (sessionStorage.getItem('authentication')) {
+
+            sessionStorage.removeItem('authentication');
+
+        }
+
+    }
+
     getToken (): string {
 
-        let authenticationData = JSON.parse(sessionStorage.getItem('authentication'));
+        const authenticationData = JSON.parse(sessionStorage.getItem('authentication'));
 
         // console.log("AuthData", authenticationData);
-        if(authenticationData && authenticationData.access_token) return authenticationData.access_token;
+        if (authenticationData && authenticationData.access_token) return authenticationData.access_token;
 
         return null;
 
