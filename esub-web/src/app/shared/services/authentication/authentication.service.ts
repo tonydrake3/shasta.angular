@@ -14,6 +14,7 @@ export class AuthenticationService extends BaseHttpService {
 
     login (username: string, password: string) {
 
+        //TODO: Replace with Config Service call to build URL
         let url = 'http://api.sandbox.shasta.esubonline.com/Identity/Token';
         let payload = {
           grant_type: 'password',

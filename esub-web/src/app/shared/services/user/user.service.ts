@@ -15,6 +15,7 @@ export class UserService extends BaseHttpService {
 
     getCurrentUserInfo () {
 
+        //TODO: Replace with Config Service call to build URL
         let url = 'http://api.sandbox.shasta.esubonline.com/Identity/Users/Current';
         // console.log("getCurrentUser");
         return super.get(url)

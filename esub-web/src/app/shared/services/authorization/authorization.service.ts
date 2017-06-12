@@ -14,6 +14,7 @@ export class AuthorizationService extends BaseHttpService {
 
     getPermissions() {
 
+        //TODO: Replace with Config Service call to build URL
         let url = 'http://api.sandbox.shasta.esubonline.com/Identity/Authorization';
         // console.log("getPermissions");
         return super.get(url)
