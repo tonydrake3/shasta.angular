@@ -7,7 +7,7 @@ export const TrackpointRoutes: Routes = [
       path: '',
       component: TrackpointComponent,
       children: [
-          { path: '', redirectTo: '/app/dashboard', pathMatch: 'full' },
+          { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
           { path: ':id', component: TrackpointNavigationComponent }
       ]
   }

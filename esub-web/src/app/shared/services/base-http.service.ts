@@ -12,27 +12,27 @@ export class BaseHttpService {
 
     addHeaders(headers: Headers) {
 
-        let authenticationData = JSON.parse(sessionStorage.getItem('authentication'));
+        const authenticationData = JSON.parse(sessionStorage.getItem('authentication'));
 
         // console.log("AuthData", authenticationData);
-        if(authenticationData && authenticationData.access_token) {
+        if (authenticationData && authenticationData.access_token) {
 
             headers.append('Authorization', 'Bearer ' + authenticationData.access_token);
         }
-        //TODO: Consider config for this?
+        // TODO : Consider config for this?
         headers.append('X-Esub-Tenant', '1');
     }
 
     addFormHeaders (headers: Headers) {
 
-        //TODO: Consider config for this?
+        // TODO : Consider config for this?
         headers.append('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
         headers.append('Accept', 'application/json');
     }
 
     get (url: string): Observable<any> {
 
-        let headers = new Headers();
+        const headers = new Headers();
         this.addHeaders(headers);
 
         return this._http.get(url, {headers: headers})
@@ -42,7 +42,7 @@ export class BaseHttpService {
 
     post (url: string, payload: any): Observable<any> {
 
-        let headers = new Headers();
+        const headers = new Headers();
         this.addHeaders(headers);
 
         return this._http.post(url, payload, {headers: headers})
@@ -52,14 +52,16 @@ export class BaseHttpService {
 
     postForm (url: string, data: any): Observable<any> {
 
-        let headers = new Headers();
+        const headers = new Headers();
         this.addHeaders(headers);
         this.addFormHeaders(headers);
 
         // Convert form JSON to URL Search Params for formdata
-        let params = new URLSearchParams();
-        for(let key in data){
-            params.set(key, data[key])
+        const params = new URLSearchParams();
+        for (const key in data) {
+           if (data.hasOwnProperty(key)) {
+              params.set(key, data[key]);
+            }
         }
 
         return this._http.post(url, params, {headers: headers})
@@ -68,9 +70,9 @@ export class BaseHttpService {
 
     }
 
-    put (url: string, payload: any) : Observable<any> {
+    put (url: string, payload: any): Observable<any> {
 
-        let headers = new Headers();
+        const headers = new Headers();
         this.addHeaders(headers);
 
         return this._http.put(url, payload, {headers: headers})
@@ -80,7 +82,7 @@ export class BaseHttpService {
 
     delete (url: string) {
 
-        let headers = new Headers();
+        const headers = new Headers();
         this.addHeaders(headers);
 
         return this._http.delete(url, {headers: headers});
@@ -89,7 +91,7 @@ export class BaseHttpService {
 
     private processSuccess (response: Response) {
 
-        let body = response.json();
+        const body = response.json();
         return body.data || body;
     }
 

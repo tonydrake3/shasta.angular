@@ -10,7 +10,7 @@ export class AuthGuard implements CanActivate, CanLoad {
 
     canLoad (route: Route): boolean {
 
-        if(this._authService.isLoggedIn()) return true;
+        if (this._authService.isLoggedIn()) return true;
 
         return false;
 
@@ -18,10 +18,11 @@ export class AuthGuard implements CanActivate, CanLoad {
 
     canActivate (route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
 
-        let url: string = state.url;
+        const url: string = state.url;
+
+        if (this._authService.isLoggedIn()) return true;
 
         this._router.navigate(['login'], {queryParams: {redirectTo: url}});
-        if(this._authService.isLoggedIn()) return true;
 
         return false;
     }

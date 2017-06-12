@@ -5,7 +5,7 @@
     <a md-button><i class="nav-icon material-icons">av_timer</i><span class="nav-text">Time &amp; Expenses</span></a>
     <ul>
       <li *ngFor="let timeLink of timeExpensesLinks">
-        <a md-button class="md-button" [routerLink]="['/app/time-expenses', timeLink.route]">
+        <a md-button class="md-button" [routerLink]="['/time-expenses', timeLink.route]">
           <span>{{timeLink.title}}</span>
         </a>
       </li>
@@ -14,7 +14,7 @@
 
   <!-- legacy links generated for trackpoint -->
   <li *ngFor="let navLink of navigationLinks">
-    <a md-button [routerLink]="['/app/trackpoint', navLink.$id]">
+    <a md-button [routerLink]="['/trackpoint', navLink.$id]">
       <i *ngIf="navLink.iconName" class="nav-icon material-icons">{{navLink.iconName}}</i>
       <span class="nav-text">{{navLink.Title}}</span>
     </a>
