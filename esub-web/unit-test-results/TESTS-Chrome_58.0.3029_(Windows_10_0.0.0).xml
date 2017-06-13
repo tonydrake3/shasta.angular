@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<testsuite name="Chrome 58.0.3029 (Windows 10 0.0.0)" package="" timestamp="2017-06-13T00:21:39" id="0" hostname="DESKTOP-364CNM8" tests="1" errors="0" failures="0" time="0.141">
+  <properties>
+    <property name="browser.fullName" value="Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"/>
+  </properties>
+  <testcase name="application load should contain router-outlet" time="0.141" classname="Chrome_58_0_3029_(Windows_10_0_0_0).application load"/>
+  <system-out>
+    <![CDATA[Chrome 58.0.3029 (Windows 10 0.0.0) ERROR
+  Disconnectedundefined
+
+]]>
+  </system-out>
+  <system-err/>
+</testsuite>

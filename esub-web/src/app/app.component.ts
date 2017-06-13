@@ -4,7 +4,6 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Router, NavigationEnd } from '@angular/router';
 import { APPCONFIG } from './config'
 import { LayoutService } from './layout/layout.service'
-import { AuthenticationService } from './shared/services/authentication/authentication.service';
 
 // 3rd
 import 'styles/font-awesome.scss';
@@ -23,7 +22,7 @@ import 'styles/app.scss';
 })
 export class AppComponent implements OnInit {
     AppConfig: any;
-    constructor(private router: Router, private authenticationService: AuthenticationService) {}
+    constructor(private router: Router) {}
 
     ngOnInit() {
         this.AppConfig = APPCONFIG;
