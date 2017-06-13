@@ -17,9 +17,8 @@ export class UserService extends BaseHttpService {
 
     getCurrentUserInfo () {
 
-        // TODO: Replace with Config Service call to build URL
         const url = environment.apiUrl + apiRoutes.currentUser;
-        // console.log("getCurrentUser");
+
         return super.get(url)
             .subscribe(
                 data => {
