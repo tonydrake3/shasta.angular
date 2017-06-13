@@ -3,3 +3,6 @@
 **/.idea/tasks.xml
 **/.idea/copyright
 **/.idea/vcs.xml
+
+# Test Data
+esub-web/unit-test-results/
