@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 
+import * as _ from 'lodash';
+
 @Component({
   templateUrl: './timesheets.component.html'
 })
