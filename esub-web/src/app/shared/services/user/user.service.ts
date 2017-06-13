@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 
 import { BaseHttpService } from '../base-http.service';
-import { UserProfile } from '../../models/domain/user-profile';
+import { UserProfile } from '../../../models/domain/UserProfile';
+import {apiRoutes} from '../../../models/configuration/apiRoutes';
+import {environment} from '../../../../environments/environment';
 
 @Injectable()
 export class UserService extends BaseHttpService {
@@ -16,7 +18,7 @@ export class UserService extends BaseHttpService {
     getCurrentUserInfo () {
 
         // TODO: Replace with Config Service call to build URL
-        const url = 'http://api.sandbox.shasta.esubonline.com/Identity/Users/Current';
+        const url = environment.apiUrl + apiRoutes.currentUser;
         // console.log("getCurrentUser");
         return super.get(url)
             .subscribe(

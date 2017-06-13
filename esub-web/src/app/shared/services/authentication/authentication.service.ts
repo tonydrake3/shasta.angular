@@ -3,6 +3,8 @@ import { Http } from '@angular/http';
 
 import { BaseHttpService } from '../base-http.service';
 import { AuthorizationService } from '../authorization/authorization.service';
+import { environment } from '../../../../environments/environment';
+import { apiRoutes } from '../../../models/configuration/apiRoutes';
 
 @Injectable ()
 export class AuthenticationService extends BaseHttpService {
@@ -14,7 +16,7 @@ export class AuthenticationService extends BaseHttpService {
     login (username: string, password: string) {
 
         // TODO: Replace with Config Service call to build URL
-        const url = 'http://api.sandbox.shasta.esubonline.com/Identity/Token';
+        const url = environment.apiUrl + apiRoutes.authentication;
         const payload = {
           grant_type: 'password',
           username : username,
