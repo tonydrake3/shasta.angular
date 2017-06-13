@@ -1,1 +1,12 @@
-<div class="container-fluid">TimesheetsComponent neww</div>
+<div class="container-fluid timesheets">
+
+  <md-tab-group class="grouping-tabs" (selectChange)="groupTimesheetsBy($event)" [selectedIndex]="tabStartingIndex">
+    <md-tab *ngFor="let tab of groupingTabs" [label]="tab.label" (click)="groupTimesheetsBy(tab)"></md-tab>
+  </md-tab-group>
+
+  <div class="row">
+    <input type="date" [(ngModel)]="fromDate">
+    <input type="date" [(ngModel)]="toDate">
+  </div>
+
+</div>

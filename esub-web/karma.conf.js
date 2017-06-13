@@ -15,7 +15,8 @@ module.exports = function (config) {
       require('karma-jasmine-html-reporter'),
       require('karma-coverage-istanbul-reporter'),
       require('karma-junit-reporter'),
-      require('@angular/cli/plugins/karma')
+      require('@angular/cli/plugins/karma'),
+      require('karma-spec-reporter')
     ],
     client:{
       clearContext: false // leave Jasmine Spec Runner output visible in browser
@@ -37,8 +38,8 @@ module.exports = function (config) {
       environment: 'dev'
     },
     reporters: config.angularCli && config.angularCli.codeCoverage
-              ? ['progress', 'coverage-istanbul', 'junit']
-              : ['progress', 'kjhtml', 'junit'],
+              ? ['progress', 'coverage-istanbul', 'junit', 'spec']
+              : ['progress', 'kjhtml', 'junit', 'spec'],
     junitReporter: {
       outputDir: 'unit-test-results'
     },

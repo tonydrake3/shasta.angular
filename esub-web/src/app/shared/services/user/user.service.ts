@@ -9,7 +9,7 @@ export class UserService extends BaseHttpService {
 
     userProfile: UserProfile;
 
-    constructor(private _httpPassthrough: Http){
+    constructor(private _httpPassthrough: Http) {
         super(_httpPassthrough);
     }
 

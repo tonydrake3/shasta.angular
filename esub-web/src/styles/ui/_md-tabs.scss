@@ -1,0 +1,18 @@
+// style grouping tabs (as opposed to standard md-tabs)
+md-tab-group.grouping-tabs {
+
+  // tab label
+  div.mat-tab-labels {
+    text-transform: uppercase;
+  }
+
+  md-tab-header {
+    border-bottom: none;
+  }
+
+  mat-tab-labels {
+    .mat-tab-label-active {
+
+    }
+  }
+}
