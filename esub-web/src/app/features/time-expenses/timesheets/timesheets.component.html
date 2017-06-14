@@ -5,8 +5,23 @@
   </md-tab-group>
 
   <div class="row">
-    <input type="date" [(ngModel)]="fromDate">
-    <input type="date" [(ngModel)]="toDate">
+    <input type="date" [(ngModel)]="fromDate" />
+    <input type="date" [(ngModel)]="toDate" />
+    <input type="text" placeholder="Search" />
   </div>
+
+  <div class="button-row">
+    <button md-raised-button (click)="newTimesheet()">Create a New Timesheet</button>
+    <button md-raised-button (click)="copyLastWeekTimesheet()">Copy Last Week's Timesheet</button>
+    <button md-raised-button (click)="copyYesterdayTimesheet()">Copy Yesterday's Timesheet</button>
+  </div>
+
+
+
+  <!-- timesheet itself, move to separate component -->
+  <div *ngFor="let timeSheet of timeSheets" style="border:1px solid black; padding:5px; margin:5px; display:block">
+    {{timeSheet.fullName}}
+  </div>
+  <!--  -->
 
 </div>

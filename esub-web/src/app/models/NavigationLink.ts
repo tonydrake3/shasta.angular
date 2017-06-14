@@ -7,4 +7,5 @@ export class NavigationLink {
   'Key': string;
   'System': number;
   'Title': string;
+  'iconName': string;
 }

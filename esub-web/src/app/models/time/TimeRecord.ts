@@ -1,3 +1,11 @@
+export interface Comment {
+    id?: number;
+    value?: string
+    userId?: number;
+    created?: string;
+    updated?: string;
+}
+
 export class Contact {
     id: number;
     companyName: string;
@@ -162,34 +170,38 @@ export class TimeRecordToSave {
 }
 
 export class TimeRecord {
-    activity: string;
-    timeRecordStatus?: string; // 'Pending', 'Approved', 'Rejected', 'Signed', 'Exported'
-    approvedByUserId?: number;
-    approvedDate?: string;
-    secondLvlApprovedByUserId?: number;
-    secondLvlApprovedDate?: string;
-    signed?: boolean;
-    breaksVerified?: boolean;
-    comments: Comment[];
-    comment: string;
-    rejectionComment?: string;
-    costCode: CostCode;
-    costCodeId?: number;
-    date: number;
-    employee: Employee;
-    employeeId?: number;
-    expenses: Expense[];
-    hours: Hours;
-    id: number;
-    manualHours?: boolean;
-    phase: Phase;
-    phaseId?: number;
-    project: Project;
-    projectId: number;
-    punch: Punch;
-    selected?: boolean;
-    units: number;
-    tenantId?: number;
+    Activity?: string;
+    TimeRecordStatus?: string; // 'Pending', 'Approved', 'Rejected', 'Signed', 'Exported'
+    ApprovedByUserId?: number;
+    ApprovedDate?: string;
+    SecondLvlApprovedByUserId?: number;
+    SecondLvlApprovedDate?: string;
+    Signed?: boolean;
+    Breaks: Array<any>;
+    BreaksVerified?: boolean;
+    Comments: Array<any>;
+    Comment: string;
+    RejectionComment?: string;
+    CostCode: CostCode;
+    CostCodeId?: number;
+    Date: number;
+    Employee: Employee;
+    EmployeeId?: number;
+    Expenses: Expense[];
+    Hours: Hours;
+    Id: number;
+    $id: number;
+    ManualHours?: boolean;
+    Phase: Phase;
+    PhaseId?: number;
+    Project: Project;
+    ProjectId: number;
+    Punch: Punch;
+    Selected?: boolean;
+    SignedDate: string;
+    Units: number;
+    TenantId?: number;
+    Timestamps: any;
 }
 
 export class TimeTotals {
