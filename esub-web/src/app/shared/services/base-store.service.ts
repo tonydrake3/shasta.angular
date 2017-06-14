@@ -1,12 +1,12 @@
 import { Http } from '@angular/http';
 import { Subject} from 'rxjs/Rx';
 import { BaseHttpService } from './base-http.service';
-import { AuthenticationService } from './authentication/authentication.service';
 import { environment } from '../../../environments/environment';
+import 'rxjs/add/operator/map';
 
 export class BaseStore extends BaseHttpService {
 
-    _url: string;
+    _route: string;
 
     _entity$ = new Subject();
 
@@ -18,47 +18,44 @@ export class BaseStore extends BaseHttpService {
 
     init(url: string) {
 
-        this._url = url;
+        this._route = url;
+        this.load();
     }
 
     load() {
 
         // var loading = this.loadingCtrl.create();
         // loading.present();
-        const url = environment.apiUrl + this._url;
+        const url = environment.apiUrl + this._route;
 
         super.get(url)
 
-            .map(response => response.json())
+            .map(response => response[0].json())
             .subscribe(
 
+                // TODO: Look into function handlers here
                 data => {
                     // loading.dismiss();
                     this._entity$.next(data);
                 },
 
                 error => {
+                    // TODO: Refactor for error handling.
                     // loading.dismiss();
                     if (error.status === 401) {
 
                         // this.authService.logout();
 
                     }
-                    console.log('Could not load', this._url, error);
+                    console.log('Could not load', this._route, error);
                 })
-    }
-
-
-    getEntity() {
-
-        return this._entity$;
     }
 
     addEntity(entity: any): Promise<any> {
 
         return new Promise((resolve, reject) => {
 
-            super.post(this._url, entity)
+            super.post(this._route, entity)
 
                 .map(response => response.json())
                 .subscribe(
@@ -77,7 +74,7 @@ export class BaseStore extends BaseHttpService {
 
         return new Promise((resolve, reject) => {
 
-            super.put(this._url + '/' + entity.id, entity)
+            super.put(this._route + '/' + entity.id, entity)
 
                 .map(response => response.json())
                 .subscribe(
@@ -95,7 +92,7 @@ export class BaseStore extends BaseHttpService {
 
         return new Promise((resolve, reject) => {
 
-            super.delete(this._url + '/' + entity.id)
+            super.delete(this._route + '/' + entity.id)
 
                 .subscribe(
 

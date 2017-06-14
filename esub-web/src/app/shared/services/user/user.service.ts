@@ -16,9 +16,7 @@ export class UserService extends BaseStore {
 
         super.init(apiRoutes.currentUser);
 
-        super.load();
-
-        super.getEntity()
+        this._entity$
             .subscribe(
 
                 data => {

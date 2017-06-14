@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, URLSearchParams, Response } from '@angular/http';
+import { Http , Headers, URLSearchParams, Response, RequestOptions} from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
@@ -17,16 +17,17 @@ export class BaseHttpService {
         if (authenticationData && authenticationData.access_token) {
 
             headers.append('Authorization', 'Bearer ' + authenticationData.access_token);
+
+            // TODO : Consider config for this?
+            // headers.append('X-Esub-Tenant', '1');
         }
 
-        // TODO : Consider config for this?
-        headers.append('X-Esub-Tenant', '1');
     }
 
     addFormHeaders (headers: Headers) {
 
         // TODO : Consider config for this?
-        headers.append('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+        headers.append('Content-Type', 'application/x-www-form-urlencoded');
         headers.append('Accept', 'application/json');
     }
 
@@ -35,7 +36,9 @@ export class BaseHttpService {
         const headers = new Headers();
         this.addHeaders(headers);
 
-        return this._http.get(url, {headers: headers})
+        const options = new RequestOptions({headers : headers});
+
+        return this._http.get(url, options)
                         .map(this.processSuccess)
                         .catch(this.processError);
     }
@@ -45,7 +48,9 @@ export class BaseHttpService {
         const headers = new Headers();
         this.addHeaders(headers);
 
-        return this._http.post(url, payload, {headers: headers})
+        const options = new RequestOptions({headers : headers});
+
+        return this._http.post(url, payload, options)
                         .map(this.processSuccess)
                         .catch(this.processError);
     }
@@ -56,6 +61,8 @@ export class BaseHttpService {
         this.addHeaders(headers);
         this.addFormHeaders(headers);
 
+        const options = new RequestOptions({headers : headers, withCredentials: true});
+
         // Convert form JSON to URL Search Params for formdata
         const params = new URLSearchParams();
         for (const key in data) {
@@ -64,7 +71,7 @@ export class BaseHttpService {
             }
         }
 
-        return this._http.post(url, params, {headers: headers})
+        return this._http.post(url, params, options)
                         .map(this.processSuccess)
                         .catch(this.processError);
 
