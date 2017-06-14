@@ -16,9 +16,8 @@ export class AuthorizationService extends BaseHttpService {
 
     getPermissions() {
 
-        // TODO: Replace with Config Service call to build URL
         const url = environment.apiUrl + apiRoutes.authorization;
-        // console.log("getPermissions");
+
         return super.get(url)
             .subscribe(
                 data => {
