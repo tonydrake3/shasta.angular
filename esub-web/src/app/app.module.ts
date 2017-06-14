@@ -30,7 +30,6 @@ import { OpenSearchOverlaylDirective } from './layout/search-overlay/open-search
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { PageLayoutFullscreenComponent } from './page-layouts/fullscreen/fullscreen.component';
 
-
 // Sub modules
 import { LayoutModule } from './layout/layout.module';
 import { SharedModule } from './shared/shared.module';

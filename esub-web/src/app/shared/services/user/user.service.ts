@@ -1,34 +1,36 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 
-import { BaseHttpService } from '../base-http.service';
-import { UserProfile } from '../../../models/domain/UserProfile';
-import {apiRoutes} from '../../../models/configuration/apiRoutes';
-import {environment} from '../../../../environments/environment';
+import { apiRoutes } from '../../../models/configuration/apiRoutes';
+import { BaseStore } from '../base-store.service';
 
 @Injectable()
-export class UserService extends BaseHttpService {
+export class UserService extends BaseStore {
 
-    userProfile: UserProfile;
+    constructor (_httpPassthrough: Http) {
 
-    constructor(private _httpPassthrough: Http){
         super(_httpPassthrough);
     }
 
     getCurrentUserInfo () {
 
-        // TODO: Replace with Config Service call to build URL
-        const url = environment.apiUrl + apiRoutes.currentUser;
-        // console.log("getCurrentUser");
-        return super.get(url)
+        super.init(apiRoutes.currentUser);
+
+        super.load();
+
+        super.getEntity()
             .subscribe(
+
                 data => {
-                    console.log('getCurrentUser response', data);
+                    // loading.dismiss();
+                    console.log(data);
                 },
+
                 error => {
-                    console.log('getCurrentUser Error');
-                }
-            );
+                    //
+                    console.log(error);
+                })
+
     }
 
 }

@@ -14,11 +14,11 @@ export class BaseHttpService {
 
         const authenticationData = JSON.parse(sessionStorage.getItem('authentication'));
 
-        // console.log("AuthData", authenticationData);
         if (authenticationData && authenticationData.access_token) {
 
             headers.append('Authorization', 'Bearer ' + authenticationData.access_token);
         }
+
         // TODO : Consider config for this?
         headers.append('X-Esub-Tenant', '1');
     }

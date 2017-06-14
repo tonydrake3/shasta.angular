@@ -15,7 +15,6 @@ export class AuthenticationService extends BaseHttpService {
 
     login (username: string, password: string) {
 
-        // TODO: Replace with Config Service call to build URL
         const url = environment.apiUrl + apiRoutes.authentication;
         const payload = {
           grant_type: 'password',
