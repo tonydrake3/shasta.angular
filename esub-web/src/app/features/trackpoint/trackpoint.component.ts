@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 
-import { NavigationLink } from '../models/NavigationLink';
+import { NavigationLink } from '../../models/NavigationLink';
 
 // TODO delete me
-import { DEVMockDataService } from '../shared/DEV-mock-data.service';
+import { DEVMockDataService } from '../../shared/DEV-mock-data.service';
 
 @Component({
     selector: 'esub-trackpoint',

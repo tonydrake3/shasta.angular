@@ -14,8 +14,8 @@ const routes: Routes = [
         children: [
             { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
             { path: 'dashboard', component: DashboardComponent },
-            { path: 'trackpoint', loadChildren: '../trackpoint/trackpoint.module#TrackpointModule' },
-            { path: 'time-expenses', loadChildren: '../time-expenses/time-expenses.module#TimeExpensesModule' }
+            { path: 'trackpoint', loadChildren: '../features/trackpoint/trackpoint.module#TrackpointModule' },
+            { path: 'time-expenses', loadChildren: '../features/time-expenses/time-expenses.module#TimeExpensesModule' }
         ]
     }
 ];

@@ -1,6 +1,7 @@
 import { Routes, RouterModule } from '@angular/router';
 
-import { TimeExpensesComponent, TimesheetsComponent, TimeManagementComponent, ExpenseManagementComponent } from './time-expenses.component';
+import { TimeExpensesComponent, TimeManagementComponent, ExpenseManagementComponent } from './time-expenses.component';
+import { TimesheetsComponent } from './timesheets/timesheets.component';
 
 export const TimeExpensesRoutes: Routes = [
   {
