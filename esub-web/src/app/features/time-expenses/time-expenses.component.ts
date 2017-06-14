@@ -10,13 +10,6 @@ export class TimeExpensesComponent {
 }
 
 @Component({
-  template: `<div class="container-fluid">TimesheetsComponent</div>`
-})
-export class TimesheetsComponent {
-  constructor() { }
-}
-
-@Component({
   template: `<div class="container-fluid">TimeManagementComponent</div>`
 })
 export class TimeManagementComponent {

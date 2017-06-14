@@ -7,7 +7,7 @@ import { BaseStore } from '../base-store.service';
 @Injectable()
 export class UserService extends BaseStore {
 
-    constructor (_httpPassthrough: Http) {
+    constructor(protected _httpPassthrough: Http) {
 
         super(_httpPassthrough);
     }
