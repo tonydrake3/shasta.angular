@@ -7,7 +7,7 @@
                         <img data-ng-src="images/esub-logo-40.png" />
                     </div>
                     <p class="text-center mb30">Welcome to eSUB. Please sign in to your account</p>
-                    <div class="form-inputs">
+                    <div class="form-inputs" (keydown)="loginOnEnter($event)">
                         <input [(ngModel)]="username" type="text" class="form-control input-lg" placeholder="Username">
                         <input [(ngModel)]="password" type="password" class="form-control input-lg" placeholder="Password">
                     </div>

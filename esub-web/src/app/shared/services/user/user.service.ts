@@ -21,7 +21,7 @@ export class UserService extends BaseStore {
 
                 data => {
                     // loading.dismiss();
-                    console.log(data);
+                    console.log(data[0]);
                 },
 
                 error => {

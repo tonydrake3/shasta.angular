@@ -30,7 +30,6 @@ export class BaseStore extends BaseHttpService {
 
         super.get(url)
 
-            .map(response => response[0].json())
             .subscribe(
 
                 // TODO: Look into function handlers here
@@ -57,7 +56,6 @@ export class BaseStore extends BaseHttpService {
 
             super.post(this._route, entity)
 
-                .map(response => response.json())
                 .subscribe(
 
                     data => {
@@ -76,7 +74,6 @@ export class BaseStore extends BaseHttpService {
 
             super.put(this._route + '/' + entity.id, entity)
 
-                .map(response => response.json())
                 .subscribe(
                     data => {
                         this.load();
