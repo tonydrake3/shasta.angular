@@ -1,14 +1,12 @@
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-
 import { MaterialModule } from '@angular/material';
 
 import { TimeExpensesRoutingModule } from './time-expenses-routing.module';
 
-import { TimeExpensesComponent, TimeManagementComponent, ExpenseManagementComponent } from './time-expenses.component';
-import { TimesheetsComponent } from './timesheets/timesheets.component';
-
+import { TimeExpensesComponent } from './time-expenses.component';
+import { TimesheetCardComponent } from './timesheet-card/timesheet-card.component';
 
 @NgModule({
     imports: [
@@ -19,9 +17,7 @@ import { TimesheetsComponent } from './timesheets/timesheets.component';
     ],
     declarations: [
       TimeExpensesComponent,
-      TimesheetsComponent,
-      TimeManagementComponent,
-      ExpenseManagementComponent
+      TimesheetCardComponent
     ]
 })
 
