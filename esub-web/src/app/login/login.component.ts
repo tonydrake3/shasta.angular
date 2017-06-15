@@ -19,7 +19,7 @@ export class LoginComponent {
     password: string;
 
     constructor(private _route: ActivatedRoute, private _router: Router, private _authenticationService: AuthenticationService,
-      private _authorizationService: AuthorizationService, private _userService: UserService, private _companyService: CompanyService) {}
+      private _authorizationService: AuthorizationService, private _userService: UserService) {}
 
     login () {
         this._authenticationService.login(this.username, this.password)
@@ -31,7 +31,7 @@ export class LoginComponent {
                     if (this._authenticationService.isLoggedIn()) {
                         this._authorizationService.getPermissions();
                         this._userService.getCurrentUserInfo();
-                        this._companyService.getCompanies();
+                        // this._companyService.getCompanies();
                         this._route.queryParams
                             .map(qp => qp['redirectTo'])
                             .subscribe(
