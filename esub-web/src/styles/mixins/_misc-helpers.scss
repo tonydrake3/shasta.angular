@@ -1,0 +1,8 @@
+// Misc helper mixins that have no home
+
+@mixin user-select() {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}

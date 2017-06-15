@@ -7,7 +7,14 @@
 
 @import
 // Mixins
-    "mixins/transform"
+    "mixins/transform",
+    "mixins/flex",
+    "mixins/misc-helpers"
+;
+
+@import
+// Components
+    "components/week-selector"
 ;
 
 @import
