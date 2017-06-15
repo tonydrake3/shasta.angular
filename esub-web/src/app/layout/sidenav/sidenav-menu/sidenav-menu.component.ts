@@ -22,9 +22,9 @@ export class AppSidenavMenuComponent {
     // TODO this more intelligently
     // manually construct time & expenses nav links
     this.timeExpensesLinks = [
-      { title: 'Timesheets ', route: 'timesheets' },
-      { title: 'Time Management ', route: 'time-management' },
-      { title: 'Expense Management ', route: 'expense-management' },
+      { title: 'Timesheets ', view: 'timesheets' },
+      { title: 'Approve Time ', view: 'approve-time' },
+      { title: 'Export Time ', view: 'export-time' },
     ]
   }
 }

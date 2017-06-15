@@ -36,7 +36,7 @@ h3, .h3 {
 // title
 
 .title-bold {
-	@include roboto-font-stack(8.5px, bold, $black);
+	@include roboto-font-stack(16px, bold, $black);
 }
 
 .title-reg {

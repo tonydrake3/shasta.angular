@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 Injectable()
 export class DateFormatterService {
 
-    numberForDay:any = {
+    numberForDay: any = {
         Sunday: 0,
         Monday: 1,
         Tuesday: 2,
@@ -84,7 +84,7 @@ export class DateFormatterService {
         const date1 = new Date(d1);
         const date2 = new Date(d2);
         if (!d1 || !d2) return 0;
-        return Math.abs(date1.getTime()-date2.getTime()) / 3600000;
+        return Math.abs(date1.getTime() - date2.getTime()) / 3600000;
 
     }
 
