@@ -1,0 +1,116 @@
+// Style with angular-material
+
+
+// Header
+// --------------------------------------------------
+
+.top-nav-left,
+.top-nav-right {
+    // only apply to first level, not dropdown
+    li {
+        .header-btn {
+            &.md-button {
+                margin: -6px 15px 0 15px;
+                line-height: $l_header_height;
+                border-radius: 0;
+                min-width: 52px;
+                @media only screen and (min-width: $l_screen_md_min) {
+                    min-width: 60px;
+                }
+
+                // tighten header buttons as width decreases
+                @media (max-width: $l_screen_sm_max) {
+                  margin: -6px 5px 0 5px;
+                }
+                @media (max-width: $l_screen_xs_max) {
+                  margin: -6px 0 0 0;
+                }
+
+                .mat-button-focus-overlay,
+                .mat-button-ripple {
+                  margin-bottom: -6px;
+                }
+
+                > .material-icons {
+                    vertical-align: middle;
+                }
+
+                // icon sizing for header icons
+                .material-icons.md-32 {
+                  font-size: 32px;
+                }
+
+                .badge {
+                    background-color: transparent;
+                    position: absolute;
+                    top: 6px;
+                    right: 3px;
+                    color: inherit;
+                }
+
+                // position label below icon
+                .header-btn-label {
+                  position: absolute;
+                  left: 50%;
+
+                  label {
+                    position: relative;
+                    display: block;
+                    line-height: 0;
+                    margin-top: -10px;
+                    left: -50%;
+                    font-size: 10px;
+
+                    // if there's text below a badged icon, re-position the badge
+                    & ~ .badge {
+                      right: 25px;
+                    }
+                  }
+                }
+            }
+        }
+
+        // hide certain header items at min width
+        // TODO throw them into the profile dropdown
+        @media(max-width: $l_screen_xxs_max) {
+          &:not(.header-sticky) {
+            display: none;
+          }
+        }
+    }
+}
+
+
+
+// Sidebar
+// --------------------------------------------------
+.app-sidebar {
+    .md-button {
+        margin: 0;
+        text-align: left;
+        text-transform: none;
+        border-radius: 0;
+        font-weight: normal;
+
+        line-height: inherit;
+        min-height: inherit;
+        min-width: inherit; // for collapsed nav
+    }
+}
+
+
+
+// Sidebar
+// --------------------------------------------------
+.quickview-app {
+    md-tabs {
+        > md-tabs-wrapper {
+            background-color: #eee;
+            padding: 0 40px;
+        }
+
+        md-pagination-wrapper {
+            width: 100% !important;
+        }
+    }
+}

@@ -1,0 +1,35 @@
+.week-selector {
+  @include flex();
+  @include flex-direction(row);
+  @include align-items(center);
+
+  // setup padding and select for all elements
+  > * {
+    padding: 0 18px;
+    @include user-select();
+  }
+  > *:first-child {
+    padding-left: 0;
+  }
+  > *:last-child {
+    padding-right: 0;
+  }
+
+  // style icons
+  .material-icons {
+    font-size: 32px;
+    color: $black-25;
+    cursor: pointer;
+
+    &.smaller {
+      font-size: 22px;
+    }
+  }
+
+  // style date text
+  div {
+    @extend .title-bold;
+    color: $black;
+    display: inline-block;
+  }
+}
