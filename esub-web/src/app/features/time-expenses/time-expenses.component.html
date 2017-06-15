@@ -1,19 +1,12 @@
 <div class="container-fluid time-expenses">
-  <!-- TODO clean up sass I added before for .timesheets -->
-
-  <!-- <md-tab-group class="grouping-tabs" (selectChange)="groupTimesheetsBy($event)" [selectedIndex]="tabStartingIndex">
-    <md-tab *ngFor="let tab of groupingTabs" [label]="tab.label" (click)="groupTimesheetsBy(tab)"></md-tab>
-  </md-tab-group> -->
 
   <div class="row">
 
-    <div class="col-md-6">
-      <!-- TODO make into awesome week selector -->
-      <input type="date" [(ngModel)]="fromDate" />
-      <input type="date" [(ngModel)]="toDate" />
+    <div class="col-md-8">
+      <esub-week-selector [(toDate)]="toDate"></esub-week-selector>
     </div>
 
-    <div class="col-md-6">
+    <div class="col-md-4">
       <label>Group by</label>
       <a>Employee</a><a>Project</a>
       <label>Show only</label>
@@ -22,10 +15,23 @@
 
   </div>
 
-  <div class="row button-row">
-    <button md-raised-button (click)="newTimesheet()">New Timesheet</button>
-    <button md-raised-button (click)="copyLastWeekTimesheet()">Copy Last Week's Time</button>
-    <button md-raised-button (click)="copyYesterdayTimesheet()">Copy Last Day's Time</button>
+  <div class="row button-row" [ngSwitch]="view">
+
+    <div *ngSwitchCase="'timesheets'">
+      <button md-raised-button (click)="newTimesheet()">New Timesheet</button>
+      <button md-raised-button (click)="copyLastWeekTimesheet()">Copy Last Week's Time</button>
+      <button md-raised-button (click)="copyYesterdayTimesheet()">Copy Last Day's Time</button>
+    </div>
+
+    <div *ngSwitchCase="'approve-time'">
+      <button md-raised-button>reject</button>
+      <button md-raised-button>approve</button>
+    </div>
+
+    <div *ngSwitchCase="'export-time'">
+      <button md-raised-button>export</button>
+    </div>
+
   </div>
 
   <esub-timesheet-card *ngFor="let timesheet of timesheets" timesheet="timesheet"></esub-timesheet-card>
@@ -33,5 +39,5 @@
 </div>
 
 <pre style="position:fixed; bottom:0; right:0;" class="well">
-  {{view}}
+  {{view}} {{toDate}}
 </pre>

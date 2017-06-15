@@ -20,7 +20,7 @@ export class TimeExpensesComponent implements OnInit {
   public tabStartingIndex: number;
 
   public fromDate: string;
-  public toDate: string;
+  public toDate = 5;
 
   public view: string;
 
