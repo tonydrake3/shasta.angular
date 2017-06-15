@@ -1,0 +1,36 @@
+// base esub-card class which other card components should @extend
+
+.esub-card {
+  @extend .card;
+  position: relative;
+
+  margin: 20px 0;
+  border-radius: 1px;
+
+  box-shadow: 0 1px 2px $black-50;
+  @include transition(transform .4s ease-in-out);
+
+  // enlarge slightly on hover
+  &:hover {
+    @include transform(translateZ(0));  // hw acceleration to improve performance
+    @include transform(scale(1.01, 1.01));
+  }
+
+  &:hover::after {
+    opacity: 1;
+  }
+
+  // draw heavier shadow on hover
+  &::after {
+    content: ' ';
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+
+    box-shadow: 1px 3px 12px $black-50;
+
+    opacity: 0;
+    @include transition(opacity .4s ease-in-out);
+  }
+}

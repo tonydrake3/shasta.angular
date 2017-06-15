@@ -5,5 +5,5 @@
 
 // the card itself
 .timesheet-card {
-
+  @extend .esub-card;
 }

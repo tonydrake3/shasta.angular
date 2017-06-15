@@ -2,6 +2,7 @@
   @include flex();
   @include flex-direction(row);
   @include align-items(center);
+  @extend .card;
 
   // setup padding and select for all elements
   > * {
