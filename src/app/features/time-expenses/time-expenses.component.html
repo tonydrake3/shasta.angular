@@ -3,7 +3,7 @@
   <div class="row">
 
     <div class="col-md-8">
-      <esub-week-selector [(toDate)]="toDate"></esub-week-selector>
+      <esub-week-selector (dateChange)="dateChanged($event)"></esub-week-selector>
     </div>
 
     <div class="col-md-4 groupings">
@@ -15,7 +15,7 @@
 
   </div>
 
-  <div class="row button-row" [ngSwitch]="view">
+  <div class="button-row" [ngSwitch]="view">
 
     <div *ngSwitchCase="'timesheets'">
       <button md-raised-button (click)="newTimesheet()">New Timesheet</button>
@@ -39,5 +39,5 @@
 </div>
 
 <pre style="position:fixed; bottom:0; right:0;" class="well">
-  {{view}} {{toDate}}
+  {{view}} | {{fromDate}} -> {{toDate}}
 </pre>

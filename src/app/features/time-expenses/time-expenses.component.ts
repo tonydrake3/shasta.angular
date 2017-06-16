@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
+import { DateFormatterService } from '../../shared/services/utilities/date-formatter.service';
+
+import * as moment from 'moment';
 import * as _ from 'lodash';
 
 // TODO delete me
@@ -9,7 +12,8 @@ import { DEVMockDataService } from '../../shared/DEV-mock-data.service';
 @Component({
     selector: 'esub-time-expenses',
     styles: [],
-    templateUrl: './time-expenses.component.html'
+    templateUrl: './time-expenses.component.html',
+    providers: [DateFormatterService]
 })
 export class TimeExpensesComponent implements OnInit {
 
@@ -19,12 +23,14 @@ export class TimeExpensesComponent implements OnInit {
   public groupingTabs: Array<GroupingTab>;
   public tabStartingIndex: number;
 
-  public fromDate: string;
-  public toDate = 5;
+  public fromDate: moment.Moment;
+  public toDate: moment.Moment;
 
   public view: string;
 
-  constructor(private devMockDataService: DEVMockDataService, private activatedRoute: ActivatedRoute) {
+  constructor(private devMockDataService: DEVMockDataService, private activatedRoute: ActivatedRoute,
+    private dateFormatterService: DateFormatterService) {
+
     // Setup tabs
     this.groupingTabs = [
        { label: 'date' },
@@ -40,7 +46,7 @@ export class TimeExpensesComponent implements OnInit {
     // TODO move to real data
     // Get timeRecords
     this.timerecords = this.devMockDataService.timeRecords;
-    console.log('set time records', this.timerecords.length);
+    // console.log('set time records', this.timerecords.length);
   }
 
   ngOnInit() {
@@ -57,7 +63,7 @@ export class TimeExpensesComponent implements OnInit {
 
   groupTimesheetsBy(selectedTab: any) {
     const tab: GroupingTab = this.groupingTabs[selectedTab.index];
-    console.log('group by', tab.label);
+    // console.log('group by', tab.label);
 
     //
 
@@ -66,6 +72,12 @@ export class TimeExpensesComponent implements OnInit {
       timeSheet['fullName'] = timeRecord.Employee.FirstName + ' ' + timeRecord.Employee.LastName;
       this.timesheets.push(timeSheet);
     });
+  }
+
+  dateChanged(e) {
+    console.log(e);
+    this.fromDate = e.fromDate;
+    this.toDate = e.toDate;
   }
 
   newTimesheet() {}
