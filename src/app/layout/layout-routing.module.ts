@@ -1,9 +1,10 @@
 import { RouterModule, Routes } from '@angular/router';
 
+import { AuthGuard } from '../shared/services/guards/auth-guard.service';
+
 import { LayoutComponent } from './layout.component';
 import { DashboardComponent } from '../dashboard/dashboard.component';
-
-import { AuthGuard } from '../shared/services/guards/auth-guard.service';
+import { CompanySelectionComponent } from '../features/company/company-selection.component';
 
 const routes: Routes = [
     {
@@ -13,6 +14,7 @@ const routes: Routes = [
         canLoad: [AuthGuard],
         children: [
             { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+            { path: 'company', component: CompanySelectionComponent },
             { path: 'dashboard', component: DashboardComponent },
             { path: 'trackpoint', loadChildren: '../features/trackpoint/trackpoint.module#TrackpointModule' },
             { path: 'time-expenses', loadChildren: '../features/time-expenses/time-expenses.module#TimeExpensesModule' }
