@@ -107,7 +107,8 @@ export class BaseHttpService {
         let errMsg: string;
         if (error instanceof Response) {
             const body = error.json() || '';
-            errMsg = body.error_description || JSON.stringify(body);
+            const err = body.error || JSON.stringify(body);
+            errMsg = body.error_description ? body.error_description : `${error.status} - ${error.statusText || ''} ${err}`;
         } else {
             errMsg = error.message ? error.message : error.toString();
         }

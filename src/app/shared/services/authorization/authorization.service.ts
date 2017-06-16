@@ -25,7 +25,7 @@ export class AuthorizationService extends BaseHttpService {
                     // this._userService.getCurrentUserInfo();
                 },
                 error => {
-                    console.log('Error');
+                    console.log('Error', error);
                 }
             );
     }

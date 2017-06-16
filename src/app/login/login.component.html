@@ -9,11 +9,11 @@
                     <p class="login-description text-center">Welcome to eSUB. Please sign in to your account</p>
                     <div class="form-inputs">
                         <md-input-container class="full-width">
-                            <input username="username" type="text" mdInput placeholder="Enter email" ngModel
+                            <input name="username" type="text" mdInput placeholder="Enter email" [(ngModel)]="username"
                                    [ngModelOptions]="{standalone: true}">
                         </md-input-container>
                         <md-input-container class="full-width">
-                            <input password="password" type="password" mdInput placeholder="Enter password" ngModel
+                            <input name="password" type="password" mdInput placeholder="Enter password" [(ngModel)]="password"
                                    [ngModelOptions]="{standalone: true}">
                         </md-input-container>
 
