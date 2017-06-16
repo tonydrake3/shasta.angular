@@ -13,7 +13,7 @@ import * as moment from 'moment';
     <i class="material-icons" (click)="weekAdd(-1)">keyboard_arrow_left</i>
     <div>{{fromDate?.format(fromFormat)}}</div> - <div>{{toDate?.format(toFormat)}}</div>
     <i class="material-icons smaller">perm_contact_calendar</i>
-    <md-datepicker #datepicker></md-datepicker>
+    <!--  <md-datepicker #datepicker></md-datepicker>  -->
     <i class="material-icons" (click)="weekAdd(1)">keyboard_arrow_right</i>
   </div>
   `,
@@ -43,6 +43,7 @@ export class WeekSelectorComponent {
 
   // emits a date change
   emit() {
+    console.log('emit');
     this.dateChange.emit({
       fromDate: this.fromDate,
       toDate: this.toDate

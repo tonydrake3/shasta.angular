@@ -47,9 +47,11 @@ export class TimeExpensesComponent implements OnInit {
     // Get timeRecords
     this.timerecords = this.devMockDataService.timeRecords;
     // console.log('set time records', this.timerecords.length);
+    console.log('constructor');
   }
 
   ngOnInit() {
+    console.log('ngOnInit');
     // Group by selection
     // TODO refactor out grouping
     this.groupTimesheetsBy({index: this.tabStartingIndex});
@@ -75,9 +77,10 @@ export class TimeExpensesComponent implements OnInit {
   }
 
   dateChanged(e) {
-    console.log(e);
+    console.log('dateChanged input', e.toDate);
     this.fromDate = e.fromDate;
     this.toDate = e.toDate;
+    console.log('after settings', this.toDate);
   }
 
   newTimesheet() {}
