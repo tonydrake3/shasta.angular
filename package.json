@@ -1,14 +1,15 @@
 {
-  "name": "material",
-  "version": "1.0.0",
+  "name": "shasta.angular",
+  "version": "0.1.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "npm run pre-build.DEV && ng build",
     "test": "snyk test && ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "pre-check": "ng test --browsers PhantomJS --reporters spec --single-run && ng lint --type-check || true"
+    "pre-check": "ng test --browsers PhantomJS --reporters spec --single-run && ng lint --type-check || true",
+    "pre-build.DEV": "ts-node git-version.ts"
   },
   "dependencies": {
     "@angular/animations": "^4.0.2",
