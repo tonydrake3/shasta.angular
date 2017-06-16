@@ -7,7 +7,7 @@ import { SlimScrollDirective } from './slim-scroll.directive';
 // Services
 import { AuthorizationService } from './services/authorization/authorization.service';
 import { UserService } from './services/user/user.service';
-import { AuthGuard } from './services/authentication/auth-guard.service';
+import { AuthGuard } from './services/guards/auth-guard.service';
 
 // Components
 import { WeekSelectorComponent } from './components/week-selector.component';

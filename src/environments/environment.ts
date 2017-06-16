@@ -8,7 +8,7 @@ import * as versions from './versions';
 export const environment = {
   production: false,
   gitVersion: getGitVersion(),
-  apiUrl: 'http://api.sandbox.shasta.esubonline.com/',
+  apiUrl: 'http://api.develop.shasta.esubonline.com/',
   webUrl: ''
 };
 
