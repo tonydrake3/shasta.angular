@@ -40,11 +40,11 @@ h3, .h3 {
 }
 
 .title-reg {
-	@include roboto-font-stack(8.5px, normal, $black);
+	@include roboto-font-stack(16px, normal, $black);
 }
 
 .title-light {
-	@include roboto-font-stack(8.5px, 300, $black);
+	@include roboto-font-stack(16px, 300, $black);
 }
 
 .small-titles {
@@ -86,6 +86,14 @@ h3, .h3 {
 }
 
 // misc
+
+.label-reg {
+	@include roboto-font-stack(12.5px, normal, $black);
+}
+
+.label-light {
+	@include roboto-font-stack(11.5px, 300, $black);
+}
 
 .tab-bar-text {
 	@include roboto-font-stack(5px, 500, $black);

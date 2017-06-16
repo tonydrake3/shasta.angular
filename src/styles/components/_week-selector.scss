@@ -2,12 +2,11 @@
   @include flex();
   @include flex-direction(row);
   @include align-items(center);
-  @extend .card;
 
   // setup padding and select for all elements
   > * {
     padding: 0 18px;
-    @include user-select();
+    @include noselect();
   }
   > *:first-child {
     padding-left: 0;
