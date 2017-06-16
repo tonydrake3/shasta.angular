@@ -5,6 +5,6 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://api.sandbox.shasta.esubonline.com/',
+  apiUrl: 'http://api.develop.shasta.esubonline.com/',
   webUrl: ''
 };

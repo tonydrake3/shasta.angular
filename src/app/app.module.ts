@@ -37,8 +37,9 @@ import { SharedModule } from './shared/shared.module';
 // hmr
 import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
 import {AuthenticationService} from './shared/services/authentication/authentication.service';
-import {AuthGuard} from './shared/services/authentication/auth-guard.service';
+import {AuthGuard} from './shared/services/guards/auth-guard.service';
 import {LoginComponent} from './login/login.component';
+import {CompanyService} from './features/company/company.service';
 
 @NgModule({
     imports: [
