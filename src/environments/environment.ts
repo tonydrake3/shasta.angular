@@ -3,8 +3,15 @@
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
+import * as versions from './versions';
+
 export const environment = {
   production: false,
-  apiUrl: 'http://api.sandbox.shasta.esubonline.com/',
+  gitVersion: getGitVersion(),
+  apiUrl: 'http://api.develop.shasta.esubonline.com/',
   webUrl: ''
 };
+
+function getGitVersion (): string {
+  return versions.versions.version + ' ' + versions.versions.commit + ' ' + versions.versions.branch;
+}

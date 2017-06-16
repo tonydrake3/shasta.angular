@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { AuthenticationService } from '../shared/services/authentication/authentication.service';
 import { AuthorizationService } from '../shared/services/authorization/authorization.service';
@@ -7,6 +7,7 @@ import { AuthorizationService } from '../shared/services/authorization/authoriza
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/map';
 import {UserService} from '../shared/services/user/user.service';
+import {CompanyService} from '../features/company/company.service';
 
 @Component({
     selector: 'esub-login',
@@ -16,11 +17,14 @@ export class LoginComponent {
 
     username: string;
     password: string;
+    loading = false;
+    errorMessage = '';
 
     constructor(private _route: ActivatedRoute, private _router: Router, private _authenticationService: AuthenticationService,
-      private _authorizationService: AuthorizationService, private userService: UserService) {}
+      private _authorizationService: AuthorizationService, private _userService: UserService) {}
 
     login () {
+        this.loading = true;
         this._authenticationService.login(this.username, this.password)
             .subscribe(
                 data => {
@@ -28,8 +32,10 @@ export class LoginComponent {
                     sessionStorage.setItem('authentication', JSON.stringify(data));
 
                     if (this._authenticationService.isLoggedIn()) {
+                        this.loading = false;
                         this._authorizationService.getPermissions();
-                        this.userService.getCurrentUserInfo();
+                        this._userService.getCurrentUserInfo();
+                        // this._companyService.getCompanies();
                         this._route.queryParams
                             .map(qp => qp['redirectTo'])
                             .subscribe(
@@ -43,7 +49,9 @@ export class LoginComponent {
 
                 },
                 error => {
-                    console.log('Error');
+                    console.log(error);
+                    this.errorMessage = error;
+                    this.loading = false;
                 }
             )
     }

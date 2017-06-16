@@ -5,7 +5,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 
 // Page Layouts
 import { PageLayoutFullscreenComponent } from './page-layouts/fullscreen/fullscreen.component';
-import { AuthGuard } from './shared/services/authentication/auth-guard.service';
+import { AuthGuard } from './shared/services/guards/auth-guard.service';
 import { LoginComponent } from './login/login.component';
 
 
