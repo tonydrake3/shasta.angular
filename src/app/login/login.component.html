@@ -2,30 +2,36 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12 login-fields">
-                <div class="text-center">
-                    <img src="../../assets/images/brand/esub-logo-40.png"/>
-                </div>
-                <p class="login-description text-center">Welcome to eSUB. Please sign in to your account</p>
-                <div class="form-inputs" (keydown)="loginOnEnter($event)">
-                    <md-input-container class="full-width">
-                        <input [(ngModel)]="username" type="text" mdInput placeholder="Enter email">
-                    </md-input-container>
-                    <md-input-container class="full-width">
-                        <input [(ngModel)]="password" type="password" mdInput placeholder="Enter password">
-                    </md-input-container>
-
-                </div>
-                <button class="btn btn-primary btn-block btn-lg mb15 text-center" (click)="login()">
-                    <div *ngIf="!loading" class="login-button-text">Sign in</div>
-                    <div *ngIf="loading" class="login-button-spinner">
-                        <md-progress-spinner
-                            class="example-margin"
-                            [color]="'primary'"
-                            [mode]="'indeterminate'"
-                            strokeWidth="16">
-                        </md-progress-spinner>
+                <form novalidate #loginForm="ngForm" (ngSubmit)="login(loginForm)">
+                    <div class="text-center">
+                        <img src="../../assets/images/brand/esub-logo-40.png"/>
                     </div>
-                </button>
+                    <p class="login-description text-center">Welcome to eSUB. Please sign in to your account</p>
+                    <div class="form-inputs">
+                        <md-input-container class="full-width">
+                            <input username="username" type="text" mdInput placeholder="Enter email" ngModel
+                                   [ngModelOptions]="{standalone: true}">
+                        </md-input-container>
+                        <md-input-container class="full-width">
+                            <input password="password" type="password" mdInput placeholder="Enter password" ngModel
+                                   [ngModelOptions]="{standalone: true}">
+                        </md-input-container>
+
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block btn-lg mb15 text-center">
+                        <div *ngIf="!loading" class="login-button-text">Sign in</div>
+                        <div *ngIf="loading" class="login-button-spinner">
+                            <md-progress-spinner
+                                class="example-margin"
+                                [color]="'primary'"
+                                [mode]="'indeterminate'"
+                                strokeWidth="16">
+                            </md-progress-spinner>
+                        </div>
+                    </button>
+
+                </form>
+
                 <!--<p>-->
                 <!--<a ui-sref="esub.public.resetpassword-email">Forgot your password?</a>-->
                 <!--</p>-->

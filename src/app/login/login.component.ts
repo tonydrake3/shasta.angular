@@ -55,11 +55,4 @@ export class LoginComponent {
             )
     }
 
-    loginOnEnter (event) {
-        if (event.keyCode === 13) {
-            this.login();
-            // rest of your code
-        }
-    }
-
 }
