@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { AuthenticationService } from '../shared/services/authentication/authentication.service';
 import { AuthorizationService } from '../shared/services/authorization/authorization.service';
@@ -49,6 +49,7 @@ export class LoginComponent {
 
                 },
                 error => {
+                    console.log(error);
                     this.errorMessage = error;
                     this.loading = false;
                 }
