@@ -17,11 +17,14 @@ export class LoginComponent {
 
     username: string;
     password: string;
+    loading = false;
+    errorMessage = '';
 
     constructor(private _route: ActivatedRoute, private _router: Router, private _authenticationService: AuthenticationService,
       private _authorizationService: AuthorizationService, private _userService: UserService) {}
 
     login () {
+        this.loading = true;
         this._authenticationService.login(this.username, this.password)
             .subscribe(
                 data => {
@@ -29,6 +32,7 @@ export class LoginComponent {
                     sessionStorage.setItem('authentication', JSON.stringify(data));
 
                     if (this._authenticationService.isLoggedIn()) {
+                        this.loading = false;
                         this._authorizationService.getPermissions();
                         this._userService.getCurrentUserInfo();
                         // this._companyService.getCompanies();
@@ -45,7 +49,8 @@ export class LoginComponent {
 
                 },
                 error => {
-                    console.log('Error');
+                    this.errorMessage = error;
+                    this.loading = false;
                 }
             )
     }

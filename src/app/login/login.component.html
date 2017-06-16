@@ -1,21 +1,36 @@
-<div class="container-fluid">
-    <div class="row no-margin">
-        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
-            <span us-spinner spinner-key="login-spinner"></span>
-                <div class="text-center mb15">
-                    <img data-ng-src="images/esub-logo-40.png" />
+<div class="login-component d-flex align-items-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 login-fields">
+                <div class="text-center">
+                    <img src="../../assets/images/brand/esub-logo-40.png"/>
                 </div>
-                <p class="text-center mb30">Welcome to eSUB. Please sign in to your account</p>
+                <p class="login-description text-center">Welcome to eSUB. Please sign in to your account</p>
                 <div class="form-inputs" (keydown)="loginOnEnter($event)">
-                    <input [(ngModel)]="username" type="text" class="form-control input-lg" placeholder="Username">
-                    <input [(ngModel)]="password" type="password" class="form-control input-lg" placeholder="Password">
+                    <md-input-container class="full-width">
+                        <input [(ngModel)]="username" type="text" mdInput placeholder="Enter email">
+                    </md-input-container>
+                    <md-input-container class="full-width">
+                        <input [(ngModel)]="password" type="password" mdInput placeholder="Enter password">
+                    </md-input-container>
+
                 </div>
-                <button class="btn btn-primary btn-block btn-lg mb15" (click)="login()">
-                    <span>Sign in</span>
+                <button class="btn btn-primary btn-block btn-lg mb15 text-center" (click)="login()">
+                    <div *ngIf="!loading" class="login-button-text">Sign in</div>
+                    <div *ngIf="loading" class="login-button-spinner">
+                        <md-progress-spinner
+                            class="example-margin"
+                            [color]="'primary'"
+                            [mode]="'indeterminate'"
+                            strokeWidth="16">
+                        </md-progress-spinner>
+                    </div>
                 </button>
                 <!--<p>-->
-                    <!--<a ui-sref="esub.public.resetpassword-email">Forgot your password?</a>-->
+                <!--<a ui-sref="esub.public.resetpassword-email">Forgot your password?</a>-->
                 <!--</p>-->
+            </div>
         </div>
     </div>
+
 </div>
