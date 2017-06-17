@@ -15,6 +15,12 @@
     padding-right: 0;
   }
 
+  // hide the date input but leave it in place in layout
+  input {
+    visibility: hidden;
+    position: absolute;
+  }
+
   // style icons
   .material-icons {
     font-size: 32px;

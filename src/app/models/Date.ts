@@ -1,6 +1,6 @@
 import * as moment from 'moment';
 
-export class FromToDate {
-  fromDate: moment.Moment;
-  toDate: moment.Moment;
+export class WeekDateRange {
+  startDate: moment.Moment;
+  endDate: moment.Moment;
 }

@@ -27,7 +27,6 @@ export class AppComponent implements OnInit {
 
     constructor(private router: Router) {
       this.gitVersion = environment.gitVersion;
-      console.log('this.gitVersion', this.gitVersion);
     }
 
     ngOnInit() {
