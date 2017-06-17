@@ -1,9 +1,42 @@
 .time-expenses {
   padding-top: 30px;
+
+  .groupings {
+
+    @include noselect();
+
+    label {
+      @extend .label-light;
+    }
+    a {
+      @extend .label-reg;
+      cursor: pointer;
+    }
+
+    > .active,
+    > .active:hover {
+      text-decoration: underline;
+      cursor: default;
+    }
+  }
+
+  .button-row > div {
+    padding-top: 15px;
+    @include flex();
+    @include justify-content(center);
+
+    button {
+      @extend .title-light;
+      background-color: $white;
+      padding: 6px 16px;
+      margin: 0 12px;
+      min-width: 30%;
+    }
+  }
 }
 
 
 // the card itself
 .timesheet-card {
-
+  @extend .esub-card;
 }

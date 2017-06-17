@@ -6,13 +6,19 @@
   // setup padding and select for all elements
   > * {
     padding: 0 18px;
-    @include user-select();
+    @include noselect();
   }
   > *:first-child {
     padding-left: 0;
   }
   > *:last-child {
     padding-right: 0;
+  }
+
+  // hide the date input but leave it in place in layout
+  input {
+    visibility: hidden;
+    position: absolute;
   }
 
   // style icons

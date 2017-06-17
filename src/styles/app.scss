@@ -9,12 +9,14 @@
 // Mixins
     "mixins/transform",
     "mixins/flex",
-    "mixins/misc-helpers"
+    "mixins/misc-helpers",
+    "mixins/transition"
 ;
 
 @import
 // Components
     "components/week-selector",
+    "components/cards",
     "components/login"
 ;
 
