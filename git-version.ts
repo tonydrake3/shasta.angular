@@ -15,7 +15,7 @@ const getCommit = new Observable<string>(s => {
         });
 });
 
-const getBranch = new Observable<string>(s => {
+const getBranchFromGit = new Observable<string>(s => {
     exec('git branch | grep \\* | cut -d " " -f2',
         function (error: Error, stdout: Buffer, stderr: Buffer) {
             if (error !== null) {
@@ -26,9 +26,22 @@ const getBranch = new Observable<string>(s => {
         });
 });
 
+const getBranchFromVar = new Observable<string>(s => {
+    exec('echo $GIT_BRANCH',
+        function (error: Error, stdout: Buffer, stderr: Buffer) {
+            if (error !== null) {
+                console.log('git error: ' + error + stderr);
+            }
+            s.next(stdout.toString().trim());
+            s.complete();
+        });
+});
+
 Observable
-    .combineLatest(getCommit, getBranch)
-    .subscribe(([commit, branch]) => {
+    .combineLatest(getCommit, getBranchFromGit, getBranchFromVar)
+    .subscribe(([commit, branchGit, branchVar]) => {
+
+        const branch = branchVar ? branchVar : branchGit;
 
         console.log(`version: '${process.env.npm_package_version}', commit: '${commit}', branch: '${branch}'`);
 
