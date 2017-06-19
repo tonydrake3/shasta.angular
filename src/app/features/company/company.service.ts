@@ -11,10 +11,9 @@ import {AuthenticationService} from '../../shared/services/authentication/authen
 export class CompanyService extends BaseStore {
 
     constructor(protected _httpPassthrough: Http) {
+
         super(_httpPassthrough);
         this.init(apiRoutes.companyTenants);
-
-        console.log('CompanyService Ctor', apiRoutes.companyTenants);
     }
 
     get companies$ () {

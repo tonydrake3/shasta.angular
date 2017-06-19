@@ -9,16 +9,16 @@
                     <p class="login-description text-center">Welcome to eSUB. Please sign in to your account</p>
                     <div class="form-inputs">
                         <md-input-container class="full-width">
-                            <input name="username" type="text" mdInput placeholder="Enter email" [(ngModel)]="username"
+                            <input id="txtUsername" name="username" type="text" mdInput placeholder="Enter email" [(ngModel)]="username"
                                    [ngModelOptions]="{standalone: true}">
                         </md-input-container>
                         <md-input-container class="full-width">
-                            <input name="password" type="password" mdInput placeholder="Enter password" [(ngModel)]="password"
+                            <input id="txtPassword" name="password" type="password" mdInput placeholder="Enter password" [(ngModel)]="password"
                                    [ngModelOptions]="{standalone: true}">
                         </md-input-container>
 
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block btn-lg text-center">
+                    <button id="btnLogin" type="submit" class="btn btn-primary btn-block btn-lg text-center">
                         <div *ngIf="!loading" class="login-button-text">Sign in</div>
                         <div *ngIf="loading" class="login-button-spinner">
                             <md-progress-spinner

@@ -35,7 +35,7 @@ export class LoginComponent {
 
                     if (this._authenticationService.isLoggedIn()) {
                         this.loading = false;
-                        this._authorizationService.getPermissions();
+                        // this._authorizationService.getPermissions();
                         // this._userService.currentUserInfo$
                         //     .subscribe(
                         //         user => console.log('Login UserService', user),

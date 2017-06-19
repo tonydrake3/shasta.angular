@@ -1,44 +1,36 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, CanLoad, Route, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { ProjectService } from '../../../features/projects/project.service';
 
 @Injectable()
-export class ProjectGuard {
+export class ProjectGuard implements CanActivate  {
 
-    // constructor(private _router: Router) {}
+    constructor(private _router: Router, private _projectService: ProjectService) {}
 
-    // canLoad (route: Route): Promise<boolean> {
-    //
-    //     // return new Promise((resolve) => {
-    //     //     this._projectService.hasMultipleProjects()
-    //     //
-    //     //         .then((result: any) => {
-    //     //
-    //     //             if (result) {
-    //     //                 resolve(true);
-    //     //             } else {
-    //     //                 this._router.navigate(['dashboard']);
-    //     //                 resolve(false);
-    //     //             }
-    //     //         });
-    //     // });
-    //
-    // }
-    //
-    // canActivate (route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
-    //
-    //     return new Promise((resolve) => {
-    //         this._projectService.hasMultipleProjects()
-    //
-    //             .then((result: any) => {
-    //
-    //                 if (result) {
-    //                     resolve(true);
-    //                 } else {
-    //                     this._router.navigate(['dashboard']);
-    //                     resolve(false);
-    //                 }
-    //             });
-    //     });
-    // }
+    canActivate (route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
+
+        return new Promise((resolve, reject) => {
+
+            this._projectService.projects$
+
+                .subscribe(
+                    (projects) => {
+                        console.log('canActivateCallback', projects['Value'].length > 1);
+                        if (projects['Value'].length > 1) {
+
+                            resolve(true);
+                        } else {
+
+                            // sessionStorage.setItem('project', JSON.stringify(projects['value'][0].Id));
+                            this._router.navigate(['dashboard']);
+                            resolve(false);
+                        }
+                    },
+                    (error) => {
+                        this._router.navigate(['project']);
+                        reject(error);
+                    }
+                )
+        });
+    }
 }

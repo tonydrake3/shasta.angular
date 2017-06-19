@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ProjectService } from './project.service';
+import { ProjectService } from '../project.service';
+import {Project} from '../../../models/domain/Project';
 
 @Component({
     selector: 'esub-project-selection',
@@ -9,7 +10,7 @@ import { ProjectService } from './project.service';
 })
 export class ProjectSelectionComponent implements OnInit {
 
-    _projects;
+    _projects: Project[];
 
     constructor (private _projectService: ProjectService) {}
 
@@ -17,12 +18,17 @@ export class ProjectSelectionComponent implements OnInit {
         this._projectService.projects$
             .subscribe(
                 (projects) => {
-                    console.log(projects['Value']);
-                    this._projects = projects['Value'];
+                    this._projects = <Project[]>projects['Value'];
+                    console.log(this._projects);
                 },
                 (error) => {
                     console.log(error);
                 }
             );
+    }
+
+    selectProject (project: Project) {
+
+        console.log(project);
     }
 }

@@ -32,7 +32,7 @@ export class BaseStore extends BaseHttpService {
 
         return new Promise((resolve, reject) => {
 
-            super.get(url)
+            this.get(url)
 
                 .subscribe(
 
@@ -62,7 +62,7 @@ export class BaseStore extends BaseHttpService {
 
         return new Promise((resolve, reject) => {
 
-            super.post(this._route, entity)
+            this.post(this._route, entity)
 
                 .subscribe(
 
@@ -80,7 +80,7 @@ export class BaseStore extends BaseHttpService {
 
         return new Promise((resolve, reject) => {
 
-            super.put(this._route + '/' + entity.id, entity)
+            this.put(this._route + '/' + entity.id, entity)
 
                 .subscribe(
                     data => {
@@ -97,7 +97,7 @@ export class BaseStore extends BaseHttpService {
 
         return new Promise((resolve, reject) => {
 
-            super.delete(this._route + '/' + entity.id)
+            this.delete(this._route + '/' + entity.id)
 
                 .subscribe(
 
