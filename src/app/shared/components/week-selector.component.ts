@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { MaterialModule, MdDatepickerModule, MdDatepicker } from '@angular/material';
 
 import { WeekDateRange } from '../../models/Date';
@@ -18,7 +18,7 @@ import * as moment from 'moment';
   </div>
   `
 })
-export class WeekSelectorComponent {
+export class WeekSelectorComponent implements OnInit {
 
   @Output() dateChange: EventEmitter<WeekDateRange>;
   public dateRange: WeekDateRange;
@@ -36,7 +36,9 @@ export class WeekSelectorComponent {
       startDate: moment().startOf('week').add(this.startOfWeekOffset),
       endDate: moment().endOf('week').add(this.startOfWeekOffset)
     }
+  }
 
+  ngOnInit() {
     this.emit();
   }
 

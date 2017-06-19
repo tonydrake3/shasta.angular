@@ -17,6 +17,7 @@
     > .active:hover {
       text-decoration: underline;
       cursor: default;
+      pointer-events: none;
     }
   }
 
@@ -26,9 +27,6 @@
     @include justify-content(center);
 
     button {
-      @extend .title-light;
-      background-color: $white;
-      padding: 6px 16px;
       margin: 0 12px;
       min-width: 30%;
     }
@@ -39,4 +37,8 @@
 // the card itself
 .timesheet-card {
   @extend .esub-card;
+
+  > .row {
+    margin: 0 0;
+  }
 }

@@ -1,17 +1,30 @@
-<div class="timesheet-card">
+<div *ngFor="let timecard of timecards" class="timesheet-card">
+
+  <!-- header row -->
   <div class="row">
-    <div class="col-md-4">col</div>
-    <div class="col-md-4">col</div>
-    <div class="col-md-4">col</div>
+
+    <!-- name/project heading area -->
+    <div class="col-md-4">
+      {{timecard.cardTitle}}
+    </div>
+
+    <!-- repeater for each day -->
+    <div class="col-md-1" *ngFor='let day of dateRange'>
+      {{day.dayString}}
+    </div>
+
   </div>
+
+
+
+  <!-- repeater row for each system/phase/costcode -->
   <div class="row">
-    <div class="col-md-4">col</div>
-    <div class="col-md-4">col</div>
-    <div class="col-md-4">col</div>
+    system/phase/costcode
   </div>
+
+
+  <!-- footer row -->
   <div class="row">
-    <div class="col-md-4">col</div>
-    <div class="col-md-4">col</div>
-    <div class="col-md-4">col</div>
+    hours n such
   </div>
 </div>
