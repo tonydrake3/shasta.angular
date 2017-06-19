@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
 import { CompanySelectionComponent } from './company-selection.component';
 import { CompanyService } from './company.service';
+import {CompanyGuard} from '../../shared/services/guards/company-guard.service';
 
 @NgModule({
     imports: [
@@ -16,7 +17,8 @@ import { CompanyService } from './company.service';
         CompanySelectionComponent
     ],
     providers: [
-        CompanyService
+        CompanyService,
+        CompanyGuard
     ]
 })
 

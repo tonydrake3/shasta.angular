@@ -5,6 +5,7 @@ import { AuthGuard } from '../shared/services/guards/auth-guard.service';
 import { LayoutComponent } from './layout.component';
 import { DashboardComponent } from '../dashboard/dashboard.component';
 import { CompanySelectionComponent } from '../features/company/company-selection.component';
+import {CompanyGuard} from '../shared/services/guards/company-guard.service';
 
 const routes: Routes = [
     {
@@ -13,8 +14,8 @@ const routes: Routes = [
         canActivate: [AuthGuard],
         canLoad: [AuthGuard],
         children: [
-            { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-            { path: 'company', component: CompanySelectionComponent },
+            { path: '', redirectTo: 'company', pathMatch: 'full' },
+            { path: 'company', component: CompanySelectionComponent, canActivate: [CompanyGuard] },
             { path: 'dashboard', component: DashboardComponent },
             { path: 'trackpoint', loadChildren: '../features/trackpoint/trackpoint.module#TrackpointModule' },
             { path: 'time-expenses', loadChildren: '../features/time-expenses/time-expenses.module#TimeExpensesModule' }

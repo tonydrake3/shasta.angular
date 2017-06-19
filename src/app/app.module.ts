@@ -39,6 +39,7 @@ import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
 import {AuthenticationService} from './shared/services/authentication/authentication.service';
 import {AuthGuard} from './shared/services/guards/auth-guard.service';
 import {LoginComponent} from './login/login.component';
+import {CompanyModule} from './features/company/company.module';
 
 @NgModule({
     imports: [
@@ -52,6 +53,8 @@ import {LoginComponent} from './login/login.component';
         // Sub modules
         LayoutModule,
         SharedModule,
+
+        CompanyModule
     ],
     declarations: [
         AppComponent,

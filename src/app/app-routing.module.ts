@@ -12,7 +12,7 @@ import { LoginComponent } from './login/login.component';
 const AppRoutes: Routes = [
     {
         path: '',
-        redirectTo: 'dashboard',
+        redirectTo: 'company',
         pathMatch: 'full'
     },
     {

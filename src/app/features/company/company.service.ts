@@ -8,26 +8,32 @@ import { BaseStore } from '../../shared/services/base-store.service';
 export class CompanyService extends BaseStore {
 
     constructor(protected _httpPassthrough: Http) {
-
         super(_httpPassthrough);
-        super.init(apiRoutes.companyTenants);
+        console.log('CompanyService Ctor');
     }
 
     getCompanies () {
+        super.init(apiRoutes.companyTenants);
+        return this._entity$;
+    }
 
-        this._entity$
-            .subscribe(
+    hasMultipleCompanies (): Promise<any> {
 
-                data => {
-                    // loading.dismiss();
-                    console.log(data);
-                },
+        return new Promise((resolve, reject) => {
 
-                error => {
-                    //
-                    console.log(error);
-                })
-
+            this._entity$
+                .subscribe(
+                    (companies: any) => {
+                        console.log('Companies', companies);
+                        // resolve(companies['value'].count > 1);
+                        resolve(true);
+                    },
+                    (error: any) => {
+                        reject(false);
+                        console.log(error);
+                    }
+                );
+        });
     }
 
 }
