@@ -18,3 +18,9 @@
   -webkit-align-items: $align;  /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
   align-items: $align;          /* NEW, Spec - Firefox, Chrome, Opera */
 }
+
+@mixin justify-content($justify) {
+  -ms-justify-content: $justify;      /* TWEENER - IE 10 */
+  -webkit-justify-content: $justify;  /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
+  justify-content: $justify;          /* NEW, Spec - Firefox, Chrome, Opera */
+}

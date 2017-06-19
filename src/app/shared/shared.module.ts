@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { MaterialModule, MdDatepickerModule, MdNativeDateModule } from '@angular/material';
 
 // Directives
 import { EChartsDirective } from './echarts.directive';
@@ -16,7 +17,11 @@ import { DEVMockDataService } from './DEV-mock-data.service';
 
 
 @NgModule({
-    imports: [],
+    imports: [
+      MaterialModule,
+      MdDatepickerModule,
+      MdNativeDateModule
+    ],
     declarations: [
         EChartsDirective,
         SlimScrollDirective,

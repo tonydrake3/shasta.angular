@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
+import { DateFormatterService } from '../../shared/services/utilities/date-formatter.service';
+
+import * as moment from 'moment';
 import * as _ from 'lodash';
 
 // TODO delete me
@@ -9,45 +12,29 @@ import { DEVMockDataService } from '../../shared/DEV-mock-data.service';
 @Component({
     selector: 'esub-time-expenses',
     styles: [],
-    templateUrl: './time-expenses.component.html'
+    templateUrl: './time-expenses.component.html',
+    providers: [DateFormatterService]
 })
 export class TimeExpensesComponent implements OnInit {
 
   private timerecords: Array<any>; // TODO properly type
   private timesheets: Array<any>;
 
-  public groupingTabs: Array<GroupingTab>;
-  public tabStartingIndex: number;
-
-  public fromDate: string;
-  public toDate = 5;
+  public startDate: moment.Moment;
+  public endDate: moment.Moment;
 
   public view: string;
 
-  constructor(private devMockDataService: DEVMockDataService, private activatedRoute: ActivatedRoute) {
-    // Setup tabs
-    this.groupingTabs = [
-       { label: 'date' },
-       { label: 'employee' },
-       { label: 'project' },
-       { label: 'cost code' }];
-     this.tabStartingIndex = 0;
+  constructor(private devMockDataService: DEVMockDataService, private activatedRoute: ActivatedRoute,
+    private dateFormatterService: DateFormatterService) {
 
     //  TODO get data
     this.timesheets = [];
-
-
-    // TODO move to real data
-    // Get timeRecords
     this.timerecords = this.devMockDataService.timeRecords;
-    console.log('set time records', this.timerecords.length);
+    this.groupTimesheets();
   }
 
   ngOnInit() {
-    // Group by selection
-    // TODO refactor out grouping
-    this.groupTimesheetsBy({index: this.tabStartingIndex});
-
     // read in view param
     // valid entries are timesheets, approve-time, export-time
     this.activatedRoute.params.subscribe(params => {
@@ -55,12 +42,8 @@ export class TimeExpensesComponent implements OnInit {
     });
   }
 
-  groupTimesheetsBy(selectedTab: any) {
-    const tab: GroupingTab = this.groupingTabs[selectedTab.index];
-    console.log('group by', tab.label);
-
-    //
-
+  // TODO something useful
+  groupTimesheets() {
     this.timerecords.forEach(timeRecord => {
       const timeSheet = [];
       timeSheet['fullName'] = timeRecord.Employee.FirstName + ' ' + timeRecord.Employee.LastName;
@@ -68,11 +51,17 @@ export class TimeExpensesComponent implements OnInit {
     });
   }
 
+  dateChanged(e) {
+    this.startDate = e.startDate;
+    this.endDate = e.endDate;
+  }
+
   newTimesheet() {}
   copyLastWeekTimesheet() {}
   copyYesterdayTimesheet() {}
-}
 
-class GroupingTab {
-  label: string;
+  approve() {}
+  decline() {}
+
+  exportTime() {}
 }

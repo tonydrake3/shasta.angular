@@ -11,3 +11,8 @@
                  'sidebar-lg'    : AppConfig.sidebarWidth == 'large'}">
     <router-outlet></router-outlet>
 </div>
+
+<!-- display version, only exists in dev build -->
+<pre *ngIf="gitVersion" style="position:fixed; top:0; left:0; z-index:1000; color:#333; font-size: 8px;" class="well">
+  {{gitVersion}}
+</pre>
