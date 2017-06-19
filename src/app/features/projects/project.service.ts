@@ -3,31 +3,39 @@ import { Http } from '@angular/http';
 
 import { apiRoutes } from '../../models/configuration/apiRoutes';
 import { BaseStore } from '../../shared/services/base-store.service';
+import {AuthenticationService} from '../../shared/services/authentication/authentication.service';
 
 @Injectable()
 export class ProjectService extends BaseStore {
 
-    constructor(protected _httpPassthrough: Http) {
+    constructor(protected _httpPassthrough: Http, private _authenticationService: AuthenticationService) {
 
         super(_httpPassthrough);
-        super.init(apiRoutes.companyTenants);
+        this.init(apiRoutes.projects);
     }
 
-    getProjects () {
+    get projects$ () {
 
-        this._entity$
-            .subscribe(
-
-                data => {
-                    // loading.dismiss();
-                    console.log(data);
-                },
-
-                error => {
-                    //
-                    console.log(error);
-                })
-
+        return this._entity$.asObservable();
     }
+
+    // hasMultipleProjects (): Promise<any> {
+    //
+    //     return new Promise((resolve, reject) => {
+    //
+    //         this._entity$
+    //             .subscribe(
+    //                 (projects: any) => {
+    //                     console.log('Projects', projects);
+    //                     // resolve(projects['value'].count > 1);
+    //                     resolve(true);
+    //                 },
+    //                 (error: any) => {
+    //                     reject(false);
+    //                     console.log(error);
+    //                 }
+    //             );
+    //     });
+    // }
 
 }

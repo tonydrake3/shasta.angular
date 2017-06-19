@@ -16,41 +16,49 @@ export class BaseStore extends BaseHttpService {
 
     }
 
-    init(url: string) {
+    init(url: string): Promise<any> {
 
         this._route = url;
-        this.load();
+
+        return this.load();
+
     }
 
-    load() {
+    protected load(): Promise<any> {
 
         // var loading = this.loadingCtrl.create();
         // loading.present();
         const url = environment.apiUrl + this._route;
 
-        super.get(url)
+        return new Promise((resolve, reject) => {
 
-            .subscribe(
+            super.get(url)
 
-                // TODO: Look into function handlers here
-                data => {
-                    // loading.dismiss();
-                    this._entity$.next(data);
-                },
+                .subscribe(
 
-                error => {
-                    // TODO: Refactor for error handling.
-                    // loading.dismiss();
-                    if (error.status === 401) {
+                    // TODO: Look into function handlers here
+                    data => {
+                        // loading.dismiss();
+                        this._entity$.next(data);
+                        resolve(data);
+                    },
 
-                        // this.authService.logout();
+                    error => {
+                        // TODO: Refactor for error handling.
+                        // loading.dismiss();
+                        reject(error);
+                        if (error.status === 401) {
 
-                    }
-                    console.log('Could not load', this._route, error);
-                })
+                            // this.authService.logout();
+
+                        }
+                        console.log('Could not load', this._route, error);
+                    })
+
+        });
     }
 
-    addEntity(entity: any): Promise<any> {
+    protected addEntity(entity: any): Promise<any> {
 
         return new Promise((resolve, reject) => {
 
@@ -68,7 +76,7 @@ export class BaseStore extends BaseHttpService {
         });
     }
 
-    updateEntity(entity: any): Promise<any> {
+    protected updateEntity(entity: any): Promise<any> {
 
         return new Promise((resolve, reject) => {
 
@@ -85,7 +93,7 @@ export class BaseStore extends BaseHttpService {
         });
     }
 
-    deleteEntity(entity: any): Promise<any> {
+    protected deleteEntity(entity: any): Promise<any> {
 
         return new Promise((resolve, reject) => {
 

@@ -6,6 +6,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { CompanySelectionComponent } from './company-selection.component';
 import { CompanyService } from './company.service';
 import {CompanyGuard} from '../../shared/services/guards/company-guard.service';
+import {CompanySelectionCardComponent} from './company-selection-card/company-selection-card.component';
 
 @NgModule({
     imports: [
@@ -14,7 +15,8 @@ import {CompanyGuard} from '../../shared/services/guards/company-guard.service';
         SharedModule
     ],
     declarations: [
-        CompanySelectionComponent
+        CompanySelectionComponent,
+        CompanySelectionCardComponent
     ],
     providers: [
         CompanyService,

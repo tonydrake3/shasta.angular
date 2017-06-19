@@ -40,6 +40,7 @@ import {AuthenticationService} from './shared/services/authentication/authentica
 import {AuthGuard} from './shared/services/guards/auth-guard.service';
 import {LoginComponent} from './login/login.component';
 import {CompanyModule} from './features/company/company.module';
+import {ProjectModule} from './features/projects/project.module';
 
 @NgModule({
     imports: [
@@ -54,7 +55,8 @@ import {CompanyModule} from './features/company/company.module';
         LayoutModule,
         SharedModule,
 
-        CompanyModule
+        CompanyModule,
+        ProjectModule
     ],
     declarations: [
         AppComponent,

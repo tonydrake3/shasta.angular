@@ -5,6 +5,8 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
 import { ProjectSelectionComponent } from './project-selection.component';
 import { ProjectService } from './project.service';
+import {ProjectSelectionCardComponent} from './project-selection-card/project-selection-card.component';
+import {ProjectGuard} from '../../shared/services/guards/project-guard.service';
 
 @NgModule({
     imports: [
@@ -13,10 +15,12 @@ import { ProjectService } from './project.service';
         SharedModule
     ],
     declarations: [
-        ProjectSelectionComponent
+        ProjectSelectionComponent,
+        ProjectSelectionCardComponent
     ],
     providers: [
-        ProjectService
+        ProjectService,
+        ProjectGuard
     ]
 })
 

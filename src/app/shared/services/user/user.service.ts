@@ -10,15 +10,16 @@ export class UserService extends BaseStore {
     constructor(protected _httpPassthrough: Http) {
 
         super(_httpPassthrough);
+        this.init(apiRoutes.currentUser);
 
     }
 
-    getCurrentUserInfo () {
+    get currentUserInfo$ () {
 
         // TODO: Change how service is provided so the init call can be moved to the constructor.
         // Currently provided in App, but the Token isn't set so the init fould fail and produce an empty entity$
-        super.init(apiRoutes.currentUser);
-        return this._entity$;
+
+        return this._entity$.asObservable();
 
     }
 

@@ -13,6 +13,7 @@ export class BaseHttpService {
     addHeaders(headers: Headers) {
 
         const authenticationData = JSON.parse(sessionStorage.getItem('authentication'));
+        const tenant = JSON.parse(sessionStorage.getItem('tenant'));
 
         if (authenticationData && authenticationData.access_token) {
 
@@ -20,6 +21,11 @@ export class BaseHttpService {
 
             // TODO : Consider config for this?
             // headers.append('X-Esub-Tenant', '1');
+        }
+
+        if (tenant) {
+
+            headers.append('X-Esub-Tenant', tenant);
         }
 
     }
