@@ -1,6 +1,6 @@
 import { Directive, ElementRef, Input, AfterViewInit, OnDestroy } from '@angular/core';
 import { Router, Event as RouterEvent, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router'
-import { LayoutService } from './layout.service'
+import { HomeService } from './home.service'
 import { Subscription } from 'rxjs/Subscription';
 
 @Directive({
@@ -11,12 +11,12 @@ export class PreloaderDirective implements AfterViewInit, OnDestroy {
     subscription: Subscription;
     $el;
 
-    constructor(private el: ElementRef, private router: Router, private layoutService: LayoutService) {
+    constructor(private el: ElementRef, private router: Router, private homeService: HomeService) {
         router.events.subscribe((event: RouterEvent) => {
             this.navigationInterceptor(event);
         });
 
-        this.subscription = layoutService.preloaderState$.subscribe((state) => {
+        this.subscription = homeService.preloaderState$.subscribe((state) => {
             this.updatePreloader(state);
         })
     }

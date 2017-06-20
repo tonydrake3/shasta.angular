@@ -1,9 +1,9 @@
 import { RouterModule, Routes } from '@angular/router';
 
-import { LayoutComponent } from './layout/layout.component';
+import { HomeComponent } from './home/home.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
-// Page Layouts
+// Page Homes
 import { PageLayoutFullscreenComponent } from './page-layouts/fullscreen/fullscreen.component';
 import { AuthGuard } from './shared/services/guards/auth-guard.service';
 import { LoginComponent } from './login/login.component';

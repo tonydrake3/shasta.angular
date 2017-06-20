@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 
 @Injectable()
-export class LayoutService {
+export class HomeService {
     private preloaderStateSource = new Subject<string>();
     private searchOverlaySource = new Subject<string>();
 
