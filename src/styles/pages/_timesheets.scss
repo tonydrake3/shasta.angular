@@ -38,7 +38,17 @@
 .timesheet-card {
   @extend .esub-card;
 
+  padding: 6px 10px;
+
   > .row {
     margin: 0 0;
+
+    &:not(:last-of-type):after {
+      content: ' ';
+      height: 1px;
+      width: 100%;
+      align-self: center;
+      background-color: $black-10;
+    }
   }
 }
