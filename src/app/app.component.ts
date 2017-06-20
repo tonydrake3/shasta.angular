@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router, NavigationEnd } from '@angular/router';
 import { APPCONFIG } from './config'
-import { LayoutService } from './layout/layout.service'
+import { HomeService } from './home/home.service'
 import { environment } from '../environments/environment';
 
 // 3rd
@@ -19,7 +19,7 @@ import 'styles/app.scss';
 @Component({
     selector: 'esub-root',
     templateUrl: './app.component.html',
-    providers: [LayoutService],
+    providers: [HomeService],
 })
 export class AppComponent implements OnInit {
     AppConfig: any;

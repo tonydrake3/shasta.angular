@@ -1,5 +1,5 @@
 import { Directive, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
-import { LayoutService } from '../layout.service'
+import { HomeService } from '../home.service'
 import { Subscription } from 'rxjs/Subscription';
 
 @Directive({ selector: '[esubSearchOverlay]' })
@@ -11,8 +11,8 @@ export class SearchOverlayDirective implements AfterViewInit, OnDestroy {
     $searchInput;
     $closeOverlayBtn;
 
-    constructor(private el: ElementRef, private layoutService: LayoutService) {
-        this.subscription = layoutService.searchOverlayState$.subscribe((state) => {
+    constructor(private el: ElementRef, private homeService: HomeService) {
+        this.subscription = homeService.searchOverlayState$.subscribe((state) => {
             this.updateSearchOverlay(state);
         })
     }
