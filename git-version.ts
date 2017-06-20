@@ -36,7 +36,8 @@ Observable
     .subscribe(([commit, branchGit]) => {
 
         // use environment variable if it's there (Jenkins), otherwise do git command (local)
-        const branch = branchVar ? branchVar : branchGit;
+        let branch = branchVar ? branchVar : branchGit;
+        branch = branch.replace('origin/', '');
 
         console.log(`version: '${process.env.npm_package_version}', commit: '${commit}', branch: '${branch}'`);
 
