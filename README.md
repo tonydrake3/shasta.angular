@@ -16,4 +16,4 @@ Run `npm run test` to execute the unit tests via [Karma]
 
 ## Running end-to-end tests
 
-end-to-end tests are handles outside of the Angular project within Robot Framework
+end-to-end tests are handled outside of the Angular project within Robot Framework
