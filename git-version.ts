@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 const exec = require('child_process').exec;
 
+// polls for, and cleans output, of current git commit hash
 const getCommit = new Observable<string>(s => {
     exec('git log --pretty=format:"%h" -n 1',
         function (error: Error, stdout: Buffer, stderr: Buffer) {
@@ -15,32 +16,26 @@ const getCommit = new Observable<string>(s => {
         });
 });
 
+// polls for, and cleans output, of current git branch name
 const getBranchFromGit = new Observable<string>(s => {
     exec('git branch | grep \\* | cut -d " " -f2',
         function (error: Error, stdout: Buffer, stderr: Buffer) {
             if (error !== null) {
-                console.log('git error: ' + error + stderr);
+                // it's okay we're expecting this to fail when run within Jenkins
             }
             s.next(stdout.toString().trim());
             s.complete();
         });
 });
 
-const getBranchFromVar = new Observable<string>(s => {
-    exec('(Get-ChildItem Env:GIT_BRANCH).Value',
-        function (error: Error, stdout: Buffer, stderr: Buffer) {
-            if (error !== null) {
-                console.log('git error: ' + error + stderr);
-            }
-            s.next(stdout.toString().trim());
-            s.complete();
-        });
-});
+// manually set to env variable created by Jenkins, for compare
+const branchVar = process.env.GIT_BRANCH;
 
 Observable
-    .combineLatest(getCommit, getBranchFromGit, getBranchFromVar)
-    .subscribe(([commit, branchGit, branchVar]) => {
+    .combineLatest(getCommit, getBranchFromGit)
+    .subscribe(([commit, branchGit]) => {
 
+        // use environment variable if it's there (Jenkins), otherwise do git command (local)
         const branch = branchVar ? branchVar : branchGit;
 
         console.log(`version: '${process.env.npm_package_version}', commit: '${commit}', branch: '${branch}'`);

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "npm run serve",
     "build": "npm run pre-build.DEV && ng build",
     "serve": "npm run pre-build.DEV && ng serve",
     "test": "snyk test && ng test",
