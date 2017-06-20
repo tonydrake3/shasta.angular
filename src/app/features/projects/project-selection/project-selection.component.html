@@ -1,0 +1,7 @@
+<div class="container-fluid no-breadcrumbs company-selection">
+    <h3>Select Project</h3>
+    <div *ngFor="let project of _projects" (click)="selectProject(project)">
+        <esub-project-selection-card [project]="project"></esub-project-selection-card>
+    </div>
+
+</div>
