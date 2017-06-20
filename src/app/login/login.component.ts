@@ -8,6 +8,7 @@ import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/map';
 import {UserService} from '../shared/services/user/user.service';
 import {CompanyService} from '../features/company/company.service';
+import {ProjectService} from '../features/projects/project.service';
 
 @Component({
     selector: 'esub-login',
@@ -21,7 +22,7 @@ export class LoginComponent {
     errorMessage = '';
 
     constructor(private _route: ActivatedRoute, private _router: Router, private _authenticationService: AuthenticationService,
-      private _authorizationService: AuthorizationService, private _userService: UserService) {}
+                private _authorizationService: AuthorizationService) {}
 
     login () {
         this.loading = true;
@@ -29,13 +30,18 @@ export class LoginComponent {
             .subscribe(
                 data => {
 
+                    console.log('Authenticated');
                     sessionStorage.setItem('authentication', JSON.stringify(data));
 
                     if (this._authenticationService.isLoggedIn()) {
                         this.loading = false;
-                        this._authorizationService.getPermissions();
-                        this._userService.getCurrentUserInfo();
-                        // this._companyService.getCompanies();
+                        // this._authorizationService.getPermissions();
+                        // this._userService.currentUserInfo$
+                        //     .subscribe(
+                        //         user => console.log('Login UserService', user),
+                        //         error => console.log('Login UserService Error', error)
+                        //     );
+
                         this._route.queryParams
                             .map(qp => qp['redirectTo'])
                             .subscribe(
