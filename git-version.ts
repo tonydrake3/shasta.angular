@@ -27,7 +27,7 @@ const getBranchFromGit = new Observable<string>(s => {
 });
 
 const getBranchFromVar = new Observable<string>(s => {
-    exec('(Get-ChildItem Env:GIT_BRANCH).Value',
+    exec('echo $Env:GIT_BRANCH',
         function (error: Error, stdout: Buffer, stderr: Buffer) {
             if (error !== null) {
                 console.log('git error: ' + error + stderr);
