@@ -9,9 +9,10 @@ export class LookupDataService {
 
     }
 
-    getProjectsMenu () {
-        return Promise((resolve,reject) => {
-            
-        })
+    getProjectsMenu (): Promise<any> {
+        return new Promise((resolve) => {
+
+            resolve();
+        });
     }
 }
