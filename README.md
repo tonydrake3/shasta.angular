@@ -12,7 +12,11 @@ Run `npm run build` to build the project. The build artifacts will be stored in 
 
 ## Running unit tests
 
-Run `npm run test` to execute the unit tests via [Karma]
+a) To run unit tests locally run one of the following commands
+  - (during development, includes live reload) `ng test --browsers Chrome` OR `ng test --browsers PhantomJS`
+  - (just to run tests once and view results) run same as above and include `--single-run` flag
+
+b) If running from within Jenkins, run `npm run test` to execute the unit tests via [Karma], includes `snyk test`
 
 ## Running end-to-end tests
 
