@@ -1,11 +1,11 @@
 import { Directive, ElementRef, AfterViewInit } from '@angular/core';
-import { LayoutService } from '../layout.service'
+import { HomeService } from '../home.service'
 
 @Directive({ selector: '[esubOpenSearchOverlay]' })
 
 export class OpenSearchOverlaylDirective implements AfterViewInit {
 
-    constructor(private el: ElementRef, private layoutService: LayoutService) {}
+    constructor(private el: ElementRef, private homeService: HomeService) {}
 
 
     ngAfterViewInit() {
@@ -18,7 +18,7 @@ export class OpenSearchOverlaylDirective implements AfterViewInit {
     }
 
     openOverlay () {
-        this.layoutService.updateSearchOverlayState('open')
+        this.homeService.updateSearchOverlayState('open')
     }
 
 }

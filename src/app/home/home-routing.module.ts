@@ -1,6 +1,6 @@
 import { RouterModule, Routes } from '@angular/router';
 
-import { LayoutComponent } from './layout.component';
+import { HomeComponent } from './home.component';
 import { DashboardComponent } from '../dashboard/dashboard.component';
 
 import { AuthGuard } from '../shared/services/guards/auth-guard.service';
@@ -8,7 +8,7 @@ import { AuthGuard } from '../shared/services/guards/auth-guard.service';
 const routes: Routes = [
     {
         path: '',
-        component: LayoutComponent,
+        component: HomeComponent,
         canActivate: [AuthGuard],
         canLoad: [AuthGuard],
         children: [
@@ -20,4 +20,4 @@ const routes: Routes = [
     }
 ];
 
-export const LayoutRoutingModule = RouterModule.forChild(routes);
+export const HomeRoutingModule = RouterModule.forChild(routes);
