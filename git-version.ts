@@ -21,7 +21,7 @@ const getBranchFromGit = new Observable<string>(s => {
     exec('git branch | grep \\* | cut -d " " -f2',
         function (error: Error, stdout: Buffer, stderr: Buffer) {
             if (error !== null) {
-                console.log('git error: ' + error + stderr);
+                // it's okay we're expecting this to fail when run within Jenkins
             }
             s.next(stdout.toString().trim());
             s.complete();
