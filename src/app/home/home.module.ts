@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 
-import { LayoutRoutingModule } from './layout-routing.module';
+import { HomeRoutingModule } from './home-routing.module';
 import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
     imports: [
-        LayoutRoutingModule,
+        HomeRoutingModule,
         SharedModule,
     ],
     declarations: []
 })
 
-export class LayoutModule {}
+export class HomeModule {}

@@ -8,30 +8,30 @@ import 'hammerjs';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-// Layout
-import { LayoutComponent } from './layout/layout.component';
-import { PreloaderDirective } from './layout/preloader.directive';
+// Home
+import { HomeComponent } from './home/home.component';
+import { PreloaderDirective } from './home/preloader.directive';
 // Header
-import { AppHeaderComponent } from './layout/header/header.component';
+import { AppHeaderComponent } from './home/header/header.component';
 // Sidenav
-import { AppSidenavComponent } from './layout/sidenav/sidenav.component';
-import { ToggleOffcanvasNavDirective } from './layout/sidenav/toggle-offcanvas-nav.directive';
-import { AutoCloseMobileNavDirective } from './layout/sidenav/auto-close-mobile-nav.directive';
-import { AppSidenavMenuComponent } from './layout/sidenav/sidenav-menu/sidenav-menu.component';
-import { AccordionNavDirective } from './layout/sidenav/sidenav-menu/accordion-nav.directive';
-import { AppendSubmenuIconDirective } from './layout/sidenav/sidenav-menu/append-submenu-icon.directive';
-import { HighlightActiveItemsDirective } from './layout/sidenav/sidenav-menu/highlight-active-items.directive';
+import { AppSidenavComponent } from './home/sidenav/sidenav.component';
+import { ToggleOffcanvasNavDirective } from './home/sidenav/toggle-offcanvas-nav.directive';
+import { AutoCloseMobileNavDirective } from './home/sidenav/auto-close-mobile-nav.directive';
+import { AppSidenavMenuComponent } from './home/sidenav/sidenav-menu/sidenav-menu.component';
+import { AccordionNavDirective } from './home/sidenav/sidenav-menu/accordion-nav.directive';
+import { AppendSubmenuIconDirective } from './home/sidenav/sidenav-menu/append-submenu-icon.directive';
+import { HighlightActiveItemsDirective } from './home/sidenav/sidenav-menu/highlight-active-items.directive';
 // Search Overaly
-import { AppSearchOverlayComponent } from './layout/search-overlay/search-overlay.component';
-import { SearchOverlayDirective } from './layout/search-overlay/search-overlay.directive';
-import { OpenSearchOverlaylDirective } from './layout/search-overlay/open-search-overlay.directive';
+import { AppSearchOverlayComponent } from './home/search-overlay/search-overlay.component';
+import { SearchOverlayDirective } from './home/search-overlay/search-overlay.directive';
+import { OpenSearchOverlaylDirective } from './home/search-overlay/open-search-overlay.directive';
 
 // Pages
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { PageLayoutFullscreenComponent } from './page-layouts/fullscreen/fullscreen.component';
 
 // Sub modules
-import { LayoutModule } from './layout/layout.module';
+import { HomeModule } from './home/home.module';
 import { SharedModule } from './shared/shared.module';
 
 // hmr
@@ -52,7 +52,7 @@ import {ProjectModule} from './features/projects/project.module';
         AppRoutingModule,
 
         // Sub modules
-        LayoutModule,
+        HomeModule,
         SharedModule,
 
         CompanyModule,
@@ -60,8 +60,8 @@ import {ProjectModule} from './features/projects/project.module';
     ],
     declarations: [
         AppComponent,
-        // Layout
-        LayoutComponent,
+        // Home
+        HomeComponent,
         PreloaderDirective,
         // Header
         AppHeaderComponent,

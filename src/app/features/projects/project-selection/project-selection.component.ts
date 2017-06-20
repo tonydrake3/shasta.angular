@@ -5,8 +5,7 @@ import {Project} from '../../../models/domain/Project';
 @Component({
     selector: 'esub-project-selection',
     styles: [],
-    templateUrl: './project-selection.component.html',
-    providers: [ ProjectService ]
+    templateUrl: './project-selection.component.html'
 })
 export class ProjectSelectionComponent implements OnInit {
 

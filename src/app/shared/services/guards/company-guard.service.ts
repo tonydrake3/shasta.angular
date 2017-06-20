@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { CompanyService } from '../../../features/company/company.service';
+import {routeName} from '../../../models/configuration/routeName';
 
 @Injectable()
 export class CompanyGuard implements CanActivate {
@@ -22,12 +23,12 @@ export class CompanyGuard implements CanActivate {
                         } else {
 
                             sessionStorage.setItem('tenant', JSON.stringify(companies['value'][0].Id));
-                            this._router.navigate(['project']);
+                            this._router.navigate([routeName.project]);
                             resolve(false);
                         }
                     },
                     (error) => {
-                        this._router.navigate(['project']);
+                        this._router.navigate([routeName.project]);
                         reject(error);
                     }
                 )
