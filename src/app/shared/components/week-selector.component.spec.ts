@@ -3,6 +3,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
+import { MaterialModule } from '@angular/material';
 
 import { WeekSelectorComponent } from './week-selector.component';
 
@@ -15,7 +16,7 @@ fdescribe('week selector', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ ],
+      imports: [ MaterialModule ],
       declarations: [ WeekSelectorComponent ], // declare the test component
     });
 
