@@ -32,6 +32,7 @@ export class AppSidenavMenuComponent {
     // TODO this more intelligently
     // manually construct project nav links
     // this.projectLinks = [
+    //     { title: 'Create Project ', view: 'create' },
     //     { title: 'Project Summary ', view: 'summary' },
     //     { title: 'Field Notes ', view: 'field-notes' },
     //     { title: 'Daily Reports ', view: 'daily-reports' },
