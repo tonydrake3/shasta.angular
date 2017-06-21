@@ -6,6 +6,8 @@ import { DebugElement } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { AppComponent } from './app.component';
+// import { BaseComponentSampleUsageComponent } from './shared/components/sample-usage-base.component';
+import { SharedModule } from './shared/shared.module';
 
 describe('application load', () => {
 
@@ -16,7 +18,7 @@ describe('application load', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ RouterTestingModule ],
+      imports: [ RouterTestingModule, SharedModule ],
       declarations: [ AppComponent ], // declare the test component
     });
 
@@ -29,8 +31,14 @@ describe('application load', () => {
   });
 
   // test that <router-outlet> is present in app.component
+    // proves no errors building html
   it('should contain router-outlet', () => {
     fixture.detectChanges();
     expect(el.querySelector('router-outlet')).toBeTruthy();
+  });
+
+  it('should set the git version', () => {
+    fixture.detectChanges();
+    expect(comp.gitVersion).toBeDefined();
   });
 });
