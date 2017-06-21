@@ -17,8 +17,8 @@ const routes: Routes = [
         canLoad: [AuthGuard],
         children: [
             { path: '', redirectTo: 'company', pathMatch: 'full' },
-            { path: 'company', component: CompanySelectionComponent, canActivate: [CompanyGuard] },
-            { path: 'project', component: ProjectSelectionComponent, canActivate: [ProjectGuard] },
+            { path: 'company', component: CompanySelectionComponent, canActivate: [ CompanyGuard ] },
+            { path: 'project', component: ProjectSelectionComponent, canActivate: [ ProjectGuard ] },
             { path: 'dashboard', component: DashboardComponent },
             { path: 'trackpoint', loadChildren: '../features/trackpoint/trackpoint.module#TrackpointModule' },
             { path: 'time-expenses', loadChildren: '../features/time-expenses/time-expenses.module#TimeExpensesModule' }

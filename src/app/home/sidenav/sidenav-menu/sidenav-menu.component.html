@@ -1,9 +1,12 @@
 <ul class="nav" esubAccordionNav esubAppendSubmenuIcon esubSlimScroll esubHighlightActiveItems>
 
+    <li>
+        <a md-button (click)="selectProject()"><i class="nav-icon material-icons">assignment</i><span class="nav-text">Select Project</span></a>
+    </li>
     <!-- project specific links -->
     <!-- TODO refine and clean up sass highlighting bits -->
     <li *ngIf="projectLinks">
-        <a md-button><i class="nav-icon material-icons">assignment</i><span class="nav-text">Project</span></a>
+        <a md-button><i class="nav-icon material-icons">assignment</i><span class="nav-text">{{_project.Name}}</span></a>
         <ul>
             <li *ngFor="let projLink of projectLinks">
                 <a md-button class="md-button" [routerLink]="['/project', projLink.view]">

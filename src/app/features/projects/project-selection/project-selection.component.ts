@@ -14,10 +14,14 @@ export class ProjectSelectionComponent implements OnInit {
     constructor (private _projectService: ProjectService) {}
 
     ngOnInit () {
+
+        console.log('Project Selection ngOnInit');
+        this._projectService.getLatest();
         this._projectService.projects$
             .subscribe(
                 (projects) => {
-                    this._projects = <Project[]>projects['Value'];
+                    console.log(projects);
+                    this._projects = projects['Value'];
                     console.log(this._projects);
                 },
                 (error) => {
@@ -28,6 +32,6 @@ export class ProjectSelectionComponent implements OnInit {
 
     selectProject (project: Project) {
 
-        console.log(project);
+        this._projectService.setSelectedProject(project);
     }
 }

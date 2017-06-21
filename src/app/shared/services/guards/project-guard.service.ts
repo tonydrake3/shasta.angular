@@ -12,11 +12,12 @@ export class ProjectGuard implements CanActivate  {
 
         return new Promise((resolve, reject) => {
 
+            this._projectService.getLatest();
             this._projectService.projects$
 
                 .subscribe(
                     (projects) => {
-                        // console.log('canActivateCallback', projects['Value'].length > 1);
+                        console.log('canActivateCallback', projects['Value'].length > 1);
                         if (projects['Value'].length > 1) {
 
                             resolve(true);

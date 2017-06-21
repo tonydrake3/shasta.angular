@@ -15,6 +15,7 @@ export class CompanySelectionComponent implements OnInit {
 
     ngOnInit () {
 
+        this._companyService.getLatest();
         this._companyService.companies$
             .subscribe(
                 (companies) => {

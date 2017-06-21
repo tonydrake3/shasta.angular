@@ -3,11 +3,13 @@ import { Http } from '@angular/http';
 
 import { apiRoutes } from '../../models/configuration/apiRoutes';
 import { BaseStore } from '../../shared/services/base-store.service';
+import {Subject} from 'rxjs/Subject';
+import {Project} from '../../models/domain/Project';
 
 @Injectable()
 export class ProjectService extends BaseStore {
 
-    selectedProject;
+    project$ = new Subject<Project>();
 
     constructor(protected _httpPassthrough: Http) {
 
@@ -15,9 +17,24 @@ export class ProjectService extends BaseStore {
         this.init(apiRoutes.projects);
     }
 
+    public getLatest (): Promise<any> {
+
+        return this.load();
+    }
+
     get projects$ () {
 
         return this._entity$.asObservable();
+    }
+
+    get selectedProject$ () {
+
+        return this.project$.asObservable();
+    }
+
+    setSelectedProject (project: Project) {
+
+        this.project$.next(project);
     }
 
 }
