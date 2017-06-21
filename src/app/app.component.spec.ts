@@ -6,8 +6,9 @@ import { DebugElement } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { AppComponent } from './app.component';
-// import { BaseComponentSampleUsageComponent } from './shared/components/sample-usage-base.component';
 import { SharedModule } from './shared/shared.module';
+
+import 'hammerjs';
 
 describe('application load', () => {
 

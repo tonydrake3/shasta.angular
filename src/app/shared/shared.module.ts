@@ -15,7 +15,8 @@ import { WeekSelectorComponent } from './components/week-selector.component';
 
 
 
-import { BaseComponentSampleUsageComponent, BaseComponentSampleUsageService } from './components/sample-usage-base.component';
+import { BaseComponentSampleUsageComponent, BaseComponentSampleUsageService,
+  BaseComponentSampleUsageService2, AutomaticallyInjectedService } from './components/sample-usage-base.component';
 import { DEVMockDataService } from './DEV-mock-data.service';
 
 
@@ -35,7 +36,7 @@ import { DEVMockDataService } from './DEV-mock-data.service';
         AuthorizationService,
         DEVMockDataService,
         UserService,
-        BaseComponentSampleUsageService
+        BaseComponentSampleUsageService, BaseComponentSampleUsageService2, AutomaticallyInjectedService
     ],
     exports: [
         EChartsDirective,
