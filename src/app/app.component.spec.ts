@@ -7,6 +7,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { AppComponent } from './app.component';
 
+import 'hammerjs';
+
 describe('application load', () => {
 
   let comp:    AppComponent;
@@ -29,8 +31,30 @@ describe('application load', () => {
   });
 
   // test that <router-outlet> is present in app.component
+    // proves no errors building html
   it('should contain router-outlet', () => {
     fixture.detectChanges();
     expect(el.querySelector('router-outlet')).toBeTruthy();
   });
+
+  it('should set the git version', () => {
+    fixture.detectChanges();
+    expect(comp.gitVersion).toBeDefined();
+  });
+
+  it('should set app config on ngOnInit', () => {
+
+  });
+
+  it('should scroll to top on route change', () => {
+
+  });
+
+  it('should route to login if ##', () => {
+
+  });
+
+  it('should route to company if ##', () => {
+
+  })
 });
