@@ -14,9 +14,6 @@ import { AuthGuard } from './services/guards/auth-guard.service';
 import { WeekSelectorComponent } from './components/week-selector.component';
 
 
-
-import { BaseComponentSampleUsageComponent, BaseComponentSampleUsageService,
-  BaseComponentSampleUsageService2, AutomaticallyInjectedService } from './components/sample-usage-base.component';
 import { DEVMockDataService } from './DEV-mock-data.service';
 
 
@@ -29,20 +26,17 @@ import { DEVMockDataService } from './DEV-mock-data.service';
     declarations: [
         EChartsDirective,
         SlimScrollDirective,
-        WeekSelectorComponent,
-        BaseComponentSampleUsageComponent
+        WeekSelectorComponent
     ],
     providers: [
         AuthorizationService,
         DEVMockDataService,
-        UserService,
-        BaseComponentSampleUsageService, BaseComponentSampleUsageService2, AutomaticallyInjectedService
+        UserService
     ],
     exports: [
         EChartsDirective,
         SlimScrollDirective,
-        WeekSelectorComponent,
-        BaseComponentSampleUsageComponent
+        WeekSelectorComponent
     ]
 })
 
