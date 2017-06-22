@@ -43,11 +43,12 @@ describe('application load', () => {
   });
 
   it('should set app config on ngOnInit', () => {
-
+    fixture.detectChanges();
+    expect(comp.AppConfig).toBeDefined();
   });
 
   it('should scroll to top on route change', () => {
-
+    console.log('scrollTop', de.nativeElement.scrollTop);
   });
 
   it('should route to login if ##', () => {
@@ -56,5 +57,5 @@ describe('application load', () => {
 
   it('should route to company if ##', () => {
 
-  })
+  });
 });
