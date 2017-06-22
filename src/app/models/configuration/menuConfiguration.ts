@@ -237,4 +237,3 @@ export const sidebarConfiguration = [
         'expandFull': false
     },
 ];
-
