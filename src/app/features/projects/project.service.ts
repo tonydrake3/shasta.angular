@@ -15,6 +15,8 @@ export class ProjectService extends BaseStore {
 
         super(_httpPassthrough);
         this.init(apiRoutes.projects);
+
+          console.log('i made a ProjectService');
     }
 
     public getLatest (): Promise<any> {
