@@ -30,11 +30,8 @@ export const ProjectRoutes: Routes = [
         path: '',
         component: ProjectComponent,
         children: [
-          { path: '', redirectTo: 'selection', pathMatch: 'full' },
-
-
           {
-              path: 'selection',
+              path: '',
               component: ProjectSelectionComponent
           },
           {

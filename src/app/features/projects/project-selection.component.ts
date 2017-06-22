@@ -5,7 +5,6 @@ import {Router} from '@angular/router';
 import {routeName} from '../../models/configuration/routeName';
 
 @Component({
-    selector: 'esub-project-selection',
     styles: [],
     templateUrl: './project-selection.component.html'
 })

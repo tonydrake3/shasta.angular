@@ -3,7 +3,7 @@ import { CompanyService } from './company.service';
 import {Router} from '@angular/router';
 
 @Component({
-    selector: 'esub-project-selection',
+    selector: 'esub-company-selection',
     styles: [],
     templateUrl: './company-selection.component.html'
 })

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { HomeRoutingModule } from './home-routing.module';
 import { SharedModule } from '../shared/shared.module';
-import { ProjectModule } from '../features/projects/project.module';
+// import { ProjectModule } from '../features/projects/project.module';
 import { ProjectService } from '../features/projects/project.service';
 
 // Home
@@ -29,7 +29,7 @@ import { OpenSearchOverlaylDirective } from './search-overlay/open-search-overla
         HomeRoutingModule,
         SharedModule,
         CommonModule,
-        ProjectModule
+        // ProjectModule
     ],
     declarations: [
       // Home
