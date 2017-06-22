@@ -14,8 +14,12 @@ export class AccordionNavDirective implements AfterViewInit {
 
         const $nav = $(this.el.nativeElement);
         const slideTime = 250;
-        const $lists = $nav.find('ul').parent('li');
+        const $lists = $nav.find('ul.submenu').parent('li');
         $lists.append('<i class="material-icons icon-has-ul">keyboard_arrow_down</i>');
+
+        const $values = $nav.find('ul.forward').parent('li');
+        $values.append('<i class="material-icons icon-has-ul">arrow_forward</i>');
+
         const $As = $lists.children('a');
 
 

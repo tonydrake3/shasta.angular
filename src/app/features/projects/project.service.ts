@@ -33,7 +33,7 @@ export class ProjectService extends BaseStore {
     }
 
     setSelectedProject (project: Project) {
-
+        console.log('setSelected', project);
         this.project$.next(project);
     }
 

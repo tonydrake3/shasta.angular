@@ -1,41 +1,26 @@
 <ul class="nav" esubAccordionNav esubAppendSubmenuIcon esubSlimScroll esubHighlightActiveItems>
 
-    <li>
-        <a md-button (click)="selectProject()"><i class="nav-icon material-icons">assignment</i><span class="nav-text">Select Project</span></a>
-    </li>
-    <!-- project specific links -->
-    <!-- TODO refine and clean up sass highlighting bits -->
-    <li *ngIf="projectLinks">
-        <a md-button><i class="nav-icon material-icons">assignment</i><span class="nav-text">{{_project.Name}}</span></a>
-        <ul>
-            <li *ngFor="let projLink of projectLinks">
-                <a md-button class="md-button" [routerLink]="['/project', projLink.view]">
-                    <span>{{projLink.title}}</span>
+    <li [ngClass]="{ 'no-display' : inSettings || !navLink.Visible }" *ngFor="let navLink of navigationLinks">
+        <a md-button [routerLink]="[navLink.Action]">
+            <i *ngIf="navLink.iconName" class="nav-icon material-icons">{{navLink.iconName}}</i>
+            <span class="nav-text">{{navLink.Title}}</span>
+        </a>
+        <ul class="submenu" *ngIf="navLink.Children">
+            <li *ngFor="let child of navLink.Children">
+                <a md-button class="md-button" [routerLink]="[child.Action, child.Key]">
+                    <span>{{child.Title}}</span>
                 </a>
             </li>
         </ul>
     </li>
-
-
-  <!-- time & expenses specific links -->
-  <!-- TODO refine and clean up sass highlighting bits -->
-  <li>
-    <a md-button><i class="nav-icon material-icons">av_timer</i><span class="nav-text">Time &amp; Expenses</span></a>
-    <ul>
-      <li *ngFor="let timeLink of timeExpensesLinks">
-        <a md-button class="md-button" [routerLink]="['/time-expenses', timeLink.view]">
-          <span>{{timeLink.title}}</span>
-        </a>
-      </li>
-    </ul>
-  </li>
-
-  <!-- legacy links generated for trackpoint -->
-  <li *ngFor="let navLink of navigationLinks">
-    <a md-button [routerLink]="['/trackpoint', navLink.$id]">
-      <i *ngIf="navLink.iconName" class="nav-icon material-icons">{{navLink.iconName}}</i>
-      <span class="nav-text">{{navLink.Title}}</span>
-    </a>
-  </li>
-
+    <li>
+        <a md-button (click)="collapseView()"><i class="nav-icon material-icons" *ngIf="!inSettings">settings</i><span class="nav-text">{{inSettings ? 'Back to eSUB' : 'Settings'}}</span></a>
+        <ul class="forward">
+            <li *ngFor="let settingLink of settingLinks">
+                <a md-button class="md-button" [routerLink]="[settingLink.Action, settingLink.Key]">
+                    <span>{{settingLink.Title}}</span>
+                </a>
+            </li>
+        </ul>
+    </li>
 </ul>

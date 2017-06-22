@@ -3,23 +3,21 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 import { SharedModule } from '../../shared/shared.module';
-import { ProjectSelectionComponent } from './project-selection/project-selection.component';
 import { ProjectService } from './project.service';
-import {ProjectSelectionCardComponent} from './project-selection/project-selection-card/project-selection-card.component';
 import {ProjectGuard} from '../../shared/services/guards/project-guard.service';
+import {ProjectRoutingModule, routedProjectComponents} from './project-routing.module';
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
-        SharedModule
+        SharedModule,
+        ProjectRoutingModule
     ],
     declarations: [
-        ProjectSelectionComponent,
-        ProjectSelectionCardComponent
+        routedProjectComponents
     ],
     providers: [
-        ProjectService,
         ProjectGuard
     ]
 })

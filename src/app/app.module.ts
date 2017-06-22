@@ -41,6 +41,7 @@ import {AuthGuard} from './shared/services/guards/auth-guard.service';
 import {LoginComponent} from './login/login.component';
 import {CompanyModule} from './features/company/company.module';
 import {ProjectModule} from './features/projects/project.module';
+import {ProjectService} from './features/projects/project.service';
 
 @NgModule({
     imports: [
@@ -85,7 +86,8 @@ import {ProjectModule} from './features/projects/project.module';
     ],
     providers: [
         AuthenticationService,
-        AuthGuard
+        AuthGuard,
+        ProjectService
     ],
     bootstrap: [AppComponent]
 })

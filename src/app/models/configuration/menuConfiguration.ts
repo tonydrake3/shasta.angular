@@ -1,0 +1,240 @@
+export const projectSidebarConfiguration = [
+    {
+        '$id': '1',
+        'Action': '/project',
+        'Children': null,
+        'Key': 'create',
+        'System': 1,
+        'Title': 'Create Project',
+        'iconName': '',
+        'Ordinal': 1,
+        'Visible': true,
+        'expandFull': false
+    },
+    {
+        '$id': '2',
+        'Action': '/project',
+        'Children': null,
+        'Key': '',
+        'System': 1,
+        'Title': 'Project Summary',
+        'iconName': '',
+        'Ordinal': 2,
+        'Visible': true,
+        'expandFull': false
+    },
+    {
+        '$id': '3',
+        'Action': '/project',
+        'Children': null,
+        'Key': 'field-notes',
+        'System': 1,
+        'Title': 'Field Notes',
+        'iconName': '',
+        'Ordinal': 3,
+        'Visible': true,
+        'expandFull': false
+    },
+    {
+        '$id': '4',
+        'Action': '/project',
+        'Children': null,
+        'Key': 'daily-reports',
+        'System': 1,
+        'Title': 'Daily Reports',
+        'iconName': '',
+        'Ordinal': 4,
+        'Visible': true,
+        'expandFull': false
+    },
+    {
+        '$id': '5',
+        'Action': '/project',
+        'Children': null,
+        'Key': 'rfi',
+        'System': 1,
+        'Title': 'RFIs',
+        'iconName': '',
+        'Ordinal': 5,
+        'Visible': true,
+        'expandFull': false
+    },
+    {
+        '$id': '6',
+        'Action': '/project',
+        'Children': null,
+        'Key': 'submittals',
+        'System': 1,
+        'Title': 'Submittals',
+        'iconName': '',
+        'Ordinal': 6,
+        'Visible': true,
+        'expandFull': false
+    },
+    {
+        '$id': '7',
+        'Action': '/project',
+        'Children': null,
+        'Key': 'issues',
+        'System': 1,
+        'Title': 'Issues',
+        'iconName': '',
+        'Ordinal': 7,
+        'Visible': true,
+        'expandFull': false
+    }
+];
+
+export const timeSidebarConfiguration = [
+    {
+        '$id': '1',
+        'Action': '/time-expenses',
+        'Children': null,
+        'Key': 'timesheets',
+        'System': 1,
+        'Title': 'Timesheets',
+        'iconName': '',
+        'Ordinal': 1,
+        'Visible': true,
+        'expandFull': false
+    },
+    {
+        '$id': '2',
+        'Action': '/time-expenses',
+        'Children': null,
+        'Key': 'approve-time',
+        'System': 1,
+        'Title': 'Approved Time',
+        'iconName': '',
+        'Ordinal': 2,
+        'Visible': true,
+        'expandFull': false
+    },
+    {
+        '$id': '3',
+        'Action': '/time-expenses',
+        'Children': null,
+        'Key': 'export-time',
+        'System': 1,
+        'Title': 'Export Time',
+        'iconName': '',
+        'Ordinal': 3,
+        'Visible': true,
+        'expandFull': false
+    }
+];
+
+export const settingSidebarConfiguration = [
+    {
+        '$id': '7',
+        'Action': 'http://dev-shasta.esubonline.com/TRACKpoint/versions/v61/Shasta/Bridge.asp?s=1&m=FieldNotes&session=bearerOY&xtid=2',
+        'Children': null,
+        'Key': '@settings',
+        'System': 1,
+        'Title': 'Admin',
+        'iconName': '',
+        'Ordinal': 7,
+        'Visible': true,
+        'expandFull': false
+    },
+    {
+        '$id': '7',
+        'Action': 'http://dev-shasta.esubonline.com/TRACKpoint/versions/v61/Shasta/Bridge.asp?s=1&m=FieldNotes&session=bearerOY&xtid=2',
+        'Children': null,
+        'Key': '@settings',
+        'System': 1,
+        'Title': 'Project Management',
+        'iconName': '',
+        'Ordinal': 7,
+        'Visible': true,
+        'expandFull': false
+    },
+    {
+        '$id': '7',
+        'Action': 'http://dev-shasta.esubonline.com/TRACKpoint/versions/v61/Shasta/Bridge.asp?s=1&m=FieldNotes&session=bearerOY&xtid=2',
+        'Children': null,
+        'Key': '@settings',
+        'System': 1,
+        'Title': 'List Management',
+        'iconName': '',
+        'Ordinal': 7,
+        'Visible': true,
+        'expandFull': false
+    }
+];
+
+export const sidebarConfiguration = [
+    {
+        '$id': '1',
+        'Action': '/trackpoint/1',
+        'Children': null,
+        'Key': '1',
+        'System': 1,
+        'Title': 'Corporate Management',
+        'iconName': 'assignment_turned_in',
+        'Ordinal': 1,
+        'Visible': true,
+        'expandFull': false
+    },
+    {
+        '$id': '2',
+        'Action': '/project',
+        'Children': null,
+        'Key': null,
+        'System': 1,
+        'Title': 'Select Project',
+        'iconName': 'assignment',
+        'Ordinal': 2,
+        'Visible': true,
+        'expandFull': false
+    },
+    {
+        '$id': '3',
+        'Action': '',
+        'Children': projectSidebarConfiguration,
+        'Key': '@project',
+        'System': 1,
+        'Title': '',
+        'iconName': 'event_note',
+        'Ordinal': 3,
+        'Visible': false,
+        'expandFull': false
+    },
+    {
+        '$id': '4',
+        'Action': '/time-expenses',
+        'Children': timeSidebarConfiguration,
+        'Key': 'timesheets',
+        'System': 1,
+        'Title': 'Time & Expense',
+        'iconName': 'access_time',
+        'Ordinal': 4,
+        'Visible': true,
+        'expandFull': false
+    },
+    {
+        '$id': '5',
+        'Action': '/trackpoint/5',
+        'Children': null,
+        'Key': '5',
+        'System': 1,
+        'Title': 'Resource Management',
+        'iconName': 'change_history',
+        'Ordinal': 5,
+        'Visible': true,
+        'expandFull': false
+    },
+    {
+        '$id': '6',
+        'Action': '/trackpoint/6',
+        'Children': null,
+        'Key': '6',
+        'System': 1,
+        'Title': 'Scheduling',
+        'iconName': 'today',
+        'Ordinal': 6,
+        'Visible': true,
+        'expandFull': false
+    },
+];
+
