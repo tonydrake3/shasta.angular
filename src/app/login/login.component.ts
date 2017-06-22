@@ -8,7 +8,7 @@ import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/map';
 import {UserService} from '../shared/services/user/user.service';
 import {CompanyService} from '../features/company/company.service';
-import {ProjectService} from '../features/projects/project.service';
+// import {ProjectService} from '../features/projects/project.service';
 
 @Component({
     selector: 'esub-login',
@@ -22,7 +22,9 @@ export class LoginComponent {
     errorMessage = '';
 
     constructor(private _route: ActivatedRoute, private _router: Router, private _authenticationService: AuthenticationService,
-                private _authorizationService: AuthorizationService) {}
+                private _authorizationService: AuthorizationService) {
+                  console.log('LoginComponent constructor');
+                }
 
     login () {
         this.loading = true;

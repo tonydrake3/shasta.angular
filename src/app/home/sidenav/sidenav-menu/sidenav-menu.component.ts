@@ -105,7 +105,8 @@ export class AppSidenavMenuComponent implements OnInit {
           { title: 'Project Summary ', view: 'summary' },
           {
               '$id': '1',
-              'Action': 'http://dev-shasta.esubonline.com/TRACKpoint/versions/v61/Shasta/Bridge.asp?s=1&m=FieldNotes&session=bearerOY&xtid=2',
+              'Action': `http://dev-shasta.esubonline.com/TRACKpoint/versions/v61/Shasta/Bridge.asp?s=1&m=FieldNotes&session=
+              bearerOY&xtid=2`,
               'Children': null,
               'Key': '@fieldNotes',
               'System': 1,
@@ -117,7 +118,8 @@ export class AppSidenavMenuComponent implements OnInit {
           { title: 'Submittals ', view: 'submittals' },
           {
               '$id': '5',
-              'Action': 'http://dev-shasta.esubonline.com/TRACKpoint/versions/v61/Shasta/Bridge.asp?s=1&m=FieldNotes&session=bearerOY&xtid=2',
+              'Action': `http://dev-shasta.esubonline.com/TRACKpoint/versions/v61/Shasta/Bridge.asp?s=1&m=FieldNotes&session=
+              bearerOY&xtid=2`,
               'Children': null,
               'Key': '@fieldNotes',
               'System': 1,

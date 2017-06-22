@@ -8,7 +8,7 @@ import { ProjectSelectionComponent } from '../features/projects/project-selectio
 import { AuthGuard } from '../shared/services/guards/auth-guard.service';
 import { CompanyGuard } from '../shared/services/guards/company-guard.service';
 import { ProjectGuard } from '../shared/services/guards/project-guard.service';
-import {ProjectSummaryComponent} from '../features/projects/project-summary/project-summary.component';
+// import {ProjectSummaryComponent} from '../features/projects/project-summary/project-summary.component';
 
 const routes: Routes = [
     {
@@ -19,7 +19,7 @@ const routes: Routes = [
         children: [
             { path: '', redirectTo: 'company', pathMatch: 'full' },
             { path: 'company', component: CompanySelectionComponent, canActivate: [ CompanyGuard ] },
-            // { path: 'project', loadChildren: '../features/projects/project.module#ProjectModule' },
+            { path: 'project', loadChildren: '../features/projects/project.module#ProjectModule' },
             { path: 'dashboard', component: DashboardComponent },
             { path: 'trackpoint', loadChildren: '../features/trackpoint/trackpoint.module#TrackpointModule' },
             { path: 'time-expenses', loadChildren: '../features/time-expenses/time-expenses.module#TimeExpensesModule' }

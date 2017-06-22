@@ -9,7 +9,9 @@ import { ProjectService } from './project.service';
 
 export class ProjectComponent implements OnInit {
 
-    constructor(private _projectService: ProjectService) { }
+    constructor(private _projectService: ProjectService) {
+      console.log('PROJECTCOMPONENT constructor');
+    }
 
     ngOnInit () {
 

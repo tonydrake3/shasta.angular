@@ -13,7 +13,7 @@ export class ProjectSelectionComponent implements OnInit {
 
     _projects: Project[];
 
-    constructor (private _router: Router, private _projectService: ProjectService) {}
+    constructor (private _router: Router, private _projectService: ProjectService) { }
 
     ngOnInit () {
 

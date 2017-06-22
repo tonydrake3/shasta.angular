@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 
 import { SharedModule } from '../../shared/shared.module';
 import { ProjectService } from './project.service';
-import {ProjectGuard} from '../../shared/services/guards/project-guard.service';
+// import {ProjectGuard} from '../../shared/services/guards/project-guard.service';
 import {ProjectRoutingModule, routedProjectComponents} from './project-routing.module';
 
 @NgModule({
@@ -18,7 +18,10 @@ import {ProjectRoutingModule, routedProjectComponents} from './project-routing.m
         routedProjectComponents
     ],
     providers: [
-        ProjectGuard
+        // ProjectGuard,
+        ProjectService
+    ],
+    exports: [
     ]
 })
 
