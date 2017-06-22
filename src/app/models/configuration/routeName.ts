@@ -3,5 +3,5 @@ export const routeName = {
     'login': 'login',
     'dashboard': 'dashboard',
     'company': 'company',
-    'project': 'project',
+    'project': 'project/selection',
 };

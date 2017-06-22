@@ -48,7 +48,7 @@ export class LoginComponent {
                             .map(qp => qp['redirectTo'])
                             .subscribe(
                                 redirectTo => {
-                                    const url = redirectTo ? [redirectTo] : ['/'];
+                                    const url = redirectTo ? [redirectTo] : ['company'];
                                     this._router.navigate(url);
                                 } ,
                                 error => console.log(error)

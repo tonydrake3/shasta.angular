@@ -29,7 +29,7 @@ import { OpenSearchOverlaylDirective } from './search-overlay/open-search-overla
         HomeRoutingModule,
         SharedModule,
         CommonModule,
-        ProjectModule
+        // ProjectModule
     ],
     declarations: [
       // Home
@@ -51,7 +51,7 @@ import { OpenSearchOverlaylDirective } from './search-overlay/open-search-overla
       OpenSearchOverlaylDirective,
     ],
     providers: [
-      ProjectService
+      // ProjectService
     ]
 })
 
