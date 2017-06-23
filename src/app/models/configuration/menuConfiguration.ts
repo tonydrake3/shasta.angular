@@ -159,7 +159,7 @@ export const sidebarConfiguration = [
         'Key': '',
         'System': 1,
         'Title': 'Corporate Management',
-        'iconName': 'assignment_turned_in',
+        'iconName': 'folder',
         'Ordinal': 1,
         'Visible': true,
         'expandFull': false
