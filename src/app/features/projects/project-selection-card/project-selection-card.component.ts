@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Project} from '../../../../models/domain/Project';
+import {Project} from '../../../models/domain/Project';
 
 @Component({
     selector: 'esub-project-selection-card',

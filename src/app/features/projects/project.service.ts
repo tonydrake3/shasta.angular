@@ -7,12 +7,15 @@ import { BaseStore } from '../../shared/services/base-store.service';
 @Injectable()
 export class ProjectService extends BaseStore {
 
-    selectedProject;
-
     constructor(protected _httpPassthrough: Http) {
 
         super(_httpPassthrough);
         this.init(apiRoutes.projects);
+    }
+
+    public getLatest (): Promise<any> {
+
+        return this.load();
     }
 
     get projects$ () {

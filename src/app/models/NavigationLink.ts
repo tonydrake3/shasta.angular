@@ -2,10 +2,13 @@
 
 export class NavigationLink {
   '$id': string;
+  'Ordinal': number;
   'Action': string;
-  'Children': null;
+  'Children': NavigationLink[];
   'Key': string;
   'System': number;
   'Title': string;
   'iconName': string;
+  'Visible': boolean;
+  'expandFull': boolean;
 }

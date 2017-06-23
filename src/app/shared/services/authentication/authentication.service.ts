@@ -41,8 +41,7 @@ export class AuthenticationService extends BaseHttpService {
 
         if (sessionStorage.getItem('authentication')) {
 
-            sessionStorage.removeItem('authentication');
-
+            sessionStorage.clear();
         }
 
     }

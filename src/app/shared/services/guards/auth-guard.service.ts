@@ -11,6 +11,8 @@ export class AuthGuard implements CanActivate, CanLoad {
 
     canLoad (route: Route): boolean {
 
+        console.log('AuthGuard CanLoad');
+
         if (this._authService.isLoggedIn()) return true;
 
         return false;
@@ -20,6 +22,8 @@ export class AuthGuard implements CanActivate, CanLoad {
     canActivate (route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
 
         const url: string = state.url;
+
+        console.log('AuthGuard CanActivate');
 
         if (this._authService.isLoggedIn()) return true;
 

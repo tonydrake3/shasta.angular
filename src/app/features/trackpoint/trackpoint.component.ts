@@ -5,6 +5,7 @@ import { NavigationLink } from '../../models/NavigationLink';
 
 // TODO delete me
 import { DEVMockDataService } from '../../shared/DEV-mock-data.service';
+import {sidebarConfiguration} from '../../models/configuration/menuConfiguration';
 
 @Component({
     selector: 'esub-trackpoint',
@@ -23,14 +24,15 @@ export class TrackpointComponent {
 export class TrackpointNavigationComponent implements OnInit {
   public page: string;
 
-  constructor(private route: ActivatedRoute, private devMockDataService: DEVMockDataService) { }
+  constructor(private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+      console.log('OnInit');
     this.route.params
       .subscribe(params => {
         const trackPointId = params['id'];
 
-        this.devMockDataService.navLinks.forEach((navLink: NavigationLink) => {
+        sidebarConfiguration.forEach((navLink: NavigationLink) => {
           if (navLink.$id === trackPointId) {
             this.page = JSON.stringify(navLink);
           }

@@ -2,25 +2,24 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
-import { SharedModule } from '../../shared/shared.module';
-import { ProjectSelectionComponent } from './project-selection/project-selection.component';
-import { ProjectService } from './project.service';
-import {ProjectSelectionCardComponent} from './project-selection/project-selection-card/project-selection-card.component';
-import {ProjectGuard} from '../../shared/services/guards/project-guard.service';
+// import {ProjectGuard} from '../../shared/services/guards/project-guard.service';
+import {ProjectRoutingModule, routedProjectComponents} from './project-routing.module';
+import {ProjectService} from './project.service';
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
-        SharedModule
+        ProjectRoutingModule
     ],
     declarations: [
-        ProjectSelectionComponent,
-        ProjectSelectionCardComponent
+        routedProjectComponents
     ],
     providers: [
-        ProjectService,
-        ProjectGuard
+        // ProjectGuard,
+        ProjectService
+    ],
+    exports: [
     ]
 })
 

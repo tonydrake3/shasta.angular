@@ -16,6 +16,12 @@ export class CompanyService extends BaseStore {
         this.init(apiRoutes.companyTenants);
     }
 
+    // TODO: Cast to Company object
+    public getLatest (): Promise<any> {
+
+        return this.load();
+    }
+
     get companies$ () {
 
         return this._entity$.asObservable();

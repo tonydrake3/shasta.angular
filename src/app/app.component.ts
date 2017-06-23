@@ -30,6 +30,7 @@ export class AppComponent implements OnInit {
     }
 
     ngOnInit() {
+
         this.AppConfig = APPCONFIG;
 
         // Scroll to top on route change

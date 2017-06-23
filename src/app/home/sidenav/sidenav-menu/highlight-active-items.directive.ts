@@ -12,7 +12,7 @@ export class HighlightActiveItemsDirective implements AfterViewInit {
         const $links = $el.find('a');
 
         function highlightActive(links) {
-            const path = location.hash
+            const path = location.hash;
             // console.log(path);
 
             links.each( (i, link) => {
