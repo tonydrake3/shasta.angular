@@ -10,7 +10,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "pre-check": "ng test --browsers PhantomJS --reporters spec --single-run && ng lint --type-check || true",
-    "pre-build.DEV": "ts-node git-version.ts"
+    "pre-build.DEV": "ts-node git-version.ts",
+    "code-coverage": "ng test --cc --single-run && http-server ./coverage"
   },
   "dependencies": {
     "@angular/animations": "^4.0.2",

@@ -18,6 +18,12 @@ a) To run unit tests locally run one of the following commands
 
 b) If running from within Jenkins, run `npm run test` to execute the unit tests via [Karma], includes `snyk test`
 
+## Checking unit test code coverage
+
+Run `npm run code-coverage`  (pre-req, install http-server via `npm i -g http-server`)
+
+Then navigate to the address listed in your terminal
+
 ## Running end-to-end tests
 
 end-to-end tests are handled outside of the Angular project within Robot Framework

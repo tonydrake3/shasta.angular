@@ -62,6 +62,11 @@ describe('AppComponent', () => {
       expect(document.body.scrollTop).toEqual(0);
     }));
   });
+
+  it('should set the git version', () => {
+    fixture.detectChanges();
+    expect(comp.gitVersion).toBeDefined();
+  });
 });
 
 export class MockRouter {
