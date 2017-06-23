@@ -1,61 +1,81 @@
-// Describes the suite of basic application load tests
-
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
+import { DebugElement, Injectable } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { AppComponent } from './app.component';
+import { Router, NavigationEnd } from '@angular/router';
+import { Subject } from 'rxjs/Subject';
 
 import 'hammerjs';
 
-describe('application load', () => {
+describe('AppComponent', () => {
 
   let comp:    AppComponent;
   let fixture: ComponentFixture<AppComponent>;
   let de:      DebugElement;
   let el:      HTMLElement;
+  let mockRouter;
 
-  beforeEach(() => {
+  beforeEach((done) => {
+    mockRouter = new MockRouter();
+
     TestBed.configureTestingModule({
       imports: [ RouterTestingModule ],
-      declarations: [ AppComponent ], // declare the test component
+      declarations: [ AppComponent ],
+      providers: [
+        { provide: Router, useValue: mockRouter }
+      ]
+    })
+    .compileComponents().then(() => {
+      fixture = TestBed.createComponent(AppComponent);
+
+      comp = fixture.componentInstance; // AppComponent test instance
+
+      de = fixture.debugElement;
+      el = de.nativeElement;
+      done();
+    });
+  });
+
+  describe('init', () => {
+    it('should contain router-outlet', () => {
+      expect(el.querySelector('router-outlet')).toBeTruthy();
     });
 
-    fixture = TestBed.createComponent(AppComponent);
+    it('should set the git version', () => {
+      expect(comp.gitVersion).toBeDefined();
+    });
 
-    comp = fixture.componentInstance; // AppComponent test instance
-
-    de = fixture.debugElement;
-    el = de.nativeElement;
+    it('should set app config on ngOnInit', () => {
+      fixture.detectChanges();
+      expect(comp.AppConfig).toBeDefined();
+    });
   });
 
-  // test that <router-outlet> is present in app.component
-    // proves no errors building html
-  it('should contain router-outlet', () => {
-    fixture.detectChanges();
-    expect(el.querySelector('router-outlet')).toBeTruthy();
-  });
-
-  it('should set the git version', () => {
-    fixture.detectChanges();
-    expect(comp.gitVersion).toBeDefined();
-  });
-
-  it('should set app config on ngOnInit', () => {
-    fixture.detectChanges();
-    expect(comp.AppConfig).toBeDefined();
-  });
-
-  it('should scroll to top on route change', () => {
-    console.log('scrollTop', de.nativeElement.scrollTop);
-  });
-
-  it('should route to login if ##', () => {
-
-  });
-
-  it('should route to company if ##', () => {
-
+  describe('listeners', () => {
+    it('should scroll to top on route change', fakeAsync(() => {
+      fixture.detectChanges();
+      tick();
+      document.body.scrollTop = 100;
+      mockRouter.triggerNavEvents();
+      expect(document.body.scrollTop).toEqual(0);
+    }));
   });
 });
+
+export class MockRouter {
+  public url;
+  private subject = new Subject();
+  public events = this.subject.asObservable();
+
+  navigate(url: string) {
+    this.url = url;
+    this.triggerNavEvents();
+  }
+
+  triggerNavEvents() {
+    const ne = new NavigationEnd(0, 'http://localhost:4200/#/login', 'http://localhost:4200/#/login');
+    this.subject.next(ne);
+  }
+}
