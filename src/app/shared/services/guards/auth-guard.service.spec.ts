@@ -37,6 +37,7 @@ describe('AuthGuard Service', () => {
     });
 
     spyOn(mockRouter, 'navigate');
+    spyOn(mockAuthenticationService, 'isLoggedIn').and.callThrough();
   });
 
   beforeEach(inject([AuthGuard], (auth: AuthGuard) => {
@@ -46,13 +47,16 @@ describe('AuthGuard Service', () => {
   describe('canLoad', () => {
 
     it('should return true if isLoggedIn', () => {
+      expect(authGuard.canLoad(['testRoute'])).toBeFalsy();
       mockAuthenticationService.isAuth = true;
       expect(authGuard.canLoad(['testRoute'])).toBeTruthy();
+      expect(mockAuthenticationService.isLoggedIn).toHaveBeenCalled();
     });
 
     it('should return false if !isLoggedIn', () => {
       mockAuthenticationService.isAuth = false;
       expect(authGuard.canLoad(['testRoute'])).toBeFalsy();
+      expect(mockAuthenticationService.isLoggedIn).toHaveBeenCalled();
     });
 
   });
@@ -63,12 +67,14 @@ describe('AuthGuard Service', () => {
       mockAuthenticationService.isAuth = true;
       expect(authGuard.canActivate(null, {url: 'test', root: null})).toBeTruthy();
       expect(mockRouter.navigate).not.toHaveBeenCalled();
+      expect(mockAuthenticationService.isLoggedIn).toHaveBeenCalled();
     });
 
     it('should return false if !isLoggedIn and to nav to login', () => {
       mockAuthenticationService.isAuth = false;
       expect(authGuard.canActivate(null, {url: 'test', root: null})).toBeFalsy();
       expect(mockRouter.navigate).toHaveBeenCalled();
+      expect(mockAuthenticationService.isLoggedIn).toHaveBeenCalled();
     });
   });
 });
