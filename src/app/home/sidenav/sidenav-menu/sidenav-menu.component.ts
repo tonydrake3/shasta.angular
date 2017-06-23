@@ -65,6 +65,14 @@ export class AppSidenavMenuComponent implements OnInit {
 
           this.navigationLinks.forEach((navLink: NavigationLink) => {
 
+              if (navLink.Action === '/project') {
+
+                  navLink.Title = 'Change Project';
+              }
+          });
+
+          this.navigationLinks.forEach((navLink: NavigationLink) => {
+
               if (navLink.Key === '@project') {
 
                   navLink.Visible = true;
@@ -80,6 +88,7 @@ export class AppSidenavMenuComponent implements OnInit {
 
       if (navLink.Action === '/project') {
 
+          navLink.Title = 'Select Project';
           this.clearProject();
       }
 
@@ -95,6 +104,7 @@ export class AppSidenavMenuComponent implements OnInit {
 
       sessionStorage.removeItem('project');
       this._project = undefined;
+
       this.navigationLinks.forEach((link: NavigationLink) => {
 
           if (link.Key === '@project') {
