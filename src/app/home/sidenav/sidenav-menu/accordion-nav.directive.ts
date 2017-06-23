@@ -1,11 +1,30 @@
-import { Directive, ElementRef, AfterViewInit } from '@angular/core';
+import {Directive, ElementRef, AfterViewInit, OnInit} from '@angular/core';
+import {DataSyncService} from '../../../shared/services/utilities/data-sync.service';
 
 @Directive({ selector: '[esubAccordionNav]' })
 
-export class AccordionNavDirective implements AfterViewInit {
+export class AccordionNavDirective implements OnInit, AfterViewInit {
     el: ElementRef;
-    constructor(el: ElementRef) {
+    _syncSubscription;
+
+    constructor(el: ElementRef, private _dataSync: DataSyncService) {
         this.el = el;
+    }
+
+    ngOnInit () {
+
+        this._syncSubscription = this._dataSync.project$
+            .subscribe(
+                (project) => {
+
+                    if (project) {
+
+                    }
+                },
+                (error) => {
+                    console.log(error);
+                }
+            );
     }
 
     ngAfterViewInit() {
@@ -14,8 +33,12 @@ export class AccordionNavDirective implements AfterViewInit {
 
         const $nav = $(this.el.nativeElement);
         const slideTime = 250;
-        const $lists = $nav.find('ul').parent('li');
+        const $lists = $nav.find('ul.submenu').parent('li');
         $lists.append('<i class="material-icons icon-has-ul">keyboard_arrow_down</i>');
+
+        const $values = $nav.find('ul.forward').parent('li');
+        $values.append('<i class="material-icons icon-has-ul">arrow_forward</i>');
+
         const $As = $lists.children('a');
 
 
@@ -28,9 +51,9 @@ export class AccordionNavDirective implements AfterViewInit {
         $nav.on('click', function(e) {
 
             const target = e.target;
-            const $parentLi = $(target).closest('li') // closest, insead of parent, so it still works when click on i icons
+            const $parentLi = $(target).closest('li'); // closest, insead of parent, so it still works when click on i icons
             if (!$parentLi.length) return; // return if doesn't click on li
-            const $subUl = $parentLi.children('ul')
+            const $subUl = $parentLi.children('ul');
 
 
             // let depth = $subUl.parents().length; // but some li has no sub ul, so...
@@ -41,7 +64,7 @@ export class AccordionNavDirective implements AfterViewInit {
                 if ($(this).parents().length >= depth && this !== $subUl.get(0)) {
                     return true;
                 }
-            })
+            });
             allAtDepth.slideUp(slideTime).closest('li').removeClass('open');
 
             // Toggle target
