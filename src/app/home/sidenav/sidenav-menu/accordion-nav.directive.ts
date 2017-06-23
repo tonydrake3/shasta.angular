@@ -32,9 +32,9 @@ export class AccordionNavDirective implements AfterViewInit {
         $nav.on('click', function(e) {
 
             const target = e.target;
-            const $parentLi = $(target).closest('li') // closest, insead of parent, so it still works when click on i icons
+            const $parentLi = $(target).closest('li'); // closest, insead of parent, so it still works when click on i icons
             if (!$parentLi.length) return; // return if doesn't click on li
-            const $subUl = $parentLi.children('ul')
+            const $subUl = $parentLi.children('ul');
 
 
             // let depth = $subUl.parents().length; // but some li has no sub ul, so...
@@ -45,7 +45,7 @@ export class AccordionNavDirective implements AfterViewInit {
                 if ($(this).parents().length >= depth && this !== $subUl.get(0)) {
                     return true;
                 }
-            })
+            });
             allAtDepth.slideUp(slideTime).closest('li').removeClass('open');
 
             // Toggle target

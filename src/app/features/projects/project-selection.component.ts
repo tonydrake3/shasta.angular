@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { ProjectService } from './project.service';
 import {Project} from '../../models/domain/Project';
 import {Router} from '@angular/router';
@@ -9,8 +9,9 @@ import {DataSyncService} from '../../shared/services/utilities/data-sync.service
     styles: [],
     templateUrl: './project-selection.component.html'
 })
-export class ProjectSelectionComponent implements OnInit {
+export class ProjectSelectionComponent implements OnInit, OnDestroy {
 
+    _projectSubscription;
     _projects: Project[];
 
     constructor (private _router: Router, private _projectService: ProjectService,
@@ -18,12 +19,13 @@ export class ProjectSelectionComponent implements OnInit {
 
     ngOnInit () {
 
+        console.log('ProjectSelectionComponent OnInit');
         this._projectService.getLatest();
-        this._projectService.projects$
+        this._projectSubscription = this._projectService.projects$
             .subscribe(
                 (projects) => {
                     this._projects = projects['Value'];
-                    console.log('ProjectSelection ngOnInit', this._projects);
+                    console.log('ProjectSelectionComponent projectService callback', this._projects);
                 },
                 (error) => {
                     console.log(error);
@@ -33,7 +35,7 @@ export class ProjectSelectionComponent implements OnInit {
         this._dataSync.project$
             .subscribe(
                 (project) => {
-                    console.log('ProjectSelection ngOnInit dataSync', project);
+                    console.log('ProjectSelectionComponent dataSync callback', project);
                 },
                 (error) => {
                     console.log(error);
@@ -41,10 +43,16 @@ export class ProjectSelectionComponent implements OnInit {
             );
     }
 
+    ngOnDestroy () {
+
+        this._projectSubscription.unsubscribe();
+    }
+
     selectProject (project: Project) {
 
-        console.log('ProjectSelection selectProject', project);
+        console.log('ProjectSelectionComponent selectProject', project);
         this._dataSync.setProject(project);
+        sessionStorage.setItem('project', JSON.stringify(project));
         // this._router.navigate([routeName.project, project.Id]);
     }
 }

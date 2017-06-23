@@ -26,18 +26,29 @@ export class AppSidenavMenuComponent implements OnInit {
   constructor(private devMockDataService: DEVMockDataService, private _router: Router,
               private _dataSync: DataSyncService) {
 
-    // TODO move to real service once available
-    this.navigationLinks = sidebarConfiguration;
+      this.navigationLinks = sidebarConfiguration;
 
       this.settingLinks = settingSidebarConfiguration;
 
       this.inSettings = false;
+  }
+
+  ngOnInit () {
+      console.log('Sidebar ngOnInit');
 
       this._dataSync.project$
           .subscribe(
               (project) => {
-                  // console.log('Sidebar ctor subscription', project);
-                  this.projectUpdate(project);
+                  console.log('Sidebar ctor subscription this._project before', this._project);
+                  if (sessionStorage.getItem('project')) {
+
+                      this._project = JSON.parse(sessionStorage.getItem('project'));
+                  }
+                  console.log('Sidebar ctor subscription this._project after', this._project);
+                  if (!this._project || (this._project && this._project.Id !== project.Id)) {
+
+                      this.projectUpdate(project);
+                  }
               },
               error => {
                   console.log('Error', error);
@@ -45,14 +56,10 @@ export class AppSidenavMenuComponent implements OnInit {
           )
   }
 
-  ngOnInit () {
-      console.log('Sidebar ngOnInit');
-  }
-
   projectUpdate (project: Project) {
 
+      console.log('projectUpdate start', project);
       this._project = project;
-      console.log('Sidebar ProjectUpdate', project);
 
       if (project) {
 
@@ -61,32 +68,39 @@ export class AppSidenavMenuComponent implements OnInit {
               if (navLink.Key === '@project') {
                   navLink.Visible = true;
                   navLink.Title = this._project.Name;
-                  navLink.Action = 'summary/' + this._project.Id;
-
-                  navLink.Children.forEach((navItem: NavigationLink) => {
-
-                      if (navItem.Key === 'summary') {
-
-                          navItem.Action = '/project/summary';
-                          navItem.Key = this._project.Id;
-                      }
-                  });
-              }
-          });
-      } else {
-
-          this.navigationLinks.forEach((navLink: NavigationLink) => {
-
-              if (navLink.Key === '@project') {
-                  navLink.Visible = false;
-                  navLink.Title = '';
-                  navLink.Action = '';
+                  navLink.Action = '/project/summary/' + project.Id;
+                  this.navigation(navLink);
               }
           });
       }
   }
 
+  navigation (navLink: NavigationLink) {
+
+      console.log('navigation', navLink);
+      if (navLink.Action === '/project') {
+
+          this.clearProject();
+      }
+
+      this._router.navigate([navLink.Action]);
+  }
+
   collapseView () {
       this.inSettings = !this.inSettings;
+  }
+
+  clearProject () {
+
+      console.log('Clear Project');
+      sessionStorage.removeItem('project');
+      this._project = undefined;
+      this.navigationLinks.forEach((link: NavigationLink) => {
+
+          if (link.Key === '@project') {
+              link.Visible = false;
+              link.Title = '';
+          }
+      });
   }
 }

@@ -6,30 +6,35 @@ import {ProjectRfiComponent} from './project-rfi/project-rfi.component';
 import {ProjectSubmittalsComponent} from './project-submittals/project-submittals.component';
 import {ProjectSelectionCardComponent} from './project-selection-card/project-selection-card.component';
 import {ProjectComponent} from './project.component';
+import {CreateProjectComponent} from './create-project/create-project.component';
 
 export const ProjectRoutes: Routes = [
     {
         path: '',
         component: ProjectComponent,
         children: [
-          {
+            {
               path: '',
               component: ProjectSelectionComponent
-          },
-          {
+            },
+            {
+              path: 'create',
+              component: CreateProjectComponent
+            },
+            {
               path: 'daily-reports',
               component: DailyReportsComponent
-          },
-          {
+            },
+            {
               path: 'submittals',
               component: ProjectSubmittalsComponent
-          },
-          {
+            },
+            {
               path: 'rfi',
               component: ProjectRfiComponent
-          },
-          { path: 'summary', component: ProjectSummaryComponent },
-          { path: 'summary/:id', component: ProjectSummaryComponent },
+            },
+            { path: 'summary', component: ProjectSummaryComponent },
+            { path: 'summary/:id', component: ProjectSummaryComponent },
         ]
     }
 ];
@@ -37,4 +42,4 @@ export const ProjectRoutes: Routes = [
 export const ProjectRoutingModule = RouterModule.forChild(ProjectRoutes);
 
 export const routedProjectComponents = [ ProjectComponent, ProjectSelectionComponent, ProjectSummaryComponent, DailyReportsComponent,
-    ProjectRfiComponent, ProjectSubmittalsComponent, ProjectSelectionCardComponent ];
+    ProjectRfiComponent, ProjectSubmittalsComponent, ProjectSelectionCardComponent, CreateProjectComponent ];

@@ -1,13 +1,13 @@
 <ul class="nav" esubAccordionNav esubAppendSubmenuIcon esubSlimScroll esubHighlightActiveItems>
 
     <li [ngClass]="{ 'no-display' : inSettings || !navLink.Visible }" *ngFor="let navLink of navigationLinks">
-        <a md-button [routerLink]="[navLink.Action]">
+        <a md-button (click)="navigation(navLink)">
             <i *ngIf="navLink.iconName" class="nav-icon material-icons">{{navLink.iconName}}</i>
             <span class="nav-text">{{navLink.Title}}</span>
         </a>
         <ul class="submenu" *ngIf="navLink.Children">
             <li *ngFor="let child of navLink.Children">
-                <a md-button class="md-button" [routerLink]="[child.Action, child.Key]">
+                <a md-button class="md-button" (click)="navigation(child)">
                     <span>{{child.Title}}</span>
                 </a>
             </li>
