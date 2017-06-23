@@ -14,7 +14,10 @@
         </ul>
     </li>
     <li>
-        <a md-button (click)="collapseView()"><i class="nav-icon material-icons" *ngIf="!inSettings">settings</i><span class="nav-text">{{inSettings ? 'Back to eSUB' : 'Settings'}}</span></a>
+        <a md-button (click)="collapseView()">
+            <i class="nav-icon material-icons" *ngIf="!inSettings">settings</i>
+            <span class="nav-text">{{inSettings ? 'Back to eSUB' : 'Settings'}}</span>
+        </a>
         <ul class="forward">
             <li *ngFor="let settingLink of settingLinks">
                 <a md-button class="md-button" [routerLink]="[settingLink.Action, settingLink.Key]">

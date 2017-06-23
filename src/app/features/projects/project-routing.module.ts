@@ -4,26 +4,8 @@ import {ProjectSummaryComponent} from './project-summary/project-summary.compone
 import {DailyReportsComponent} from './daily-reports/daily-reports.component';
 import {ProjectRfiComponent} from './project-rfi/project-rfi.component';
 import {ProjectSubmittalsComponent} from './project-submittals/project-submittals.component';
-// import {NgModule} from '@angular/core';
 import {ProjectSelectionCardComponent} from './project-selection-card/project-selection-card.component';
-// import {HomeComponent} from '../../home/home.component';
 import {ProjectComponent} from './project.component';
-// import {TrackpointNavigationComponent} from '../trackpoint/trackpoint.component';
-
-// export const ProjectRoutes: Routes = [
-//     { path: '', redirectTo: '/project/select', pathMatch: 'full' },
-//     {path: 'project/select', component: ProjectSelectionComponent},
-//     {path: ':id', component: ProjectSummaryComponent},
-//     {path: 'project/daily-reports', component: DailyReportsComponent},
-//     {path: 'rfi', component: ProjectRfiComponent},
-//     {path: 'submittals', component: ProjectSubmittalsComponent}
-// ];
-//
-// @NgModule({
-//     imports: [RouterModule.forChild(routes)],
-//     exports: [RouterModule],
-// })
-// export class ProjectRoutingModule { }
 
 export const ProjectRoutes: Routes = [
     {

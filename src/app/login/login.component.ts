@@ -49,6 +49,7 @@ export class LoginComponent {
                             .subscribe(
                                 redirectTo => {
                                     const url = redirectTo ? [redirectTo] : ['company'];
+                                    console.log('login redirect url', url);
                                     this._router.navigate(url);
                                 } ,
                                 error => console.log(error)

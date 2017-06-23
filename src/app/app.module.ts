@@ -8,23 +8,6 @@ import 'hammerjs';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-// // Home
-// import { HomeComponent } from './home/home.component';
-// import { PreloaderDirective } from './home/preloader.directive';
-// // Header
-// import { AppHeaderComponent } from './home/header/header.component';
-// Sidenav
-// // import { AppSidenavComponent } from './home/sidenav/sidenav.component';
-// import { ToggleOffcanvasNavDirective } from './home/sidenav/toggle-offcanvas-nav.directive';
-// import { AutoCloseMobileNavDirective } from './home/sidenav/auto-close-mobile-nav.directive';
-// // import { AppSidenavMenuComponent } from './home/sidenav/sidenav-menu/sidenav-menu.component';
-// import { AccordionNavDirective } from './home/sidenav/sidenav-menu/accordion-nav.directive';
-// import { AppendSubmenuIconDirective } from './home/sidenav/sidenav-menu/append-submenu-icon.directive';
-// import { HighlightActiveItemsDirective } from './home/sidenav/sidenav-menu/highlight-active-items.directive';
-// // Search Overaly
-// import { AppSearchOverlayComponent } from './home/search-overlay/search-overlay.component';
-// import { SearchOverlayDirective } from './home/search-overlay/search-overlay.directive';
-// import { OpenSearchOverlaylDirective } from './home/search-overlay/open-search-overlay.directive';
 
 // Pages
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -40,8 +23,8 @@ import {AuthenticationService} from './shared/services/authentication/authentica
 import {AuthGuard} from './shared/services/guards/auth-guard.service';
 import {LoginComponent} from './login/login.component';
 import {CompanyModule} from './features/company/company.module';
-// import {ProjectModule} from './features/projects/project.module';
-// import {ProjectService} from './features/projects/project.service';
+import {DataSyncService} from './shared/services/utilities/data-sync.service';
+import {SettingsModule} from './features/settings/settings.module';
 
 @NgModule({
     imports: [
@@ -61,24 +44,6 @@ import {CompanyModule} from './features/company/company.module';
     ],
     declarations: [
         AppComponent,
-        // // Home
-        // HomeComponent,
-        // PreloaderDirective,
-        // // Header
-        // AppHeaderComponent,
-        // Sidenav
-        // AppSidenavComponent,
-        // ToggleOffcanvasNavDirective,
-        // AutoCloseMobileNavDirective,
-        // AppSidenavMenuComponent,
-        // AccordionNavDirective,
-        // AppendSubmenuIconDirective,
-        // HighlightActiveItemsDirective,
-        // // Search overlay
-        // AppSearchOverlayComponent,
-        // SearchOverlayDirective,
-        // OpenSearchOverlaylDirective,
-        //
         DashboardComponent,
         LoginComponent,
         // Pages
@@ -87,7 +52,7 @@ import {CompanyModule} from './features/company/company.module';
     providers: [
         AuthenticationService,
         AuthGuard,
-        // ProjectService
+        DataSyncService
     ],
     bootstrap: [AppComponent]
 })

@@ -9,8 +9,6 @@ import {Project} from '../../models/domain/Project';
 @Injectable()
 export class ProjectService extends BaseStore {
 
-    project$ = new Subject<Project>();
-
     constructor(protected _httpPassthrough: Http) {
 
         super(_httpPassthrough);
@@ -27,16 +25,6 @@ export class ProjectService extends BaseStore {
     get projects$ () {
 
         return this._entity$.asObservable();
-    }
-
-    get selectedProject$ () {
-
-        return this.project$.asObservable();
-    }
-
-    setSelectedProject (project: Project) {
-        console.log('setSelected', project);
-        this.project$.next(project);
     }
 
 }

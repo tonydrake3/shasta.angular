@@ -20,6 +20,7 @@ const routes: Routes = [
             { path: '', redirectTo: 'company', pathMatch: 'full' },
             { path: 'company', component: CompanySelectionComponent, canActivate: [ CompanyGuard ] },
             { path: 'project', loadChildren: '../features/projects/project.module#ProjectModule' },
+            { path: 'settings', loadChildren: '../features/settings/settings.module#SettingsModule' },
             { path: 'dashboard', component: DashboardComponent },
             { path: 'trackpoint', loadChildren: '../features/trackpoint/trackpoint.module#TrackpointModule' },
             { path: 'time-expenses', loadChildren: '../features/time-expenses/time-expenses.module#TimeExpensesModule' }
