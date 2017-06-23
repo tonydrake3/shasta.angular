@@ -2,12 +2,15 @@ import { ComponentFixture, TestBed, fakeAsync, inject } from '@angular/core/test
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { AuthGuard } from './auth-guard.service';
-import { AuthenticationService } from '../authentication/authentication.service';
-
 import { Router, NavigationEnd } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+
+import { AuthGuard } from './auth-guard.service';
+import { AuthenticationService } from '../authentication/authentication.service';
+
+import { MockRouter } from '../../mocks/mock.router';
+import { MockAuthenticationService } from '../../mocks/mock.authentication.service';
 
 import 'hammerjs';
 
@@ -69,15 +72,3 @@ describe('AuthGuard Service', () => {
     });
   });
 });
-
-export class MockRouter {
-  navigate(routes, params) { }
-}
-
-export class MockAuthenticationService {
-
-  public isAuth;
-  isLoggedIn() {
-    return this.isAuth;
-  }
-}

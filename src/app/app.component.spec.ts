@@ -3,9 +3,12 @@ import { By } from '@angular/platform-browser';
 import { DebugElement, Injectable } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { AppComponent } from './app.component';
 import { Router, NavigationEnd } from '@angular/router';
 import { Subject } from 'rxjs/Subject';
+
+import { AppComponent } from './app.component';
+
+import { MockRouter } from './shared/mocks/mock.router';
 
 import 'hammerjs';
 
@@ -68,19 +71,3 @@ describe('App Component', () => {
     expect(comp.gitVersion).toBeDefined();
   });
 });
-
-export class MockRouter {
-  public url;
-  private subject = new Subject();
-  public events = this.subject.asObservable();
-
-  navigate(url: string) {
-    this.url = url;
-    this.triggerNavEvents();
-  }
-
-  triggerNavEvents() {
-    const ne = new NavigationEnd(0, 'http://localhost:4200/#/login', 'http://localhost:4200/#/login');
-    this.subject.next(ne);
-  }
-}
