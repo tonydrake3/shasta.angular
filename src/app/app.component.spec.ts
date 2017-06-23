@@ -9,7 +9,7 @@ import { Subject } from 'rxjs/Subject';
 
 import 'hammerjs';
 
-describe('AppComponent', () => {
+describe('App Component', () => {
 
   let comp:    AppComponent;
   let fixture: ComponentFixture<AppComponent>;

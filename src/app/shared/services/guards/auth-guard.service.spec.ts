@@ -11,7 +11,7 @@ import { Subject } from 'rxjs/Subject';
 
 import 'hammerjs';
 
-describe('AuthGuard', () => {
+describe('AuthGuard Service', () => {
 
   let mockRouter;
   let mockAuthenticationService;
