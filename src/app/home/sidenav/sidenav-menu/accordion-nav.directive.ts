@@ -1,11 +1,30 @@
-import { Directive, ElementRef, AfterViewInit } from '@angular/core';
+import {Directive, ElementRef, AfterViewInit, OnInit} from '@angular/core';
+import {DataSyncService} from '../../../shared/services/utilities/data-sync.service';
 
 @Directive({ selector: '[esubAccordionNav]' })
 
-export class AccordionNavDirective implements AfterViewInit {
+export class AccordionNavDirective implements OnInit, AfterViewInit {
     el: ElementRef;
-    constructor(el: ElementRef) {
+    _syncSubscription;
+
+    constructor(el: ElementRef, private _dataSync: DataSyncService) {
         this.el = el;
+    }
+
+    ngOnInit () {
+
+        this._syncSubscription = this._dataSync.project$
+            .subscribe(
+                (project) => {
+
+                    if (project) {
+
+                    }
+                },
+                (error) => {
+                    console.log(error);
+                }
+            );
     }
 
     ngAfterViewInit() {

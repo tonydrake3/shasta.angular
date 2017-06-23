@@ -25,6 +25,7 @@ import {LoginComponent} from './login/login.component';
 import {CompanyModule} from './features/company/company.module';
 import {DataSyncService} from './shared/services/utilities/data-sync.service';
 import {SettingsModule} from './features/settings/settings.module';
+import {LookupDataService} from './shared/services/utilities/lookup-data.service';
 
 @NgModule({
     imports: [
@@ -52,7 +53,8 @@ import {SettingsModule} from './features/settings/settings.module';
     providers: [
         AuthenticationService,
         AuthGuard,
-        DataSyncService
+        DataSyncService,
+        LookupDataService
     ],
     bootstrap: [AppComponent]
 })

@@ -10,13 +10,11 @@ export class DataSyncService {
 
     get project$ () {
 
-        console.log('GetProject');
         return this._project$.asObservable();
     }
 
     setProject (newProject: Project) {
 
-        console.log('Set Project');
         this._project$.next(newProject);
     }
 

@@ -1,15 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import {Router} from '@angular/router';
 
 import { NavigationLink } from '../../../models/NavigationLink';
-
-// TODO delete me
-import { DEVMockDataService } from '../../../shared/DEV-mock-data.service';
-import {ProjectService} from '../../../features/projects/project.service';
 import {Project} from '../../../models/domain/Project';
-import {Router} from '@angular/router';
-import {routeName} from '../../../models/configuration/routeName';
-import {settingSidebarConfiguration, sidebarConfiguration} from '../../../models/configuration/menuConfiguration';
+
 import {DataSyncService} from '../../../shared/services/utilities/data-sync.service';
+import {LookupDataService} from '../../../shared/services/utilities/lookup-data.service';
 
 @Component({
     selector: 'esub-app-sidenav-menu',
@@ -23,28 +19,33 @@ export class AppSidenavMenuComponent implements OnInit {
     public _project: Project;
     public inSettings: boolean;
 
-  constructor(private devMockDataService: DEVMockDataService, private _router: Router,
-              private _dataSync: DataSyncService) {
+  constructor(private _router: Router, private _dataSync: DataSyncService, private _lookup: LookupDataService) {
 
-      this.navigationLinks = sidebarConfiguration;
+      this._lookup.getLeftSidebar()
+          .then(result => {
 
-      this.settingLinks = settingSidebarConfiguration;
+              this.navigationLinks = result;
+          });
+
+      this._lookup.getSettingsMenu()
+          .then(result => {
+
+              this.settingLinks = result;
+          });
 
       this.inSettings = false;
   }
 
   ngOnInit () {
-      console.log('Sidebar ngOnInit');
 
       this._dataSync.project$
           .subscribe(
               (project) => {
-                  console.log('Sidebar ctor subscription this._project before', this._project);
+
                   if (sessionStorage.getItem('project')) {
 
                       this._project = JSON.parse(sessionStorage.getItem('project'));
                   }
-                  console.log('Sidebar ctor subscription this._project after', this._project);
                   if (!this._project || (this._project && this._project.Id !== project.Id)) {
 
                       this.projectUpdate(project);
@@ -58,7 +59,6 @@ export class AppSidenavMenuComponent implements OnInit {
 
   projectUpdate (project: Project) {
 
-      console.log('projectUpdate start', project);
       this._project = project;
 
       if (project) {
@@ -66,6 +66,7 @@ export class AppSidenavMenuComponent implements OnInit {
           this.navigationLinks.forEach((navLink: NavigationLink) => {
 
               if (navLink.Key === '@project') {
+
                   navLink.Visible = true;
                   navLink.Title = this._project.Name;
                   navLink.Action = '/project/summary/' + project.Id;
@@ -77,7 +78,6 @@ export class AppSidenavMenuComponent implements OnInit {
 
   navigation (navLink: NavigationLink) {
 
-      console.log('navigation', navLink);
       if (navLink.Action === '/project') {
 
           this.clearProject();
@@ -87,17 +87,18 @@ export class AppSidenavMenuComponent implements OnInit {
   }
 
   collapseView () {
+
       this.inSettings = !this.inSettings;
   }
 
   clearProject () {
 
-      console.log('Clear Project');
       sessionStorage.removeItem('project');
       this._project = undefined;
       this.navigationLinks.forEach((link: NavigationLink) => {
 
           if (link.Key === '@project') {
+
               link.Visible = false;
               link.Title = '';
           }

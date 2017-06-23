@@ -20,11 +20,13 @@ import { HighlightActiveItemsDirective } from './sidenav/sidenav-menu/highlight-
 import { AppSearchOverlayComponent } from './search-overlay/search-overlay.component';
 import { SearchOverlayDirective } from './search-overlay/search-overlay.directive';
 import { OpenSearchOverlaylDirective } from './search-overlay/open-search-overlay.directive';
+import {MaterialModule} from '@angular/material';
 
 @NgModule({
     imports: [
         HomeRoutingModule,
         CommonModule,
+        MaterialModule
     ],
     declarations: [
       // Home

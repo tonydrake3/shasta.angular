@@ -1,17 +1,5 @@
 export const projectSidebarConfiguration = [
     {
-        '$id': '1',
-        'Action': '/project/create',
-        'Children': null,
-        'Key': '',
-        'System': 1,
-        'Title': 'Create Project',
-        'iconName': '',
-        'Ordinal': 1,
-        'Visible': true,
-        'expandFull': false
-    },
-    {
         '$id': '2',
         'Action': '/project/summary',
         'Children': null,
