@@ -1,6 +1,6 @@
 <ul class="nav" esubAccordionNav esubAppendSubmenuIcon esubSlimScroll esubHighlightActiveItems>
 
-    <li [ngClass]="{ 'no-display' : inSettings || !navLink.Visible }" *ngFor="let navLink of navigationLinks">
+    <li [ngClass]="{ 'no-display' : inSettings || !navLink.Visible }" *ngFor="let navLink of navigationLinks" [id]="navLink.Key">
         <a md-button (click)="navigation(navLink)">
             <i *ngIf="navLink.iconName" class="nav-icon material-icons">{{navLink.iconName}}</i>
             <span class="nav-text">{{navLink.Title}}</span>
