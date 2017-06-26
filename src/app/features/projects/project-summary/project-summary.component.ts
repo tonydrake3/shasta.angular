@@ -9,11 +9,9 @@ export class ProjectSummaryComponent implements OnInit {
 
     constructor () {
 
-        console.log('ProjectSummaryCtor');
     }
 
     ngOnInit () {
 
-        console.log('ProjectSummaryInit');
     }
 }

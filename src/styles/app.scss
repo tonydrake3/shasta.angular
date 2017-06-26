@@ -17,7 +17,8 @@
 // Components
     "components/week-selector",
     "components/cards",
-"pages/_login"
+    "components/buttons",
+    "components/indicators"
 ;
 
 @import
@@ -37,4 +38,5 @@
 ,   "pages/timesheets"
 ,   "pages/company-selection"
 ,   "pages/project-selection"
+,   "pages/login"
 ;

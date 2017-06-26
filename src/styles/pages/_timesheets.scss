@@ -3,13 +3,22 @@
 
   .groupings {
 
+    > * {
+      @media(max-width: 1092px) and (min-width: 992px) {
+        font-size: 10px !important;
+      }
+       @media(max-width: 841px) {
+         font-size: 10px !important;
+       }
+    }
+
     @include noselect();
 
     label {
       @extend .label-light;
     }
     a {
-      @extend .label-reg;
+      @extend .label-regular;
       cursor: pointer;
     }
 
@@ -17,6 +26,7 @@
     > .active:hover {
       text-decoration: underline;
       cursor: default;
+      pointer-events: none;
     }
   }
 
@@ -26,9 +36,6 @@
     @include justify-content(center);
 
     button {
-      @extend .title-light;
-      background-color: $white;
-      padding: 6px 16px;
       margin: 0 12px;
       min-width: 30%;
     }
@@ -39,4 +46,117 @@
 // the card itself
 .timesheet-card {
   @extend .esub-card;
+
+  padding: 15px 10px;
+
+  // element styling
+  .card-link {
+    cursor: pointer;
+  }
+
+  // layout
+  > .row {
+    margin: 0 0;
+
+    // bottom border for each sub section
+    &:not(:last-of-type):after {
+      content: ' ';
+      height: 1px;
+      width: 96%;
+      margin-left: 2%;
+      align-self: center;
+      background-color: $black-10;
+    }
+
+    .card-title {
+      margin-top: -4px;
+    }
+    .card-subtitle {
+      margin-top: 4px;
+    }
+
+    // grid buildup
+    .col-md-1 {
+      text-align: center;
+      .row {
+        display: inherit;
+        padding: 4px 0;
+      }
+    }
+  }
+
+  .card-date {
+    white-space: nowrap;
+    @media(max-width: 1100px) and (min-width: 992px) {
+      font-size: 10px;
+    }
+    @media(max-width: 991px) and (min-width: 786px) {
+      font-size: 12px;
+    }
+    @media(max-width: 785px) {
+      font-size: 10px;
+    }
+  }
+
+  // specific to the block of hours, chat bubbles, checkboxes, etc...
+  section {
+
+    // had to build the border for these sections a little differently than above
+    &:after {
+      display: block;
+      content: ' ';
+      height: 1px;
+      margin-top: -20px;
+      width: 96%;
+      margin-left: 2%;
+      align-self: center;
+      background-color: $black-10;
+    }
+
+    .row {
+      margin: 12px 0;
+
+      // left side
+      .col-md-4 {
+        margin-left: 15px;
+        margin-right: -15px;
+        padding: 0;
+
+        .row {
+          padding: 4px 0;
+        }
+      }
+      // right side columns under days
+      .col-md-1 {
+        text-align: center;
+        .row {
+          display: inherit;
+          padding: 4px 0;
+        }
+      }
+
+      // chat bubbles
+      i {
+        color: $gray;
+      }
+
+      .hidden {
+        visibility: hidden;
+      }
+    }
+
+    // for the select links
+    .card-link {
+      margin: 0 !important;
+
+      .row {
+        margin-top: 0
+      }
+    }
+  }
+
+  .hours-total {
+    margin-top: 16px;
+    margin-bottom: 4px;
+  }
 }
