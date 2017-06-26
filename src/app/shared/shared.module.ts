@@ -12,9 +12,10 @@ import {DataSyncService} from './services/utilities/data-sync.service';
 
 // Components
 import { WeekSelectorComponent } from './components/week-selector.component';
-
 import { DEVMockDataService } from './DEV-mock-data.service';
 
+// Pipes
+import {StatusPipe} from './pipes/status.pipe';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { DEVMockDataService } from './DEV-mock-data.service';
     declarations: [
         EChartsDirective,
         SlimScrollDirective,
-        WeekSelectorComponent
+        WeekSelectorComponent,
+        StatusPipe
     ],
     providers: [
         AuthorizationService,
@@ -36,7 +38,8 @@ import { DEVMockDataService } from './DEV-mock-data.service';
     exports: [
         EChartsDirective,
         SlimScrollDirective,
-        WeekSelectorComponent
+        WeekSelectorComponent,
+        StatusPipe
     ]
 })
 
