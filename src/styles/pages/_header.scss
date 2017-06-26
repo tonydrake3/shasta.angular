@@ -73,7 +73,7 @@
         border-radius: 50%;
         color: $true-white;
         background-color: $black;
-        @extend .title-bold;
+        @extend .header-link;
         margin-top: -5px;
         font-size: 20px;
         line-height: 21px;

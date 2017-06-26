@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { DateFormatterService } from '../../shared/services/utilities/date-formatter.service';
+import { WeekDateRange } from '../../models/Date';
 
 import * as moment from 'moment';
 import * as _ from 'lodash';
@@ -12,26 +12,30 @@ import { DEVMockDataService } from '../../shared/DEV-mock-data.service';
 @Component({
     selector: 'esub-time-expenses',
     styles: [],
-    templateUrl: './time-expenses.component.html',
-    providers: [DateFormatterService]
+    templateUrl: './time-expenses.component.html'
 })
 export class TimeExpensesComponent implements OnInit {
 
   private timerecords: Array<any>; // TODO properly type
-  private timesheets: Array<any>;
+  // private timesheets: Array<any>;
 
-  public startDate: moment.Moment;
-  public endDate: moment.Moment;
+  public dateRange: WeekDateRange;
 
   public view: string;
+  public groupTimesheetsBy: string;
+  public showFilter: string;
 
-  constructor(private devMockDataService: DEVMockDataService, private activatedRoute: ActivatedRoute,
-    private dateFormatterService: DateFormatterService) {
+  @ViewChild('timesheets') timesheetsComponent;
+
+  constructor(private devMockDataService: DEVMockDataService, private activatedRoute: ActivatedRoute) {
 
     //  TODO get data
-    this.timesheets = [];
+    // this.timesheets = [];
     this.timerecords = this.devMockDataService.timeRecords;
-    this.groupTimesheets();
+    // this.groupTimesheets();
+
+    this.groupTimesheetsBy = 'employee';
+    this.showFilter = 'all';
   }
 
   ngOnInit() {
@@ -42,18 +46,26 @@ export class TimeExpensesComponent implements OnInit {
     });
   }
 
-  // TODO something useful
-  groupTimesheets() {
-    this.timerecords.forEach(timeRecord => {
-      const timeSheet = [];
-      timeSheet['fullName'] = timeRecord.Employee.FirstName + ' ' + timeRecord.Employee.LastName;
-      this.timesheets.push(timeSheet);
-    });
+  groupTimesheets(grouping: string) {
+    this.groupTimesheetsBy = grouping;
+    // grouping done by timesheet-card component
+    this.buildTimesheets();
   }
 
   dateChanged(e) {
-    this.startDate = e.startDate;
-    this.endDate = e.endDate;
+    this.dateRange = e;
+    // TODO do date range filter on timerecords
+    this.buildTimesheets();
+  }
+
+  filterResults(filter: string) {
+    if (filter) this.showFilter = filter;
+    // TODO do mine vs all filter on timerecords
+    this.buildTimesheets();
+  }
+
+  buildTimesheets() {
+    this.timesheetsComponent.buildTimesheets(this.timerecords, this.dateRange, this.groupTimesheetsBy);
   }
 
   newTimesheet() {}

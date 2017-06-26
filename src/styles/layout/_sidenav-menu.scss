@@ -1,46 +1,51 @@
 // side menu styling
 esub-app-sidenav-menu {
 
-  // menu buttons
-  ul > li {
-    padding: 4px 0;
+  // menu
+  ul {
+    padding-top: 8px;
 
-    // active link
-    &.active > a {
-      background-color: $yellow !important;
-      color: $black !important;
-    }
+    // links
+    li {
+      padding: 4px 0;
 
-    .mat-button-wrapper {
-
-      // label
-      span {
-        @extend .nav-link;
-      }
-
-      // icon
-      i {
-        font-size: 22px;
+      // active link
+      &.active > a {
+        background-color: $yellow !important;
         color: $black !important;
       }
-    }
 
-    > i {
-      cursor: pointer;
-    }
+      .mat-button-wrapper {
 
-    // open sub menu
-    &.open {
+        // label
+        span {
+          @extend .nav-link;
+        }
 
-      ul > li:nth-child(odd) {
-        background-color: $sub-nav-link-odd;
+        // icon
+        i {
+          font-size: 22px;
+          color: $black !important;
+        }
       }
-      ul > li:nth-child(even) {
-        background-color: $sub-nav-link-even;
+
+      > i {
+        cursor: pointer;
       }
 
-      > .icon-has-ul {
-        color: $black !important;
+      // open sub menu
+      &.open {
+
+        ul > li:nth-child(odd) {
+          background-color: $sub-nav-link-odd;
+        }
+        ul > li:nth-child(even) {
+          background-color: $sub-nav-link-even;
+        }
+
+        > .icon-has-ul {
+          color: $black !important;
+        }
       }
     }
   }
