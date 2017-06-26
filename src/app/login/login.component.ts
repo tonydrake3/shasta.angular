@@ -22,9 +22,7 @@ export class LoginComponent {
     errorMessage = '';
 
     constructor(private _route: ActivatedRoute, private _router: Router, private _authenticationService: AuthenticationService,
-                private _authorizationService: AuthorizationService) {
-                  console.log('LoginComponent constructor');
-                }
+                private _authorizationService: AuthorizationService) { }
 
     login () {
         this.loading = true;
@@ -32,7 +30,7 @@ export class LoginComponent {
             .subscribe(
                 data => {
 
-                    console.log('Authenticated');
+                    // console.log('Authenticated');
                     sessionStorage.setItem('authentication', JSON.stringify(data));
 
                     if (this._authenticationService.isLoggedIn()) {
@@ -49,7 +47,7 @@ export class LoginComponent {
                             .subscribe(
                                 redirectTo => {
                                     const url = redirectTo ? [redirectTo] : ['company'];
-                                    console.log('login redirect url', url);
+                                    // console.log('login redirect url', url);
                                     this._router.navigate(url);
                                 } ,
                                 error => console.log(error)

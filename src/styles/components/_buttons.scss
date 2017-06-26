@@ -1,0 +1,25 @@
+// esub button styling
+
+button.esub-button,
+.esub-button-group > button {
+  @extend .title-light;
+  padding: 6px 16px;
+  text-transform: capitalize;
+
+  &.primary {
+    background-color: $white;
+    color: $black;
+  }
+  &.danger {
+    background-color: $red;
+    color: $white;
+  }
+  &.success {
+    background-color: $green;
+    color: $white;
+  }
+  &.secondary {
+    background-color: $blue;
+    color: $white;
+  }
+}

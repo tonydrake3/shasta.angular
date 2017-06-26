@@ -19,88 +19,134 @@
 	}
 }
 
-// heading defs
+//
+// base
+//
+
+// heading			|			bold
+// title				|			regular
+// paragraph		|			lite
+// label				|			thin
 
 h1, .h1 {
-	@include roboto-font-stack(16px, 300, $black);
+	@include roboto-font-stack(36px, 300, $black);
 }
-
 h2, .h2 {
-	@include roboto-font-stack(12px, 300, $black);
+	@include roboto-font-stack(30px, 300, $black);
 }
-
 h3, .h3 {
-	@include roboto-font-stack(10.5px, 300, $black);
+	@include roboto-font-stack(26px, 300, $black);
 }
-
-// title
+h4, .h4 {
+	@include roboto-font-stack(22px, 300, $black);
+}
+h5, .h5 {
+	@include roboto-font-stack(20px, 300, $black);
+}
 
 .title-bold {
 	@include roboto-font-stack(16px, bold, $black);
 }
-
-.title-reg {
+.title-regular {
 	@include roboto-font-stack(16px, normal, $black);
 }
-
 .title-light {
 	@include roboto-font-stack(16px, 300, $black);
 }
-
-.small-titles {
-	@include roboto-font-stack(6px, bold, $black);
-	letter-spacing: 0.2px;
+.title-disabled {
+	@include roboto-font-stack(16px, normal, $gray);
 }
 
-.nav-link {
-	@include roboto-font-stack(15px, normal, $black);
+.paragraph-bold {
+	@include roboto-font-stack(14.5px, bold, $black);
+}
+.paragraph-regular {
+	@include roboto-font-stack(14.5px, normal, $black);
+}
+.paragraph-light {
+	@include roboto-font-stack(14.5px, 300, $black);
+}
+.paragraph-disabled {
+	@include roboto-font-stack(14.5px, normal, $gray);
 }
 
-.nav-subtitle {
-	@include roboto-font-stack(6px, normal, $true-black);
+.label-bold {
+	@include roboto-font-stack(12.5px, bold, $black);
 }
-
-// cell
-
-.cell-title {
-	@include roboto-font-stack(8.5px, 500, $true-black);
-}
-
-.cell-copy {
-	@include roboto-font-stack(7.5px, normal, $gray-20);
-}
-
-.cell-subtitle {
-	@include roboto-font-stack(7.5px, normal, $black);
-}
-
-.cell-description {
-	@include SFUIText-font-stack(6.5px, normal, $gray-40);
-	letter-spacing: -0px;
-}
-
-// comment
-
-.comment-detail {
-	@include roboto-font-stack(7px, bold, $warm-grey);
-}
-
-// misc
-
-.label-reg {
+.label-regular {
 	@include roboto-font-stack(12.5px, normal, $black);
 }
-
 .label-light {
-	@include roboto-font-stack(11.5px, 300, $black);
+	@include roboto-font-stack(12.5px, 300, $black);
+}
+.label-disabled {
+	@include roboto-font-stack(12.5px, normal, $gray);
 }
 
-.tab-bar-text {
-	@include roboto-font-stack(5px, 500, $black);
-	letter-spacing: 0.1px;
+.accent-bold {
+	@include roboto-font-stack(10px, bold, $black);
+}
+.accent-regular {
+	@include roboto-font-stack(10px, normal, $black);
+}
+.accent-light {
+	@include roboto-font-stack(10px, 300, $black);
+}
+.accent-disabled {
+	@include roboto-font-stack(10px, normal, $gray);
 }
 
-.calendar-days,
-.calendar-days-blocked {
-	@include roboto-font-stack(8.5px, bold, $black);
+//
+// components
+//
+
+button {
+	@extend .paragraph-regular;
+}
+
+//
+// page specific
+//
+
+// header
+.header-link {
+	@extend .title-bold;
+}
+
+// navigation
+.nav-link {
+	@extend .title-regular;
+}
+
+// cards
+.card-title {
+	@extend .title-light;
+}
+.card-subtitle {
+	@extend .paragraph-regular;
+}
+.card-section {
+	@extend .label-bold;
+}
+.card-subsection {
+	@extend .label-disabled;
+}
+.card-link {
+	@extend .accent-disabled;
+	letter-spacing: 1.2;
+}
+.card-hours {
+	@extend .title-regular;
+}
+.card-hours-disabled {
+	@extend .title-disabled;
+}
+.card-day {
+	@extend .paragraph-light;
+}
+.card-date {
+	@extend .label-disabled;
+}
+.card-total-hours {
+	@extend .title-light;
 }

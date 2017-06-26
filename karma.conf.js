@@ -48,6 +48,10 @@ module.exports = function (config) {
     logLevel: config.LOG_INFO,
     autoWatch: true,
     browsers: ['Chrome', 'PhantomJS'],
-    singleRun: false
+    singleRun: false,
+    // below is bits for testing out why PhantomJS is barfing sometimes in Jenkins
+    browserNoActivityTimeout: 100000,     // default 10,000ms
+    browserDisconnectTolerance: 5,        // default 0
+    retryLimit: 5                         // default 2
   });
 };
