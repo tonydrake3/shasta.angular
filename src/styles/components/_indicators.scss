@@ -1,0 +1,28 @@
+// usage
+// <div class="indicator"><div class="green"></div></div>
+
+.indicator {
+
+  display: flex;
+  justify-content: center;
+
+  > div {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    align-self: center;
+
+    &.green {
+      background-color: $green;
+    }
+    &.yellow {
+      background-color: $yellow;
+    }
+    &.red {
+      background-color: $red;
+    }
+    &.blue {
+      background-color: $blue;
+    }
+  }
+}

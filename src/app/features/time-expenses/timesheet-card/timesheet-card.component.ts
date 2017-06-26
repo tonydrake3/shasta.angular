@@ -42,17 +42,22 @@ export class TimesheetCardComponent {
         }
         this.timecards.push({
           cardTitle: cardTitle
-        })
+        });
+
+        // dupe, just to fill up the page a little
+        this.timecards.push({
+          cardTitle: cardTitle
+        });
 
       }
     }
 
-    console.log(dateRange);
-    console.log(groupedTimerecords);
+    // console.log(dateRange);
+    // console.log(groupedTimerecords);
   }
 
   buildWeekDateRangeDetails(dateRange: WeekDateRange) {
-    console.log('starting range', dateRange);
+    // console.log('starting range', dateRange);
     const weekDateRangeDetails = new Array<WeekDateRangeDetails>();
 
 
@@ -72,7 +77,7 @@ export class TimesheetCardComponent {
       day.add(1, 'days');
     }
 
-    console.log('built details', weekDateRangeDetails);
+    // console.log('built details', weekDateRangeDetails);
     return weekDateRangeDetails;
   }
 
@@ -121,7 +126,7 @@ export class TimesheetCardComponent {
   }
 
   employeeNames = {
-    '55827eb4-4d86-4cc0-b202-04b43453ce4d': 'FName1 LName2'
+    '55827eb4-4d86-4cc0-b202-04b43453ce4d': 'Charles Woods'
   }
 
   projectNames = {

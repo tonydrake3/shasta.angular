@@ -4,27 +4,295 @@
   <div class="row">
 
     <!-- name/project heading area -->
-    <div class="col-md-4">
+    <div class="col-md-4 card-title">
       {{timecard.cardTitle}}
+      <p class="card-subtitle">
+        Title
+      </p>
     </div>
 
     <!-- repeater for each day -->
-    <div class="col-md-1" *ngFor='let day of dateRange'>
+    <div class="col-md-1 card-day" *ngFor='let day of dateRange'>
       {{day.dayString}}
+      <p class="card-date">
+        {{day.dateString}}
+      </p>
     </div>
 
   </div>
 
+    <!-- repeater section for each system/phase/costcode -->
+  <section>
 
+    <!-- project name & hours -->
+    <div class="row">
+      <div class="col-md-4 card-section">
+        Project Name
+      </div>
+      <div class="col-md-1 card-hours-disabled">
+        0
+      </div>
+      <div class="col-md-1 card-hours">
+        7.25
+      </div>
+      <div class="col-md-1 card-hours">
+        8.5
+      </div>
+      <div class="col-md-1 card-hours">
+        3
+      </div>
+      <div class="col-md-1 card-hours">
+        5
+      </div>
+      <div class="col-md-1 card-hours">
+        7
+      </div>
+      <div class="col-md-1 card-hours">
+        2
+      </div>
+    </div>
 
-  <!-- repeater row for each system/phase/costcode -->
-  <div class="row">
-    system/phase/costcode
-  </div>
+    <!-- system phase and indicators -->
+    <div class="row">
+      <div class="col-md-4 card-subsection">
+        System - Phase
+      </div>
+      <div class="col-md-1 indicator hidden">
+        <div class=""></div>
+      </div>
+      <div class="col-md-1 indicator">
+        <div class="green"></div>
+      </div>
+      <div class="col-md-1 indicator">
+        <div class="green"></div>
+      </div>
+      <div class="col-md-1 indicator">
+        <div class="green"></div>
+      </div>
+      <div class="col-md-1 indicator">
+        <div class="yellow"></div>
+      </div>
+      <div class="col-md-1 indicator">
+        <div class="red"></div>
+      </div>
+      <div class="col-md-1 indicator">
+        <div class="yellow"></div>
+      </div>
+    </div>
 
+    <!-- cost code and chat boxes -->
+    <div class="row">
+      <div class="col-md-4 card-section">
+        Cost Code
+      </div>
+      <div class="col-md-1">
+        <i class="material-icons">chat</i>
+      </div>
+      <div class="col-md-1">
+        <i class="material-icons">chat</i>
+      </div>
+      <div class="col-md-1">
+        <i class="material-icons">chat</i>
+      </div>
+      <div class="col-md-1">
+        <i class="material-icons">chat</i>
+      </div>
+      <div class="col-md-1">
+        <i class="material-icons">chat</i>
+      </div>
+      <div class="col-md-1">
+        <i class="material-icons">chat</i>
+      </div>
+      <div class="col-md-1">
+        <i class="material-icons">chat</i>
+      </div>
+    </div>
+
+    <!-- selectors and checkboxes -->
+    <div class="row">
+      <div class="col-md-4 card-link">
+        <div class="row">
+          <div class="col-md-4">
+            Select All
+          </div>
+          <div class="col-md-4">
+            Unselect All
+          </div>
+        </div>
+      </div>
+      <div class="col-md-1 hidden">
+        <md-checkbox></md-checkbox>
+      </div>
+      <div class="col-md-1">
+        <md-checkbox></md-checkbox>
+      </div>
+      <div class="col-md-1">
+        <md-checkbox></md-checkbox>
+      </div>
+      <div class="col-md-1">
+        <md-checkbox></md-checkbox>
+      </div>
+      <div class="col-md-1">
+        <md-checkbox></md-checkbox>
+      </div>
+      <div class="col-md-1">
+        <md-checkbox></md-checkbox>
+      </div>
+      <div class="col-md-1">
+        <md-checkbox></md-checkbox>
+      </div>
+    </div>
+
+  </section>
+
+  <section>
+
+    <!-- project name & hours -->
+    <div class="row">
+      <div class="col-md-4 card-section">
+        Project Name
+      </div>
+      <div class="col-md-1 card-hours-disabled">
+        0
+      </div>
+      <div class="col-md-1 card-hours">
+        7.25
+      </div>
+      <div class="col-md-1 card-hours">
+        8.5
+      </div>
+      <div class="col-md-1 card-hours">
+        3
+      </div>
+      <div class="col-md-1 card-hours">
+        5
+      </div>
+      <div class="col-md-1 card-hours">
+        7
+      </div>
+      <div class="col-md-1 card-hours">
+        2
+      </div>
+    </div>
+
+    <!-- system phase and indicators -->
+    <div class="row">
+      <div class="col-md-4 card-subsection">
+        System - Phase
+      </div>
+      <div class="col-md-1 indicator hidden">
+        <div class=""></div>
+      </div>
+      <div class="col-md-1 indicator">
+        <div class="green"></div>
+      </div>
+      <div class="col-md-1 indicator">
+        <div class="green"></div>
+      </div>
+      <div class="col-md-1 indicator">
+        <div class="green"></div>
+      </div>
+      <div class="col-md-1 indicator">
+        <div class="yellow"></div>
+      </div>
+      <div class="col-md-1 indicator">
+        <div class="red"></div>
+      </div>
+      <div class="col-md-1 indicator">
+        <div class="yellow"></div>
+      </div>
+    </div>
+
+    <!-- cost code and chat boxes -->
+    <div class="row">
+      <div class="col-md-4 card-section">
+        Cost Code
+      </div>
+      <div class="col-md-1">
+        <i class="material-icons">chat</i>
+      </div>
+      <div class="col-md-1">
+        <i class="material-icons">chat</i>
+      </div>
+      <div class="col-md-1">
+        <i class="material-icons">chat</i>
+      </div>
+      <div class="col-md-1">
+        <i class="material-icons">chat</i>
+      </div>
+      <div class="col-md-1">
+        <i class="material-icons">chat</i>
+      </div>
+      <div class="col-md-1">
+        <i class="material-icons">chat</i>
+      </div>
+      <div class="col-md-1">
+        <i class="material-icons">chat</i>
+      </div>
+    </div>
+
+    <!-- selectors and checkboxes -->
+    <div class="row">
+      <div class="col-md-4 card-link">
+        <div class="row">
+          <div class="col-md-4">
+            Select All
+          </div>
+          <div class="col-md-4">
+            Unselect All
+          </div>
+        </div>
+      </div>
+      <div class="col-md-1 hidden">
+        <md-checkbox></md-checkbox>
+      </div>
+      <div class="col-md-1">
+        <md-checkbox></md-checkbox>
+      </div>
+      <div class="col-md-1">
+        <md-checkbox></md-checkbox>
+      </div>
+      <div class="col-md-1">
+        <md-checkbox></md-checkbox>
+      </div>
+      <div class="col-md-1">
+        <md-checkbox></md-checkbox>
+      </div>
+      <div class="col-md-1">
+        <md-checkbox></md-checkbox>
+      </div>
+      <div class="col-md-1">
+        <md-checkbox></md-checkbox>
+      </div>
+    </div>
+
+  </section>
 
   <!-- footer row -->
-  <div class="row">
-    hours n such
+  <div class="row hours-total">
+    <div class="col-md-4 card-hours">
+      46.5 Hours Total
+    </div>
+    <div class="col-md-1 card-total-hours">
+      0
+    </div>
+    <div class="col-md-1 card-total-hours">
+      8
+    </div>
+    <div class="col-md-1 card-total-hours">
+      8.5
+    </div>
+    <div class="col-md-1 card-total-hours">
+      6
+    </div>
+    <div class="col-md-1 card-total-hours">
+      8
+    </div>
+    <div class="col-md-1 card-total-hours">
+      8
+    </div>
+    <div class="col-md-1 card-total-hours">
+      8
+    </div>
   </div>
 </div>
