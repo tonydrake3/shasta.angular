@@ -54,6 +54,11 @@ describe('App Component', () => {
       fixture.detectChanges();
       expect(comp.AppConfig).toBeDefined();
     });
+
+    it('should set the git version', () => {
+      fixture.detectChanges();
+      expect(comp.gitVersion).toBeDefined();
+    });
   });
 
   describe('listeners', () => {
@@ -64,10 +69,5 @@ describe('App Component', () => {
       mockRouter.triggerNavEvents();
       expect(document.body.scrollTop).toEqual(0);
     }));
-  });
-
-  it('should set the git version', () => {
-    fixture.detectChanges();
-    expect(comp.gitVersion).toBeDefined();
   });
 });

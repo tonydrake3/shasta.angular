@@ -27,7 +27,6 @@ export class TrackpointNavigationComponent implements OnInit {
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-      console.log('OnInit');
     this.route.params
       .subscribe(params => {
         const trackPointId = params['id'];
