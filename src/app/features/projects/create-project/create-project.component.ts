@@ -9,11 +9,11 @@ export class CreateProjectComponent implements OnInit {
 
     constructor () {
 
-        console.log('CreateProject Ctor');
+        // console.log('CreateProject Ctor');
     }
 
     ngOnInit () {
 
-        console.log('CreateProject OnInit');
+        // console.log('CreateProject OnInit');
     }
 }

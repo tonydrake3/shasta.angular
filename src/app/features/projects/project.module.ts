@@ -7,12 +7,14 @@ import {ProjectRoutingModule, routedProjectComponents} from './project-routing.m
 import {ProjectService} from './project.service';
 import {SHARED_FORM_DIRECTIVES} from '@angular/forms/src/directives';
 import {SharedModule} from '../../shared/shared.module';
+import {MaterialModule} from '@angular/material';
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
         ProjectRoutingModule,
+        MaterialModule,
         SharedModule
     ],
     declarations: [

@@ -16,7 +16,7 @@ export class Project {
     CostCodes?: CostCode[];
     Division?: Division;
     // Engineer?: Engineer; // TODO: Add model?
-    Employees?: Employee;
+    People?: Employee;
     Id?: string;
     IsHidden?: boolean;
     IsTemplate?: boolean;
