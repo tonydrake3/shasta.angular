@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, fakeAsync, inject } from '@angular/core/testing';
+import { ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
