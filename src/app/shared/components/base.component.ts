@@ -1,18 +1,27 @@
 // BaseComponent
+// for sample usage see https://teamesub.atlassian.net/wiki/display/SH/Base+Component
+// **note about ngOnDestroy
+  // this component handles OnDestroy events and clean up all injected subsriptions. If your inheriting component
+  //   wishes to also use Angular's OnDestroy that's fine, but you must also call super.ngOnDestroy() to handle this cleanup
 
-import { Component, Injector } from '@angular/core';
+import { Component, Injector, OnDestroy } from '@angular/core';
+import { Subscriber } from 'rxjs/Rx';
 
-import { AutomaticallyInjectedService } from './sample-usage-base.component';
+// imports for autoInjection
+import { ProjectService } from '../../features/projects/project.service';
 
 @Component({ })
-export class BaseComponent {
+export class BaseComponent implements OnDestroy {
   private autoInjections: Array<AutomaticInjectionProvider>;
+  private subscriptionList: Array<Subscriber<any>>;
 
   constructor(protected injector: Injector, injectionRequests: Array<AutomaticInjectionRequest>) {
+    this.subscriptionList = new Array();
+
     // list of services to automatically inject, if requested by child component
     //   must provide them in the constructor
     this.autoInjections = [
-      { key: 'AutomaticallyInjectedService', serviceObject: AutomaticallyInjectedService, subject: 'subject$', initializer: 'myInitMethod' }
+      { key: 'ProjectService', serviceObject: ProjectService, subject: 'projects$', initializer: 'getLatest' }
     ];
 
     // and inject them
@@ -31,10 +40,11 @@ export class BaseComponent {
         }
       });
 
-      // if requested
-      if (requested && requestedCallback) {
+      // if requested or requests is empty []  (which indicates inheritor wants all autoInjections)
+      if ((requested && requestedCallback) || injectionRequests.length === 0) {
         auto.serviceRef = injector.get(auto.serviceObject);   // get reference to service
-        auto.serviceRef[auto.subject].subscribe(data => { this[requestedCallback](data) });  // subscribe to Observable
+        const sub = auto.serviceRef[auto.subject].subscribe(data => { this[requestedCallback](data) });  // subscribe to Observable
+        this.subscriptionList.push(sub);  // save subscription, to later unsubscribe from
         auto.serviceRef[auto.initializer]();  // call initalizer
       }
     });
@@ -45,9 +55,17 @@ export class BaseComponent {
   inject(injections: Array<DynamicInjectionRequest>) {
     injections.forEach(injection => {
       const service = this.injector.get(injection.toInject);   // get reference to service
-      service[injection.subject].subscribe(data => { this[injection.callback](data) });  // subscribe to Observable
+      const sub = service[injection.subject].subscribe(data => { this[injection.callback](data) });  // subscribe to Observable
+      this.subscriptionList.push(sub);  // save subscription, to later unsubscribe from
       service[injection.initializer]();  // call initalizer
     });
+  }
+
+  // unsubscribe from all subscriptions
+  ngOnDestroy() {
+    this.subscriptionList.forEach(sub => {
+      sub.unsubscribe();
+    })
   }
 }
 

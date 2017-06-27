@@ -10,7 +10,7 @@ import { WeekSelectorComponent } from './week-selector.component';
 import * as moment from 'moment';
 import 'hammerjs';
 
-describe('week selector', () => {
+describe('WeekSelector Component', () => {
 
   let comp:    WeekSelectorComponent;
   let fixture: ComponentFixture<WeekSelectorComponent>;
