@@ -1,0 +1,277 @@
+
+export const mockProjects = {
+    Value: [
+        {
+            '$id': '2',
+            'Address': {
+                '$id': '3',
+                'Address1': '222 Jennings St',
+                'Address2': null,
+                'Address3': null,
+                'City': 'Miami',
+                'CountryId': null,
+                'Email': null,
+                'Fax': null,
+                'HomePhone': null,
+                'Mobile': null,
+                'Pager': null,
+                'Phone': null,
+                'State': 'FL',
+                'TollFree': null,
+                'Website': null,
+                'Zip': null
+            },
+            'Architect': {
+                '$id': '4',
+                'Address': {
+                    '$id': '5',
+                    'Address1': null,
+                    'Address2': null,
+                    'Address3': null,
+                    'City': null,
+                    'CountryId': null,
+                    'Email': null,
+                    'Fax': null,
+                    'HomePhone': null,
+                    'Mobile': null,
+                    'Pager': null,
+                    'Phone': null,
+                    'State': null,
+                    'TollFree': null,
+                    'Website': null,
+                    'Zip': null
+                },
+                'Contact': {
+                    '$id': '6',
+                    'CompanyName': 'Test Company 1',
+                    'FirstName': 'Jim',
+                    'LastName': 'Bedemy',
+                    'Id': '9d4c06aa-57f1-4221-baf4-e26913bf5298',
+                    'IsInactive': false
+                },
+                'ContactId': '9d4c06aa-57f1-4221-baf4-e26913bf5298'
+            },
+            'Comments': null,
+            'ContractNumber': null,
+            'Engineer': null,
+            'Id': 'f96d007e-c662-4b36-b81b-52ad9a287306',
+            'IsHidden': false,
+            'IsTemplate': false,
+            'IsTraining': false,
+            'MarketArea': {
+                '$id': '7',
+                'Id': '8dfea657-4046-496f-b584-7c9101f3b835',
+                'Name': 'Test Market',
+                'Number': '1'
+            },
+            'Name': 'Project A',
+            'Number': '1',
+            'CostCodes': [],
+            'Owner': null,
+            'ProjectEngineer': null,
+            'ProjectManager': {
+                '$id': '8',
+                'Address': {
+                    '$id': '9',
+                    'Address1': null,
+                    'Address2': null,
+                    'Address3': null,
+                    'City': null,
+                    'CountryId': null,
+                    'Email': null,
+                    'Fax': null,
+                    'HomePhone': null,
+                    'Mobile': null,
+                    'Pager': null,
+                    'Phone': null,
+                    'State': null,
+                    'TollFree': null,
+                    'Website': null,
+                    'Zip': null
+                },
+                'Contact': {
+                    '$id': '10',
+                    'CompanyName': 'Test Company 1',
+                    'FirstName': 'Jim',
+                    'LastName': 'Bedemy',
+                    'Id': '9d4c06aa-57f1-4221-baf4-e26913bf5298',
+                    'IsInactive': false
+                },
+                'ContactId': '9d4c06aa-57f1-4221-baf4-e26913bf5298'
+            },
+            'Salesman': null,
+            'Status': 1,
+            'Superintendent': {
+                '$id': '11',
+                'Address': {
+                    '$id': '12',
+                    'Address1': null,
+                    'Address2': null,
+                    'Address3': null,
+                    'City': null,
+                    'CountryId': null,
+                    'Email': null,
+                    'Fax': null,
+                    'HomePhone': null,
+                    'Mobile': null,
+                    'Pager': null,
+                    'Phone': null,
+                    'State': null,
+                    'TollFree': null,
+                    'Website': null,
+                    'Zip': null
+                },
+                'Contact': {
+                    '$id': '13',
+                    'CompanyName': 'Test Company 1',
+                    'FirstName': 'Jim',
+                    'LastName': 'Bedemy',
+                    'Id': '9d4c06aa-57f1-4221-baf4-e26913bf5298',
+                    'IsInactive': false
+                },
+                'ContactId': '9d4c06aa-57f1-4221-baf4-e26913bf5298'
+            },
+            'TimeZone': null,
+            'Location': null,
+            'SourceId': 1,
+            'TenantId': '00000000-0000-0000-0000-000000000001',
+            'Systems': []
+        },
+        {
+            '$id': '2',
+            'Address': {
+                '$id': '3',
+                'Address1': '222 Jennings St',
+                'Address2': null,
+                'Address3': null,
+                'City': 'Miami',
+                'CountryId': null,
+                'Email': null,
+                'Fax': null,
+                'HomePhone': null,
+                'Mobile': null,
+                'Pager': null,
+                'Phone': null,
+                'State': 'FL',
+                'TollFree': null,
+                'Website': null,
+                'Zip': null
+            },
+            'Architect': {
+                '$id': '4',
+                'Address': {
+                    '$id': '5',
+                    'Address1': null,
+                    'Address2': null,
+                    'Address3': null,
+                    'City': null,
+                    'CountryId': null,
+                    'Email': null,
+                    'Fax': null,
+                    'HomePhone': null,
+                    'Mobile': null,
+                    'Pager': null,
+                    'Phone': null,
+                    'State': null,
+                    'TollFree': null,
+                    'Website': null,
+                    'Zip': null
+                },
+                'Contact': {
+                    '$id': '6',
+                    'CompanyName': 'Test Company 1',
+                    'FirstName': 'Jim',
+                    'LastName': 'Bedemy',
+                    'Id': '9d4c06aa-57f1-4221-baf4-e26913bf5298',
+                    'IsInactive': false
+                },
+                'ContactId': '9d4c06aa-57f1-4221-baf4-e26913bf5298'
+            },
+            'Comments': null,
+            'ContractNumber': null,
+            'Engineer': null,
+            'Id': 'f96d007e-c662-4b36-b81b-52ad9a287306',
+            'IsHidden': false,
+            'IsTemplate': false,
+            'IsTraining': false,
+            'MarketArea': {
+                '$id': '7',
+                'Id': '8dfea657-4046-496f-b584-7c9101f3b835',
+                'Name': 'Test Market',
+                'Number': '1'
+            },
+            'Name': 'Project B',
+            'Number': '1',
+            'CostCodes': [],
+            'Owner': null,
+            'ProjectEngineer': null,
+            'ProjectManager': {
+                '$id': '8',
+                'Address': {
+                    '$id': '9',
+                    'Address1': null,
+                    'Address2': null,
+                    'Address3': null,
+                    'City': null,
+                    'CountryId': null,
+                    'Email': null,
+                    'Fax': null,
+                    'HomePhone': null,
+                    'Mobile': null,
+                    'Pager': null,
+                    'Phone': null,
+                    'State': null,
+                    'TollFree': null,
+                    'Website': null,
+                    'Zip': null
+                },
+                'Contact': {
+                    '$id': '10',
+                    'CompanyName': 'Test Company 1',
+                    'FirstName': 'Jim',
+                    'LastName': 'Bedemy',
+                    'Id': '9d4c06aa-57f1-4221-baf4-e26913bf5298',
+                    'IsInactive': false
+                },
+                'ContactId': '9d4c06aa-57f1-4221-baf4-e26913bf5298'
+            },
+            'Salesman': null,
+            'Status': 1,
+            'Superintendent': {
+                '$id': '11',
+                'Address': {
+                    '$id': '12',
+                    'Address1': null,
+                    'Address2': null,
+                    'Address3': null,
+                    'City': null,
+                    'CountryId': null,
+                    'Email': null,
+                    'Fax': null,
+                    'HomePhone': null,
+                    'Mobile': null,
+                    'Pager': null,
+                    'Phone': null,
+                    'State': null,
+                    'TollFree': null,
+                    'Website': null,
+                    'Zip': null
+                },
+                'Contact': {
+                    '$id': '13',
+                    'CompanyName': 'Test Company 1',
+                    'FirstName': 'Jim',
+                    'LastName': 'Bedemy',
+                    'Id': '9d4c06aa-57f1-4221-baf4-e26913bf5298',
+                    'IsInactive': false
+                },
+                'ContactId': '9d4c06aa-57f1-4221-baf4-e26913bf5298'
+            },
+            'TimeZone': null,
+            'Location': null,
+            'SourceId': 1,
+            'TenantId': '00000000-0000-0000-0000-000000000001',
+            'Systems': []
+        }
+    ]
+};
