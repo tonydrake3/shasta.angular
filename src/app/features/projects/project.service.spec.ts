@@ -47,7 +47,7 @@ describe('Project Service', () => {
                 .then((projects) => {
                     expect(projects.length).toBe(2);
                     expect(projects[0]['Name'].toEqual('Project A'));
-                    expect(projects[1]['Name'].toEqual('Project A'));
+                    expect(projects[1]['Name'].toEqual('Project B'));
                 });
         });
 
