@@ -61,7 +61,7 @@ export const projectSidebarConfiguration = [
     },
     {
         '$id': '7',
-        'Action': '/trackpoint/3',
+        'Action': '/trackpoint/2',
         'Children': null,
         'Key': '',
         'System': 1,
