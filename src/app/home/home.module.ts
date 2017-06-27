@@ -21,6 +21,7 @@ import { AppSearchOverlayComponent } from './search-overlay/search-overlay.compo
 import { SearchOverlayDirective } from './search-overlay/search-overlay.directive';
 import { OpenSearchOverlaylDirective } from './search-overlay/open-search-overlay.directive';
 import {MaterialModule} from '@angular/material';
+import {AutoExpandAccordionNavDirective} from './sidenav/sidenav-menu/auto-expand-accordion-nav.directive';
 
 @NgModule({
     imports: [
@@ -40,6 +41,7 @@ import {MaterialModule} from '@angular/material';
       AutoCloseMobileNavDirective,
       AppSidenavMenuComponent,
       AccordionNavDirective,
+      AutoExpandAccordionNavDirective,
       AppendSubmenuIconDirective,
       HighlightActiveItemsDirective,
       // Search overlay

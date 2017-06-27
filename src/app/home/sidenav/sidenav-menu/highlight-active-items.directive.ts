@@ -13,18 +13,18 @@ export class HighlightActiveItemsDirective implements AfterViewInit {
 
         function highlightActive(links) {
             const path = location.hash;
-            // console.log(path);
+            console.log(path);
 
             links.each( (i, link) => {
                 const $link = $(link);
                 const $li = $link.parent('li');
-                const href = $link.attr('href');
-                // console.log(href);
+                const href = $link.attr('data-page-href');
+                console.log(href);
 
                 if ($li.hasClass('active')) {
                     $li.removeClass('active');
                 }
-                if (path.indexOf(href) === 0) {
+                if (path.includes(href)) {
                     $li.addClass('active');
                 }
             } )
