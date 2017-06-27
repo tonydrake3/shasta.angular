@@ -1,9 +1,9 @@
-import {Directive, ElementRef, AfterViewInit, OnInit} from '@angular/core';
+import {Directive, ElementRef, AfterViewInit, OnInit, OnDestroy} from '@angular/core';
 import {DataSyncService} from '../../../shared/services/utilities/data-sync.service';
 
 @Directive({ selector: '[esubAccordionNav]' })
 
-export class AccordionNavDirective implements OnInit, AfterViewInit {
+export class AccordionNavDirective implements OnInit, AfterViewInit, OnDestroy {
     el: ElementRef;
     _syncSubscription;
 
@@ -74,5 +74,10 @@ export class AccordionNavDirective implements OnInit, AfterViewInit {
             $subUl.stop().slideToggle(slideTime);
 
         })
+    }
+
+    ngOnDestroy () {
+
+        this._syncSubscription.unsubscribe();
     }
 }
