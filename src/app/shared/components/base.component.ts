@@ -9,6 +9,7 @@ import { Subscriber } from 'rxjs/Rx';
 
 // imports for autoInjection
 import { ProjectService } from '../../features/projects/project.service';
+import { TimeRecordsService } from '../../features/time-expenses/time-records.service'
 
 @Component({ })
 export class BaseComponent implements OnDestroy {
@@ -21,7 +22,8 @@ export class BaseComponent implements OnDestroy {
     // list of services to automatically inject, if requested by child component
     //   must provide them in the constructor
     this.autoInjections = [
-      { key: 'ProjectService', serviceObject: ProjectService, subject: 'projects$', initializer: 'getLatest' }
+      { key: 'ProjectService', serviceObject: ProjectService, subject: 'projects$', initializer: 'getLatest' },
+      { key: 'TimeRecordsService', serviceObject: TimeRecordsService, subject: 'timeRecords$', initializer: 'getLatest' }
     ];
 
     // and inject them

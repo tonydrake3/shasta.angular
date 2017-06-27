@@ -10,6 +10,8 @@ import { TimeExpensesRoutingModule } from './time-expenses-routing.module';
 import { TimeExpensesComponent } from './time-expenses.component';
 import { TimesheetCardComponent } from './timesheet-card/timesheet-card.component';
 
+import { TimeRecordsService } from './time-records.service';
+
 @NgModule({
     imports: [
       CommonModule,
@@ -21,6 +23,9 @@ import { TimesheetCardComponent } from './timesheet-card/timesheet-card.componen
     declarations: [
       TimeExpensesComponent,
       TimesheetCardComponent
+    ],
+    providers: [
+      TimeRecordsService
     ]
 })
 
