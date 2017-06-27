@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import { WeekDateRange, WeekDateRangeDetails } from '../../../models/Date';
 
@@ -9,133 +9,146 @@ import * as _ from 'lodash';
     templateUrl: './timesheet-card.component.html'
 })
 export class TimesheetCardComponent {
+  @Input() loading: boolean;
 
-  public timecards: Array<Timecard>;
-  public dateRange: Array<WeekDateRangeDetails>;
+  public timecards: Array<Timecard>;    // the built cards, what the template will display
+  public dateRange: Array<WeekDateRangeDetails>;    // builds the 7 day week based on input dateRange
+
+  public entityLookupTable: Array<any>;   // local lookup table for entities (Employee, Project) built during timecard buildup
+
+  constructor() {
+    this.timecards = [new Timecard()];    // so we have one card to display loader
+  }
 
   // build timesheets from timerecords, timerecords should already be pre-filtered for date & user
     // valid groupBy is 'employee' or 'project'
   public buildTimesheets(timerecords: Array<any>, dateRange: WeekDateRange, groupTimesheetsBy: string) {
 
+    this.entityLookupTable = [];
+
+    // build date labels
     this.dateRange = this.buildWeekDateRangeDetails(dateRange);
+
+    // filter results by date
+    // timerecords = _.filter(timerecords, timerecord => {
+    //   return dateRange.startDate.isSameOrBefore(timerecord.Hours.Date) &&
+    //     dateRange.endDate.isSameOrAfter(timerecord.Hours.Date);
+    // });
+    // console.log('TIMERECORDS', timerecords)
 
     // build dictionary based on grouping
     const groupedTimerecords = _.groupBy(timerecords, timerecord => {
+      let accessor: string;
+
       if (groupTimesheetsBy === 'employee') {
-        return timerecord.Employee.Id;
+        accessor = 'Employee';
       } else {
-        return timerecord.Project.Id;
+        accessor = 'Project';
       }
+
+      this.saveEntity(timerecord, accessor);
+      return timerecord[accessor].Id;
     });
+
+    // console.log('GROUPEDTIMERECORDS', groupedTimerecords);
+    console.log('ENTITYLOOKUPTABLE', this.entityLookupTable);
 
     this.timecards = new Array<Timecard>();
 
+    // one groupedTimerecord equotes to one Timecard
     for (const key in groupedTimerecords) {
       if (groupedTimerecords.hasOwnProperty(key)) {
-
-        // create card title based on selected grouping
-        let cardTitle: string;
-        if (groupTimesheetsBy === 'employee') {
-          cardTitle = this.getEmployeeName(key);
-        } else {
-          cardTitle = this.getProjectName(key);
-        }
         this.timecards.push({
-          cardTitle: cardTitle
+          cardTitle: this.getEntityName(key),
+          subTitle: this.entityLookupTable[key].Title,
+          sections: this.buildSections(groupedTimerecords[key], groupTimesheetsBy)
         });
-
-        // dupe, just to fill up the page a little
-        this.timecards.push({
-          cardTitle: cardTitle
-        });
-
       }
     }
-
-    // console.log(dateRange);
-    // console.log(groupedTimerecords);
   }
 
+  buildSections(timerecords: Array<any>, groupTimesheetsBy: string): Array<TimecardSection> {
+
+    console.log(timerecords);
+    const sections = Array<TimecardSection>();
+
+    timerecords.forEach(timerecord => {
+      this.saveEntity(timerecord, 'Employee');
+      this.saveEntity(timerecord, 'Project');
+      this.saveEntity(timerecord, 'CostCode');
+
+      sections.push({
+        grouping: groupTimesheetsBy === 'employee' ? this.getEntityName(timerecord.Project.Id) : this.getEntityName(timerecord.Employee.Id),
+        system: this.getEntityName(timerecord.System.Id),
+        phase: this.getEntityName(timerecord.Phase.Id),
+        codeCode: this.getEntityName(timerecord.CostCode.Id)
+      });
+    });
+
+    return sections;
+  }
+
+  // builds labels to display date range
   buildWeekDateRangeDetails(dateRange: WeekDateRange) {
-    // console.log('starting range', dateRange);
+
     const weekDateRangeDetails = new Array<WeekDateRangeDetails>();
-
-
     const day = dateRange.startDate.clone();
 
     while (day.isSameOrBefore(dateRange.endDate, 'days')) {
 
-      // const day = dateRange.startDate;
-      // dateRange.startDate = dateRange.startDate.add(1, 'days');
-
       weekDateRangeDetails.push({
         dayString: day.format('dd'),
-        dateString: day.format('MMM. do'),
+        dateString: day.format('MMM. Do'),
         date: day
       });
 
       day.add(1, 'days');
     }
 
-    // console.log('built details', weekDateRangeDetails);
     return weekDateRangeDetails;
   }
 
-  /*
-
-  Employee
-    group by Employee.Id
-
-    Name; Employee.FirstName + Employee.LastName
-    Title; Join employees, Employee.LaborClassId
-
-  Project
-    group by Project.Id
-
-    System; Project.System
-    Phase; (phase is inside of system, if system is there)
-
-  Common
-    Cost Cost
-      group by CostCode.Id
-      display CostCode.Code
-
-      Iterate across..
-        calendar day (from/to)
-        roll up of hours
-        Comments[].User / Comments[].Value
-
-        time = punch in/out OR direct
-          Hours is always the truth
-            .Date = date work was performed
-            sum(Double, Over, Reg)
-          On detail, show Punch data
-
-  */
-
-
-
-
-  // DEV ONLY helper funcs
-  /* tslint:disable */
-  getEmployeeName(Id: string): string {
-    return this.employeeNames[Id];
-  }
-  getProjectName(Id: string): string {
-    return this.projectNames[Id];
+  // saves guid based entity to local lookup table for easy reference
+  saveEntity(timerecord: any, accessor: string) {
+    if (this.entityLookupTable[timerecord[accessor].Id]) {
+      // if already there, merge incase there's more data
+      _.assign(this.entityLookupTable[timerecord[accessor].Id], [timerecord[accessor]]);
+    } else {
+      // or just save it to the lookup table
+      this.entityLookupTable[timerecord[accessor].Id] = timerecord[accessor];
+    }
   }
 
-  employeeNames = {
-    '55827eb4-4d86-4cc0-b202-04b43453ce4d': 'Charles Woods'
-  }
+  // returns a formatted entity name for an Employee or a Project
+  getEntityName(Id: string): string {
+    let name = '';
 
-  projectNames = {
-    '26f4f8d1-9483-4361-a4d7-9ec8baf2353d': 'Esub Remodel',
-    'c6ec990e-1383-44af-800d-b5d9193980fa': 'Jefferson Highschool'
-  }
+    if (this.entityLookupTable[Id]) {
+      if (this.entityLookupTable[Id].FirstName || this.entityLookupTable[Id].LastName) {
+        name = this.entityLookupTable[Id].FirstName + ' ' + this.entityLookupTable[Id].LastName
+      } else if (this.entityLookupTable[Id].Name) {
+        name = this.entityLookupTable[Id].Name;
+      } else {
+        name = 'Unknown';
+      }
+    } else {
+      name = 'Unknown';
+    }
 
+    return name;
+  }
 }
 
+// internal, not to be confused with TimeRecords, just used to help manage UI
 class Timecard {
-  cardTitle: string
+  cardTitle: string;
+  subTitle: string;
+  sections: Array<TimecardSection>
+}
+
+class TimecardSection {
+  grouping: string;  // this ends up being either project or employee, depending on their grouping
+  system: string;
+  phase: string;
+  codeCode: string;
 }
