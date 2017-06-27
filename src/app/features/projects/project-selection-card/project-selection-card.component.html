@@ -1,13 +1,48 @@
 <div class="project-selection-card">
     <h5>{{project.Name}}</h5>
     <div class="row">
-        <div class="col-md-4">col</div>
-        <div class="col-md-4">col</div>
-        <div class="col-md-4">col</div>
+        <div class="col-md-2">
+            <span class="label-bold">Status&#58;</span>
+        </div>
+        <div class="col-md-4">
+            <span class="span-value">{{project.Status | status}}</span>
+        </div>
+        <div class="col-md-6"></div>
     </div>
     <div class="row">
-        <div class="col-md-4">col</div>
-        <div class="col-md-4">col</div>
-        <div class="col-md-4">col</div>
+        <div class="col-md-2">
+            <span class="label-bold">Market Area&#58;</span>
+        </div>
+        <div class="col-md-4">
+            <span class="span-value">{{project.MarketArea.Name}}</span>
+        </div>
+        <div class="col-md-6"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <span class="label-bold">Division&#58;</span>
+        </div>
+        <div class="col-md-4">
+            <span class="span-value"></span>
+        </div>
+        <div class="col-md-6"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <span class="label-bold">Employees&#58;</span>
+        </div>
+        <div class="col-md-4">
+            <span *ngFor="let employee of project.People" class="span-value">{{employee | json}}</span>
+        </div>
+        <div class="col-md-6"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <span class="label-bold">Project Manager&#58;</span>
+        </div>
+        <div class="col-md-4">
+            <span class="span-value" *ngIf="project.ProjectManager">{{project.ProjectManager.Contact.FirstName}} {{project.ProjectManager.Contact.LastName}}</span>
+        </div>
+        <div class="col-md-6"></div>
     </div>
 </div>

@@ -61,7 +61,7 @@ export const projectSidebarConfiguration = [
     },
     {
         '$id': '7',
-        'Action': '/trackpoint/3',
+        'Action': '/trackpoint/2',
         'Children': null,
         'Key': '',
         'System': 1,
@@ -159,7 +159,7 @@ export const sidebarConfiguration = [
         'Key': '',
         'System': 1,
         'Title': 'Corporate Management',
-        'iconName': 'assignment_turned_in',
+        'iconName': 'folder',
         'Ordinal': 1,
         'Visible': true,
         'expandFull': false

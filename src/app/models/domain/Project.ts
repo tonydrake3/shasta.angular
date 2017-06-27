@@ -5,6 +5,8 @@ import {ProjectManager} from './ProjectManager';
 import {MarketArea} from './MarketArea';
 import {Superintendent} from './Superintendent';
 import {System} from './System';
+import {Division} from './Division';
+import {Employee} from './Employee';
 
 export class Project {
     Address?: Address;
@@ -12,13 +14,15 @@ export class Project {
     Comments?: Comment[];
     ContractNumber?: string;
     CostCodes?: CostCode[];
+    Division?: Division;
     // Engineer?: Engineer; // TODO: Add model?
+    People?: Employee;
     Id?: string;
     IsHidden?: boolean;
     IsTemplate?: boolean;
     IsTraining?: boolean;
     Location?: Location;
-    marketArea?: MarketArea;
+    MarketArea?: MarketArea;
     Name?: string;
     Number?: string;
     // Owner?: Owner; // TODO: Add model?
