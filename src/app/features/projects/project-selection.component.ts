@@ -4,7 +4,9 @@ import { BaseComponent } from '../../shared/components/base.component';
 
 import { Project } from '../../models/domain/Project';
 import { routeName } from '../../models/configuration/routeName';
-import { DataSyncService } from '../../shared/services/utilities/data-sync.service';
+import {statusMap} from '../../models/configuration/statusMap';
+import * as _ from 'lodash';
+
 
 @Component({
     styles: [],
@@ -12,24 +14,24 @@ import { DataSyncService } from '../../shared/services/utilities/data-sync.servi
 })
 export class ProjectSelectionComponent extends BaseComponent {
 
+    _statuses;
     _projects: Project[];
 
-    constructor (protected injector: Injector, private _router: Router, private _dataSync: DataSyncService) {
+    constructor (protected injector: Injector, private _router: Router) {
       super(injector, [
         {
           service: 'ProjectService',
           callback: 'projectServiceCallback'
         }
       ]);
+
+      this._statuses = _.filter(statusMap, function (status) {
+            return status.CanDisplay;
+          });
     }
 
     projectServiceCallback(projects) {
       this._projects = projects['Value'];
-    }
-
-    selectProject (project: Project) {
-        this._dataSync.setProject(project);
-        sessionStorage.setItem('project', JSON.stringify(project));
     }
 
     createProject () {

@@ -38,9 +38,54 @@
                     stroke: $black;
                 }
             }
-
         }
-
     }
+}
 
+@media only screen and (min-width: $l_screen_md_min) {
+    .login-component {
+        background-color: $true-white;
+
+        .login-fields {
+            margin: 0 auto;
+            margin-bottom: 200px;
+            max-width: 450px;
+
+            .login-description {
+                margin: 20px 0 30px 0;
+            }
+
+            .form-inputs {
+                margin-bottom: 20px;
+
+                .full-width {
+                    font-size: 16px;
+                }
+            }
+
+            button {
+                color: $black;
+                background-color: $yellow-30;
+                border-color: $yellow;
+
+                &.btn {
+                    line-height: 2;
+                }
+
+                .login-button-spinner {
+                    text-align: center;
+
+                    md-progress-spinner {
+                        width: 25px;
+                        height: 25px;
+                        margin: auto;
+                    }
+
+                    .mat-progress-spinner path {
+                        stroke: $black;
+                    }
+                }
+            }
+        }
+    }
 }

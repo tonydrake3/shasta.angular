@@ -16,7 +16,7 @@ export class AutoExpandAccordionNavDirective implements OnInit, OnDestroy {
 
     ngOnInit() {
 
-        console.log('esubAutoExpandAccordion init');
+        // console.log('esubAutoExpandAccordion init');
         this._syncSubscription = this._dataSync.project$
             .subscribe(
                 (project) => {
