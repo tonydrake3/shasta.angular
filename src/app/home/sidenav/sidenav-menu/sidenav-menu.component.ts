@@ -36,6 +36,7 @@ export class AppSidenavMenuComponent implements OnInit {
       this.inSettings = false;
   }
 
+  // TODO: Add mechanism to load navigation if a Project was previously selected.
   ngOnInit () {
 
       this._dataSync.project$
