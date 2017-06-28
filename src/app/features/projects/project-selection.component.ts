@@ -30,6 +30,20 @@ export class ProjectSelectionComponent extends BaseComponent {
           });
     }
 
+    statusFilterSelected () {
+
+        this._statuses.forEach((map) => {
+
+            if (map.Selected) {
+
+                this._projects = _.filter(this._projects, function (project) {
+                    console.log(project, project.Status === map.Key);
+                    return project.Status === map.Key;
+                });
+            }
+        });
+    }
+
     projectServiceCallback(projects) {
       this._projects = projects['Value'];
     }
