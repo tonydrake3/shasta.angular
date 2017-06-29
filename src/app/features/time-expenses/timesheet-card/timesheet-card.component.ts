@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 import { WeekDateRange, WeekDateRangeDetails } from '../../../models/Date';
+import { Timecard, TimecardSection } from './timecard.model';
 
 import * as _ from 'lodash';
 
@@ -137,18 +138,4 @@ export class TimesheetCardComponent {
 
     return name;
   }
-}
-
-// internal, not to be confused with TimeRecords, just used to help manage UI
-class Timecard {
-  cardTitle: string;
-  subTitle: string;
-  sections: Array<TimecardSection>
-}
-
-class TimecardSection {
-  grouping: string;  // this ends up being either project or employee, depending on their grouping
-  system: string;
-  phase: string;
-  codeCode: string;
 }

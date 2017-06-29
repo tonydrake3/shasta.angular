@@ -14,7 +14,7 @@ import { ProjectService } from '../../features/projects/project.service';
 
 import 'hammerjs';
 
-fdescribe('Base Component', () => {
+describe('Base Component', () => {
 
   let comp:    MockEmptyComponent;
   let fixture: ComponentFixture<MockEmptyComponent>;
