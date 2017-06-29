@@ -92,9 +92,25 @@ export class TimesheetCardComponent {
     });
 
     // group by grouping (anti employee/project), then system-phase, then costCode
-    const groupedSections = _.groupBy(sections, 'grouping');
+    const groupedSections: any = _.groupBy(sections, 'grouping');
 
-    // console.log('SECTIONS', groupedSections)
+    // group by system-phase
+    for (const key in groupedSections) {
+      if (groupedSections.hasOwnProperty(key)) {
+         const system: any = _.groupBy(groupedSections[key], 'system');
+
+        //  group by costCode
+        for (const jey in system) {
+          if (system.hasOwnProperty(jey)) {
+             system[jey] = _.groupBy(system, 'costCode');
+           }
+         }
+
+         groupedSections[key] = system;
+      }
+    }
+
+    console.log('SECTIONS', groupedSections)
     return groupedSections;
   }
 
