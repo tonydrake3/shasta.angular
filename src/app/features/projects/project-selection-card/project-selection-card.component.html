@@ -41,7 +41,7 @@
     </div>
     <div class="row">
         <div class="col-md-2" (click)="selectProject(project)">
-            <span class="label-bold project-status" [ngClass]="getClass(project.Status)">{{project.Status | status | uppercase}}</span>
+            <span class="label-bold project-status" [ngClass]="getClass(project.Status)">{{project.Status | status }}</span>
         </div>
         <div class="col-md-4" (click)="selectProject(project)">
 

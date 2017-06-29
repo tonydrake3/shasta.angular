@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import {statusMap} from '../../models/configuration/statusMap';
+import {statusMap, StatusMap} from '../../models/configuration/statusMap';
 
 /*
  * Map numeric StatusId to Status
@@ -13,14 +13,17 @@ import {statusMap} from '../../models/configuration/statusMap';
 export class StatusPipe implements PipeTransform {
     transform(value: number): string {
 
+        const statuses: StatusMap[] = statusMap;
+
         let statusName = '';
 
-        statusMap.forEach(status => {
+        statuses.forEach(status => {
 
             if (status.Key === value) {
                 statusName = status.Value;
             }
         });
+
         return statusName;
     }
 }

@@ -4,7 +4,7 @@ import { BaseComponent } from '../../shared/components/base.component';
 
 import { Project } from '../../models/domain/Project';
 import { routeName } from '../../models/configuration/routeName';
-import {statusMap} from '../../models/configuration/statusMap';
+import {statusMap, StatusMap} from '../../models/configuration/statusMap';
 import * as _ from 'lodash';
 
 
@@ -16,6 +16,7 @@ export class ProjectSelectionComponent extends BaseComponent {
 
     _statuses;
     _projects: Project[];
+    filteredProjects: Project[];
 
     constructor (protected injector: Injector, private _router: Router) {
       super(injector, [
@@ -25,30 +26,69 @@ export class ProjectSelectionComponent extends BaseComponent {
         }
       ]);
 
-      this._statuses = _.filter(statusMap, function (status) {
-            return status.CanDisplay;
-          });
     }
 
-    statusFilterSelected () {
+    /******************************************************************************************************************
+     * Public Methods
+     ******************************************************************************************************************/
 
-        this._statuses.forEach((map) => {
+    selectStatusFilter (selStatus: StatusMap) {
 
-            if (map.Selected) {
+        this._statuses.forEach((status) => {
 
-                this._projects = _.filter(this._projects, function (project) {
-                    console.log(project, project.Status === map.Key);
-                    return project.Status === map.Key;
-                });
+            if (status.Key === selStatus.Key) {
+
+                status.IsFiltered = !status.IsFiltered;
             }
         });
-    }
-
-    projectServiceCallback(projects) {
-      this._projects = projects['Value'];
+        this.filter();
     }
 
     createProject () {
         this._router.navigate([routeName.project, 'create']);
     }
+
+    /*****************************************************************************************************************
+     * Private Helpers
+     ******************************************************************************************************************/
+
+    projectServiceCallback(projects) {
+
+        this._statuses = _.filter(statusMap, function (status) {
+            return status.CanDisplay;
+        });
+
+        this._projects = projects['Value'];
+
+        this.filter();
+    }
+
+    private filterProject (status: StatusMap) {
+
+        return _.filter(this._projects, function (proj) {
+
+            return proj.Status === status.Key;
+        });
+    }
+
+    private filter () {
+
+        this.filteredProjects = new Array<Project>();
+
+        this._statuses.forEach((map) => {
+
+            if (map.IsFiltered) {
+
+                this.filteredProjects = _.concat(this.filteredProjects, this.filterProject(map));
+            }
+        });
+        this.sort();
+    }
+
+    private sort () {
+
+        this.filteredProjects = _.orderBy(this.filteredProjects, ['Name'], ['asc']);
+    }
+
+
 }
