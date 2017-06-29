@@ -49,7 +49,7 @@ export class TimeExpensesComponent extends BaseComponent implements OnInit {
 
   timeRecordsCallback(response) {
     this.loading = false;
-    this.timerecords = response.value;
+    this.timerecords = response.Value;
     this.buildTimesheets();
   }
 

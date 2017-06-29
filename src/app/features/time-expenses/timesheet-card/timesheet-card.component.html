@@ -27,76 +27,25 @@
 
   </div>
 
-  <section *ngFor="let section of timecard.sections">
+  <section *ngFor="let section of timecard.sections | keys">
 
     <!-- project name & hours -->
     <div class="row">
       <div class="col-md-4 card-section">
-        {{section.grouping}}
+        {{section.key}}
       </div>
-      <!-- <div class="col-md-1" *ngFor='let day of dateRange' [ngClass]="{'card-hours-disabled': section.hours[}">
-        {{section.hours[day.date]}}
-      </div> -->
-    </div>
-
-  </section>
-
-    <!-- repeater section for each system/phase/costcode -->
-  <section>
-
-    <!-- project name & hours -->
-    <div class="row">
-      <div class="col-md-4 card-section">
-        Project Name
-      </div>
-      <div class="col-md-1 card-hours-disabled">
-        0
-      </div>
-      <div class="col-md-1 card-hours">
-        7.25
-      </div>
-      <div class="col-md-1 card-hours">
-        8.5
-      </div>
-      <div class="col-md-1 card-hours">
-        3
-      </div>
-      <div class="col-md-1 card-hours">
-        5
-      </div>
-      <div class="col-md-1 card-hours">
-        7
-      </div>
-      <div class="col-md-1 card-hours">
-        2
+      <div class="col-md-1" *ngFor='let day of dateRange'>
+        x
       </div>
     </div>
 
     <!-- system phase and indicators -->
     <div class="row">
       <div class="col-md-4 card-subsection">
-        System - Phase
+        System - Phase !
       </div>
-      <div class="col-md-1 indicator hidden">
-        <div class=""></div>
-      </div>
-      <div class="col-md-1 indicator">
-        <div class="green"></div>
-      </div>
-      <div class="col-md-1 indicator">
-        <div class="green"></div>
-      </div>
-      <div class="col-md-1 indicator">
-        <div class="green"></div>
-      </div>
-      <div class="col-md-1 indicator">
-        <div class="yellow"></div>
-      </div>
-      <div class="col-md-1 indicator">
-        <div class="red"></div>
-      </div>
-      <div class="col-md-1 indicator">
-        <div class="yellow"></div>
+      <div class="col-md-1" *ngFor='let day of dateRange'>
+        x
       </div>
     </div>
 
@@ -105,25 +54,7 @@
       <div class="col-md-4 card-section">
         Cost Code
       </div>
-      <div class="col-md-1">
-        <i class="material-icons">chat</i>
-      </div>
-      <div class="col-md-1">
-        <i class="material-icons">chat</i>
-      </div>
-      <div class="col-md-1">
-        <i class="material-icons">chat</i>
-      </div>
-      <div class="col-md-1">
-        <i class="material-icons">chat</i>
-      </div>
-      <div class="col-md-1">
-        <i class="material-icons">chat</i>
-      </div>
-      <div class="col-md-1">
-        <i class="material-icons">chat</i>
-      </div>
-      <div class="col-md-1">
+      <div class="col-md-1" *ngFor='let day of dateRange'>
         <i class="material-icons">chat</i>
       </div>
     </div>
@@ -140,148 +71,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-1 hidden">
-        <md-checkbox></md-checkbox>
-      </div>
-      <div class="col-md-1">
-        <md-checkbox></md-checkbox>
-      </div>
-      <div class="col-md-1">
-        <md-checkbox></md-checkbox>
-      </div>
-      <div class="col-md-1">
-        <md-checkbox></md-checkbox>
-      </div>
-      <div class="col-md-1">
-        <md-checkbox></md-checkbox>
-      </div>
-      <div class="col-md-1">
-        <md-checkbox></md-checkbox>
-      </div>
-      <div class="col-md-1">
-        <md-checkbox></md-checkbox>
-      </div>
-    </div>
-
-  </section>
-
-  <section>
-
-    <!-- project name & hours -->
-    <div class="row">
-      <div class="col-md-4 card-section">
-        Project Name
-      </div>
-      <div class="col-md-1 card-hours-disabled">
-        0
-      </div>
-      <div class="col-md-1 card-hours">
-        7.25
-      </div>
-      <div class="col-md-1 card-hours">
-        8.5
-      </div>
-      <div class="col-md-1 card-hours">
-        3
-      </div>
-      <div class="col-md-1 card-hours">
-        5
-      </div>
-      <div class="col-md-1 card-hours">
-        7
-      </div>
-      <div class="col-md-1 card-hours">
-        2
-      </div>
-    </div>
-
-    <!-- system phase and indicators -->
-    <div class="row">
-      <div class="col-md-4 card-subsection">
-        System - Phase
-      </div>
-      <div class="col-md-1 indicator hidden">
-        <div class=""></div>
-      </div>
-      <div class="col-md-1 indicator">
-        <div class="green"></div>
-      </div>
-      <div class="col-md-1 indicator">
-        <div class="green"></div>
-      </div>
-      <div class="col-md-1 indicator">
-        <div class="green"></div>
-      </div>
-      <div class="col-md-1 indicator">
-        <div class="yellow"></div>
-      </div>
-      <div class="col-md-1 indicator">
-        <div class="red"></div>
-      </div>
-      <div class="col-md-1 indicator">
-        <div class="yellow"></div>
-      </div>
-    </div>
-
-    <!-- cost code and chat boxes -->
-    <div class="row">
-      <div class="col-md-4 card-section">
-        Cost Code
-      </div>
-      <div class="col-md-1">
-        <i class="material-icons">chat</i>
-      </div>
-      <div class="col-md-1">
-        <i class="material-icons">chat</i>
-      </div>
-      <div class="col-md-1">
-        <i class="material-icons">chat</i>
-      </div>
-      <div class="col-md-1">
-        <i class="material-icons">chat</i>
-      </div>
-      <div class="col-md-1">
-        <i class="material-icons">chat</i>
-      </div>
-      <div class="col-md-1">
-        <i class="material-icons">chat</i>
-      </div>
-      <div class="col-md-1">
-        <i class="material-icons">chat</i>
-      </div>
-    </div>
-
-    <!-- selectors and checkboxes -->
-    <div class="row">
-      <div class="col-md-4 card-link">
-        <div class="row">
-          <div class="col-md-4">
-            Select All
-          </div>
-          <div class="col-md-4">
-            Unselect All
-          </div>
-        </div>
-      </div>
-      <div class="col-md-1 hidden">
-        <md-checkbox></md-checkbox>
-      </div>
-      <div class="col-md-1">
-        <md-checkbox></md-checkbox>
-      </div>
-      <div class="col-md-1">
-        <md-checkbox></md-checkbox>
-      </div>
-      <div class="col-md-1">
-        <md-checkbox></md-checkbox>
-      </div>
-      <div class="col-md-1">
-        <md-checkbox></md-checkbox>
-      </div>
-      <div class="col-md-1">
-        <md-checkbox></md-checkbox>
-      </div>
-      <div class="col-md-1">
+      <div class="col-md-1" *ngFor='let day of dateRange'>
         <md-checkbox></md-checkbox>
       </div>
     </div>
@@ -293,26 +83,8 @@
     <div class="col-md-4 card-hours">
       46.5 Hours Total
     </div>
-    <div class="col-md-1 card-total-hours">
+    <div class="col-md-1 card-total-hours" *ngFor='let day of dateRange'>
       0
-    </div>
-    <div class="col-md-1 card-total-hours">
-      8
-    </div>
-    <div class="col-md-1 card-total-hours">
-      8.5
-    </div>
-    <div class="col-md-1 card-total-hours">
-      6
-    </div>
-    <div class="col-md-1 card-total-hours">
-      8
-    </div>
-    <div class="col-md-1 card-total-hours">
-      8
-    </div>
-    <div class="col-md-1 card-total-hours">
-      8
     </div>
   </div>
 </esub-base-card>

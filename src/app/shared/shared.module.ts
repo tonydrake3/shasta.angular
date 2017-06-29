@@ -17,6 +17,7 @@ import { BaseCardComponent } from './components/base.card.component';
 
 // Pipes
 import {StatusPipe} from './pipes/status.pipe';
+import {KeysPipe} from './pipes/keys.pipe';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import {StatusPipe} from './pipes/status.pipe';
         SlimScrollDirective,
         WeekSelectorComponent,
         StatusPipe,
-        BaseCardComponent
+        BaseCardComponent,
+        KeysPipe
     ],
     providers: [
         AuthorizationService,
@@ -41,8 +43,9 @@ import {StatusPipe} from './pipes/status.pipe';
         EChartsDirective,
         SlimScrollDirective,
         WeekSelectorComponent,
+        BaseCardComponent,
         StatusPipe,
-        BaseCardComponent
+        KeysPipe
     ]
 })
 
