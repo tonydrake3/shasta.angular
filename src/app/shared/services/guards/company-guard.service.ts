@@ -19,13 +19,13 @@ export class CompanyGuard implements CanActivate, OnDestroy {
 
                 .subscribe(
                     (companies) => {
-                        // console.log('canActivateCallback', companies['value'].length > 1);
-                        if (companies['value'].length > 1) {
+                        // console.log('canActivateCallback', companies);
+                        if (companies > 1) {
 
                             resolve(true);
                         } else {
 
-                            sessionStorage.setItem('tenant', JSON.stringify(companies['value'][0].Id));
+                            sessionStorage.setItem('tenant', JSON.stringify(companies[0].Id));
                             this._router.navigate([routeName.project]);
                             resolve(false);
                         }

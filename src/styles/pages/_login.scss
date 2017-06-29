@@ -38,9 +38,46 @@
                     stroke: $black;
                 }
             }
-
         }
-
     }
+}
 
+@media only screen and (max-width: $l_screen_xxs_max) {
+    .login-component {
+        background-color: $true-white;
+
+        .login-fields {
+
+            .form-inputs {
+
+                .full-width {
+                    font-size: 20px;
+                }
+            }
+
+            button {
+                color: $black;
+                background-color: $yellow-30;
+                border-color: $yellow;
+
+                &.btn {
+                    line-height: 2;
+                }
+
+                .login-button-spinner {
+                    text-align: center;
+
+                    md-progress-spinner {
+                        width: 40px;
+                        height: 40px;
+                        margin: auto;
+                    }
+
+                    .mat-progress-spinner path {
+                        stroke: $black;
+                    }
+                }
+            }
+        }
+    }
 }

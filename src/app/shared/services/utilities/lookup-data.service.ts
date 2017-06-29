@@ -3,6 +3,7 @@ import {
     projectSidebarConfiguration, settingSidebarConfiguration, sidebarConfiguration,
     timeSidebarConfiguration
 } from '../../../models/configuration/menuConfiguration';
+import {projectLocations} from '../../../models/configuration/projectLocations';
 
 @Injectable()
 export class LookupDataService {
@@ -34,6 +35,14 @@ export class LookupDataService {
         return new Promise((resolve) => {
 
             resolve(timeSidebarConfiguration);
+        });
+    }
+
+    getProjectCardLinks (): Promise<any> {
+
+        return new Promise((resolve) => {
+
+            resolve(projectLocations);
         });
     }
 }

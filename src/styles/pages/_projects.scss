@@ -1,0 +1,53 @@
+
+.project-selection {
+
+    md-button-toggle-group {
+
+        md-button-toggle {
+
+            label {
+
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    .project-selection-search {
+
+        width: 264px;
+        display: inline-block;
+
+        md-icon {
+            color: $warm-grey;
+        }
+
+        .mat-input-infix {
+
+            top: 2px;
+
+            input {
+                margin-left: 10px;
+            }
+        }
+
+        .mat-input-placeholder {
+            margin-left: 10px;
+        }
+    }
+
+    .project-selection-create {
+
+        padding-top: 25px;
+
+        button.secondary {
+            height: 44px;
+            width: 210px;
+        }
+    }
+
+    .project-selection-filter-row {
+
+        margin-top: 10px;
+    }
+
+}

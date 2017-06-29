@@ -16,6 +16,8 @@ import { WeekSelectorComponent } from './components/week-selector.component';
 import { BaseCardComponent } from './components/base.card.component';
 import { DEVMockDataService } from './DEV-mock-data.service';
 
+// Pipes
+import {StatusPipe} from './pipes/status.pipe';
 
 
 @NgModule({
@@ -29,7 +31,8 @@ import { DEVMockDataService } from './DEV-mock-data.service';
         EChartsDirective,
         SlimScrollDirective,
         WeekSelectorComponent,
-        BaseCardComponent
+        BaseCardComponent,
+        StatusPipe
     ],
     providers: [
         AuthorizationService,
@@ -40,7 +43,8 @@ import { DEVMockDataService } from './DEV-mock-data.service';
         EChartsDirective,
         SlimScrollDirective,
         WeekSelectorComponent,
-        BaseCardComponent
+        BaseCardComponent,
+        StatusPipe
     ]
 })
 
