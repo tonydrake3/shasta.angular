@@ -35,27 +35,29 @@
         {{section.key}}
       </div>
       <div class="col-md-1" *ngFor='let day of dateRange'>
-        x
+        proj/employee
       </div>
     </div>
 
-    <!-- system phase and indicators -->
-    <div class="row">
-      <div class="col-md-4 card-subsection">
-        System - Phase !
+    <div *ngFor="let system of section.value | keys">
+      <!-- system phase and indicators -->
+      <div class="row">
+        <div class="col-md-4 card-subsection">
+          {{system.key}}
+        </div>
+        <div class="col-md-1" *ngFor='let day of dateRange'>
+          system-phase
+        </div>
       </div>
-      <div class="col-md-1" *ngFor='let day of dateRange'>
-        x
-      </div>
-    </div>
 
-    <!-- cost code and chat boxes -->
-    <div class="row">
-      <div class="col-md-4 card-section">
-        Cost Code
-      </div>
-      <div class="col-md-1" *ngFor='let day of dateRange'>
-        <i class="material-icons">chat</i>
+      <!-- cost code and chat boxes -->
+      <div class="row" *ngFor="let costCode of system.value | keys">
+        <div class="col-md-4 card-section">
+          {{costCode.key}}
+        </div>
+        <div class="col-md-1" *ngFor='let day of dateRange'>
+          <i class="material-icons">chat</i>
+        </div>
       </div>
     </div>
 
