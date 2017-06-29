@@ -1,23 +1,22 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Injector } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
+import { BaseComponent } from '../../shared/components/base.component';
 import { WeekDateRange } from '../../models/Date';
+
+import { TimesheetCardComponent } from './timesheet-card/timesheet-card.component';
 
 import * as moment from 'moment';
 import * as _ from 'lodash';
-
-// TODO delete me
-import { DEVMockDataService } from '../../shared/DEV-mock-data.service';
 
 @Component({
     selector: 'esub-time-expenses',
     styles: [],
     templateUrl: './time-expenses.component.html'
 })
-export class TimeExpensesComponent implements OnInit {
+export class TimeExpensesComponent extends BaseComponent implements OnInit {
 
   private timerecords: Array<any>; // TODO properly type
-  // private timesheets: Array<any>;
 
   public dateRange: WeekDateRange;
 
@@ -25,14 +24,16 @@ export class TimeExpensesComponent implements OnInit {
   public groupTimesheetsBy: string;
   public showFilter: string;
 
-  @ViewChild('timesheets') timesheetsComponent;
+  public loading: boolean;
 
-  constructor(private devMockDataService: DEVMockDataService, private activatedRoute: ActivatedRoute) {
+  @ViewChild('timesheets') timesheetsComponent: TimesheetCardComponent;
 
-    //  TODO get data
-    // this.timesheets = [];
-    this.timerecords = this.devMockDataService.timeRecords;
-    // this.groupTimesheets();
+  constructor(protected injector: Injector, private activatedRoute: ActivatedRoute) {
+    super(injector, [
+      { service: 'TimeRecordsService', callback: 'timeRecordsCallback' }
+    ]);
+
+    this.loading = true;
 
     this.groupTimesheetsBy = 'employee';
     this.showFilter = 'all';
@@ -46,6 +47,12 @@ export class TimeExpensesComponent implements OnInit {
     });
   }
 
+  timeRecordsCallback(response) {
+    this.loading = false;
+    this.timerecords = response.value;
+    this.buildTimesheets();
+  }
+
   groupTimesheets(grouping: string) {
     this.groupTimesheetsBy = grouping;
     // grouping done by timesheet-card component
@@ -55,6 +62,7 @@ export class TimeExpensesComponent implements OnInit {
   dateChanged(e) {
     this.dateRange = e;
     // TODO do date range filter on timerecords
+    if (this.loading) return;
     this.buildTimesheets();
   }
 
