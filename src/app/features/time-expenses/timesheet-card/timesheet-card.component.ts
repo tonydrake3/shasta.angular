@@ -31,11 +31,12 @@ export class TimesheetCardComponent {
     this.dateRange = this.buildWeekDateRangeDetails(dateRange);
 
     // filter results by date
-    // timerecords = _.filter(timerecords, timerecord => {
-    //   return dateRange.startDate.isSameOrBefore(timerecord.Hours.Date) &&
-    //     dateRange.endDate.isSameOrAfter(timerecord.Hours.Date);
-    // });
-    // console.log('TIMERECORDS', timerecords)
+    // console.log('TIMERECORDS', timerecords);
+    timerecords = _.filter(timerecords, timerecord => {
+      return dateRange.startDate.isSameOrBefore(timerecord.Hours.Date) &&
+        dateRange.endDate.isSameOrAfter(timerecord.Hours.Date);
+    });
+    // console.log('TIMERECORDS', timerecords);
 
     // build dictionary based on grouping
     const groupedTimerecords = _.groupBy(timerecords, timerecord => {
@@ -52,9 +53,9 @@ export class TimesheetCardComponent {
     });
 
     // console.log('GROUPEDTIMERECORDS', groupedTimerecords);
-    console.log('ENTITYLOOKUPTABLE', this.entityLookupTable);
+    // console.log('ENTITYLOOKUPTABLE', this.entityLookupTable);
 
-    this.timecards = new Array<Timecard>();
+    this.timecards = new Array<any>();
 
     // one groupedTimerecord equotes to one Timecard
     for (const key in groupedTimerecords) {
@@ -66,13 +67,16 @@ export class TimesheetCardComponent {
         });
       }
     }
+
+    console.log('THIS.TIMECARDS', this.timecards)
   }
 
-  buildSections(timerecords: Array<any>, groupTimesheetsBy: string): Array<TimecardSection> {
+  buildSections(timerecords: Array<any>, groupTimesheetsBy: string) {
 
-    console.log(timerecords);
+    // console.log('timerecords', timerecords);
     const sections = Array<TimecardSection>();
 
+    // build full details, to then group against
     timerecords.forEach(timerecord => {
       this.saveEntity(timerecord, 'Employee');
       this.saveEntity(timerecord, 'Project');
@@ -80,13 +84,18 @@ export class TimesheetCardComponent {
 
       sections.push({
         grouping: groupTimesheetsBy === 'employee' ? this.getEntityName(timerecord.Project.Id) : this.getEntityName(timerecord.Employee.Id),
-        system: this.getEntityName(timerecord.System.Id),
-        phase: this.getEntityName(timerecord.Phase.Id),
-        codeCode: this.getEntityName(timerecord.CostCode.Id)
+        system: timerecord.System ? this.getEntityName(timerecord.System.Id) : 'Unknown',
+        phase: timerecord.Phase ? this.getEntityName(timerecord.Phase.Id) : 'Unknown',
+        codeCode: timerecord.CostCode ? this.getEntityName(timerecord.CostCode.Id) : 'Unknown',
+        hours: timerecord.Hours
       });
     });
 
-    return sections;
+    // group by grouping (anti employee/project), then system-phase, then costCode
+    const groupedSections = _.groupBy(sections, 'grouping');
+
+    // console.log('SECTIONS', groupedSections)
+    return groupedSections;
   }
 
   // builds labels to display date range

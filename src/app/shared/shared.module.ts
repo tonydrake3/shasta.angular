@@ -18,6 +18,7 @@ import { DEVMockDataService } from './DEV-mock-data.service';
 
 // Pipes
 import {StatusPipe} from './pipes/status.pipe';
+import {KeysPipe} from './pipes/keys.pipe';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import {StatusPipe} from './pipes/status.pipe';
         SlimScrollDirective,
         WeekSelectorComponent,
         BaseCardComponent,
-        StatusPipe
+        StatusPipe,
+        KeysPipe
     ],
     providers: [
         AuthorizationService,
@@ -44,7 +46,8 @@ import {StatusPipe} from './pipes/status.pipe';
         SlimScrollDirective,
         WeekSelectorComponent,
         BaseCardComponent,
-        StatusPipe
+        StatusPipe,
+        KeysPipe
     ]
 })
 

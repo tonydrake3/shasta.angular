@@ -1,9 +1,10 @@
+import { Hours } from '../../../models/time/TimeRecord';
 
 // internal to timesheet-card ecosystem, not to be confused with TimeRecords, just used to help manage UI
 export class Timecard {
   cardTitle: string;
   subTitle: string;
-  sections: Array<TimecardSection>
+  sections: any;  // _.grouped array of TimecardSections
 }
 
 export class TimecardSection {
@@ -11,4 +12,5 @@ export class TimecardSection {
   system: string;
   phase: string;
   codeCode: string;
+  hours: Hours;
 }
