@@ -14,7 +14,8 @@ import * as _ from 'lodash';
     styles: [],
     templateUrl: './time-expenses.component.html'
 })
-export class TimeExpensesComponent extends BaseComponent implements OnInit {
+// export class TimeExpensesComponent extends BaseComponent implements OnInit {
+export class TimeExpensesComponent implements OnInit {
 
   private timerecords: Array<any>; // TODO properly type
 
@@ -29,11 +30,11 @@ export class TimeExpensesComponent extends BaseComponent implements OnInit {
   @ViewChild('timesheets') timesheetsComponent: TimesheetCardComponent;
 
   constructor(protected injector: Injector, private activatedRoute: ActivatedRoute) {
-    super(injector, [
-      { service: 'TimeRecordsService', callback: 'timeRecordsCallback' }
-    ]);
+    // super(injector, [
+    //   { service: 'TimeRecordsService', callback: 'timeRecordsCallback' }
+    // ]);
 
-    this.loading = true;
+    // this.loading = true;
 
     this.groupTimesheetsBy = 'employee';
     this.showFilter = 'all';
@@ -45,12 +46,13 @@ export class TimeExpensesComponent extends BaseComponent implements OnInit {
     this.activatedRoute.params.subscribe(params => {
       this.view = params['view'];
     });
+    // this.buildTimesheets();
   }
 
   timeRecordsCallback(response) {
-    this.loading = false;
-    this.timerecords = response.Value;
-    this.buildTimesheets();
+    // this.loading = false;
+    // this.timerecords = response.Value;
+    // this.buildTimesheets();
   }
 
   groupTimesheets(grouping: string) {
@@ -62,7 +64,7 @@ export class TimeExpensesComponent extends BaseComponent implements OnInit {
   dateChanged(e) {
     this.dateRange = e;
     // TODO do date range filter on timerecords
-    if (this.loading) return;
+    // if (this.loading) return;
     this.buildTimesheets();
   }
 
@@ -73,7 +75,8 @@ export class TimeExpensesComponent extends BaseComponent implements OnInit {
   }
 
   buildTimesheets() {
-    this.timesheetsComponent.buildTimesheets(this.timerecords, this.dateRange, this.groupTimesheetsBy);
+    this.timesheetsComponent.buildTimesheets(fakeTimeRecords, this.dateRange, this.groupTimesheetsBy);
+    // this.timesheetsComponent.buildTimesheets(this.timerecords, this.dateRange, this.groupTimesheetsBy);
   }
 
   newTimesheet() {}
@@ -85,3 +88,150 @@ export class TimeExpensesComponent extends BaseComponent implements OnInit {
 
   exportTime() {}
 }
+
+
+const fakeTimeRecords = [
+  {
+    Employee: {
+      Id: 'employjo',
+      FirstName: 'Joshua',
+      LastName: 'Ohana'
+    },
+    Project: {
+      Id: 'projesub',
+      Name: 'Esub'
+    },
+    CostCode: {
+      Id: 'ccplumbing',
+      Name: 'Plumbing'
+    },
+    SystemPhase: {
+      Id: 'syspha1',
+      Name: 'systema-faz'
+    },
+    Hours: {
+      Date: '2017-06-29T13:15:42.233Z',
+      DoubleTime: 0,
+      Overtime: 0,
+      RegularTime: 2
+    },
+    TimeRecordStatus: 'Pending',
+    Comments: [{
+      Id: 'commentjo1',
+      Value: 'ima comment',
+      User: {
+        FirstName: 'Joshua',
+        LastName: 'Ohana',
+        ProfilePicUrl: 'https://tinyurl.com/luuvldd'
+      }
+    }]
+  },
+  {
+    Employee: {
+      Id: 'employjo',
+      FirstName: 'Joshua',
+      LastName: 'Ohana'
+    },
+    Project: {
+      Id: 'projesub',
+      Name: 'Esub'
+    },
+    CostCode: {
+      Id: 'ccelectrical',
+      Name: 'Electrical'
+    },
+    SystemPhase: {
+      Id: 'syspha1',
+      Name: 'systema-faz'
+    },
+    Hours: {
+      Date: '2017-06-29T13:15:42.233Z',
+      DoubleTime: 0,
+      Overtime: 0,
+      RegularTime: 6
+    },
+    TimeRecordStatus: 'Rejected',
+    Comments: [{
+      Id: 'commentjo1',
+      Value: 'ima comment',
+      User: {
+        FirstName: 'Joshua',
+        LastName: 'Ohana',
+        ProfilePicUrl: 'https://tinyurl.com/luuvldd'
+      }
+    }]
+  },
+  {
+    Employee: {
+      Id: 'employjo',
+      FirstName: 'Joshua',
+      LastName: 'Ohana'
+    },
+    Project: {
+      Id: 'projesub',
+      Name: 'Esub'
+    },
+    CostCode: {
+      Id: 'ccelectrical',
+      Name: 'Electrical'
+    },
+    SystemPhase: {
+      Id: 'syspha1',
+      Name: 'systema-faz'
+    },
+    Hours: {
+      Date: '2017-06-28T13:15:42.233Z',
+      DoubleTime: 4,
+      Overtime: 4,
+      RegularTime: 0
+    },
+    TimeRecordStatus: 'Pending',
+    Comments: [{
+      Id: 'commentjo1',
+      Value: 'ima comment',
+      User: {
+        FirstName: 'Joshua',
+        LastName: 'Ohana',
+        ProfilePicUrl: 'https://tinyurl.com/luuvldd'
+      }
+    }]
+  },
+  {
+    Employee: {
+      Id: 'employat',
+      FirstName: 'Alex',
+      LastName: 'Takabayashi'
+    },
+    Project: {
+      Id: 'projesub',
+      Name: 'Esub'
+    },
+    CostCode: {
+      Id: 'ccelectrical',
+      Name: 'Electrical'
+    },
+    SystemPhase: {
+      Id: 'syspha1',
+      Name: 'systema-faz'
+    },
+    Hours: {
+      Date: '2017-06-26T13:15:42.233Z',
+      DoubleTime: 0,
+      Overtime: 0,
+      RegularTime: 8
+    },
+    TimeRecordStatus: 'Approved',
+    Comments: [{
+      Id: 'commentjo1',
+      Value: 'ima comment',
+      User: {
+        FirstName: 'Joshua',
+        LastName: 'Ohana',
+        ProfilePicUrl: 'https://tinyurl.com/luuvldd'
+      }
+    }]
+  },
+
+]
+
+// Pending,

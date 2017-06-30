@@ -9,8 +9,8 @@ export class Timecard {
 
 export class TimecardSection {
   grouping: string;  // this ends up being either project or employee, depending on their grouping
-  system: string;
-  phase: string;
-  codeCode: string;
+  systemPhase: string;
+  // phase: string;
+  costCode: string;
   hours: Hours;
 }
