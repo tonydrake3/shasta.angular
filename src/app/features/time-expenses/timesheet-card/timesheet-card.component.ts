@@ -3,6 +3,7 @@ import { Component, Input } from '@angular/core';
 import { WeekDateRange, WeekDateRangeDetails } from '../../../models/Date';
 import { Timecard, TimecardSection } from './timecard.model';
 
+import * as moment from 'moment';
 import * as _ from 'lodash';
 
 @Component({
@@ -16,6 +17,7 @@ export class TimesheetCardComponent {
   public dateRange: Array<WeekDateRangeDetails>;    // builds the 7 day week based on input dateRange
 
   public entityLookupTable: Array<any>;   // local lookup table for entities (Employee, Project) built during timecard buildup
+  public moment = moment;
 
   constructor() {
     this.timecards = [new Timecard()];    // so we have one card to display loader
@@ -31,12 +33,10 @@ export class TimesheetCardComponent {
     this.dateRange = this.buildWeekDateRangeDetails(dateRange);
 
     // filter results by date
-    // console.log('TIMERECORDS', timerecords);
     timerecords = _.filter(timerecords, timerecord => {
       return dateRange.startDate.isSameOrBefore(timerecord.Hours.Date) &&
         dateRange.endDate.isSameOrAfter(timerecord.Hours.Date);
     });
-    // console.log('TIMERECORDS', timerecords);
 
     // build dictionary based on grouping
     const groupedTimerecords = _.groupBy(timerecords, timerecord => {
@@ -52,15 +52,11 @@ export class TimesheetCardComponent {
       return timerecord[accessor].Id;
     });
 
-    // console.log('GROUPEDTIMERECORDS', groupedTimerecords);
-    // console.log('ENTITYLOOKUPTABLE', this.entityLookupTable);
-
-    this.timecards = new Array<any>();
-
-    // one groupedTimerecord equotes to one Timecard
+    const cards = new Array<any>();
+    // one groupedTimerecord equates to one Timecard
     for (const key in groupedTimerecords) {
       if (groupedTimerecords.hasOwnProperty(key)) {
-        this.timecards.push({
+        cards.push({
           cardTitle: this.getEntityName(key),
           subTitle: this.entityLookupTable[key].Title,
           sections: this.buildSections(groupedTimerecords[key], groupTimesheetsBy)
@@ -68,25 +64,87 @@ export class TimesheetCardComponent {
       }
     }
 
-    console.log('THIS.TIMECARDS', this.timecards)
+    // insert Hour objects at each nesting level and organize
+    this.timecards = this.buildTimecardHours(cards);
+    console.log('THIS.TIMECARDS', this.timecards);
   }
 
+  // attaches an hours @ day object, attached to each group, at each grouping level
+  buildTimecardHours(cards: Array<any>): Array<any> {
+
+    cards.forEach(card => {
+      // each card
+
+      for (const sectionKey in card.sections) {
+        if (card.sections.hasOwnProperty(sectionKey)) {
+          // each section of each card (anti-group)
+          const section = card.sections[sectionKey];
+
+
+          for (const systemPhaseKey in section) {
+            if (section.hasOwnProperty(systemPhaseKey)) {
+              // each systemPhase in each section
+              const systemPhase = section[systemPhaseKey];
+
+              for (const costCodeKey in systemPhase) {
+                if (systemPhase.hasOwnProperty(costCodeKey)) {
+                  // each costCode array in each systemPhase
+                  const costCodes = systemPhase[costCodeKey];
+                  console.log('COSTCODES for', card.cardTitle, costCodes);
+                  // each costCode entry here is an array of objects with an hours param (for hours worked on a specific day)
+                  // each costCode entry here should eqate to one 'section' within the UI
+                  // let's compile this codeCode array into a single obj with all the info we need
+                  //     grouping, systemPhase, codeCode, list of each day in week with associated day's comments
+
+                  const finalCostCode = {
+                    grouping: costCodes[0].grouping,
+                    systemPhase: costCodes[0].systemPhase,
+                    costCode: costCodes[0].costCode,
+                    hours: {}
+                  }
+
+                  // build hours object
+                  this.dateRange.forEach(date => {
+                    const dateKey = date.date.format('MM-DD-YYYY');
+                    finalCostCode.hours[dateKey] = 0;
+                  });
+
+                  // sum up hours for use in finalCostCode.hours[dateKey]
+                  costCodes.forEach(costCode => {
+                    const dateKey = moment(costCode.hours.Date).format('MM-DD-YYYY');
+                    finalCostCode.hours[dateKey] += costCode.hours.DoubleTime + costCode.hours.Overtime + costCode.hours.RegularTime;
+                  });
+
+                  // replace original obj
+                  systemPhase[costCodeKey] = finalCostCode;
+                }
+              }
+            }
+          }
+        }
+      }
+    });
+
+    return cards;
+  }
+
+  // creates sections (within a project or employee)
   buildSections(timerecords: Array<any>, groupTimesheetsBy: string) {
 
-    // console.log('timerecords', timerecords);
     const sections = Array<TimecardSection>();
 
     // build full details, to then group against
     timerecords.forEach(timerecord => {
       this.saveEntity(timerecord, 'Employee');
       this.saveEntity(timerecord, 'Project');
+      this.saveEntity(timerecord, 'SystemPhase');
       this.saveEntity(timerecord, 'CostCode');
 
       sections.push({
         grouping: groupTimesheetsBy === 'employee' ? this.getEntityName(timerecord.Project.Id) : this.getEntityName(timerecord.Employee.Id),
-        system: timerecord.System ? this.getEntityName(timerecord.System.Id) : 'Unknown',
-        phase: timerecord.Phase ? this.getEntityName(timerecord.Phase.Id) : 'Unknown',
-        codeCode: timerecord.CostCode ? this.getEntityName(timerecord.CostCode.Id) : 'Unknown',
+        // system: timerecord.System ? this.getEntityName(timerecord.System.Id) : 'Unknown',
+        systemPhase: timerecord.SystemPhase ? this.getEntityName(timerecord.SystemPhase.Id) : 'Unknown',
+        costCode: timerecord.CostCode ? this.getEntityName(timerecord.CostCode.Id) : 'Unknown',
         hours: timerecord.Hours
       });
     });
@@ -95,22 +153,21 @@ export class TimesheetCardComponent {
     const groupedSections: any = _.groupBy(sections, 'grouping');
 
     // group by system-phase
-    for (const key in groupedSections) {
-      if (groupedSections.hasOwnProperty(key)) {
-         const system: any = _.groupBy(groupedSections[key], 'system');
+    for (const systemPhaseKey in groupedSections) {
+      if (groupedSections.hasOwnProperty(systemPhaseKey)) {
+        const system: any = _.groupBy(groupedSections[systemPhaseKey], 'systemPhase');
 
         //  group by costCode
-        for (const jey in system) {
-          if (system.hasOwnProperty(jey)) {
-             system[jey] = _.groupBy(system, 'costCode');
-           }
-         }
+        for (const costCodeKey in system) {
+          if (system.hasOwnProperty(costCodeKey)) {
+            system[costCodeKey] = _.groupBy(system[costCodeKey], 'costCode');
+          }
+        }
 
-         groupedSections[key] = system;
+        groupedSections[systemPhaseKey] = system;
       }
     }
 
-    console.log('SECTIONS', groupedSections)
     return groupedSections;
   }
 
@@ -125,7 +182,7 @@ export class TimesheetCardComponent {
       weekDateRangeDetails.push({
         dayString: day.format('dd'),
         dateString: day.format('MMM. Do'),
-        date: day
+        date: day.clone()
       });
 
       day.add(1, 'days');
@@ -136,6 +193,9 @@ export class TimesheetCardComponent {
 
   // saves guid based entity to local lookup table for easy reference
   saveEntity(timerecord: any, accessor: string) {
+    if (!timerecord[accessor]) {
+      return;
+    }
     if (this.entityLookupTable[timerecord[accessor].Id]) {
       // if already there, merge incase there's more data
       _.assign(this.entityLookupTable[timerecord[accessor].Id], [timerecord[accessor]]);
@@ -162,5 +222,12 @@ export class TimesheetCardComponent {
     }
 
     return name;
+  }
+
+  // given a section containing displayHours and a day containing a moment date, return that day's hours
+  getHours(section, day): number {
+    const hours = section.value.displayHours;
+    const retVal = hours[day.date.format('MM-DD-YYYY')];
+    return retVal;
   }
 }

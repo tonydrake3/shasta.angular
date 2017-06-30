@@ -27,66 +27,71 @@
 
   </div>
 
+  <!-- repeater section for each grouping of employee/project/system/phase/costcode -->
   <section *ngFor="let section of timecard.sections | keys">
+    <div *ngFor="let systemPhase of section.value | keys">
+      <div *ngFor="let costCode of systemPhase.value | keys">
 
-    <!-- project name & hours -->
-    <div class="row">
-      <div class="col-md-4 card-section">
-        {{section.key}}
-      </div>
-      <div class="col-md-1" *ngFor='let day of dateRange'>
-        proj/employee
-      </div>
-    </div>
-
-    <div *ngFor="let system of section.value | keys">
-      <!-- system phase and indicators -->
-      <div class="row">
-        <div class="col-md-4 card-subsection">
-          {{system.key}}
-        </div>
-        <div class="col-md-1" *ngFor='let day of dateRange'>
-          system-phase
-        </div>
-      </div>
-
-      <!-- cost code and chat boxes -->
-      <div class="row" *ngFor="let costCode of system.value | keys">
-        <div class="col-md-4 card-section">
-          {{costCode.key}}
-        </div>
-        <div class="col-md-1" *ngFor='let day of dateRange'>
-          <i class="material-icons">chat</i>
-        </div>
-      </div>
-    </div>
-
-    <!-- selectors and checkboxes -->
-    <div class="row">
-      <div class="col-md-4 card-link">
+        <!-- section & hours -->
         <div class="row">
-          <div class="col-md-4">
-            Select All
+          <div class="col-md-4 card-section">
+            {{costCode.value.grouping}}
           </div>
-          <div class="col-md-4">
-            Unselect All
+          <div class="col-md-1 card-hours" *ngFor="let day of costCode.value.hours | keys"
+            [ngClass]="{'card-hours-disabled': day.value == 0}">
+            {{day.value}}
           </div>
         </div>
-      </div>
-      <div class="col-md-1" *ngFor='let day of dateRange'>
-        <md-checkbox></md-checkbox>
+
+        <!-- systemPhase & indicator -->
+        <div class="row">
+          <div class="col-md-4 card-subsection">
+            {{costCode.value.systemPhase}}
+          </div>
+          <div class="col-md-1 indicator" *ngFor="let day of costCode.value.hours | keys">
+            <div class="green"></div>
+          </div>
+        </div>
+
+        <!-- costCode & comments -->
+        <div class="row">
+          <div class="col-md-4 card-section">
+            {{costCode.value.costCode}}
+          </div>
+          <div class="col-md-1" *ngFor="let day of costCode.value.hours | keys">
+            <i class="material-icons">chat</i>
+          </div>
+        </div>
+
+        <!-- select links & checkboxes -->
+        <div class="row">
+          <div class="col-md-4 card-link">
+            <div class="row">
+              <div class="col-md-4">
+                Select All
+              </div>
+              <div class="col-md-4">
+                Unselect All
+              </div>
+            </div>
+          </div>
+          <div class="col-md-1" *ngFor="let day of costCode.value.hours | keys">
+            <md-checkbox [hidden]="day.value == 0"></md-checkbox>
+          </div>
+        </div>
+
       </div>
     </div>
-
   </section>
 
-  <!-- footer row -->
+  <!-- footer row with totals -->
   <div class="row hours-total">
     <div class="col-md-4 card-hours">
-      46.5 Hours Total
+      Hours Total
     </div>
     <div class="col-md-1 card-total-hours" *ngFor='let day of dateRange'>
-      0
+      -
     </div>
   </div>
+
 </esub-base-card>
