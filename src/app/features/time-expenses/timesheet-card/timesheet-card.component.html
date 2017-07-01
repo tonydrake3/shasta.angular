@@ -37,9 +37,9 @@
           <div class="col-md-4 card-section">
             {{costCode.value.grouping}}
           </div>
-          <div class="col-md-1 card-hours" *ngFor="let day of costCode.value.hours | keys"
-            [ngClass]="{'card-hours-disabled': day.value == 0}">
-            {{day.value}}
+          <div class="col-md-1 card-hours" *ngFor="let day of costCode.value.days | keys"
+            [ngClass]="{'card-hours-disabled': day.value.hours == 0}">
+            {{day.value.hours}}
           </div>
         </div>
 
@@ -48,8 +48,11 @@
           <div class="col-md-4 card-subsection">
             {{costCode.value.systemPhase}}
           </div>
-          <div class="col-md-1 indicator" *ngFor="let day of costCode.value.hours | keys">
-            <div class="green"></div>
+          <div [ngClass]="{'hidden': day.value.hours == 0}"class="col-md-1 indicator" *ngFor="let day of costCode.value.days | keys" [ngSwitch]="day.value.status">
+            <div *ngSwitchCase="'Approved'" class="green"></div>
+            <div *ngSwitchCase="'Rejected'" class="red"></div>
+            <div *ngSwitchCase="'Pending'" class="yellow"></div>
+            <div *ngSwitchDefault class="hidden"></div>
           </div>
         </div>
 
@@ -58,8 +61,8 @@
           <div class="col-md-4 card-section">
             {{costCode.value.costCode}}
           </div>
-          <div class="col-md-1" *ngFor="let day of costCode.value.hours | keys">
-            <i class="material-icons">chat</i>
+          <div class="col-md-1" *ngFor="let day of costCode.value.days | keys">
+            <i class="material-icons" [ngClass]="{'active': day.value.comments.length > 0}">chat</i>
           </div>
         </div>
 
@@ -67,16 +70,16 @@
         <div class="row">
           <div class="col-md-4 card-link">
             <div class="row">
-              <div class="col-md-4">
+              <div class="col-md-4" (click)="markAll(costCode.value, true)">
                 Select All
               </div>
-              <div class="col-md-4">
+              <div class="col-md-4" (click)="markAll(costCode.value, false)">
                 Unselect All
               </div>
             </div>
           </div>
-          <div class="col-md-1" *ngFor="let day of costCode.value.hours | keys">
-            <md-checkbox [hidden]="day.value == 0"></md-checkbox>
+          <div class="col-md-1" *ngFor="let day of costCode.value.days | keys">
+            <md-checkbox [hidden]="day.value.hours == 0" [(ngModel)]="day.value.selected"></md-checkbox>
           </div>
         </div>
 
@@ -95,3 +98,5 @@
   </div>
 
 </esub-base-card>
+
+<!-- <esub-comments-component></esub-comments-component> -->

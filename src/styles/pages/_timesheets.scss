@@ -135,6 +135,10 @@
       // chat bubbles
       i {
         color: $gray-20;
+
+        &.active {
+          color: $blue;
+        }
       }
 
       .hidden {

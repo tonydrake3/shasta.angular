@@ -107,7 +107,7 @@ const fakeTimeRecords = [
     },
     SystemPhase: {
       Id: 'syspha1',
-      Name: 'systema-faz'
+      Name: 'Primary'
     },
     Hours: {
       Date: '2017-06-29T13:15:42.233Z',
@@ -142,7 +142,7 @@ const fakeTimeRecords = [
     },
     SystemPhase: {
       Id: 'syspha1',
-      Name: 'systema-faz'
+      Name: 'Primary'
     },
     Hours: {
       Date: '2017-06-29T13:15:42.233Z',
@@ -177,7 +177,7 @@ const fakeTimeRecords = [
     },
     SystemPhase: {
       Id: 'syspha1',
-      Name: 'systema-faz'
+      Name: 'Primary'
     },
     Hours: {
       Date: '2017-06-28T13:15:42.233Z',
@@ -212,7 +212,7 @@ const fakeTimeRecords = [
     },
     SystemPhase: {
       Id: 'syspha1',
-      Name: 'systema-faz'
+      Name: 'Primary'
     },
     Hours: {
       Date: '2017-06-26T13:15:42.233Z',
