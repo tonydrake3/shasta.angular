@@ -65,12 +65,12 @@ export class TimesheetCardComponent {
     }
 
     // insert Hour objects at each nesting level and organize
-    this.timecards = this.buildTimecardHours(cards);
+    this.timecards = this.buildTimecard(cards);
     console.log('THIS.TIMECARDS', this.timecards);
   }
 
-  // attaches an hours @ day object, attached to each group, at each grouping level
-  buildTimecardHours(cards: Array<any>): Array<any> {
+  // attaches an hours @ day object (plus other supplemantary info inside that), attached to each group, at each grouping level
+  buildTimecard(cards: Array<any>): Array<any> {
 
     cards.forEach(card => {
       // each card
@@ -90,7 +90,6 @@ export class TimesheetCardComponent {
                 if (systemPhase.hasOwnProperty(costCodeKey)) {
                   // each costCode array in each systemPhase
                   const costCodes = systemPhase[costCodeKey];
-                  console.log('COSTCODES for', card.cardTitle, costCodes);
                   // each costCode entry here is an array of objects with an hours param (for hours worked on a specific day)
                   // each costCode entry here should eqate to one 'section' within the UI
                   // let's compile this codeCode array into a single obj with all the info we need
@@ -100,20 +99,61 @@ export class TimesheetCardComponent {
                     grouping: costCodes[0].grouping,
                     systemPhase: costCodes[0].systemPhase,
                     costCode: costCodes[0].costCode,
-                    hours: {}
+                    days: {}
                   }
 
-                  // build hours object
+                  // build empty days object with hours
                   this.dateRange.forEach(date => {
                     const dateKey = date.date.format('MM-DD-YYYY');
-                    finalCostCode.hours[dateKey] = 0;
+                    finalCostCode.days[dateKey] = {
+                      hours: 0,   // start at 0 and sum up all hours
+                      selected: false,
+                      comments: [],
+                      statusRejected: false,
+                      statusPending: false
+                    };
                   });
 
-                  // sum up hours for use in finalCostCode.hours[dateKey]
+                  // sum up hours for use in finalCostCode.days[dateKey].hours
                   costCodes.forEach(costCode => {
                     const dateKey = moment(costCode.hours.Date).format('MM-DD-YYYY');
-                    finalCostCode.hours[dateKey] += costCode.hours.DoubleTime + costCode.hours.Overtime + costCode.hours.RegularTime;
+                    finalCostCode.days[dateKey].hours += costCode.hours.DoubleTime + costCode.hours.Overtime + costCode.hours.RegularTime;
+
+                    // keep track of total status for entire day
+                    switch (costCode.status) {
+                      case 'Rejected':
+                        finalCostCode.days[dateKey].statusRejected = true;
+                        break;
+                      case 'Pending':
+                        finalCostCode.days[dateKey].statusPending = true;
+                        break;
+                      case 'Approved':
+                        break;
+                    }
+
+                    // append comments
+                    finalCostCode.days[dateKey].comments = _.concat(finalCostCode.days[dateKey].comments, costCode.comments);
                   });
+
+                  //  build up approval status
+                  for (const dateKey in finalCostCode.days) {
+                    if (finalCostCode.days.hasOwnProperty(dateKey)) {
+                      const day = finalCostCode.days[dateKey];
+                      let status: string;
+
+                      if (day.statusRejected) {
+                        status = 'Rejected';
+                      } else if (day.statusPending) {
+                        status = 'Pending'
+                      } else {
+                        status = 'Approved'
+                      }
+
+                      day.status = status;
+                      delete day.statusRejected;
+                      delete day.statusPending;
+                    }
+                  }
 
                   // replace original obj
                   systemPhase[costCodeKey] = finalCostCode;
@@ -140,12 +180,15 @@ export class TimesheetCardComponent {
       this.saveEntity(timerecord, 'SystemPhase');
       this.saveEntity(timerecord, 'CostCode');
 
+      // console.log('TIMERECORD.TIMERECORDSTATUS', timerecord.TimeRecordStatus)
+
       sections.push({
         grouping: groupTimesheetsBy === 'employee' ? this.getEntityName(timerecord.Project.Id) : this.getEntityName(timerecord.Employee.Id),
-        // system: timerecord.System ? this.getEntityName(timerecord.System.Id) : 'Unknown',
         systemPhase: timerecord.SystemPhase ? this.getEntityName(timerecord.SystemPhase.Id) : 'Unknown',
         costCode: timerecord.CostCode ? this.getEntityName(timerecord.CostCode.Id) : 'Unknown',
-        hours: timerecord.Hours
+        hours: timerecord.Hours,
+        status: timerecord.TimeRecordStatus,
+        comments: timerecord.Comments
       });
     });
 
@@ -224,10 +267,15 @@ export class TimesheetCardComponent {
     return name;
   }
 
-  // given a section containing displayHours and a day containing a moment date, return that day's hours
-  getHours(section, day): number {
-    const hours = section.value.displayHours;
-    const retVal = hours[day.date.format('MM-DD-YYYY')];
-    return retVal;
+  // mark all checkboxes for row
+  markAll(costCode: any, toggle: boolean) {
+    for (const dayKey in costCode.days) {
+      if (costCode.days.hasOwnProperty(dayKey)) {
+        const day = costCode.days[dayKey];
+        if (day.hours !== 0) {
+          day.selected = toggle;
+        }
+      }
+    }
   }
 }
