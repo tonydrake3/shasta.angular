@@ -27,6 +27,9 @@ import {DataSyncService} from './shared/services/utilities/data-sync.service';
 import {SettingsModule} from './features/settings/settings.module';
 import {LookupDataService} from './shared/services/utilities/lookup-data.service';
 
+// entry components
+import { CommentsComponent } from './shared/components/comments.component';
+
 @NgModule({
     imports: [
         BrowserModule,
@@ -56,7 +59,8 @@ import {LookupDataService} from './shared/services/utilities/lookup-data.service
         DataSyncService,
         LookupDataService
     ],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
+    entryComponents: [CommentsComponent]
 })
 
 export class AppModule {
