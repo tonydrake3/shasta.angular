@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ProjectService } from './project.service';
 
 @Component({
     selector: 'esub-project',
@@ -9,7 +8,7 @@ import { ProjectService } from './project.service';
 
 export class ProjectComponent implements OnInit {
 
-    constructor(private _projectService: ProjectService) {}
+    constructor() {}
 
     ngOnInit () {
 

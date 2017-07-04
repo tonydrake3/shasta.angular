@@ -33,8 +33,8 @@ export class LoginComponent {
                     // console.log('Authenticated');
                     sessionStorage.setItem('authentication', JSON.stringify(data));
 
-                    if (this._authenticationService.isLoggedIn()) {
-                        this.loading = false;
+                    // if (this._authenticationService.isLoggedIn()) {
+                    //     this.loading = false;
                         // this._authorizationService.getPermissions();
                         // this._userService.currentUserInfo$
                         //     .subscribe(
@@ -52,7 +52,7 @@ export class LoginComponent {
                                 } ,
                                 error => console.log(error)
                             );
-                    }
+                    // }
 
                 },
                 error => {

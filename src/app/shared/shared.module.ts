@@ -18,6 +18,7 @@ import { DEVMockDataService } from './DEV-mock-data.service';
 
 // Pipes
 import {StatusPipe} from './pipes/status.pipe';
+import {MockProjectService} from './mocks/mock.project.service';
 
 
 @NgModule({
@@ -37,6 +38,7 @@ import {StatusPipe} from './pipes/status.pipe';
     providers: [
         AuthorizationService,
         DEVMockDataService,
+        MockProjectService,
         UserService
     ],
     exports: [

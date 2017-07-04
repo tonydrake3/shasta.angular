@@ -10,33 +10,39 @@
 
     .project-data-group {
 
-        .data-label {
-
-        }
-
         .data-value {
             color: $dark-sky-blue;
         }
     }
 
     .project-status {
+        color: $true-white;
+        font-size: 12px;
+        margin-bottom: 10px;
 
-        &.open {
-            color: $dark-sky-blue;
+        span {
+            border-radius: 15px;
+            display: block;
+            width: 86px;
+            padding: 2px 12px;
+            text-align: center;
+
+            &.open {
+                background-color: $dark-sky-blue;
+            }
+
+            &.won,
+            &.complete {
+                background-color: $frog-green;
+            }
+
+            &.bid {
+                background-color: #FF8000;
+            }
+
+            &.lost {
+                background-color: $tomato;
+            }
         }
-
-        &.won,
-        &.complete {
-            color: $frog-green;
-        }
-
-        &.bid {
-            color: $orangey-yellow;
-        }
-
-        &.lost {
-            color: $tomato;
-        }
-
     }
 }

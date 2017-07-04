@@ -8,8 +8,10 @@ import { Component, Injector, OnDestroy } from '@angular/core';
 import { Subscriber } from 'rxjs/Rx';
 
 // imports for autoInjection
-import { ProjectService } from '../../features/projects/project.service';
+// import { ProjectService } from '../../features/projects/project.service';
 import { TimeRecordsService } from '../../features/time-expenses/time-records.service'
+import {MockProjectService} from '../mocks/mock.project.service';
+import {ProjectSelectionService} from '../../features/projects/project-selection.service';
 
 @Component({ })
 export class BaseComponent implements OnDestroy {
@@ -22,8 +24,10 @@ export class BaseComponent implements OnDestroy {
     // list of services to automatically inject, if requested by child component
     //   must provide them in the constructor
     this.autoInjections = [
-      { key: 'ProjectService', serviceObject: ProjectService, subject: 'projects$', initializer: 'getLatest' },
-      { key: 'TimeRecordsService', serviceObject: TimeRecordsService, subject: 'timeRecords$', initializer: 'getLatest' }
+      // { key: 'ProjectService', serviceObject: ProjectService, subject: 'projects$', initializer: 'getLatest' },
+      { key: 'MockProjectService', serviceObject: MockProjectService, subject: 'projects$', initializer: 'getLatest' },
+      { key: 'TimeRecordsService', serviceObject: TimeRecordsService, subject: 'timeRecords$', initializer: 'getLatest' },
+        { key: 'ProjectSelectionService', serviceObject: ProjectSelectionService, subject: 'filteredProjects$', initializer: 'getLatest' }
     ];
 
     // and inject them
