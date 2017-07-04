@@ -62,7 +62,7 @@
             {{costCode.value.costCode}}
           </div>
           <div class="col-md-1" *ngFor="let day of costCode.value.days | keys">
-            <i class="material-icons" [ngClass]="{'active': day.value.comments.length > 0}">chat</i>
+            <i class="material-icons" [ngClass]="{'active': day.value.comments.length > 0}" (click)="openChatModal(day.value.comments)">chat</i>
           </div>
         </div>
 

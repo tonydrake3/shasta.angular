@@ -187,8 +187,16 @@ const fakeTimeRecords = [
     },
     TimeRecordStatus: 'Pending',
     Comments: [{
-      Id: 'commentjo1',
-      Value: 'ima comment',
+      Id: 'commentjo3',
+      Value: 'ima comment commentjo3',
+      User: {
+        FirstName: 'Joshua',
+        LastName: 'Ohana',
+        ProfilePicUrl: 'https://tinyurl.com/luuvldd'
+      }
+    }, {
+      Id: 'commentjo5',
+      Value: 'ima comment commentjo5',
       User: {
         FirstName: 'Joshua',
         LastName: 'Ohana',
@@ -223,7 +231,7 @@ const fakeTimeRecords = [
     TimeRecordStatus: 'Approved',
     Comments: [{
       Id: 'commentjo1',
-      Value: 'ima comment',
+      Value: 'ima comment commentjo4',
       User: {
         FirstName: 'Joshua',
         LastName: 'Ohana',

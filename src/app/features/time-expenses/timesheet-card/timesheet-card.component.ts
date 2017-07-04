@@ -3,6 +3,10 @@ import { Component, Input } from '@angular/core';
 import { WeekDateRange, WeekDateRangeDetails } from '../../../models/Date';
 import { Timecard, TimecardSection } from './timecard.model';
 
+import { CommentsComponent } from '../../../shared/components/comments.component';
+
+import { MdDialog } from '@angular/material';
+
 import * as moment from 'moment';
 import * as _ from 'lodash';
 
@@ -19,7 +23,7 @@ export class TimesheetCardComponent {
   public entityLookupTable: Array<any>;   // local lookup table for entities (Employee, Project) built during timecard buildup
   public moment = moment;
 
-  constructor() {
+  constructor(public dialog: MdDialog) {
     this.timecards = [new Timecard()];    // so we have one card to display loader
   }
 
@@ -277,5 +281,15 @@ export class TimesheetCardComponent {
         }
       }
     }
+  }
+
+  // open the comment modal with that day's comments
+  openChatModal(comments: Array<any>) {
+    const commentsDialogRef = this.dialog.open(CommentsComponent, {
+      data: comments
+    });
+    commentsDialogRef.afterClosed().subscribe(result => {
+      // modal closed
+    });
   }
 }
