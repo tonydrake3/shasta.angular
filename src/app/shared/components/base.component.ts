@@ -9,7 +9,8 @@ import { Subscriber } from 'rxjs/Rx';
 
 // imports for autoInjection
 import { ProjectService } from '../../features/projects/project.service';
-import { TimeRecordsService } from '../../features/time-expenses/time-records.service'
+import { TimeRecordsService } from '../../features/time-expenses/time-records.service';
+import { UserService } from '../services/user/user.service';
 
 @Component({ })
 export class BaseComponent implements OnDestroy {
@@ -23,7 +24,8 @@ export class BaseComponent implements OnDestroy {
     //   must provide them in the constructor
     this.autoInjections = [
       { key: 'ProjectService', serviceObject: ProjectService, subject: 'projects$', initializer: 'getLatest' },
-      { key: 'TimeRecordsService', serviceObject: TimeRecordsService, subject: 'timeRecords$', initializer: 'getLatest' }
+      { key: 'TimeRecordsService', serviceObject: TimeRecordsService, subject: 'timeRecords$', initializer: 'getLatest' },
+      { key: 'UserService', serviceObject: UserService, subject: 'currentUserInfo$', initializer: 'getLatest' }
     ];
 
     // and inject them

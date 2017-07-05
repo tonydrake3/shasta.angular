@@ -13,5 +13,7 @@ import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 })
 export class CommentsComponent {
 
-  constructor(public dialogRef: MdDialogRef<CommentsComponent>, @Inject(MD_DIALOG_DATA) public data: any) { }
+  constructor(public dialogRef: MdDialogRef<CommentsComponent>, @Inject(MD_DIALOG_DATA) public data: any) {
+    console.log('DATA', data)
+  }
 }
