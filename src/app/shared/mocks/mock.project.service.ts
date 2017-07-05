@@ -6,19 +6,21 @@ import {mockProjects} from './data/mockProject.data';
 export class MockProjectService {
   _projects$ = new Subject();
 
-  constructor() {
-    this._projects$ = new Subject();
-  }
+  constructor() {}
 
   get projects$() {
     return this._projects$.asObservable();
   }
 
   getLatest() {
-      this._projects$.next(mockProjects);
+
+      // this._projects$.next(mockProjects);
+      setTimeout(() => {
+          this._projects$.next(mockProjects);
+      }, 20);
   }
 
-  doEmit(message) {
-    this._projects$.next(message);
-  }
+  // doEmit(message) {
+  //   this._projects$.next(message);
+  // }
 }

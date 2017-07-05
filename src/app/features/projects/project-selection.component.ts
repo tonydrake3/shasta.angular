@@ -1,4 +1,4 @@
-import {Component, Injector, OnDestroy, OnInit, ReflectiveInjector, ViewChild} from '@angular/core';
+import {Component, Injector, OnDestroy, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
 import { BaseComponent } from '../../shared/components/base.component';
 
@@ -15,15 +15,13 @@ import {ProjectSelectionService} from './project-selection.service';
     styles: [],
     templateUrl: './project-selection.component.html'
 })
-export class ProjectSelectionComponent extends BaseComponent implements OnInit {
+export class ProjectSelectionComponent extends BaseComponent implements OnInit, OnDestroy {
 
     _statuses;
-    _projects: Project[];
     _sortColumns: Array<SortColumn>;
     _filterSubscription;
 
     filteredProjects: Project[];
-    selectedSort: SortColumn;
 
     constructor (protected injector: Injector, private _router: Router, private _projectSelection: ProjectSelectionService) {
 
@@ -34,38 +32,28 @@ export class ProjectSelectionComponent extends BaseComponent implements OnInit {
             }
         ]);
 
-        // super.inject([
-        //     {
-        //         toInject: ProjectSelectionService,
-        //         subject: 'filteredProjects$',
-        //         initializer: 'init',
-        //         callback: 'callback'
-        //     }
-        // ]);
+        // console.log('ProjectSelectionComponent Ctor', this.projectSelection);
     }
 
     ngOnInit () {
 
-        console.log('ProjectSelectionComponent OnInit', this._projectSelection);
+        this._filterSubscription = this._projectSelection.filteredProjects$
+            .subscribe(
+                (projects) => {
 
-        // this._filterSubscription = this._selectService.filteredProjects$
-        //     .subscribe(
-        //         (projects) => {
-        //
-        //             console.log('ProjectSelectionComponent OnInit SelectionService', projects);
-        //             this.filteredProjects = <Project[]> projects;
-        //         },
-        //         (error) => {
-        //
-        //             console.log('ProjectSelectionComponent OnInit Error', error);
-        //         }
-        //     );
+                    // console.log('ProjectSelectionComponent OnInit filteredProjects$', projects);
+                    this.filteredProjects = <Project[]> projects;
+                },
+                (error) => {
+
+                    console.log(error);
+                });
     }
-    //
-    // ngOnDestroy () {
-    //
-    //     this._filterSubscription.unsubscribe();
-    // }
+
+    ngOnDestroy () {
+
+        this._filterSubscription.unsubscribe();
+    }
 
     /******************************************************************************************************************
      * Public Methods
@@ -73,14 +61,7 @@ export class ProjectSelectionComponent extends BaseComponent implements OnInit {
 
     selectStatusFilter (selStatus: StatusMap) {
 
-        this._statuses.forEach((status) => {
-
-            if (status.Key === selStatus.Key) {
-
-                status.IsFiltered = !status.IsFiltered;
-            }
-        });
-        // this.filter();
+        this._projectSelection.setStatusFilter(selStatus);
     }
 
     sortProjects (column: SortColumn) {
@@ -94,6 +75,7 @@ export class ProjectSelectionComponent extends BaseComponent implements OnInit {
                     col.IsDescending = !col.IsDescending;
                 }
                 col.IsSelected = true;
+                this._projectSelection.setSortColumn(col);
 
             } else {
 
@@ -103,87 +85,28 @@ export class ProjectSelectionComponent extends BaseComponent implements OnInit {
     }
 
     createProject () {
+
         this._router.navigate([routeName.project, 'create']);
     }
 
-    /*****************************************************************************************************************
-     * Private Methods
+    /******************************************************************************************************************
+     * Callback Handler
      ******************************************************************************************************************/
 
     projectServiceCallback(projects) {
 
-        console.log('Project Selection Service Callback', this._projectSelection);
-
-        // const injector = ReflectiveInjector.resolveAndCreate([ProjectSelectionService]);
-        // const projectSelection = injector.get(ProjectSelectionService);
-
-        // console.log('Project Selection Service Callback', projectSelection);
+        // console.log('MockProjectService Callback', this._projectSelection);
 
         this._sortColumns = _.orderBy(projectSortColumns, ['Ordinal'], ['asc']);
 
-        // this._projectSelection.init(<Project[]> projects, this._sortColumns[0]);
-        //
-        // this._statuses = _.filter(statusMap, function (status) {
-        //     return status.CanDisplay;
-        // });
-        //
-        // this._projects = projects['Value'];
-        //
-        //
-        // this.selectedSort = this._sortColumns[0];
+        this._statuses = _.filter(statusMap, function (status) {
+            return status.CanDisplay;
+        });
 
-        // this._selectService.filterProjects();
-        // this.filter();
+        this._projectSelection.init(<Project[]> projects['Value'], this._sortColumns[0]);
     }
 
-    callback() {
-
-    }
-
-    // private filterProject (status: StatusMap) {
-    //
-    //     return _.filter(this._projects, function (proj) {
-    //
-    //         return proj.Status === status.Key;
-    //     });
-    // }
-
-    // private filter () {
-    //
-    //     this.filteredProjects = new Array<Project>();
-    //
-    //     this._statuses.forEach((map) => {
-    //
-    //         if (map.IsFiltered) {
-    //
-    //             this.filteredProjects = _.concat(this.filteredProjects, this.filterProject(map));
-    //         }
-    //     });
-    //     this.sort();
-    // }
-    //
-    // private sort () {
-    //
-    //     this.filteredProjects = _.orderBy(this.filteredProjects, [this.selectedSort.Key], ['asc']);
-    // }
-    //
-    // private  getCurrentSort (selSort) {
-    //
-    //     // Find position in list
-    //     const index = _.findIndex(this._sortColumns, function (col) {
-    //
-    //         return col.Key === selSort.Key;
-    //     });
-    //
-    //     // Get next from list or wrap to beginning
-    //     if (index === this._sortColumns.length - 1) {
-    //
-    //         this.selectedSort = this._sortColumns[0];
-    //         this.selectedSort.IsSelected = true;
-    //     } else {
-    //
-    //         this.selectedSort = this._sortColumns[index + 1];
-    //         this.selectedSort.IsSelected = true;
-    //     }
-    // }
+    /******************************************************************************************************************
+     * Private Methods
+     ******************************************************************************************************************/
 }

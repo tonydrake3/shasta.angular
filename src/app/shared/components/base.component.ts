@@ -26,8 +26,7 @@ export class BaseComponent implements OnDestroy {
     this.autoInjections = [
       // { key: 'ProjectService', serviceObject: ProjectService, subject: 'projects$', initializer: 'getLatest' },
       { key: 'MockProjectService', serviceObject: MockProjectService, subject: 'projects$', initializer: 'getLatest' },
-      { key: 'TimeRecordsService', serviceObject: TimeRecordsService, subject: 'timeRecords$', initializer: 'getLatest' },
-        { key: 'ProjectSelectionService', serviceObject: ProjectSelectionService, subject: 'filteredProjects$', initializer: 'getLatest' }
+      { key: 'TimeRecordsService', serviceObject: TimeRecordsService, subject: 'timeRecords$', initializer: 'getLatest' }
     ];
 
     // and inject them
