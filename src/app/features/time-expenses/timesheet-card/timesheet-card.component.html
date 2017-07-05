@@ -1,10 +1,12 @@
-<esub-base-card *ngIf="timecards.length == 0" class="timesheet-card">
+<esub-base-card *ngIf="timecards?.length == 0 && !loading" class="timesheet-card">
   <div class="row card-title text-center">
     No results found. Please update your filters above.
   </div>
 </esub-base-card>
 
-<esub-base-card *ngFor="let timecard of timecards" class="timesheet-card" [loading]="loading">
+<esub-base-card *ngIf="(timecards?.length == 0 && loading) || !timecards" class="timesheet-card" [loading]="true"></esub-base-card>
+
+<esub-base-card *ngFor="let timecard of timecards" class="timesheet-card">
 
   <!-- header row -->
   <div class="row">
@@ -39,7 +41,7 @@
           </div>
           <div class="col-md-1 card-hours" *ngFor="let day of costCode.value.days | keys"
             [ngClass]="{'card-hours-disabled': day.value.hours == 0}">
-            {{day.value.hours}}
+            {{day.value.hours | number:'1.0-2'}}
           </div>
         </div>
 
@@ -62,7 +64,7 @@
             {{costCode.value.costCode}}
           </div>
           <div class="col-md-1" *ngFor="let day of costCode.value.days | keys">
-            <i class="material-icons" [ngClass]="{'active': day.value.comments.length > 0}" (click)="openChatModal(day.value.comments)">chat</i>
+            <i class="material-icons" [ngClass]="{'active': day.value.comments?.length > 0}" (click)="openChatModal(day.value.comments)">chat</i>
           </div>
         </div>
 
@@ -93,10 +95,8 @@
       Hours Total
     </div>
     <div class="col-md-1 card-total-hours" *ngFor='let day of dateRange'>
-      -
+      {{timesheetCardManager.getDayTotalHours(timecard, day) | number:'1.0-2'}}
     </div>
   </div>
 
 </esub-base-card>
-
-<!-- <esub-comments-component></esub-comments-component> -->
