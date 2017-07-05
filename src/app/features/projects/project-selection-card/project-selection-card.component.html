@@ -6,8 +6,8 @@
                     <h5>{{project.Number}} - {{project.Name}}</h5>
                 </div>
                 <div class="col-md-6 project-location">
-                    <span>{{project.Address.Address1}} {{project.Address.Address2}} {{project.Address.Address3}}
-                        {{project.Address.City}} {{project.Address.State}} {{project.Address.Zip}}</span>
+                    <span class="project-location-street">{{project.Address.Address1}} {{project.Address.Address2}} {{project.Address.Address3}}</span>
+                    <span>{{project.Address.City}}&#44; {{project.Address.State}} {{project.Address.Zip}}</span>
                 </div>
             </div>
             <div class="row">
@@ -49,7 +49,7 @@
         </div>
         <div class="col-md-2">
             <div class="row align-items-center">
-                <div class="col-md-12 col-xs-12">
+                <div class="col-md-12">
                     <md-select placeholder="Go to" floatPlaceholder="never">
                         <md-option *ngFor="let link of _links" (click)="goToPage(link.route)" >{{ link.name }}</md-option>
                     </md-select>

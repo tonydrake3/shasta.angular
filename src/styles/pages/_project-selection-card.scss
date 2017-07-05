@@ -8,10 +8,10 @@
         margin-top: 6px;
     }
 
-    .project-data-group {
+    .project-location {
 
-        .data-value {
-            color: $dark-sky-blue;
+        .project-location-street {
+            padding-right: 3px;
         }
     }
 
@@ -44,5 +44,9 @@
                 background-color: $tomato;
             }
         }
+    }
+
+    md-select {
+        width: 100%;
     }
 }

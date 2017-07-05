@@ -773,7 +773,7 @@ export const mockProjects = {
             'IsHidden': false,
             'IsTemplate': false,
             'IsTraining': false,
-            'LastAccessedDate': '2017-04-01T18:17:53.383Z',
+            'LastAccessedDate': '2017-03-11T18:17:53.383Z',
             'MarketArea': {
                 '$id': '7',
                 'Id': '8dfea657-4046-496f-b584-7c9101f3b835',
@@ -916,7 +916,7 @@ export const mockProjects = {
             'IsHidden': false,
             'IsTemplate': false,
             'IsTraining': false,
-            'LastAccessedDate': '2017-03-11T18:17:53.383Z',
+            'LastAccessedDate': '2017-04-01T18:17:53.383Z',
             'MarketArea': {
                 '$id': '7',
                 'Id': '8dfea657-4046-496f-b584-7c9101f3b835',

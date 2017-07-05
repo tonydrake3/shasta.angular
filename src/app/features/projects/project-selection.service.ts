@@ -11,16 +11,16 @@ import * as _ from 'lodash';
 @Injectable()
 export class ProjectSelectionService {
 
-    _projects: Project[];
-    _processedProjects;
-    _filteredRecords = new Subject();
-    _filterText: string;
-    _statuses;
-    _sortColumn: SortColumn;
+    private _projects: Project[];
+    private _processedProjects;
+    private _filteredRecords = new Subject();
+    private _filterText: string;
+    private _statuses;
+    private _sortColumn: SortColumn;
 
     constructor () {
 
-        console.log('ProjectSelectionService Ctor');
+        // console.log('ProjectSelectionService Ctor');
         this._statuses = statusMap;
     }
 
@@ -84,7 +84,6 @@ export class ProjectSelectionService {
             if (map.IsFiltered) {
 
                 this._processedProjects = _.concat(this._processedProjects, this.filterProject(map));
-                console.log(this._processedProjects);
             }
         });
     }

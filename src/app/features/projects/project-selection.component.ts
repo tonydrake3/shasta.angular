@@ -32,7 +32,7 @@ export class ProjectSelectionComponent extends BaseComponent implements OnInit, 
             }
         ]);
 
-        // console.log('ProjectSelectionComponent Ctor', this.projectSelection);
+        console.log('ProjectSelectionComponent Ctor', this._projectSelection);
     }
 
     ngOnInit () {
