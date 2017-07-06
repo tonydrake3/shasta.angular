@@ -17,7 +17,7 @@ export class MockProjectService {
       // this._projects$.next(mockProjects);
       setTimeout(() => {
           this._projects$.next(mockProjects);
-      }, 20);
+      });
   }
 
   // doEmit(message) {

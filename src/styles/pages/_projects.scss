@@ -42,6 +42,7 @@
         padding-top: 45px;
 
         a {
+            @include noselect;
             cursor: pointer;
             display: inline-block;
             font-weight: normal;

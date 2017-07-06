@@ -1,15 +1,13 @@
 import {Injectable} from '@angular/core';
-// import { ProjectService } from './project.service';
 import {ReplaySubject} from 'rxjs/ReplaySubject';
 import {Project} from 'app/models/domain/Project';
-import {MockProjectService} from '../../shared/mocks/mock.project.service';
 import {Subject} from 'rxjs/Subject';
 import {StatusMap, statusMap} from '../../models/configuration/statusMap';
 import {SortColumn} from '../../models/configuration/sortColumns';
 import * as _ from 'lodash';
 
 @Injectable()
-export class ProjectSelectionService {
+export class ProjectSelectionManager {
 
     private _projects: Project[];
     private _processedProjects;
@@ -36,9 +34,10 @@ export class ProjectSelectionService {
     init (projects: Project[], sortColumn: SortColumn) {
 
         // console.log('ProjectSelectionService Init', projects);
+        this._processedProjects = new Array<Project>();
         this._projects = projects;
         this._sortColumn = sortColumn;
-        this.processProjects ();
+        this.processProjects();
     }
 
     setStatusFilter (selStatus: StatusMap) {
@@ -63,7 +62,7 @@ export class ProjectSelectionService {
      * Private Methods
      ******************************************************************************************************************/
 
-    private processProjects () {
+    processProjects () {
 
         // filter by status
         this.filterStatuses();

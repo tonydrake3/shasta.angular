@@ -11,7 +11,6 @@ import { Subscriber } from 'rxjs/Rx';
 // import { ProjectService } from '../../features/projects/project.service';
 import { TimeRecordsService } from '../../features/time-expenses/time-records.service'
 import {MockProjectService} from '../mocks/mock.project.service';
-import {ProjectSelectionService} from '../../features/projects/project-selection.service';
 
 @Component({ })
 export class BaseComponent implements OnDestroy {

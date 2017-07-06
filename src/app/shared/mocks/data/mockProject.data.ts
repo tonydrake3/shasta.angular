@@ -1,4 +1,5 @@
 
+import {Project} from '../../../models/domain/Project';
 export const mockProjects = {
     Value: [
         {

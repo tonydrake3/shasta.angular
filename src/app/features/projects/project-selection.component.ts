@@ -8,7 +8,7 @@ import {statusMap, StatusMap} from '../../models/configuration/statusMap';
 import * as _ from 'lodash';
 import {SortColumn} from '../../models/configuration/sortColumns';
 import {projectSortColumns} from '../../models/configuration/sortColumns';
-import {ProjectSelectionService} from './project-selection.service';
+import {ProjectSelectionManager} from './project-selection.manager';
 
 
 @Component({
@@ -23,7 +23,7 @@ export class ProjectSelectionComponent extends BaseComponent implements OnInit, 
 
     filteredProjects: Project[];
 
-    constructor (protected injector: Injector, private _router: Router, private _projectSelection: ProjectSelectionService) {
+    constructor (protected injector: Injector, private _router: Router, private _projectSelection: ProjectSelectionManager) {
 
         super(injector, [
             {
@@ -31,8 +31,7 @@ export class ProjectSelectionComponent extends BaseComponent implements OnInit, 
                 callback: 'projectServiceCallback'
             }
         ]);
-
-        console.log('ProjectSelectionComponent Ctor', this._projectSelection);
+        // console.log('ProjectSelectionComponent Ctor', this._projectSelection);
     }
 
     ngOnInit () {
