@@ -7,17 +7,17 @@ export class SortColumn {
 }
 
 export const projectSortColumns = [
-    {
-        Key: 'LastAccessedDate',
-        Value: 'Recent',
-        IsSelected: true,
-        Ordinal: 0,
-        IsDescending: true
-    },
+    // {
+    //     Key: 'LastAccessedDate',
+    //     Value: 'Recent',
+    //     IsSelected: true,
+    //     Ordinal: 0,
+    //     IsDescending: true
+    // },
     {
         Key: 'Name',
         Value: 'Name',
-        IsSelected: false,
+        IsSelected: true,
         Ordinal: 1,
         IsDescending: true
     },

@@ -29,17 +29,17 @@
                 </div>
                 <div class="col-md-6"></div>
             </div>
-            <div class="row">
+            <div class="row" *ngIf="project.MarketArea">
                 <div class="col-md-2">
                     <span class="label-bold">Market Area&#58;</span>
                 </div>
                 <div class="col-md-3">
                     <span class="span-value">{{project.MarketArea.Name}}</span>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-2" *ngIf="project.MarketArea.Division">
                     <span class="label-bold">Division&#58;</span>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3" *ngIf="project.MarketArea.Division">
                     <span class="span-value">{{project.MarketArea.Division.Name}}</span>
                 </div>
                 <div class="col-md-2">

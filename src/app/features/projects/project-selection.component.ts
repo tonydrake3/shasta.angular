@@ -27,7 +27,7 @@ export class ProjectSelectionComponent extends BaseComponent implements OnInit, 
 
         super(injector, [
             {
-                service: 'MockProjectService',
+                service: 'ProjectService',
                 callback: 'projectServiceCallback'
             }
         ]);

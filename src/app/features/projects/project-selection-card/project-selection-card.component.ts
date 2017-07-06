@@ -46,7 +46,7 @@ export class ProjectSelectionCardComponent implements OnInit {
     }
 
     selectProject (project: Project) {
-        console.log('Select Project');
+        // console.log('Select Project');
         this._dataSync.setProject(project);
         sessionStorage.setItem('project', JSON.stringify(project));
     }
