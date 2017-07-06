@@ -8,10 +8,9 @@ import { Component, Injector, OnDestroy } from '@angular/core';
 import { Subscriber } from 'rxjs/Rx';
 
 // imports for autoInjection
-// import { ProjectService } from '../../features/projects/project.service';
-import { TimeRecordsService } from '../../features/time-expenses/time-records.service'
-import {ProjectService} from '../../features/projects/project.service';
-import {MockProjectService} from '../mocks/mock.project.service';
+import { ProjectService } from '../../features/projects/project.service';
+import { TimeRecordsService } from '../../features/time-expenses/time-records.service';
+
 
 @Component({ })
 export class BaseComponent implements OnDestroy {
@@ -25,7 +24,6 @@ export class BaseComponent implements OnDestroy {
     //   must provide them in the constructor
     this.autoInjections = [
       { key: 'ProjectService', serviceObject: ProjectService, subject: 'projects$', initializer: 'getLatest' },
-      // { key: 'ProjectService', serviceObject: MockProjectService, subject: 'projects$', initializer: 'getLatest' },
       { key: 'TimeRecordsService', serviceObject: TimeRecordsService, subject: 'timeRecords$', initializer: 'getLatest' }
     ];
 
