@@ -70,16 +70,27 @@ export class TimesheetCardComponent extends BaseComponent {
       }
 
       this.saveEntity(timerecord, accessor);
-      return timerecord[accessor].Id;
+
+      if (timerecord[accessor]) {
+        return timerecord[accessor].Id;
+      } else {
+        return 'Unknown';
+      }
     });
 
     const cards = new Array<any>();
     // one groupedTimerecord equates to one Timecard
     for (const key in groupedTimerecords) {
       if (groupedTimerecords.hasOwnProperty(key)) {
+        let title;
+        if (this.entityLookupTable[key]) {
+          title = this.entityLookupTable[key].Title;
+        } else {
+          title = 'Unknown';
+        }
         cards.push({
           cardTitle: this.getEntityName(key),
-          subTitle: this.entityLookupTable[key].Title,
+          subTitle: title,
           sections: this.buildSections(groupedTimerecords[key], groupTimesheetsBy)
         });
       }
@@ -180,8 +191,17 @@ export class TimesheetCardComponent extends BaseComponent {
 
   // open the comment modal with that day's comments
   openChatModal(comments: Array<any>) {
+    let width, height;
+    if (window.innerWidth < 750) width = window.innerWidth * .3;
+    else if (window.innerWidth < 1100) width = window.innerWidth * .4;
+    else if (window.innerWidth < 1420) width = window.innerWidth * .5;
+    else width = window.innerWidth * .6;
+    height = window.innerHeight * .5;
+
     const commentsDialogRef = this.dialog.open(CommentsComponent, {
-      data: comments
+      data: comments,
+      height: height + 'px',
+      width: width + 'px'
     });
     commentsDialogRef.afterClosed().subscribe(result => {
       // modal closed

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { MaterialModule, MdDatepickerModule, MdNativeDateModule } from '@angular/material';
 
 // Directives
@@ -27,7 +28,8 @@ import { DEVMockDataService } from './DEV-mock-data.service';
     MaterialModule,
     MdDatepickerModule,
     MdNativeDateModule,
-    CommonModule
+    CommonModule,
+    FormsModule
   ],
   declarations: [
     EChartsDirective,
