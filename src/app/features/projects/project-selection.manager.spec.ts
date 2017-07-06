@@ -16,7 +16,10 @@ describe('ProjectSelection Service', () => {
     const projects = [];
     Object.assign(projects, mockProjects['Value']);
     const sortColumn = _.orderBy(projectSortColumns, ['Ordinal'], ['asc'])[0];
-    const sortName = _.orderBy(projectSortColumns, ['Ordinal'], ['asc'])[1];
+    const sortNumber = _.filter(projectSortColumns, (col) => {
+
+        return col.Value.toLowerCase() === 'number';
+    })[0];
 
     const wonStatus = _.filter(statusMap, (status) => {
 
@@ -113,39 +116,40 @@ describe('ProjectSelection Service', () => {
         projSelMgr.setStatusFilter(openStatus);
     }));
 
-    // it('setSortColumn() : should be ordered by Project Name descending', async(() => {
+    it('setSortColumn() : should be ordered by Project Number descending', async(() => {
+
+        projSelMgr.filteredProjects$
+            .skip(3) // Skip other observables
+            .subscribe((filteredProjects: Project[]) => {
+
+                expect(filteredProjects.length).toBe(3);
+                expect(filteredProjects[0].Name.toLowerCase()).toBe('project a');
+                expect(filteredProjects[1].Name.toLowerCase()).toBe('project ab');
+                expect(filteredProjects[2].Name.toLowerCase()).toBe('project aa');
+            });
+
+        projSelMgr.init(projects, sortColumn);
+        projSelMgr.setStatusFilter(openStatus);
+        projSelMgr.setStatusFilter(lostStatus);
+        sortNumber.IsDescending = true;
+        projSelMgr.setSortColumn(sortNumber);
+    }));
     //
-    //     projSelMgr.filteredProjects$
-    //         .skip(3) // Skip other observables
-    //         .subscribe((filteredProjects: Project[]) => {
-    //
-    //             console.log(filteredProjects);
-    //             expect(filteredProjects.length).toBe(3);
-    //             expect(filteredProjects[0].Name.toLowerCase()).toBe('project ab');
-    //             expect(filteredProjects[1].Name.toLowerCase()).toBe('project aa');
-    //             expect(filteredProjects[2].Name.toLowerCase()).toBe('project a');
-    //         });
-    //
-    //     projSelMgr.init(projects, sortColumn);
-    //     projSelMgr.setStatusFilter(openStatus);
-    //     projSelMgr.setStatusFilter(lostStatus);
-    //     projSelMgr.setSortColumn(sortName);
-    // }));
-    //
-    // it('setSortColumn() : should be ordered by Project Name ascending', async(() => {
-    //
-    //     projSelMgr.filteredProjects$
-    //         .skip(1) // Skip other observables
-    //         .subscribe((filteredProjects: Project[]) => {
-    //
-    //             expect(filteredProjects.length).toBe(3);
-    //             expect(filteredProjects[0].Name.toLowerCase()).toBe('project a');
-    //             expect(filteredProjects[1].Name.toLowerCase()).toBe('project aa');
-    //             expect(filteredProjects[2].Name.toLowerCase()).toBe('project ab');
-    //         });
-    //
-    //     projSelMgr.init(projects, sortColumn);
-    //     sortName.IsDescending = false;
-    //     projSelMgr.setSortColumn(sortName);
-    // }));
+    it('setSortColumn() : should be ordered by Project Name ascending', async(() => {
+
+        projSelMgr.filteredProjects$
+            .skip(1) // Skip other observables
+            .subscribe((filteredProjects: Project[]) => {
+
+                expect(filteredProjects.length).toBe(3);
+                expect(filteredProjects[0].Name.toLowerCase()).toBe('project aa');
+                expect(filteredProjects[1].Name.toLowerCase()).toBe('project ab');
+                expect(filteredProjects[2].Name.toLowerCase()).toBe('project a');
+            });
+
+        projSelMgr.init(projects, sortColumn);
+        sortNumber.IsDescending = false;
+        projSelMgr.setSortColumn(sortNumber);
+        // projSelMgr.setSortColumn(sortName); // Replace line above with this line when Recent sort is implemented.
+    }));
 });
