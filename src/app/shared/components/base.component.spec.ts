@@ -10,7 +10,7 @@ import { MockProjectService } from '../mocks/mock.project.service';
 import { MockEmptyComponent } from '../mocks/mock.empty.component';
 
 
-// import { ProjectService } from '../../features/projects/project.service';
+import { ProjectService } from '../../features/projects/project.service';
 
 import 'hammerjs';
 
@@ -30,7 +30,7 @@ describe('Base Component', () => {
     TestBed.configureTestingModule({
       providers: [
         Injector,
-        // { provide: ProjectService, useValue: mockProjectService },
+        { provide: ProjectService, useValue: mockProjectService },
         { provide: MockEmptyService, useValue: mockEmptyService }
       ],
       declarations: [ MockEmptyComponent ], // declare the test component
@@ -45,19 +45,19 @@ describe('Base Component', () => {
       el = de.nativeElement;
 
       // build spys
-      // spyOn(comp, 'projectServiceCallback');
+      spyOn(comp, 'projectServiceCallback');
       spyOn(comp, 'emptyServiceCallback');
 
       done();
     });
   });
 
-  // describe('auto injection', () => {
-  //   it('should inject and subscribe to one service', async(() => {
-  //     mockProjectService.doEmit('its automagic');
-  //     expect(comp.projectServiceCallback).toHaveBeenCalledWith('its automagic');
-  //   }));
-  // });
+  describe('auto injection', () => {
+    it('should inject and subscribe to one service', async(() => {
+      mockProjectService.doEmit('its automagic');
+      expect(comp.projectServiceCallback).toHaveBeenCalledWith('its automagic');
+    }));
+  });
 
   describe('dynamic injection', () => {
     it('should inject and subscribe to one service', async(() => {

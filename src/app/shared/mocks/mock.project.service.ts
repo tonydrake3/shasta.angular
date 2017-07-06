@@ -20,7 +20,7 @@ export class MockProjectService {
       });
   }
 
-  // doEmit(message) {
-  //   this._projects$.next(message);
-  // }
+  doEmit(message) {
+    this._projects$.next(message);
+  }
 }
