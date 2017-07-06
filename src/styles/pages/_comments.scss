@@ -1,0 +1,20 @@
+.esub-comments {
+  .comment-block {
+
+    background-color: $gray-bg;
+    padding: 15px;
+    margin: 10px 0;
+
+    .signature {
+      margin: 0;
+
+      img {
+        margin: 4px 10px 0 0;
+      }
+
+      span {
+        display: block;
+      }
+    }
+  }
+}
