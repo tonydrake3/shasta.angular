@@ -132,18 +132,30 @@ export class TimesheetCardManager {
   }
 
   // given a timecard and a day, returns the total hours logged for that day for the entire card
-  getDayTotalHours(timecard, day): string {
+  //     if day is omitted, totals up for entire card
+  //     if iSectionKey (project or employee) is supplied, only tally hours against that
+  //     if iSystemPhaseKey is supplied, only tally hours against that
+  // TODO maybe refactor this a little bit it feels brittle?
+  getTimecardTotalHours(timecard, day?, iSectionKey?, iSystemPhaseKey?): string {
     let hours = 0;
-    const dateKey = day.date.format('MM-DD-YYYY');
+    let dateKey;
+    if (day) dateKey = day.date.format('MM-DD-YYYY');
 
     for (const sectionKey in timecard.sections) {
       if (timecard.sections.hasOwnProperty(sectionKey)) {
+
+        // if iSectionKey is supplied, only count when it matches
+        if (iSectionKey && iSectionKey !== sectionKey) continue;
+
         // each section of each card (anti-group)
         const section = timecard.sections[sectionKey];
 
-
         for (const systemPhaseKey in section) {
           if (section.hasOwnProperty(systemPhaseKey)) {
+
+            // if iSectionKey is supplied, only count when it matches
+            if (iSystemPhaseKey && iSystemPhaseKey !== systemPhaseKey) continue;
+
             // each systemPhase in each section
             const systemPhase = section[systemPhaseKey];
 
@@ -152,7 +164,17 @@ export class TimesheetCardManager {
                 // each costCode array in each systemPhase
                 const costCode = systemPhase[costCodeKey];
 
-                hours += costCode.days[dateKey].hours;
+                if (day) {
+                  // if day was specified, get that day's hours
+                  hours += costCode.days[dateKey].hours;
+                } else {
+                  // elsewise, tally up all day entries
+                  for (const ccDayKey in costCode.days) {
+                    if (costCode.days.hasOwnProperty(ccDayKey)) {
+                      hours += costCode.days[ccDayKey].hours;
+                    }
+                  }
+                }
               }
             }
           }

@@ -32,44 +32,33 @@
   <!-- repeater section for each grouping of employee/project/system/phase/costcode -->
   <section *ngFor="let section of timecard.sections | keys">
     <div *ngFor="let systemPhase of section.value | keys">
+
+      <!-- section & hours -->
+      <div class="row">
+        <div class="col-md-4">
+          <span class="card-section">{{section.key}}</span>
+          <span class="card-subsection">{{systemPhase.key}}</span>
+        </div>
+        <div class="col-md-1 card-hours" *ngFor="let day of dateRange"
+          [ngClass]="{'card-hours-disabled': timesheetCardManager.getTimecardTotalHours(timecard, day, section.key, systemPhase.key) == 0}">
+          {{timesheetCardManager.getTimecardTotalHours(timecard, day, section.key, systemPhase.key) | number:'1.0-2'}}
+        </div>
+      </div>
+
       <div *ngFor="let costCode of systemPhase.value | keys">
-
-        <!-- section & hours -->
-        <div class="row">
-          <div class="col-md-4 card-section">
-            {{costCode.value.grouping}}
-          </div>
-          <div class="col-md-1 card-hours" *ngFor="let day of costCode.value.days | keys"
-            [ngClass]="{'card-hours-disabled': day.value.hours == 0}">
-            {{day.value.hours | number:'1.0-2'}}
-          </div>
-        </div>
-
-        <!-- systemPhase & indicator -->
-        <div class="row">
-          <div class="col-md-4 card-subsection">
-            {{costCode.value.systemPhase}}
-          </div>
-          <div [ngClass]="{'hidden': day.value.hours == 0}"class="col-md-1 indicator" *ngFor="let day of costCode.value.days | keys" [ngSwitch]="day.value.status">
-            <div *ngSwitchCase="'Approved'" class="green"></div>
-            <div *ngSwitchCase="'Rejected'" class="red"></div>
-            <div *ngSwitchCase="'Pending'" class="yellow"></div>
-            <div *ngSwitchDefault class="hidden"></div>
-          </div>
-        </div>
 
         <!-- costCode & comments -->
         <div class="row">
-          <div class="col-md-4 card-section">
+          <div class="col-md-4 label-regular">
             {{costCode.value.costCode}}
           </div>
           <div class="col-md-1" *ngFor="let day of costCode.value.days | keys">
-            <i class="material-icons" [ngClass]="{'active': day.value.comments?.length > 0}" (click)="openChatModal(day.value.comments)">chat</i>
+            <esub-badged-hour [day]="day.value"></esub-badged-hour>
           </div>
         </div>
 
         <!-- select links & checkboxes -->
-        <div class="row">
+        <div class="row" *ngIf="view == 'approve-time'">
           <div class="col-md-4 card-link">
             <div class="row">
               <div class="col-md-4" (click)="markAll(costCode.value, true)">
@@ -92,10 +81,10 @@
   <!-- footer row with totals -->
   <div class="row hours-total">
     <div class="col-md-4 card-hours">
-      Hours Total
+      {{timesheetCardManager.getTimecardTotalHours(timecard) | number:'1.0-2'}} Hours Total
     </div>
     <div class="col-md-1 card-total-hours" *ngFor='let day of dateRange'>
-      {{timesheetCardManager.getDayTotalHours(timecard, day) | number:'1.0-2'}}
+      {{timesheetCardManager.getTimecardTotalHours(timecard, day) | number:'1.0-2'}}
     </div>
   </div>
 

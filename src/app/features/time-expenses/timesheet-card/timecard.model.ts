@@ -13,5 +13,6 @@ export class TimecardSection {
   costCode: string;
   hours: Hours;
   status: string;
-  comments: Array<any>
+  comments: Array<any>;
+  mapError: any;
 }

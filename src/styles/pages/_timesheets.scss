@@ -99,11 +99,11 @@
   section {
 
     // had to build the border for these sections a little differently than above
-    &:after {
+    > div:after {
       display: block;
       content: ' ';
       height: 1px;
-      margin-top: -20px;
+      // margin-top: -20px;
       width: 96%;
       margin-left: 2%;
       align-self: center;
