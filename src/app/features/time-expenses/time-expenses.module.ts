@@ -9,6 +9,7 @@ import { TimeExpensesRoutingModule } from './time-expenses-routing.module';
 
 import { TimeExpensesComponent } from './time-expenses.component';
 import { TimesheetCardComponent } from './timesheet-card/timesheet-card.component';
+import { BadgedHourComponent } from './timesheet-card/badged-hour.component';
 
 import { TimeRecordsService } from './time-records.service';
 
@@ -22,7 +23,8 @@ import { TimeRecordsService } from './time-records.service';
     ],
     declarations: [
       TimeExpensesComponent,
-      TimesheetCardComponent
+      TimesheetCardComponent,
+      BadgedHourComponent
     ],
     providers: [
       TimeRecordsService

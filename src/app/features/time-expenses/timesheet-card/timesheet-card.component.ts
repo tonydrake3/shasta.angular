@@ -19,6 +19,7 @@ import * as _ from 'lodash';
 })
 export class TimesheetCardComponent extends BaseComponent {
   @Input() loading: boolean;
+  @Input() view: string;   // valid entries are timesheets, approve-time, export-time
 
   public timecards: Array<Timecard>;    // the built cards, what the template will display
   public dateRange: Array<WeekDateRangeDetails>;    // builds the 7 day week based on input dateRange
@@ -98,6 +99,7 @@ export class TimesheetCardComponent extends BaseComponent {
 
     // insert Hour objects at each nesting level and organize
     this.timecards = this.timesheetCardManager.buildTimecard(cards, this.dateRange);
+    console.log('THIS.TIMECARDS', this.timecards)
   }
 
   // creates sections (within a project or employee)
@@ -118,7 +120,8 @@ export class TimesheetCardComponent extends BaseComponent {
         costCode: timerecord.CostCode ? this.getEntityName(timerecord.CostCode.Id) : 'Unknown',
         hours: timerecord.Hours,
         status: timerecord.TimeRecordStatus,
-        comments: timerecord.Comments
+        comments: timerecord.Comments,
+        mapError: timerecord.MapLocationError
       });
     });
 
