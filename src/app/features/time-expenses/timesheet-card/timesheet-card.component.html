@@ -12,8 +12,14 @@
   <div class="row">
 
     <!-- name/project heading area -->
-    <div class="col-md-4 card-title">
-      {{timecard.cardTitle}}
+    <div class="col-md-4 card-heading">
+      <p class="card-title">
+        {{timecard.cardTitle}}
+      </p>
+      <div class="icon-holder" (click)="timecard.expanded = !timecard.expanded">
+        <i class="material-icons" *ngIf="!timecard.expanded">keyboard_arrow_down</i>
+        <i class="material-icons" *ngIf="timecard.expanded">keyboard_arrow_up</i>
+      </div>
       <p class="card-subtitle">
         {{timecard.subTitle}}
       </p>
@@ -30,7 +36,7 @@
   </div>
 
   <!-- repeater section for each grouping of employee/project/system/phase/costcode -->
-  <section *ngFor="let section of timecard.sections | keys">
+  <section *ngFor="let section of timecard.sections | keys" [hidden]="!timecard.expanded">
     <div *ngFor="let systemPhase of section.value | keys">
 
       <!-- section & hours -->
@@ -58,7 +64,7 @@
         </div>
 
         <!-- select links & checkboxes -->
-        <div class="row" *ngIf="view == 'approve-time'">
+        <div class="row" *ngIf="showCheckboxes">
           <div class="col-md-4 card-link">
             <div class="row">
               <div class="col-md-4" (click)="markAll(costCode.value, true)">

@@ -82,6 +82,18 @@
     }
   }
 
+  .card-heading {
+
+    p {
+      display: inline-block;
+    }
+
+    .icon-holder {
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+
   .card-date {
     white-space: nowrap;
     @media(max-width: 1100px) and (min-width: 992px) {

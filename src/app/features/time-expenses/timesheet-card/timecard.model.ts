@@ -5,6 +5,7 @@ export class Timecard {
   cardTitle: string;
   subTitle: string;
   sections: any;  // _.grouped array of TimecardSections
+  expanded: boolean;
 }
 
 export class TimecardSection {

@@ -19,7 +19,6 @@ import * as _ from 'lodash';
 })
 export class TimesheetCardComponent extends BaseComponent {
   @Input() loading: boolean;
-  @Input() view: string;   // valid entries are timesheets, approve-time, export-time
 
   public timecards: Array<Timecard>;    // the built cards, what the template will display
   public dateRange: Array<WeekDateRangeDetails>;    // builds the 7 day week based on input dateRange
@@ -28,6 +27,22 @@ export class TimesheetCardComponent extends BaseComponent {
   public moment = moment;
 
   private userId: string;
+
+  // view management
+  public _view: string;    // valid entries are timesheets, approve-time, export-time
+
+  // setter on input to monitor for changes
+  @Input()
+  set view(view: string) {
+    this._view = view;
+    this.updateViewSettings();
+  }
+  public showBadges: {
+    comments: boolean,
+    statusError: boolean,
+    mapError: boolean
+  };
+  public showCheckboxes: boolean;
 
   constructor(protected injector: Injector, public dialog: MdDialog, public timesheetCardManager: TimesheetCardManager) {
     super(injector, [
@@ -99,7 +114,7 @@ export class TimesheetCardComponent extends BaseComponent {
 
     // insert Hour objects at each nesting level and organize
     this.timecards = this.timesheetCardManager.buildTimecard(cards, this.dateRange);
-    console.log('THIS.TIMECARDS', this.timecards)
+    this.updateViewSettings();
   }
 
   // creates sections (within a project or employee)
@@ -213,5 +228,49 @@ export class TimesheetCardComponent extends BaseComponent {
 
   userServiceCallback(user) {
     this.userId = user.Id;
+  }
+
+
+  // used on route change to update default view settings for timecards
+  updateViewSettings() {
+    switch (this._view) {
+      case 'timesheets':
+        this.showBadges = {
+          comments: true,
+          statusError: true,
+          mapError: true
+        };
+        this.showCheckboxes = false;
+        this.expandAllDetails(false);
+        break;
+      case 'approve-time':
+        this.showBadges = {
+          comments: true,
+          statusError: true,
+          mapError: true
+        };
+        this.showCheckboxes = true;
+        this.expandAllDetails(true);
+        break;
+      case 'export-time':
+        //    TODO Only show records that have been approved if the company does approvals.
+        //    Otherwise display all records matching the current filters
+        this.showBadges = {
+          comments: true,
+          statusError: false,
+          mapError: false
+        };
+        this.showCheckboxes = true;
+        this.expandAllDetails(true);
+        break;
+    }
+  }
+
+
+  // expands or collapses all timecard detail sections
+  expandAllDetails(expand: boolean) {
+    this.timecards.forEach(card => {
+      card.expanded = expand;
+    });
   }
 }
