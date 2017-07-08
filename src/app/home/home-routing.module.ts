@@ -18,6 +18,7 @@ const routes: Routes = [
         canLoad: [AuthGuard],
         children: [
             { path: '', redirectTo: 'company', pathMatch: 'full' },
+            // { path: 'company', component: CompanySelectionComponent },
             { path: 'company', component: CompanySelectionComponent, canActivate: [ CompanyGuard ] },
             { path: 'project', loadChildren: '../features/projects/project.module#ProjectModule' },
             { path: 'settings', loadChildren: '../features/settings/settings.module#SettingsModule' },

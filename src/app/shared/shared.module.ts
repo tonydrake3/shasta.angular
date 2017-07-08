@@ -9,7 +9,6 @@ import { SlimScrollDirective } from './slim-scroll.directive';
 // Services
 import { AuthorizationService } from './services/authorization/authorization.service';
 import { UserService } from './services/user/user.service';
-import {DataSyncService} from './services/utilities/data-sync.service';
 
 // Components
 import { WeekSelectorComponent } from './components/week-selector.component';

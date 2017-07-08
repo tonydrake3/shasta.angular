@@ -30,7 +30,7 @@ export class Project {
     ProjectManager?: ProjectManager;
     // Salesman?: Salesman; // TODO: Add model?
     SourceId?: number;
-    Status?: string;
+    Status?: number;
     Superintendent?: Superintendent;
     Systems?: System[];
     TenantId?: string;

@@ -1,54 +1,112 @@
-import { Component, Injector } from '@angular/core';
+import {Component, Injector, OnDestroy, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
 import { BaseComponent } from '../../shared/components/base.component';
 
 import { Project } from '../../models/domain/Project';
 import { routeName } from '../../models/configuration/routeName';
-import {statusMap} from '../../models/configuration/statusMap';
+import {statusMap, StatusMap} from '../../models/configuration/statusMap';
 import * as _ from 'lodash';
+import {SortColumn} from '../../models/configuration/sortColumns';
+import {projectSortColumns} from '../../models/configuration/sortColumns';
+import {ProjectSelectionManager} from './project-selection.manager';
 
 
 @Component({
     styles: [],
     templateUrl: './project-selection.component.html'
 })
-export class ProjectSelectionComponent extends BaseComponent {
+export class ProjectSelectionComponent extends BaseComponent implements OnInit, OnDestroy {
 
     _statuses;
-    _projects: Project[];
+    _sortColumns: Array<SortColumn>;
+    _filterSubscription;
 
-    constructor (protected injector: Injector, private _router: Router) {
-      super(injector, [
-        {
-          service: 'ProjectService',
-          callback: 'projectServiceCallback'
-        }
-      ]);
+    filteredProjects: Project[];
 
-      this._statuses = _.filter(statusMap, function (status) {
-            return status.CanDisplay;
-          });
+    constructor (protected injector: Injector, private _router: Router, private _projectSelection: ProjectSelectionManager) {
+
+        super(injector, [
+            {
+                service: 'ProjectService',
+                callback: 'projectServiceCallback'
+            }
+        ]);
+        // console.log('ProjectSelectionComponent Ctor', this._projectSelection);
     }
 
-    statusFilterSelected () {
+    ngOnInit () {
 
-        this._statuses.forEach((map) => {
+        this._filterSubscription = this._projectSelection.filteredProjects$
+            .subscribe(
+                (projects) => {
 
-            if (map.Selected) {
+                    // console.log('ProjectSelectionComponent OnInit filteredProjects$', projects);
+                    this.filteredProjects = <Project[]> projects;
+                },
+                (error) => {
 
-                this._projects = _.filter(this._projects, function (project) {
-                    console.log(project, project.Status === map.Key);
-                    return project.Status === map.Key;
+                    console.log(error);
                 });
+    }
+
+    ngOnDestroy () {
+
+        super.ngOnDestroy();
+        this._filterSubscription.unsubscribe();
+    }
+
+    /******************************************************************************************************************
+     * Public Methods
+     ******************************************************************************************************************/
+
+    selectStatusFilter (selStatus: StatusMap) {
+
+        this._projectSelection.setStatusFilter(selStatus);
+    }
+
+    sortProjects (column: SortColumn) {
+
+        this._sortColumns.forEach((col) => {
+
+            if (col.Key === column.Key) {
+
+                if (column.IsSelected) {
+
+                    col.IsDescending = !col.IsDescending;
+                }
+                col.IsSelected = true;
+                this._projectSelection.setSortColumn(col);
+
+            } else {
+
+                col.IsSelected = false;
             }
         });
     }
 
-    projectServiceCallback(projects) {
-      this._projects = projects['Value'];
-    }
-
     createProject () {
+
         this._router.navigate([routeName.project, 'create']);
     }
+
+    /******************************************************************************************************************
+     * Callback Handler
+     ******************************************************************************************************************/
+
+    projectServiceCallback(projects) {
+
+        // console.log('MockProjectService Callback', this._projectSelection);
+
+        this._sortColumns = _.orderBy(projectSortColumns, ['Ordinal'], ['asc']);
+
+        this._statuses = _.filter(statusMap, function (status) {
+            return status.CanDisplay;
+        });
+
+        this._projectSelection.init(<Project[]> projects['Value'], this._sortColumns[0]);
+    }
+
+    /******************************************************************************************************************
+     * Private Methods
+     ******************************************************************************************************************/
 }

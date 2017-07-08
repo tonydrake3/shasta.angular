@@ -34,7 +34,6 @@ export class LoginComponent {
                     sessionStorage.setItem('authentication', JSON.stringify(data));
 
                     if (this._authenticationService.isLoggedIn()) {
-                        this.loading = false;
                         // this._authorizationService.getPermissions();
                         // this._userService.currentUserInfo$
                         //     .subscribe(
@@ -43,9 +42,14 @@ export class LoginComponent {
                         //     );
 
                         this._route.queryParams
+
                             .map(qp => qp['redirectTo'])
+
                             .subscribe(
+
                                 redirectTo => {
+
+                                    this.loading = false;
                                     const url = redirectTo ? [redirectTo] : ['company'];
                                     // console.log('login redirect url', url);
                                     this._router.navigate(url);
@@ -56,6 +60,7 @@ export class LoginComponent {
 
                 },
                 error => {
+
                     console.log(error);
                     this.errorMessage = error;
                     this.loading = false;

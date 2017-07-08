@@ -9,7 +9,8 @@ import { Subscriber } from 'rxjs/Rx';
 
 // imports for autoInjection
 import { ProjectService } from '../../features/projects/project.service';
-import { TimeRecordsService } from '../../features/time-expenses/time-records.service'
+import { TimeRecordsService } from '../../features/time-expenses/time-records.service';
+
 
 @Component({ })
 export class BaseComponent implements OnDestroy {

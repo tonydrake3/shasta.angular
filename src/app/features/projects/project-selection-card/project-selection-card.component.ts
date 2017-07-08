@@ -33,10 +33,10 @@ export class ProjectSelectionCardComponent implements OnInit {
         // this._router.navigate([link.route]);
     }
 
-    getClass (statusId: number) {
+    getClass (statusId: string) {
 
         let className = '';
-        statusMap.forEach(status => {
+        this._statuses.forEach(status => {
 
             if (status.Key === statusId) {
                 className = status.Value.toLowerCase();
@@ -46,7 +46,7 @@ export class ProjectSelectionCardComponent implements OnInit {
     }
 
     selectProject (project: Project) {
-        console.log('Select Project');
+        // console.log('Select Project');
         this._dataSync.setProject(project);
         sessionStorage.setItem('project', JSON.stringify(project));
     }
