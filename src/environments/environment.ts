@@ -9,6 +9,8 @@ export const environment = {
   production: false,
   gitVersion: getGitVersion(),
   apiUrl: 'http://api.develop.shasta.esubonline.com/',
+  mapsUrl: 'https://maps.googleapis.com/maps/api/',
+  mapsApiKey: 'AIzaSyDlNxrtp5Tfn5Oi3zx0-4Rlmcu7enBv4Lc',
   webUrl: ''
 };
 

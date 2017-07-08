@@ -25,7 +25,7 @@
                     <span class="label-bold">Project Manager&#58;</span>
                 </div>
                 <div class="col-md-4">
-                    <span class="span-value" *ngIf="project.ProjectManager">{{project.ProjectManager.Contact.FirstName}} {{project.ProjectManager.Contact.LastName}}</span>
+                    <span class="span-value" *ngIf="project.ProjectManager && project.ProjectManager.Contact">{{project.ProjectManager.Contact.FirstName}} {{project.ProjectManager.Contact.LastName}}</span>
                 </div>
                 <div class="col-md-6"></div>
             </div>

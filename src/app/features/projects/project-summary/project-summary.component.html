@@ -1,4 +1,35 @@
-<div class="container-fluid no-breadcrumbs project-summary">
-    <h3>Project Summary</h3>
+<div class="project-summary">
+    <div class="summary-map">
+        <esub-map></esub-map>
+        <div class="map-overlay row" *ngIf="details">
+            <div class="col-md-8 text-left">
+                <span class="map-overlay-name">{{details.Number}} - {{details.Name}}</span>
+            </div>
+            <div class="col-md-4 text-right">
+                <div class="map-overlay-map-to">
+                    <i class="material-icons">pin_drop</i>
+                    <span>Map to job site</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="summary-body">
+        <div class="row">
+            <div class="col-md-12">
 
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+
+            </div>
+            <div class="col-md-4">
+
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-12"></div>
+        </div>
+    </div>
 </div>

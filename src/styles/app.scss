@@ -10,7 +10,8 @@
     "mixins/transform",
     "mixins/flex",
     "mixins/misc-helpers",
-    "mixins/transition"
+    "mixins/transition",
+    "mixins/background-gradient"
 ;
 
 @import
@@ -18,7 +19,8 @@
     "components/week-selector",
     "components/cards",
     "components/buttons",
-    "components/indicators"
+    "components/indicators",
+    "components/maps"
 ;
 
 @import
@@ -40,4 +42,5 @@
 ,   "pages/project-selection-card"
 ,   "pages/login"
 ,   "pages/projects"
+,   "pages/project-summary"
 ;
