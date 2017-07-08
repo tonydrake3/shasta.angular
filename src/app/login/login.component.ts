@@ -33,8 +33,7 @@ export class LoginComponent {
                     // console.log('Authenticated');
                     sessionStorage.setItem('authentication', JSON.stringify(data));
 
-                    // if (this._authenticationService.isLoggedIn()) {
-                    //     this.loading = false;
+                    if (this._authenticationService.isLoggedIn()) {
                         // this._authorizationService.getPermissions();
                         // this._userService.currentUserInfo$
                         //     .subscribe(
@@ -43,19 +42,25 @@ export class LoginComponent {
                         //     );
 
                         this._route.queryParams
+
                             .map(qp => qp['redirectTo'])
+
                             .subscribe(
+
                                 redirectTo => {
+
+                                    this.loading = false;
                                     const url = redirectTo ? [redirectTo] : ['company'];
                                     // console.log('login redirect url', url);
                                     this._router.navigate(url);
                                 } ,
                                 error => console.log(error)
                             );
-                    // }
+                    }
 
                 },
                 error => {
+
                     console.log(error);
                     this.errorMessage = error;
                     this.loading = false;

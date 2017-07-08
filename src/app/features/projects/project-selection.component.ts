@@ -51,6 +51,7 @@ export class ProjectSelectionComponent extends BaseComponent implements OnInit, 
 
     ngOnDestroy () {
 
+        super.ngOnDestroy();
         this._filterSubscription.unsubscribe();
     }
 
