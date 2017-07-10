@@ -1,37 +1,21 @@
 import { Component, Input } from '@angular/core';
-import { MdDialog } from '@angular/material';
+import { Badges } from './timecard.model';
 
 @Component({
     selector: 'esub-badged-hour',
     template: `
-    <div class="card-hours-small" [ngClass]="{'card-hours-small-disabled': day.hours == 0}">
-      {{day.hours | number:'1.0-2'}}
+    <div class="badged-hour" [ngClass]="{'card-hours-small-disabled': day.hours == 0}">
+      <div class="hour" [ngClass]="{'has-error': day.status == 'Rejected'}">{{day.hours | number:'1.0-2'}}</div>
+
+      <span class="hasComment" *ngIf="day.comments.length > 0 && showBadges.comments">
+        <i class="material-icons">chat</i></span>
+      <span class="hasMapError" *ngIf="day.mapError && showBadges.mapError">
+        <i class="material-icons">place</i></span>
+
     </div>
     `
 })
 export class BadgedHourComponent {
   @Input() day;
-
-  constructor() { }
-  // TODO logic to create badges and whatnot
-
-  // blue comment icon (has comment)
-  // red dot (rejected)
-  // map w/ pin (map error)
+  @Input() showBadges: Badges;
 }
-
-// status: timerecord.TimeRecordStatus,
-// mapError: timerecord.MapLocationError,
-// comments: timerecord.Comments
-
-
-
-// <i class="material-icons" [ngClass]="{'active': day.value.comments?.length > 0}" (click)="openChatModal(day.value.comments)">chat</i>
-
-// <div [ngClass]="{'hidden': day.value.hours == 0}"class="col-md-1 indicator" *ngFor="let day of costCode.value.days | keys"
-//         [ngSwitch]="day.value.status">
-//   <div *ngSwitchCase="'Approved'" class="green"></div>
-//   <div *ngSwitchCase="'Rejected'" class="red"></div>
-//   <div *ngSwitchCase="'Pending'" class="yellow"></div>
-//   <div *ngSwitchDefault class="hidden"></div>
-// </div>

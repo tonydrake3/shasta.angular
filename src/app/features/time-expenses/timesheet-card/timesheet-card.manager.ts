@@ -76,6 +76,9 @@ export class TimesheetCardManager {
 
                     // append comments
                     finalCostCode.days[dateKey].comments = _.concat(finalCostCode.days[dateKey].comments, costCode.comments);
+
+                    // affix map error status
+                    finalCostCode.days[dateKey].mapError = costCode.mapError;
                   });
 
                   //  build up approval status

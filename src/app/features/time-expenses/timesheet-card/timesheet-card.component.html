@@ -59,7 +59,7 @@
             {{costCode.value.costCode}}
           </div>
           <div class="col-md-1" *ngFor="let day of costCode.value.days | keys">
-            <esub-badged-hour [day]="day.value"></esub-badged-hour>
+            <esub-badged-hour [day]="day.value" [showBadges]="showBadges"></esub-badged-hour>
           </div>
         </div>
 
