@@ -15,21 +15,64 @@
     </div>
     <div class="summary-body">
         <div class="row">
+            <div class="col-md-2 summary-status">
+                <span [ngClass]="getClass(details.Status)" >{{details.Status | status | uppercase}}</span>
+            </div>
+            <div class="col-md-3">
+                <span class="label-bold">Market Area&#58;</span>
+                <span>{{details.MarketArea.Name}}</span>
+            </div>
+            <div class="col-md-3">
+                <span class="label-bold">Division&#58;</span>
+                <span>{{details.MarketArea.Division.Name}}</span>
+            </div>
+            <div class="col-md-4">
+                <span class="label-bold">Project Manager&#58;</span>
+                <span *ngIf="details.ProjectManager && details.ProjectManager.Contact">
+                    {{details.ProjectManager.Contact.FirstName}} {{details.ProjectManager.Contact.LastName}}
+                </span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 offset-1">
+                <div class="card summary-card">
+                    <div class="summary-card-title">
+                        <span class="title-regular">Local Places</span>
+                    </div>
+                    <div class="summary-card-row">
+                        <div class="summary-card-item text-center" *ngFor="let place of places">
+                            <i class="material-icons">{{place.Value}}</i>
+                            <span class="label-bold">{{place.Description}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card summary-card">
+                    <div class="summary-card-title weather">
+                        <span class="title-regular">Forecast</span>
+                    </div>
+                    <div class="summary-card-row">
+                        <div class="summary-card-item text-center weather" *ngFor="let day of weather">
+                            <div class="weather-item">
+                                <div class="weather-icon">
+                                    <i class="mdi mdi-weather-cloudy"></i>
+                                </div>
+                                <div class="weather-temperatures">
+                                    <span class="label-bold">{{day.maxtempF}}&deg;</span>
+                                    <span class="label-bold">{{day.mintempF}}&deg;</span>
+                                </div>
+                            </div>
+                            <span class="label-bold">{{day.date}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
             <div class="col-md-12">
-
+                Milestones
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-4">
-
-            </div>
-            <div class="col-md-4">
-
-            </div>
-            <div class="col-md-4"></div>
-        </div>
-        <div class="row">
-            <div class="col-md-12"></div>
         </div>
     </div>
 </div>

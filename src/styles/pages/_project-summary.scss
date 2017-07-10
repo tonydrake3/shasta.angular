@@ -11,7 +11,7 @@
         padding-left: 20px;
         padding-right: 20px;
         position: relative;
-        top: -50px;
+        margin-top: -50px;
 
         .map-overlay-name {
             font-size: 22px;
@@ -30,5 +30,98 @@
         }
     }
 
+    .summary-body {
+        padding: 10px 20px;
 
+        .summary-status {
+            color: $true-white;
+            font-size: 12px;
+
+            span {
+                border-radius: 15px;
+                display: block;
+                width: 86px;
+                padding: 2px 12px;
+                text-align: center;
+
+                &.open {
+                    background-color: $dark-sky-blue;
+                }
+
+                &.won,
+                &.complete {
+                    background-color: $frog-green;
+                }
+
+                &.bid {
+                    background-color: #FF8000;
+                }
+
+                &.lost {
+                    background-color: $tomato;
+                }
+            }
+        }
+
+        .summary-card {
+            background-color: $true-white;
+            margin: 10px 20px;
+
+            .summary-card-title {
+                padding: 10px;
+
+                &.weather {
+                    padding-bottom: 0;
+                }
+            }
+
+            .summary-card-row {
+                display: flex;
+                flex-direction: row;
+                padding: 0 10px 10px;
+
+                .summary-card-item {
+                    display:flex;
+                    flex-direction:column;
+                    padding: 5px 5px;
+                    width: 80px;
+
+                    &:hover {
+                        background: $white;
+                    }
+
+                    i.material-icons {
+                        font-size: 40px;
+                    }
+
+                    &.weather {
+                        margin-left: 5px;
+                        margin-right: 5px;
+                    }
+
+                    .weather-item {
+                        display: flex;
+                        flex-direction: row;
+                        padding: 5px 5px;
+
+                        .weather-icon {
+                            display: flex;
+                            flex-direction: column;
+
+                            i {
+                                font-size: 44px;
+                                padding-top: 5px;
+                            }
+                        }
+
+                        .weather-temperatures {
+                            display: flex;
+                            flex-direction: column;
+                            padding-left: 3px;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

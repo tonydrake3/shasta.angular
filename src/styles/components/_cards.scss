@@ -36,6 +36,19 @@
   }
 }
 
+.esub-small-card {
+    @extend .card;
+    position: relative;
+
+    margin: 20px 0;
+    border-radius: 1px;
+
+    cursor: pointer;
+
+    box-shadow: 0 1px 2px $black-50;
+    @include transition(transform .4s ease-in-out);
+}
+
 // base esub-card Component
 .esub-base-card {
   @extend .esub-card;

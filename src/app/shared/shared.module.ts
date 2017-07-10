@@ -19,6 +19,10 @@ import { DEVMockDataService } from './DEV-mock-data.service';
 // Pipes
 import {StatusPipe} from './pipes/status.pipe';
 import {MapComponent} from './components/map.component';
+import {MockProjectService} from './mocks/mock.project.service';
+import {MockProjectSummaryService} from './mocks/mock.project.summary.service';
+import {WeatherService} from './services/utilities/weather.service';
+import {WeatherPipe} from './pipes/weather.pipe';
 
 
 @NgModule({
@@ -34,13 +38,17 @@ import {MapComponent} from './components/map.component';
         MapComponent,
         SlimScrollDirective,
         StatusPipe,
+        WeatherPipe,
         WeekSelectorComponent
     ],
     providers: [
         AuthorizationService,
         DEVMockDataService,
+        MockProjectService,
+        MockProjectSummaryService,
         MapsService,
-        UserService
+        UserService,
+        WeatherService
     ],
     exports: [
         BaseCardComponent,
