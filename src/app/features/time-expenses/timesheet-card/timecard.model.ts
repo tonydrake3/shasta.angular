@@ -17,3 +17,9 @@ export class TimecardSection {
   comments: Array<any>;
   mapError: any;
 }
+
+export class Badges {
+  comments: boolean;
+  statusError: boolean;
+  mapError: boolean;
+}

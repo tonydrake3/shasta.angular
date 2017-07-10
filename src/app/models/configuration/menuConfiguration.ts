@@ -92,7 +92,7 @@ export const timeSidebarConfiguration = [
         'Children': null,
         'Key': '',
         'System': 1,
-        'Title': 'Approved Time',
+        'Title': 'Approve Time',
         'iconName': '',
         'Ordinal': 2,
         'Visible': true,

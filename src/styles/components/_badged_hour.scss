@@ -1,0 +1,44 @@
+.badged-hour {
+  position: relative;
+
+  // the hour number itself
+  > div.hour {
+    @extend .card-hours-small;
+
+    &.has-error {
+      @extend .label-bold;
+      color: $red !important;
+    }
+  }
+
+  span {
+    position: absolute;
+  }
+
+  // common badge styling
+  span > i {
+    font-size: 12px;
+  }
+
+  // specific badge alignment and coloring
+  .hasComment {
+    top: -45%;
+    left: 60%;
+    right: 40%;
+    @include transform(translate(-60%, 0));
+
+    > i {
+      color: $blue !important;
+    }
+  }
+
+  .hasMapError {
+    top: 110%;
+    left: 50%;
+    @include transform(translate(-50%, -50%));
+
+    > i {
+      color: $yellow !important;
+    }
+  }
+}

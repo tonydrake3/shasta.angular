@@ -2,7 +2,7 @@ import { Component, Input, Injector } from '@angular/core';
 import { MdDialog } from '@angular/material';
 
 import { WeekDateRange, WeekDateRangeDetails } from '../../../models/Date';
-import { Timecard, TimecardSection } from './timecard.model';
+import { Timecard, TimecardSection, Badges } from './timecard.model';
 
 import { BaseComponent } from '../../../shared/components/base.component';
 import { CommentsComponent } from '../../../shared/components/comments.component';
@@ -37,11 +37,7 @@ export class TimesheetCardComponent extends BaseComponent {
     this._view = view;
     this.updateViewSettings();
   }
-  public showBadges: {
-    comments: boolean,
-    statusError: boolean,
-    mapError: boolean
-  };
+  public showBadges: Badges;
   public showCheckboxes: boolean;
 
   constructor(protected injector: Injector, public dialog: MdDialog, public timesheetCardManager: TimesheetCardManager) {
