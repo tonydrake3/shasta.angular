@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import {FormGroup, FormBuilder, Validators, FormControl, FormGroupDirective, NgForm} from '@angular/forms';
+import { MdInputModule } from '@angular/material';
 
 import { AuthenticationService } from '../shared/services/authentication/authentication.service';
 import { AuthorizationService } from '../shared/services/authorization/authorization.service';
@@ -8,6 +10,7 @@ import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/map';
 import {UserService} from '../shared/services/user/user.service';
 import {CompanyService} from '../features/company/company.service';
+import {Credentials} from '../models/domain/Credentials';
 // import {ProjectService} from '../features/projects/project.service';
 
 @Component({
@@ -16,18 +19,24 @@ import {CompanyService} from '../features/company/company.service';
 })
 export class LoginComponent {
 
-    username: string;
-    password: string;
+    loginForm: FormGroup;
+
     loading = false;
     errorMessage = '';
 
-    constructor(private _route: ActivatedRoute, private _router: Router, private _authenticationService: AuthenticationService,
-                private _authorizationService: AuthorizationService) { }
+    constructor(private _builder: FormBuilder, private _route: ActivatedRoute, private _router: Router,
+                private _authenticationService: AuthenticationService, private _authorizationService: AuthorizationService) {
 
-    login () {
+        this.createForm();
+    }
+
+    login ({value, valid}: {value: Credentials, valid: boolean}) {
+
         this.loading = true;
-        this._authenticationService.login(this.username, this.password)
+        this._authenticationService.login(value.username, value.password)
+
             .subscribe(
+
                 data => {
 
                     // console.log('Authenticated');
@@ -64,8 +73,28 @@ export class LoginComponent {
                     console.log(error);
                     this.errorMessage = error;
                     this.loading = false;
+                    this.loginForm.get('username').setErrors({'invalid' : true});
+                    this.loginForm.get('password').setErrors({'invalid' : true});
                 }
             )
+    }
+
+    blurValidator (control) {
+
+        // Error when invalid control is dirty, touched, or submitted
+        if (control.value === '' && control.pristine) {
+
+            control.markAsUntouched();
+        }
+    }
+
+    private createForm () {
+
+        this.loginForm = this._builder.group({
+
+            username: ['', Validators.required ],
+            password: ['', Validators.required ]
+        })
     }
 
 }
