@@ -39,10 +39,10 @@
                     <div class="summary-card-title">
                         <span class="title-regular">Local Places</span>
                     </div>
-                    <div class="summary-card-row">
-                        <div class="summary-card-item text-center" *ngFor="let place of places">
+                    <div class="summary-card-row row">
+                        <div class="summary-card-item text-center col-md-3 places-item" *ngFor="let place of places">
                             <i class="material-icons">{{place.Value}}</i>
-                            <span class="label-bold">{{place.Description}}</span>
+                            <div class="label-bold">{{place.Description}}</div>
                         </div>
                     </div>
                 </div>
@@ -52,15 +52,15 @@
                     <div class="summary-card-title weather">
                         <span class="title-regular">Forecast</span>
                     </div>
-                    <div class="summary-card-row">
-                        <div class="summary-card-item text-center weather" *ngFor="let day of weather">
-                            <div class="weather-item">
-                                <div class="weather-icon">
+                    <div class="summary-card-row row weather">
+                        <div class="summary-card-item text-center weather col-md-2" *ngFor="let day of weather">
+                            <div class="weather-item d-flex">
+                                <div class="weather-icon p-2">
                                     <i class="mdi mdi-weather-cloudy"></i>
                                 </div>
-                                <div class="weather-temperatures">
-                                    <span class="label-bold">{{day.maxtempF}}&deg;</span>
-                                    <span class="label-bold">{{day.mintempF}}&deg;</span>
+                                <div class="weather-temperatures p-2">
+                                    <div class="label-bold">{{day.maxtempF}}&deg;</div>
+                                    <div class="label-bold min-temp">{{day.mintempF}}&deg;</div>
                                 </div>
                             </div>
                             <span class="label-bold">{{day.date}}</span>

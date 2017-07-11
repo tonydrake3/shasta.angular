@@ -2,6 +2,10 @@
 
     #map {
         height: 200px;
+
+        .expand {
+            height: 200px;
+        }
     }
 
     .map-overlay {
@@ -76,18 +80,17 @@
             }
 
             .summary-card-row {
-                display: flex;
-                flex-direction: row;
-                padding: 0 10px 10px;
+                padding: 10px 30px;
+
+                &.weather {
+                    padding-top: 7px;
+                }
 
                 .summary-card-item {
-                    display:flex;
-                    flex-direction:column;
                     padding: 5px 5px;
-                    width: 80px;
 
-                    &:hover {
-                        background: $white;
+                    &.places-item:hover {
+                        background: $gray-hover;
                     }
 
                     i.material-icons {
@@ -97,16 +100,17 @@
                     &.weather {
                         margin-left: 5px;
                         margin-right: 5px;
+
+                        &:first-child {
+                            margin-left: 4%;
+                        }
                     }
 
                     .weather-item {
-                        display: flex;
-                        flex-direction: row;
-                        padding: 5px 5px;
+                        padding: 5px 5px 0;
 
                         .weather-icon {
-                            display: flex;
-                            flex-direction: column;
+                            padding-left: 0 !important;
 
                             i {
                                 font-size: 44px;
@@ -115,9 +119,11 @@
                         }
 
                         .weather-temperatures {
-                            display: flex;
-                            flex-direction: column;
-                            padding-left: 3px;
+                            padding-left: 0 !important;
+
+                            .min-temp {
+                                color: rgba($gray, 0.7);
+                            }
                         }
                     }
                 }

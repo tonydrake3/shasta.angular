@@ -45,7 +45,7 @@ export const mockWeather = {
                 'observation_time': '04:00 PM',
                 'temp_C': '32',
                 'temp_F': '89',
-                'weatherCode': '116',
+                'weatherCode': '113',
                 'weatherIconUrl': [
                     {
                         'value': 'http://cdn.worldweatheronline.net/images/wsymbols01_png_64/wsymbol_0002_sunny_intervals.png'
@@ -53,7 +53,7 @@ export const mockWeather = {
                 ],
                 'weatherDesc': [
                     {
-                        'value': 'Partly cloudy'
+                        'value': 'Sunny'
                     }
                 ],
                 'windspeedMiles': '14',
