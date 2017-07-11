@@ -19,7 +19,7 @@
 
                     </div>
                     <div class="form-error text-center">
-                        <span *ngIf="loginForm.invalid">{{errorMessage}}</span>
+                        <span id="errorMessage" *ngIf="loginForm.invalid">{{errorMessage}}</span>
                     </div>
                     <button id="btnLogin" type="submit" class="btn btn-primary btn-block btn-lg text-center" [disabled]="loginForm.invalid" >
                         <div *ngIf="!loading" class="login-button-text">Sign in</div>
