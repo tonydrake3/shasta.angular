@@ -1,17 +1,15 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import {FormGroup, FormBuilder, Validators, FormControl, FormGroupDirective, NgForm} from '@angular/forms';
-import { MdInputModule } from '@angular/material';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { AuthenticationService } from '../shared/services/authentication/authentication.service';
 import { AuthorizationService } from '../shared/services/authorization/authorization.service';
+import { UserService } from '../shared/services/user/user.service';
+import { CompanyService } from '../features/company/company.service';
+import { Credentials } from '../models/domain/Credentials';
 
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/map';
-import {UserService} from '../shared/services/user/user.service';
-import {CompanyService} from '../features/company/company.service';
-import {Credentials} from '../models/domain/Credentials';
-// import {ProjectService} from '../features/projects/project.service';
 
 @Component({
     selector: 'esub-login',
@@ -20,6 +18,8 @@ import {Credentials} from '../models/domain/Credentials';
 export class LoginComponent {
 
     loginForm: FormGroup;
+    _usernameField;
+    _passwordField;
 
     loading = false;
     errorMessage = '';
@@ -28,8 +28,13 @@ export class LoginComponent {
                 private _authenticationService: AuthenticationService, private _authorizationService: AuthorizationService) {
 
         this.createForm();
+        this._usernameField = this.loginForm.get('username');
+        this._passwordField = this.loginForm.get('password');
     }
 
+    /******************************************************************************************************************
+     * Public Methods
+     ******************************************************************************************************************/
     login ({value, valid}: {value: Credentials, valid: boolean}) {
 
         this.loading = true;
@@ -39,7 +44,6 @@ export class LoginComponent {
 
                 data => {
 
-                    // console.log('Authenticated');
                     sessionStorage.setItem('authentication', JSON.stringify(data));
 
                     if (this._authenticationService.isLoggedIn()) {
@@ -73,20 +77,28 @@ export class LoginComponent {
                     console.log(error);
                     this.errorMessage = error;
                     this.loading = false;
-                    this.loginForm.get('username').setErrors({'invalid' : true});
-                    this.loginForm.get('password').setErrors({'invalid' : true});
+                    this._usernameField.setErrors({'invalid' : true});
+                    this._passwordField.setErrors({'invalid' : true});
                 }
             )
     }
 
     blurValidator (control) {
 
-        // Error when invalid control is dirty, touched, or submitted
+        // Prevent error when invalid control is not dirty
         if (control.value === '' && control.pristine) {
 
             control.markAsUntouched();
+
+        } else if (control.value && this.loginForm.invalid) {
+
+            this.resetErrors(control);
         }
     }
+
+    /******************************************************************************************************************
+     * Private Methods
+     ******************************************************************************************************************/
 
     private createForm () {
 
@@ -97,4 +109,15 @@ export class LoginComponent {
         })
     }
 
+    private resetErrors (control) {
+
+        if (control === this._usernameField && this._passwordField.value !== '') {
+
+            this._passwordField.setErrors(null);
+
+        } else if (control === this._passwordField && this._usernameField.value !== '' ) {
+
+            this._usernameField.setErrors(null);
+        }
+    }
 }
