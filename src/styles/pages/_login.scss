@@ -34,7 +34,7 @@
             &.btn:disabled {
                 background-color: rgba($gray, 0.3);
                 border-color: $gray;
-                cursor: pointer;
+                cursor: not-allowed;
             }
 
             .login-button-spinner {
