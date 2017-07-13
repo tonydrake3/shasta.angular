@@ -13,17 +13,29 @@
         }
 
         .form-inputs {
-            margin-bottom: 20px;
 
             .full-width {
                 font-size: 16px;
             }
         }
 
+        .form-error {
+            color: $tomato;
+            height: 40px;
+
+        }
+
         button {
-            color: $black;
             background-color: $yellow-30;
             border-color: $yellow;
+            color: $black;
+            cursor: pointer;
+
+            &.btn:disabled {
+                background-color: rgba($gray, 0.3);
+                border-color: $gray;
+                cursor: not-allowed;
+            }
 
             .login-button-spinner {
                 text-align: center;
