@@ -20,6 +20,9 @@ export class BaseComponent implements OnDestroy {
   constructor(protected injector: Injector, injectionRequests: Array<AutomaticInjectionRequest>) {
     this.subscriptionList = new Array();
 
+    // empty array [] input for injectionRequests indiciates zero autoInjections
+    if (injectionRequests.length === 0) return;
+
     // list of services to automatically inject, if requested by child component
     //   must provide them in the constructor
     this.autoInjections = [
@@ -44,8 +47,8 @@ export class BaseComponent implements OnDestroy {
         }
       });
 
-      // if requested or requests is empty []  (which indicates inheritor wants all autoInjections)
-      if ((requested && requestedCallback) || injectionRequests.length === 0) {
+      // if requested
+      if (requested && requestedCallback) {
         auto.serviceRef = injector.get(auto.serviceObject);   // get reference to service
         const sub = auto.serviceRef[auto.subject].subscribe(data => { this[requestedCallback](data) });  // subscribe to Observable
         this.subscriptionList.push(sub);  // save subscription, to later unsubscribe from

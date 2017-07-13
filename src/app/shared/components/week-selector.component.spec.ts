@@ -1,5 +1,3 @@
-// Describes the suite of basic application load tests
-
 import { ComponentFixture, TestBed, fakeAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';

@@ -21,8 +21,6 @@ import { CommentsComponent } from './components/comments.component';
 import {StatusPipe} from './pipes/status.pipe';
 import {KeysPipe} from './pipes/keys.pipe';
 
-import { DEVMockDataService } from './DEV-mock-data.service';
-
 @NgModule({
   imports: [
     MaterialModule,
@@ -42,7 +40,6 @@ import { DEVMockDataService } from './DEV-mock-data.service';
   ],
   providers: [
     AuthorizationService,
-    DEVMockDataService,
     UserService
   ],
   exports: [

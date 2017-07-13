@@ -34,7 +34,7 @@ export class TimeExpensesComponent extends BaseComponent implements OnInit {
       { service: 'TimeRecordsService', callback: 'timeRecordsCallback' }
     ]);
 
-    // this.loading = true;
+    this.loading = true;
 
     this.groupTimesheetsBy = 'employee';
     this.showFilter = 'all';
@@ -70,7 +70,7 @@ export class TimeExpensesComponent extends BaseComponent implements OnInit {
   }
 
   buildTimesheets() {
-  if (this.loading || !this.timesheetsComponent) return;
+    if (this.loading || !this.timesheetsComponent) return;
     this.timesheetsComponent.buildTimesheets(this.timerecords, this.dateRange, this.groupTimesheetsBy, this.showFilter);
   }
 

@@ -8,13 +8,13 @@
     <div class="col-md-4 groupings">
       <label>Group by</label>
 
-      <a [ngClass]="{active: groupTimesheetsBy == 'employee'}" (click)="groupTimesheets('employee')">Employee</a>
-      <a [ngClass]="{active: groupTimesheetsBy == 'project'}" (click)="groupTimesheets('project')">Project</a>
+      <a [ngClass]="{active: groupTimesheetsBy == 'employee'}" (click)="groupTimesheets('employee')" id="time-expenses.group-by-employee">Employee</a>
+      <a [ngClass]="{active: groupTimesheetsBy == 'project'}" (click)="groupTimesheets('project')" id="time-expenses.group-by-project">Project</a>
 
       <label>&nbsp;Show</label>
 
-      <a [ngClass]="{active: showFilter == 'all'}" (click)="filterResults('all')">All</a>
-      <a [ngClass]="{active: showFilter == 'mine'}" (click)="filterResults('mine')">Mine</a>
+      <a [ngClass]="{active: showFilter == 'all'}" (click)="filterResults('all')" id="time-expenses.filter-to-all">All</a>
+      <a [ngClass]="{active: showFilter == 'mine'}" (click)="filterResults('mine')" id="time-expenses.filter-to-mine">Mine</a>
     </div>
 
   </div>
