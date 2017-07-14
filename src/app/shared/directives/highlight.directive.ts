@@ -1,30 +1,39 @@
 import {Directive, ElementRef, Input, OnInit, Renderer2} from '@angular/core';
-import {DataSyncService} from '../services/utilities/data-sync.service';
 
 @Directive({ selector: '[esubTextHighlight]' })
 export class TextHighlightDirective implements OnInit {
 
+    // Input members
     @Input() esubTextHighlight: string;
     @Input() filterText: string;
 
+    // Private members
     private _el: ElementRef;
     private  _renderer: Renderer2;
 
-    constructor (private el: ElementRef, private renderer: Renderer2, private _syncService: DataSyncService) {
+    constructor (private el: ElementRef, private renderer: Renderer2) {
 
         this._el = el;
         this._renderer = renderer;
         // console.log('NativeElement', this._element.nativeElement);
     }
 
+    /******************************************************************************************************************
+     * Lifecycle Methods
+     ******************************************************************************************************************/
+
     ngOnInit () {
 
         this.addText();
     }
 
-    addText () {
+    /******************************************************************************************************************
+     * Private Methods
+     ******************************************************************************************************************/
 
-        const index = this.esubTextHighlight.toLowerCase().indexOf(this.filterText);
+    private addText () {
+
+        const index = this.esubTextHighlight.toLowerCase().indexOf(this.filterText.toLowerCase());
 
         if (this.filterText.length > 0 && index > -1) {
 

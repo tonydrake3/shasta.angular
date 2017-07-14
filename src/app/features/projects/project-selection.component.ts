@@ -44,6 +44,10 @@ export class ProjectSelectionComponent extends BaseComponent implements OnInit, 
         // console.log('ProjectSelectionComponent Ctor', this._projectSelection);
     }
 
+    /******************************************************************************************************************
+     * Lifecycle Methods
+     ******************************************************************************************************************/
+
     ngOnInit () {
 
         this._filterSubscription = this._projectSelection.filteredProjects$

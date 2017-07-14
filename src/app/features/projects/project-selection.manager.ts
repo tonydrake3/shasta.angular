@@ -8,6 +8,7 @@ import * as _ from 'lodash';
 @Injectable()
 export class ProjectSelectionManager {
 
+    // Private members
     private _projects: Project[];
     private _processedProjects;
     private _filteredRecords = new Subject();

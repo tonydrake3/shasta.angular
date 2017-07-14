@@ -11,13 +11,19 @@ import {Router} from '@angular/router';
 })
 export class ProjectSelectionCardComponent implements OnInit {
 
+    // Input members
     @Input() project: Project;
     @Input() filterText: string;
 
+    // Private members
     _links;
     _statuses;
 
     constructor(protected _router: Router, private _dataSync: DataSyncService, private _lookup: LookupDataService) {}
+
+    /******************************************************************************************************************
+     * Lifecycle Methods
+     ******************************************************************************************************************/
 
     ngOnInit () {
 
@@ -31,6 +37,10 @@ export class ProjectSelectionCardComponent implements OnInit {
 
         this._statuses = statusMap;
     }
+
+    /******************************************************************************************************************
+     * Public Methods
+     ******************************************************************************************************************/
 
     goToPage (link) {
         console.log(link);
@@ -54,4 +64,8 @@ export class ProjectSelectionCardComponent implements OnInit {
         this._dataSync.setProject(project);
         sessionStorage.setItem('project', JSON.stringify(project));
     }
+
+    /******************************************************************************************************************
+     * Private Methods
+     ******************************************************************************************************************/
 }
