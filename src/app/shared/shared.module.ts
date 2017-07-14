@@ -5,6 +5,7 @@ import { MaterialModule, MdDatepickerModule, MdNativeDateModule } from '@angular
 // Directives
 import { EChartsDirective } from './echarts.directive';
 import { SlimScrollDirective } from './slim-scroll.directive';
+import {TextHighlightDirective} from './directives/highlight.directive';
 
 // Services
 import { AuthorizationService } from './services/authorization/authorization.service';
@@ -18,7 +19,6 @@ import { DEVMockDataService } from './DEV-mock-data.service';
 // Pipes
 import {StatusPipe} from './pipes/status.pipe';
 
-
 @NgModule({
     imports: [
       MaterialModule,
@@ -29,6 +29,7 @@ import {StatusPipe} from './pipes/status.pipe';
     declarations: [
         EChartsDirective,
         SlimScrollDirective,
+        TextHighlightDirective,
         WeekSelectorComponent,
         BaseCardComponent,
         StatusPipe
@@ -41,6 +42,7 @@ import {StatusPipe} from './pipes/status.pipe';
     exports: [
         EChartsDirective,
         SlimScrollDirective,
+        TextHighlightDirective,
         WeekSelectorComponent,
         BaseCardComponent,
         StatusPipe

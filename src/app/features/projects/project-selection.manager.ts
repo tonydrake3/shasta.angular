@@ -5,6 +5,7 @@ import {Subject} from 'rxjs/Subject';
 import {StatusMap, statusMap} from '../../models/configuration/statusMap';
 import {SortColumn} from '../../models/configuration/sortColumns';
 import * as _ from 'lodash';
+import {DataSyncService} from '../../shared/services/utilities/data-sync.service';
 
 @Injectable()
 export class ProjectSelectionManager {
@@ -66,16 +67,16 @@ export class ProjectSelectionManager {
 
         // filter by status
         this.filterStatuses();
-        // filter by text
-        // this.filterByText();
         // sort
         this.sort();
 
+        // console.log('ProjectSelectionManager processProjects');
         this._filteredRecords.next(this._processedProjects);
     }
 
     private filterStatuses () {
 
+        // console.log('filterStatuses');
         this._processedProjects = new Array<Project>();
 
         this._statuses.forEach((map) => {
@@ -85,11 +86,6 @@ export class ProjectSelectionManager {
                 this._processedProjects = _.concat(this._processedProjects, this.filterProject(map));
             }
         });
-    }
-
-    private filterByText () {
-
-
     }
 
     private sort () {
