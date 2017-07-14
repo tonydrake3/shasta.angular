@@ -1,11 +1,9 @@
-import {AfterViewInit, ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Project} from '../../../models/domain/Project';
 import {DataSyncService} from 'app/shared/services/utilities/data-sync.service';
 import {LookupDataService} from '../../../shared/services/utilities/lookup-data.service';
 import {statusMap} from '../../../models/configuration/statusMap';
 import {Router} from '@angular/router';
-import {ProjectSelectionManager} from '../project-selection.manager';
-
 
 @Component({
     selector: 'esub-project-selection-card',

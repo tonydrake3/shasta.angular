@@ -1,11 +1,9 @@
 import {Injectable} from '@angular/core';
-import {ReplaySubject} from 'rxjs/ReplaySubject';
 import {Project} from 'app/models/domain/Project';
 import {Subject} from 'rxjs/Subject';
 import {StatusMap, statusMap} from '../../models/configuration/statusMap';
 import {SortColumn} from '../../models/configuration/sortColumns';
 import * as _ from 'lodash';
-import {DataSyncService} from '../../shared/services/utilities/data-sync.service';
 
 @Injectable()
 export class ProjectSelectionManager {
@@ -13,7 +11,6 @@ export class ProjectSelectionManager {
     private _projects: Project[];
     private _processedProjects;
     private _filteredRecords = new Subject();
-    private _filterText: string;
     private _statuses;
     private _sortColumn: SortColumn;
 

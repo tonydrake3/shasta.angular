@@ -1,6 +1,5 @@
-import {AfterViewInit, Directive, ElementRef, Input, OnInit, Renderer2} from '@angular/core';
+import {Directive, ElementRef, Input, OnInit, Renderer2} from '@angular/core';
 import {DataSyncService} from '../services/utilities/data-sync.service';
-import * as _ from 'lodash';
 
 @Directive({ selector: '[esubTextHighlight]' })
 export class TextHighlightDirective implements OnInit {

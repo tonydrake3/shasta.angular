@@ -11,8 +11,6 @@ import {SortColumn} from '../../models/configuration/sortColumns';
 import {projectSortColumns} from '../../models/configuration/sortColumns';
 import {ProjectSelectionManager} from './project-selection.manager';
 import {ProjectService} from './project.service';
-import {DataSyncService} from '../../shared/services/utilities/data-sync.service';
-
 
 @Component({
     styles: [],
