@@ -16,11 +16,13 @@
     </div>
     <div class="row">
         <div class="col-md-5 col-xs-12">
-            <md-input-container class="project-selection-search" floatPlaceholder="never">
-                <md-icon mdPrefix>search</md-icon>
-                <md-placeholder> Search projects</md-placeholder>
-                <input mdInput type="search">
-            </md-input-container>
+            <form novalidate [formGroup]="filterForm">
+                <md-input-container class="project-selection-search" floatPlaceholder="never">
+                    <md-icon mdPrefix>search</md-icon>
+                    <md-placeholder> Search projects</md-placeholder>
+                    <input mdInput type="search" formControlName="filter" (keyup)="filterProjects()">
+                </md-input-container>
+            </form>
         </div>
         <div class="col-md-7">
             <div class="project-sort text-right">
@@ -35,7 +37,7 @@
         </div>
     </div>
     <div *ngFor="let project of filteredProjects" >
-        <esub-project-selection-card [project]="project"></esub-project-selection-card>
+        <esub-project-selection-card [project]="project" [filterText]="filterText"></esub-project-selection-card>
     </div>
 
 </div>

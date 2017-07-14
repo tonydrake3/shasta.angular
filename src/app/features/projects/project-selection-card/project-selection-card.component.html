@@ -3,7 +3,7 @@
         <div class="col-md-10" (click)="selectProject(project)">
             <div class="row">
                 <div class="col-md-6">
-                    <h5>{{project.Number}} - {{project.Name}}</h5>
+                    <h5><span [esubTextHighlight]="project.Number" [filterText]="filterText"></span> - <span [esubTextHighlight]="project.Name" [filterText]="filterText"></span></h5>
                 </div>
                 <div class="col-md-6 project-location">
                     <span class="project-location-street">{{project.Address.Address1}} {{project.Address.Address2}} {{project.Address.Address3}}</span>
@@ -34,7 +34,7 @@
                     <span class="label-bold">Market Area&#58;</span>
                 </div>
                 <div class="col-md-3">
-                    <span class="span-value">{{project.MarketArea.Name}}</span>
+                    <span class="span-value" [esubTextHighlight]="project.MarketArea.Name" [filterText]="filterText"></span>
                 </div>
                 <div class="col-md-2" *ngIf="project.MarketArea.Division">
                     <span class="label-bold">Division&#58;</span>

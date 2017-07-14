@@ -8,7 +8,7 @@ import {async, TestBed} from '@angular/core/testing';
 import {Project} from '../../models/domain/Project';
 import {statusMap} from '../../models/configuration/statusMap';
 
-describe('ProjectSelection Service', () => {
+describe('ProjectSelection Manager', () => {
 
     /******************************************************************************************************************
      * Test Config
