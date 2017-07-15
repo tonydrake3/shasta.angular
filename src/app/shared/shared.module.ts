@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { MaterialModule, MdDatepickerModule, MdNativeDateModule } from '@angular/material';
 
 // Directives
@@ -12,7 +13,7 @@ import {DataSyncService} from './services/utilities/data-sync.service';
 
 // Components
 import { WeekSelectorComponent } from './components/week-selector.component';
-import { DEVMockDataService } from './DEV-mock-data.service';
+import { BaseCardComponent } from './components/base.card.component';
 
 // Pipes
 import {StatusPipe} from './pipes/status.pipe';
@@ -22,24 +23,26 @@ import {StatusPipe} from './pipes/status.pipe';
     imports: [
       MaterialModule,
       MdDatepickerModule,
-      MdNativeDateModule
+      MdNativeDateModule,
+      CommonModule
     ],
     declarations: [
         EChartsDirective,
         SlimScrollDirective,
         WeekSelectorComponent,
-        StatusPipe
+        StatusPipe,
+        BaseCardComponent
     ],
     providers: [
         AuthorizationService,
-        DEVMockDataService,
         UserService
     ],
     exports: [
         EChartsDirective,
         SlimScrollDirective,
         WeekSelectorComponent,
-        StatusPipe
+        StatusPipe,
+        BaseCardComponent
     ]
 })
 

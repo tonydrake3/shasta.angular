@@ -24,6 +24,8 @@ export class TimeExpensesComponent extends BaseComponent implements OnInit {
   public groupTimesheetsBy: string;
   public showFilter: string;
 
+  public loading: boolean;
+
   @ViewChild('timesheets') timesheetsComponent: TimesheetCardComponent;
 
   constructor(protected injector: Injector, private activatedRoute: ActivatedRoute) {
@@ -31,8 +33,7 @@ export class TimeExpensesComponent extends BaseComponent implements OnInit {
       { service: 'TimeRecordsService', callback: 'timeRecordsCallback' }
     ]);
 
-    console.log('CONSTRUCTOR');
-    // TODO build loader until our callback fires
+    this.loading = true;
 
     this.groupTimesheetsBy = 'employee';
     this.showFilter = 'all';
@@ -46,9 +47,9 @@ export class TimeExpensesComponent extends BaseComponent implements OnInit {
     });
   }
 
-  timeRecordsCallback(timerecords) {
-    this.timerecords = timerecords;
-    console.log('THIS.TIMERECORDS', this.timerecords);
+  timeRecordsCallback(response) {
+    this.loading = false;
+    this.timerecords = response.value;
     this.buildTimesheets();
   }
 
@@ -61,6 +62,7 @@ export class TimeExpensesComponent extends BaseComponent implements OnInit {
   dateChanged(e) {
     this.dateRange = e;
     // TODO do date range filter on timerecords
+    if (this.loading) return;
     this.buildTimesheets();
   }
 

@@ -35,3 +35,14 @@
     @include transition(opacity .4s ease-in-out);
   }
 }
+
+// base esub-card Component
+.esub-base-card {
+  @extend .esub-card;
+
+  padding: 15px 10px;
+
+  md-progress-spinner {
+    margin: 0 auto;
+  }
+}

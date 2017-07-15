@@ -44,10 +44,7 @@
 
 
 // the card itself
-.timesheet-card {
-  @extend .esub-card;
-
-  padding: 15px 10px;
+.timesheet-card > div {
 
   // element styling
   .card-link {

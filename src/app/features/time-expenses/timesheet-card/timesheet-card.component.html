@@ -1,4 +1,10 @@
-<div *ngFor="let timecard of timecards" class="timesheet-card">
+<esub-base-card *ngIf="timecards.length == 0" class="timesheet-card">
+  <div class="row card-title text-center">
+    No results found. Please update your filters above.
+  </div>
+</esub-base-card>
+
+<esub-base-card *ngFor="let timecard of timecards" class="timesheet-card" [loading]="loading">
 
   <!-- header row -->
   <div class="row">
@@ -7,7 +13,7 @@
     <div class="col-md-4 card-title">
       {{timecard.cardTitle}}
       <p class="card-subtitle">
-        Title
+        {{timecard.subTitle}}
       </p>
     </div>
 
@@ -20,6 +26,20 @@
     </div>
 
   </div>
+
+  <section *ngFor="let section of timecard.sections">
+
+    <!-- project name & hours -->
+    <div class="row">
+      <div class="col-md-4 card-section">
+        {{section.grouping}}
+      </div>
+      <!-- <div class="col-md-1" *ngFor='let day of dateRange' [ngClass]="{'card-hours-disabled': section.hours[}">
+        {{section.hours[day.date]}}
+      </div> -->
+    </div>
+
+  </section>
 
     <!-- repeater section for each system/phase/costcode -->
   <section>
@@ -295,4 +315,4 @@
       8
     </div>
   </div>
-</div>
+</esub-base-card>
