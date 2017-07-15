@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 // import {ProjectGuard} from '../../shared/services/guards/project-guard.service';
@@ -8,13 +8,15 @@ import {ProjectService} from './project.service';
 import {SHARED_FORM_DIRECTIVES} from '@angular/forms/src/directives';
 import {SharedModule} from '../../shared/shared.module';
 import {MaterialModule} from '@angular/material';
+import {ProjectSelectionManager} from './project-selection.manager';
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
-        ProjectRoutingModule,
         MaterialModule,
+        ProjectRoutingModule,
+        ReactiveFormsModule,
         SharedModule
     ],
     declarations: [
@@ -22,7 +24,8 @@ import {MaterialModule} from '@angular/material';
     ],
     providers: [
         // ProjectGuard,
-        ProjectService
+        ProjectService,
+        ProjectSelectionManager
     ],
     exports: [
     ]

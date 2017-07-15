@@ -1,7 +1,7 @@
 import { NgModule, ApplicationRef } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import 'hammerjs';
@@ -10,21 +10,21 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 // Pages
+import { LoginComponent } from './login/login.component'
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { PageLayoutFullscreenComponent } from './page-layouts/fullscreen/fullscreen.component';
 
 // Sub modules
 import { HomeModule } from './home/home.module';
 import { SharedModule } from './shared/shared.module';
+import { CompanyModule } from './features/company/company.module';
+import { SettingsModule } from './features/settings/settings.module';
 
 // hmr
 import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
 import {AuthenticationService} from './shared/services/authentication/authentication.service';
 import {AuthGuard} from './shared/services/guards/auth-guard.service';
-import {LoginComponent} from './login/login.component';
-import {CompanyModule} from './features/company/company.module';
 import {DataSyncService} from './shared/services/utilities/data-sync.service';
-import {SettingsModule} from './features/settings/settings.module';
 import {LookupDataService} from './shared/services/utilities/lookup-data.service';
 
 // entry components
@@ -35,6 +35,7 @@ import { CommentsComponent } from './shared/components/comments.component';
         BrowserModule,
         HttpModule,
         FormsModule,
+        ReactiveFormsModule,
         MaterialModule,
         BrowserAnimationsModule,
         AppRoutingModule,

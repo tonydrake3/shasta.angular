@@ -1,46 +1,43 @@
 <div class="container-fluid no-breadcrumbs project-selection">
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6 col-xs-12">
             <md-button-toggle-group multiple #group="mdButtonToggleGroup">
-                <md-button-toggle value="status" *ngFor="let status of _statuses" [checked]="status.Selected"
-                                  (change)="statusFilterSelected()">
+                <md-button-toggle value="status" *ngFor="let status of _statuses" [checked]="status.IsSelected"
+                                  (change)="selectStatusFilter(status)">
                     <span>{{status.Value}}</span>
                 </md-button-toggle>
             </md-button-toggle-group>
         </div>
-        <div class="col-md-6 text-right">
-            <md-input-container class="project-selection-search" floatPlaceholder="never">
-                <md-icon mdPrefix>search</md-icon>
-                <md-placeholder> Search projects</md-placeholder>
-                <input mdInput type="search" class="">
-            </md-input-container>
-
+        <div class="col-md-3">
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">
-
-        </div>
-        <div class="col-md-6 text-right project-selection-create">
+        <div class="col-md-3 col-xs-12 text-right project-selection-create">
             <button md-raised-button class="esub-button secondary" (click)="createProject()">Create Project</button>
         </div>
     </div>
-    <!--<div class="row project-selection-filter-row">-->
-
-        <!--<div class="col-md-8">-->
-
-        <!--</div>-->
-
-        <!--<div class="col-md-4 groupings">-->
-            <!--<label>Group by</label>-->
-            <!--<a class="active"></a> <a></a>-->
-            <!--<label>Show</label>-->
-            <!--<a class="active"></a> <a></a>-->
-        <!--</div>-->
-
-    <!--</div>-->
-    <div *ngFor="let project of _projects" >
-        <esub-project-selection-card [project]="project"></esub-project-selection-card>
+    <div class="row">
+        <div class="col-md-5 col-xs-12">
+            <form novalidate [formGroup]="filterForm">
+                <md-input-container class="project-selection-search" floatPlaceholder="never">
+                    <md-icon mdPrefix>search</md-icon>
+                    <md-placeholder> Search projects</md-placeholder>
+                    <input mdInput type="search" formControlName="filter" (keyup)="filterProjects()">
+                </md-input-container>
+            </form>
+        </div>
+        <div class="col-md-7">
+            <div class="project-sort text-right">
+                <span class="label-bold">Sort&#58;</span>
+                <a *ngFor="let sortItem of _sortColumns" [ngClass]="{ 'active': sortItem.IsSelected }"
+                    (click)="sortProjects(sortItem)">
+                    {{sortItem.Value}}
+                    <i *ngIf="sortItem.IsDescending && sortItem.IsSelected" class="sort-icon material-icons">keyboard_arrow_down</i>
+                    <i *ngIf="!sortItem.IsDescending && sortItem.IsSelected" class="sort-icon material-icons">keyboard_arrow_up</i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div *ngFor="let project of filteredProjects" >
+        <esub-project-selection-card [project]="project" [filterText]="filterText"></esub-project-selection-card>
     </div>
 
 </div>

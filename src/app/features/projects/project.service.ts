@@ -23,4 +23,11 @@ export class ProjectService extends BaseStore {
         return this._entity$.asObservable();
     }
 
+    public getFiltered (filter: string): Promise<any> {
+
+        // Re-initializing the store config to use filtering.
+        this.init(apiRoutes.projects + '?query=' + filter);
+        return this.load();
+    }
+
 }

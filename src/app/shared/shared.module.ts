@@ -4,13 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { MaterialModule, MdDatepickerModule, MdNativeDateModule } from '@angular/material';
 
 // Directives
-import { EChartsDirective } from './directives/echarts.directive';
-import { SlimScrollDirective } from './directives/slim-scroll.directive';
+import { EChartsDirective } from './echarts.directive';
+import { SlimScrollDirective } from './slim-scroll.directive';
+import {TextHighlightDirective} from './directives/highlight.directive';
 
 // Services
 import { AuthorizationService } from './services/authorization/authorization.service';
 import { UserService } from './services/user/user.service';
-import {DataSyncService} from './services/utilities/data-sync.service';
 
 // Components
 import { WeekSelectorComponent } from './components/week-selector.component';
@@ -32,6 +32,7 @@ import {KeysPipe} from './pipes/keys.pipe';
   declarations: [
     EChartsDirective,
     SlimScrollDirective,
+    TextHighlightDirective,
     WeekSelectorComponent,
     BaseCardComponent,
     StatusPipe,
@@ -45,6 +46,7 @@ import {KeysPipe} from './pipes/keys.pipe';
   exports: [
     EChartsDirective,
     SlimScrollDirective,
+    TextHighlightDirective,
     WeekSelectorComponent,
     BaseCardComponent,
     StatusPipe,

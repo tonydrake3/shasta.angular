@@ -16,11 +16,9 @@ export class BaseStore extends BaseHttpService {
 
     }
 
-    protected init (url: string): Promise<any> {
+    protected init (url: string) {
 
         this._route = url;
-
-        return this.load();
 
     }
 

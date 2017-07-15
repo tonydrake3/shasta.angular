@@ -2,23 +2,26 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12 login-fields">
-                <form novalidate #loginForm="ngForm" (ngSubmit)="login()" class="paragraph-regular">
+                <form novalidate [formGroup]="loginForm" (ngSubmit)="login(loginForm)" class="paragraph-regular">
                     <div class="text-center">
                         <img src="../../assets/images/brand/esub-logo-40.png"/>
                     </div>
                     <p class="login-description text-center">Welcome to eSUB. Please sign in to your account</p>
                     <div class="form-inputs">
                         <md-input-container class="full-width">
-                            <input id="txtUsername" name="username" type="text" mdInput placeholder="Enter email" [(ngModel)]="username"
-                                   [ngModelOptions]="{standalone: true}">
+                            <input id="txtUsername" name="username" type="text" mdInput placeholder="Enter email" formControlName="username"
+                            (blur)="blurValidator(loginForm.get('username'))">
                         </md-input-container>
                         <md-input-container class="full-width">
-                            <input id="txtPassword" name="password" type="password" mdInput placeholder="Enter password" [(ngModel)]="password"
-                                   [ngModelOptions]="{standalone: true}">
+                            <input id="txtPassword" name="password" type="password" mdInput placeholder="Enter password" formControlName="password"
+                                   (blur)="blurValidator(loginForm.get('password'))">
                         </md-input-container>
 
                     </div>
-                    <button id="btnLogin" type="submit" class="btn btn-primary btn-block btn-lg text-center">
+                    <div class="form-error text-center">
+                        <span id="errorMessage" *ngIf="loginForm.invalid && !loginForm.pristine">{{errorMessage}}</span>
+                    </div>
+                    <button id="btnLogin" type="submit" class="btn btn-primary btn-block btn-lg text-center" [disabled]="loginForm.invalid" >
                         <div *ngIf="!loading" class="login-button-text">Sign in</div>
                         <div *ngIf="loading" class="login-button-spinner">
                             <md-progress-spinner
@@ -29,7 +32,6 @@
                             </md-progress-spinner>
                         </div>
                     </button>
-
                 </form>
 
                 <!--<p>-->
