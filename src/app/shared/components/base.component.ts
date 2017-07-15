@@ -68,6 +68,24 @@ export class BaseComponent implements OnDestroy {
     });
   }
 
+  // given a service key, returns direct access to that service to facilitate calling public methods on requested service
+  //     calls should be wrapped in an if(exists) because retVal is not guarenteed
+  //     example usage:   `this.projectService = super.getServiceRef('ProjectService') as ProjectService;`
+  getServiceRef(serviceKey: string): Object {
+    for (const autoKey in this.autoInjections) {
+      if (this.autoInjections.hasOwnProperty(autoKey)) {
+
+        const auto = this.autoInjections[autoKey];
+
+        if (auto.key === serviceKey && auto.serviceRef) {
+          return auto.serviceRef
+        }
+      }
+    }
+
+    return null;
+  }
+
   // unsubscribe from all subscriptions
   ngOnDestroy() {
     this.subscriptionList.forEach(sub => {

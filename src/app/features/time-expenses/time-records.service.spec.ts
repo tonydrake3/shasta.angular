@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { MockBackend } from '@angular/http/testing';
-import { HttpModule } from '@angular/http';
+import { HttpModule, XHRBackend } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
 import { TimeRecordsService } from './time-records.service';
@@ -15,7 +15,10 @@ describe('TimeRecords Service', () => {
 
     TestBed.configureTestingModule({
       imports: [ HttpModule ],
-      providers: [ TimeRecordsService ]
+      providers: [
+        TimeRecordsService,
+        { provide: XHRBackend, useClass: MockBackend }
+      ]
     })
     .compileComponents().then(() => {
       done();

@@ -18,4 +18,6 @@ export class MockProjectService {
   doEmit(message) {
     this._projects$.next(message);
   }
+
+  public aPublicMethod() { }
 }

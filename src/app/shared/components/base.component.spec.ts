@@ -47,6 +47,7 @@ describe('Base Component', () => {
       // build spys
       spyOn(comp, 'projectServiceCallback');
       spyOn(comp, 'emptyServiceCallback');
+      spyOn(mockProjectService, 'aPublicMethod');
 
       done();
     });
@@ -56,6 +57,12 @@ describe('Base Component', () => {
     it('should inject and subscribe to one service', async(() => {
       mockProjectService.doEmit('its automagic');
       expect(comp.projectServiceCallback).toHaveBeenCalledWith('its automagic');
+    }));
+
+    it('should allow calls to public methods inside autoInjected services', async(() => {
+      expect(mockProjectService.aPublicMethod).not.toHaveBeenCalled();
+      comp.callAPublicMethod();
+      expect(mockProjectService.aPublicMethod).toHaveBeenCalled();
     }));
   });
 
