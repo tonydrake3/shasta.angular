@@ -10,7 +10,7 @@ import { Subscriber } from 'rxjs/Rx';
 // imports for autoInjection
 import { ProjectService } from '../../features/projects/project.service';
 import { TimeRecordsService } from '../../features/time-expenses/time-records.service';
-
+import { UserService } from '../services/user/user.service';
 
 @Component({ })
 export class BaseComponent implements OnDestroy {
@@ -20,11 +20,15 @@ export class BaseComponent implements OnDestroy {
   constructor(protected injector: Injector, injectionRequests: Array<AutomaticInjectionRequest>) {
     this.subscriptionList = new Array();
 
+    // empty array [] input for injectionRequests indiciates zero autoInjections
+    if (injectionRequests.length === 0) return;
+
     // list of services to automatically inject, if requested by child component
     //   must provide them in the constructor
     this.autoInjections = [
       { key: 'ProjectService', serviceObject: ProjectService, subject: 'projects$', initializer: 'getLatest' },
-      { key: 'TimeRecordsService', serviceObject: TimeRecordsService, subject: 'timeRecords$', initializer: 'getLatest' }
+      { key: 'TimeRecordsService', serviceObject: TimeRecordsService, subject: 'timeRecords$', initializer: 'getLatest' },
+      { key: 'UserService', serviceObject: UserService, subject: 'currentUserInfo$', initializer: 'getLatest' }
     ];
 
     // and inject them
@@ -43,8 +47,8 @@ export class BaseComponent implements OnDestroy {
         }
       });
 
-      // if requested or requests is empty []  (which indicates inheritor wants all autoInjections)
-      if ((requested && requestedCallback) || injectionRequests.length === 0) {
+      // if requested
+      if (requested && requestedCallback) {
         auto.serviceRef = injector.get(auto.serviceObject);   // get reference to service
         const sub = auto.serviceRef[auto.subject].subscribe(data => { this[requestedCallback](data) });  // subscribe to Observable
         this.subscriptionList.push(sub);  // save subscription, to later unsubscribe from
@@ -62,6 +66,24 @@ export class BaseComponent implements OnDestroy {
       this.subscriptionList.push(sub);  // save subscription, to later unsubscribe from
       service[injection.initializer]();  // call initalizer
     });
+  }
+
+  // given a service key, returns direct access to that service to facilitate calling public methods on requested service
+  //     calls should be wrapped in an if(exists) because retVal is not guarenteed
+  //     example usage:   `this.projectService = super.getServiceRef('ProjectService') as ProjectService;`
+  getServiceRef(serviceKey: string): Object {
+    for (const autoKey in this.autoInjections) {
+      if (this.autoInjections.hasOwnProperty(autoKey)) {
+
+        const auto = this.autoInjections[autoKey];
+
+        if (auto.key === serviceKey && auto.serviceRef) {
+          return auto.serviceRef
+        }
+      }
+    }
+
+    return null;
   }
 
   // unsubscribe from all subscriptions

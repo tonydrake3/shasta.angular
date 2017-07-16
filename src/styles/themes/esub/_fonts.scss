@@ -141,6 +141,12 @@ button {
 .card-hours-disabled {
 	@extend .title-disabled;
 }
+.card-hours-small {
+	@extend .label-regular;
+}
+.card-hours-small-disabled {
+	@extend .label-disabled;
+}
 .card-day {
 	@extend .paragraph-light;
 }

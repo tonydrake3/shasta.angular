@@ -5,6 +5,7 @@ import { BaseComponent } from '../../shared/components/base.component';
 import { WeekDateRange } from '../../models/Date';
 
 import { TimesheetCardComponent } from './timesheet-card/timesheet-card.component';
+import { Timecard, TimecardSection } from './timesheet-card/timecard.model';
 
 import * as moment from 'moment';
 import * as _ from 'lodash';
@@ -49,31 +50,28 @@ export class TimeExpensesComponent extends BaseComponent implements OnInit {
 
   timeRecordsCallback(response) {
     this.loading = false;
-    this.timerecords = response.value;
+    this.timerecords = response.Value;
     this.buildTimesheets();
   }
 
   groupTimesheets(grouping: string) {
     this.groupTimesheetsBy = grouping;
-    // grouping done by timesheet-card component
     this.buildTimesheets();
   }
 
   dateChanged(e) {
     this.dateRange = e;
-    // TODO do date range filter on timerecords
-    if (this.loading) return;
     this.buildTimesheets();
   }
 
   filterResults(filter: string) {
     if (filter) this.showFilter = filter;
-    // TODO do mine vs all filter on timerecords
     this.buildTimesheets();
   }
 
   buildTimesheets() {
-    this.timesheetsComponent.buildTimesheets(this.timerecords, this.dateRange, this.groupTimesheetsBy);
+    if (this.loading || !this.timesheetsComponent) return;
+    this.timesheetsComponent.buildTimesheets(this.timerecords, this.dateRange, this.groupTimesheetsBy, this.showFilter);
   }
 
   newTimesheet() {}

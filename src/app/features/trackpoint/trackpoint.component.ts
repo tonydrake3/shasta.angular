@@ -3,8 +3,6 @@ import { ActivatedRoute, Params } from '@angular/router';
 
 import { NavigationLink } from '../../models/NavigationLink';
 
-// TODO delete me
-import { DEVMockDataService } from '../../shared/DEV-mock-data.service';
 import {sidebarConfiguration} from '../../models/configuration/menuConfiguration';
 
 @Component({
