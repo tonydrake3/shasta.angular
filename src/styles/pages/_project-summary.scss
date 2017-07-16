@@ -37,6 +37,11 @@
     .summary-body {
         padding: 10px 20px;
 
+        .summary-project-info {
+            padding-top: 10px;
+            padding-bottom: 20px;
+        }
+
         .summary-status {
             color: $true-white;
             font-size: 12px;
@@ -65,6 +70,10 @@
                     background-color: $tomato;
                 }
             }
+        }
+
+        .summary-fields {
+            padding-top: 2px;
         }
 
         .summary-card {
@@ -104,6 +113,10 @@
                         &:first-child {
                             margin-left: 4%;
                         }
+
+                        .weather-day {
+                            color: rgba($gray, 0.7);
+                        }
                     }
 
                     .weather-item {
@@ -111,15 +124,18 @@
 
                         .weather-icon {
                             padding-left: 0 !important;
+                            padding-bottom: 5px !important;
 
                             i {
                                 font-size: 44px;
-                                padding-top: 5px;
+                                line-height: 36px;
+                                padding-top: 6px;
                             }
                         }
 
                         .weather-temperatures {
                             padding-left: 0 !important;
+                            padding-bottom: 6px !important;
 
                             .min-temp {
                                 color: rgba($gray, 0.7);

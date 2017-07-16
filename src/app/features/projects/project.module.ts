@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 // import {ProjectGuard} from '../../shared/services/guards/project-guard.service';
@@ -15,8 +15,9 @@ import {ProjectSummaryService} from './project-summary/project-summary.service';
     imports: [
         CommonModule,
         FormsModule,
-        ProjectRoutingModule,
         MaterialModule,
+        ProjectRoutingModule,
+        ReactiveFormsModule,
         SharedModule
     ],
     declarations: [

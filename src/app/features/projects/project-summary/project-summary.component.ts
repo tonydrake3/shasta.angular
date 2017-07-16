@@ -27,6 +27,8 @@ export class ProjectSummaryComponent implements OnInit {
     constructor (private _summary: ProjectSummaryService, private _router: ActivatedRoute,
                  private _maps: MapsService, private  _weather: WeatherService) {
 
+
+
         this._router.params
 
             .subscribe(
@@ -34,6 +36,7 @@ export class ProjectSummaryComponent implements OnInit {
                 (result) => {
 
                     this._summary.config(result.id);
+                    this._summary.getLatest();
                 } ,
                 error => console.log(error)
             );
@@ -80,7 +83,7 @@ export class ProjectSummaryComponent implements OnInit {
     }
 
     getWeather (location) {
-
+        //
         // this._weather.getWeather(location)
         //
         //     .subscribe(
@@ -112,15 +115,18 @@ export class ProjectSummaryComponent implements OnInit {
         return {[className]: true};
     }
 
-    getWeatherIcon (weather) {
+    getWeatherIcon (forecastDay) {
 
-        // let className = '';
-        // this._weatherValues.forEach(value => {
-        //
-        //     if (value.Key === weather) {
-        //         className = status.Value.toLowerCase();
-        //     }
-        // });
-        // return [{['mdi']: true}, {[className]: true}];
+        // console.log(forecastDay.hourly[0].weatherCode);
+        let className = '';
+        this._weatherValues.forEach(weatherItem => {
+
+            console.log(weatherItem.Key, forecastDay.hourly[0].weatherCode);
+            if (weatherItem.Key === forecastDay.hourly[0].weatherCode) {
+                className = weatherItem.Value.toLowerCase();
+            }
+        });
+        console.log(className);
+        return {'mdi': true, [className]: true};
     }
 }

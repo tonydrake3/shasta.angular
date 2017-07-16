@@ -1,15 +1,16 @@
 import {Component, Injector, OnDestroy, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
 import { BaseComponent } from '../../shared/components/base.component';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import * as _ from 'lodash';
 
 import { Project } from '../../models/domain/Project';
 import { routeName } from '../../models/configuration/routeName';
 import {statusMap, StatusMap} from '../../models/configuration/statusMap';
-import * as _ from 'lodash';
 import {SortColumn} from '../../models/configuration/sortColumns';
 import {projectSortColumns} from '../../models/configuration/sortColumns';
 import {ProjectSelectionManager} from './project-selection.manager';
-
+import {ProjectService} from './project.service';
 
 @Component({
     styles: [],
@@ -17,13 +18,19 @@ import {ProjectSelectionManager} from './project-selection.manager';
 })
 export class ProjectSelectionComponent extends BaseComponent implements OnInit, OnDestroy {
 
-    _statuses;
-    _sortColumns: Array<SortColumn>;
-    _filterSubscription;
+    // Private
+    private _statuses;
+    private _sortColumns: Array<SortColumn>;
+    private _filterSubscription;
+    private _filterField;
 
+    // Public
+    filterForm: FormGroup;
     filteredProjects: Project[];
+    filterText = '';
 
-    constructor (protected injector: Injector, private _router: Router, private _projectSelection: ProjectSelectionManager) {
+    constructor (protected injector: Injector, private _builder: FormBuilder, private _router: Router,
+                 private _projectSelection: ProjectSelectionManager, private _projects: ProjectService) {
 
         super(injector, [
             {
@@ -31,8 +38,15 @@ export class ProjectSelectionComponent extends BaseComponent implements OnInit, 
                 callback: 'projectServiceCallback'
             }
         ]);
+
+        this.createForm();
+        this._filterField = this.filterForm.get('filter');
         // console.log('ProjectSelectionComponent Ctor', this._projectSelection);
     }
+
+    /******************************************************************************************************************
+     * Lifecycle Methods
+     ******************************************************************************************************************/
 
     ngOnInit () {
 
@@ -89,14 +103,20 @@ export class ProjectSelectionComponent extends BaseComponent implements OnInit, 
         this._router.navigate([routeName.project, 'create']);
     }
 
+    filterProjects () {
+
+        // console.log('ProjectSelectionComponent filterProjects');
+        this.filterText = this._filterField.value;
+        this._projects.getFiltered(this._filterField.value);
+    }
+
     /******************************************************************************************************************
      * Callback Handler
      ******************************************************************************************************************/
 
     projectServiceCallback(projects) {
 
-        // console.log('MockProjectService Callback', this._projectSelection);
-
+        // console.log('ProjectService Callback');
         this._sortColumns = _.orderBy(projectSortColumns, ['Ordinal'], ['asc']);
 
         this._statuses = _.filter(statusMap, function (status) {
@@ -109,4 +129,12 @@ export class ProjectSelectionComponent extends BaseComponent implements OnInit, 
     /******************************************************************************************************************
      * Private Methods
      ******************************************************************************************************************/
+
+    createForm () {
+
+        this.filterForm = this._builder.group({
+
+            filter: ['']
+        })
+    }
 }

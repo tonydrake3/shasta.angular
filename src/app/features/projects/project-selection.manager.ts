@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-import {ReplaySubject} from 'rxjs/ReplaySubject';
 import {Project} from 'app/models/domain/Project';
 import {Subject} from 'rxjs/Subject';
 import {StatusMap, statusMap} from '../../models/configuration/statusMap';
@@ -9,10 +8,10 @@ import * as _ from 'lodash';
 @Injectable()
 export class ProjectSelectionManager {
 
+    // Private members
     private _projects: Project[];
     private _processedProjects;
     private _filteredRecords = new Subject();
-    private _filterText: string;
     private _statuses;
     private _sortColumn: SortColumn;
 
@@ -66,16 +65,16 @@ export class ProjectSelectionManager {
 
         // filter by status
         this.filterStatuses();
-        // filter by text
-        // this.filterByText();
         // sort
         this.sort();
 
+        // console.log('ProjectSelectionManager processProjects');
         this._filteredRecords.next(this._processedProjects);
     }
 
     private filterStatuses () {
 
+        // console.log('filterStatuses');
         this._processedProjects = new Array<Project>();
 
         this._statuses.forEach((map) => {
@@ -85,11 +84,6 @@ export class ProjectSelectionManager {
                 this._processedProjects = _.concat(this._processedProjects, this.filterProject(map));
             }
         });
-    }
-
-    private filterByText () {
-
-
     }
 
     private sort () {

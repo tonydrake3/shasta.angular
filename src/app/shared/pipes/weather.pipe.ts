@@ -11,7 +11,7 @@ import {weatherMap, WeatherMap} from '../../models/configuration/weatherMap';
  */
 @Pipe({name: 'weather'})
 export class WeatherPipe implements PipeTransform {
-    transform(value: number): string {
+    transform(value: string): string {
 
         const weatherValues: WeatherMap[] = weatherMap;
 

@@ -161,7 +161,7 @@ export const mockWeather = {
                         'windspeedKmph': '14',
                         'winddirDegree': '103',
                         'winddir16Point': 'ESE',
-                        'weatherCode': '353',
+                        'weatherCode': '386',
                         'weatherIconUrl': [
                             {
                                 'value': 'http://cdn.worldweatheronline.net/images/wsymbols01_png_64/wsymbol_0009_light_rain_showers.png'
@@ -226,7 +226,7 @@ export const mockWeather = {
                         'windspeedKmph': '16',
                         'winddirDegree': '72',
                         'winddir16Point': 'ENE',
-                        'weatherCode': '176',
+                        'weatherCode': '113',
                         'weatherIconUrl': [
                             {
                                 'value': 'http://cdn.worldweatheronline.net/images/wsymbols01_png_64/wsymbol_0009_light_rain_showers.png'
@@ -291,7 +291,7 @@ export const mockWeather = {
                         'windspeedKmph': '20',
                         'winddirDegree': '86',
                         'winddir16Point': 'E',
-                        'weatherCode': '353',
+                        'weatherCode': '377',
                         'weatherIconUrl': [
                             {
                                 'value': 'http://cdn.worldweatheronline.net/images/wsymbols01_png_64/wsymbol_0009_light_rain_showers.png'
@@ -356,7 +356,7 @@ export const mockWeather = {
                         'windspeedKmph': '13',
                         'winddirDegree': '114',
                         'winddir16Point': 'ESE',
-                        'weatherCode': '176',
+                        'weatherCode': '143',
                         'weatherIconUrl': [
                             {
                                 'value': 'http://cdn.worldweatheronline.net/images/wsymbols01_png_64/wsymbol_0009_light_rain_showers.png'

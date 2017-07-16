@@ -5,21 +5,31 @@ import {LookupDataService} from '../../../shared/services/utilities/lookup-data.
 import {statusMap} from '../../../models/configuration/statusMap';
 import {Router} from '@angular/router';
 
-
 @Component({
     selector: 'esub-project-selection-card',
     templateUrl: './project-selection-card.component.html'
 })
 export class ProjectSelectionCardComponent implements OnInit {
+
+    // Input members
     @Input() project: Project;
+    @Input() filterText: string;
+
+    // Private members
     _links;
     _statuses;
 
     constructor(protected _router: Router, private _dataSync: DataSyncService, private _lookup: LookupDataService) {}
 
+    /******************************************************************************************************************
+     * Lifecycle Methods
+     ******************************************************************************************************************/
+
     ngOnInit () {
 
+        // console.log('ProjectSelectionCardComponent ngOnInit');
         this._lookup.getProjectCardLinks()
+
             .then((links) => {
 
                 this._links = links;
@@ -27,6 +37,10 @@ export class ProjectSelectionCardComponent implements OnInit {
 
         this._statuses = statusMap;
     }
+
+    /******************************************************************************************************************
+     * Public Methods
+     ******************************************************************************************************************/
 
     goToPage (link) {
         console.log(link);
@@ -50,4 +64,8 @@ export class ProjectSelectionCardComponent implements OnInit {
         this._dataSync.setProject(project);
         sessionStorage.setItem('project', JSON.stringify(project));
     }
+
+    /******************************************************************************************************************
+     * Private Methods
+     ******************************************************************************************************************/
 }
