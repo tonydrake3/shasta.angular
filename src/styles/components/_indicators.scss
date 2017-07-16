@@ -24,5 +24,8 @@
     &.blue {
       background-color: $blue;
     }
+    &.hidden {
+      visibility: hidden;
+    }
   }
 }

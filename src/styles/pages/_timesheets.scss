@@ -82,6 +82,18 @@
     }
   }
 
+  .card-heading {
+
+    p {
+      display: inline-block;
+    }
+
+    .icon-holder {
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+
   .card-date {
     white-space: nowrap;
     @media(max-width: 1100px) and (min-width: 992px) {
@@ -99,11 +111,11 @@
   section {
 
     // had to build the border for these sections a little differently than above
-    &:after {
+    > div:after {
       display: block;
       content: ' ';
       height: 1px;
-      margin-top: -20px;
+      // margin-top: -20px;
       width: 96%;
       margin-left: 2%;
       align-self: center;
@@ -134,7 +146,11 @@
 
       // chat bubbles
       i {
-        color: $gray;
+        color: $gray-20;
+
+        &.active {
+          color: $blue;
+        }
       }
 
       .hidden {

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Injector, OnDestroy, OnInit} from '@angular/core';
 import {ProjectSummaryService} from './project-summary.service';
 import {ActivatedRoute} from '@angular/router';
 import {Project} from '../../../models/domain/Project';
@@ -9,34 +9,49 @@ import {statusMap, StatusMap} from '../../../models/configuration/statusMap';
 import {projectPlaces} from '../../../models/configuration/projectPlaces';
 import {weatherMap} from '../../../models/configuration/weatherMap';
 import {mockWeather} from '../../../shared/mocks/data/mockWeather.data';
+import {BaseComponent} from '../../../shared/components/base.component';
 
 @Component({
     selector: 'esub-project-summary',
     templateUrl: './project-summary.component.html',
 })
-export class ProjectSummaryComponent implements OnInit {
+export class ProjectSummaryComponent extends BaseComponent implements OnInit, OnDestroy {
 
+    // Private
+    private _location;
+    private _statuses;
+    private _weatherValues;
+    private _routerSubscription;
+    private _summaryService: ProjectSummaryService;
+
+    // Public
     details: Project;
     weather;
     places;
 
-    _location;
-    _statuses;
-    _weatherValues;
-
-    constructor (private _summary: ProjectSummaryService, private _router: ActivatedRoute,
+    constructor (protected injector: Injector, private _router: ActivatedRoute,
                  private _maps: MapsService, private  _weather: WeatherService) {
 
+        super(injector, [
+            {
+                service: 'ProjectSummaryService',
+                callback: 'summaryCallback'
+            }
+        ]);
 
+        this._summaryService = super.getServiceRef('ProjectSummaryService') as ProjectSummaryService;
 
-        this._router.params
+        this._routerSubscription = this._router.params
 
             .subscribe(
 
                 (result) => {
 
-                    this._summary.config(result.id);
-                    this._summary.getLatest();
+                    if (this._summaryService) {
+
+                        this._summaryService.config(result.id);
+                        this._summaryService.getLatest();
+                    }
                 } ,
                 error => console.log(error)
             );
@@ -45,6 +60,10 @@ export class ProjectSummaryComponent implements OnInit {
         this._weatherValues = weatherMap;
         this.places = projectPlaces;
     }
+
+    /******************************************************************************************************************
+     * Lifecycle Methods
+     ******************************************************************************************************************/
 
     ngOnInit () {
 
@@ -65,23 +84,30 @@ export class ProjectSummaryComponent implements OnInit {
             );
 
 
-        this._summary.projectDetail$
-
-            .subscribe(
-
-                (details) => {
-
-                    this.details = details['Value'][0];
-                    this._maps.setAddress(this.details.Address.Address1 + ', ' + this.details.Address.City + ', '
-                        + this.details.Address.State);
-                },
-                (error) => {
-
-                    console.log(error);
-                }
-            );
+        // this._summary.projectDetail$
+        //
+        //     .subscribe(
+        //
+        //         (details) => {
+        //
+        //
+        //         },
+        //         (error) => {
+        //
+        //             console.log(error);
+        //         }
+        //     );
     }
 
+    ngOnDestroy () {
+
+        super.ngOnDestroy();
+        this._routerSubscription.unsubscribe();
+    }
+
+    /******************************************************************************************************************
+     * Public Methods
+     ******************************************************************************************************************/
     getWeather (location) {
         //
         // this._weather.getWeather(location)
@@ -129,4 +155,19 @@ export class ProjectSummaryComponent implements OnInit {
         console.log(className);
         return {'mdi': true, [className]: true};
     }
+
+    /******************************************************************************************************************
+     * Callback Handler
+     ******************************************************************************************************************/
+
+    summaryCallback (detail) {
+
+        this.details = detail['Value'][0];
+        this._maps.setAddress(this.details.Address.Address1 + ', ' + this.details.Address.City + ', '
+            + this.details.Address.State);
+    }
+
+    /******************************************************************************************************************
+     * Private Methods
+     ******************************************************************************************************************/
 }
