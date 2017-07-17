@@ -8,6 +8,8 @@ import 'rxjs/add/operator/map';
 @Injectable ()
 export class BaseHttpService {
 
+    _queryParams: URLSearchParams;
+
     constructor (private _http: Http) {}
 
     /******************************************************************************************************************
@@ -20,6 +22,11 @@ export class BaseHttpService {
         this.addHeaders(headers);
 
         const options = new RequestOptions({headers : headers});
+
+        if (this._queryParams) {
+
+            options.params = this._queryParams;
+        }
 
         return this._http.get(url, options)
             .map(this.processSuccess)
@@ -79,10 +86,10 @@ export class BaseHttpService {
     }
 
     /******************************************************************************************************************
-     * Private Methods
+     * Protected Methods
      ******************************************************************************************************************/
 
-    private addHeaders(headers: Headers) {
+    protected addHeaders(headers: Headers) {
 
         const authenticationData = JSON.parse(sessionStorage.getItem('authentication'));
         const tenant = JSON.parse(sessionStorage.getItem('tenant'));
@@ -97,6 +104,10 @@ export class BaseHttpService {
             headers.append('X-Esub-Tenant', tenant);
         }
     }
+
+    /******************************************************************************************************************
+     * Private Methods
+     ******************************************************************************************************************/
 
     private addFormHeaders (headers: Headers) {
 

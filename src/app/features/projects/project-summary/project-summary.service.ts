@@ -7,6 +7,8 @@ import { BaseStore } from '../../../shared/services/base-store.service';
 @Injectable()
 export class ProjectSummaryService extends BaseStore {
 
+    private _id;
+
     constructor(protected _httpPassthrough: Http) {
 
         super(_httpPassthrough);
@@ -14,12 +16,16 @@ export class ProjectSummaryService extends BaseStore {
 
     public config (id: string) {
 
-        this.init(apiRoutes.projects + '/' + id);
+        this._id = id;
+        this.init(apiRoutes.projects + '/' + this._id);
     }
 
     public getLatest (): Promise<any> {
 
-        return this.load();
+        if (this._id) {
+
+            return this.load();
+        }
     }
 
     get projectDetail$ () {

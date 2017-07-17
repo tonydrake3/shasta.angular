@@ -16,7 +16,7 @@
     <div class="summary-body" *ngIf="details">
         <div class="row summary-project-info">
             <div class="col-md-2 summary-status">
-                <span [ngClass]="getClass(details.Status)" >{{details.Status | status | uppercase}}</span>
+                <span [ngClass]="getClass(details.Status.toString())" >{{details.Status.toString() | status | uppercase}}</span>
             </div>
             <div class="col-md-3 summary-fields">
                 <span class="label-bold">Market Area&#58;</span>

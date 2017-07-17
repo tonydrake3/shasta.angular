@@ -96,7 +96,7 @@ export class ProjectSelectionManager {
 
         return _.filter(this._projects, function (proj) {
 
-            return proj.Status === status.Key;
+            return proj.Status.toString() === status.Key;
         });
     }
 }

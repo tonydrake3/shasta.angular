@@ -8,8 +8,9 @@ import {Subject} from 'rxjs/Subject';
 @Injectable()
 export class MapsService {
 
-    _address = new Subject();
-    _location = new Subject();
+    private _addressString: string;
+    private _address = new Subject();
+    private _location = new Subject();
 
     constructor (private _http: Http) {}
 
@@ -27,6 +28,10 @@ export class MapsService {
         return this._location.asObservable();
     }
 
+    getLatest () {
+
+    }
+
     setAddress (address: string) {
 
         this._address.next(address);
@@ -39,11 +44,14 @@ export class MapsService {
 
     getLocation (address: string): Observable<any> {
 
-        const params = this.getUrlParams(address);
+        if (address) {
 
-        return this._http.get(environment.mapsUrl + externalApiRoutes.geocode, { params: params })
-            .map(this.processSuccess)
-            .catch(this.processError);
+            const params = this.getUrlParams(address);
+
+            return this._http.get(environment.mapsUrl + externalApiRoutes.geocode, { params: params })
+                .map(this.processSuccess)
+                .catch(this.processError);
+        }
     }
 
     /******************************************************************************************************************

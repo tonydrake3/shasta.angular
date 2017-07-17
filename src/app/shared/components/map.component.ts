@@ -48,13 +48,12 @@ export class MapComponent implements OnInit {
                         mapTypeId: this._val
                     };
 
+                    const map = new google.maps.Map(document.getElementById('map'), mapProperty);
+
                     const marker = new google.maps.Marker({
                         position: new google.maps.LatLng(this._location),
-                        map: mapProperty
+                        map: map
                     });
-
-                    const map = new google.maps.Map(document.getElementById('map'), mapProperty);
-                    marker.setMap(map);
                 },
                 (error) => {
 

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { MaterialModule, MdDatepickerModule, MdNativeDateModule } from '@angular/material';
 
 // Directives
@@ -32,7 +33,9 @@ import {KeysPipe} from './pipes/keys.pipe';
       MaterialModule,
       MdDatepickerModule,
       MdNativeDateModule,
-      CommonModule
+      CommonModule,
+      FormsModule
+
     ],
     declarations: [
         BaseCardComponent,

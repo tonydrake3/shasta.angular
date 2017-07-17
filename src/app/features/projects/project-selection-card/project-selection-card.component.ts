@@ -52,7 +52,8 @@ export class ProjectSelectionCardComponent implements OnInit {
         let className = '';
         this._statuses.forEach(status => {
 
-            if (status.Key === statusId) {
+            if (status.Key === statusId.toString()) {
+
                 className = status.Value.toLowerCase();
             }
         });

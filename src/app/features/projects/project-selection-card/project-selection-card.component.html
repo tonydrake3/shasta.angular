@@ -12,7 +12,7 @@
             </div>
             <div class="row">
                 <div class="col-md-2 project-status">
-                    <span [ngClass]="getClass(project.Status)">{{project.Status | status | uppercase}}</span>
+                    <span [ngClass]="getClass(project.Status)">{{project.Status.toString() | status | uppercase}}</span>
                 </div>
                 <div class="col-md-4" >
 

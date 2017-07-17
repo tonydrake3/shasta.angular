@@ -1,4 +1,4 @@
-import {Component, Injector, OnDestroy, OnInit} from '@angular/core';
+import {Component, Injector, OnDestroy} from '@angular/core';
 import {ProjectSummaryService} from './project-summary.service';
 import {ActivatedRoute} from '@angular/router';
 import {Project} from '../../../models/domain/Project';
@@ -15,31 +15,42 @@ import {BaseComponent} from '../../../shared/components/base.component';
     selector: 'esub-project-summary',
     templateUrl: './project-summary.component.html',
 })
-export class ProjectSummaryComponent extends BaseComponent implements OnInit, OnDestroy {
+export class ProjectSummaryComponent extends BaseComponent implements OnDestroy {
 
     // Private
     private _location;
-    private _statuses;
+    private _statuses: StatusMap[];
     private _weatherValues;
     private _routerSubscription;
     private _summaryService: ProjectSummaryService;
+    private _maps: MapsService;
+    private _weatherService: WeatherService;
 
     // Public
     details: Project;
     weather;
     places;
 
-    constructor (protected injector: Injector, private _router: ActivatedRoute,
-                 private _maps: MapsService, private  _weather: WeatherService) {
+    constructor (protected injector: Injector, private _router: ActivatedRoute) {
 
         super(injector, [
             {
                 service: 'ProjectSummaryService',
                 callback: 'summaryCallback'
+            },
+            {
+                service: 'MapsService',
+                callback: 'locationCallback'
+            },
+            {
+                service: 'WeatherService',
+                callback: 'weatherCallback'
             }
         ]);
 
         this._summaryService = super.getServiceRef('ProjectSummaryService') as ProjectSummaryService;
+        this._maps = super.getServiceRef('MapsService') as MapsService;
+        this._weatherService = super.getServiceRef('WeatherService') as WeatherService;
 
         this._routerSubscription = this._router.params
 
@@ -65,40 +76,6 @@ export class ProjectSummaryComponent extends BaseComponent implements OnInit, On
      * Lifecycle Methods
      ******************************************************************************************************************/
 
-    ngOnInit () {
-
-        this._maps.location$
-
-            .subscribe(
-
-                (location) => {
-
-                    console.log(location);
-                    this._location = location;
-                    this.getWeather(location);
-                },
-                (error) => {
-
-                    console.log(error);
-                }
-            );
-
-
-        // this._summary.projectDetail$
-        //
-        //     .subscribe(
-        //
-        //         (details) => {
-        //
-        //
-        //         },
-        //         (error) => {
-        //
-        //             console.log(error);
-        //         }
-        //     );
-    }
-
     ngOnDestroy () {
 
         super.ngOnDestroy();
@@ -108,26 +85,6 @@ export class ProjectSummaryComponent extends BaseComponent implements OnInit, On
     /******************************************************************************************************************
      * Public Methods
      ******************************************************************************************************************/
-    getWeather (location) {
-        //
-        // this._weather.getWeather(location)
-        //
-        //     .subscribe(
-        //
-        //         (records) => {
-        //
-        //             this.weather = records.weather;
-        //             console.log(this.weather);
-        //         },
-        //         (error) => {
-        //
-        //             console.log(error);
-        //         }
-        //     );
-
-        this.weather = mockWeather['data'].weather;
-        console.log(this.weather);
-    }
 
     getClass (statusId: string) {
 
@@ -147,12 +104,11 @@ export class ProjectSummaryComponent extends BaseComponent implements OnInit, On
         let className = '';
         this._weatherValues.forEach(weatherItem => {
 
-            console.log(weatherItem.Key, forecastDay.hourly[0].weatherCode);
             if (weatherItem.Key === forecastDay.hourly[0].weatherCode) {
                 className = weatherItem.Value.toLowerCase();
             }
         });
-        console.log(className);
+
         return {'mdi': true, [className]: true};
     }
 
@@ -165,9 +121,24 @@ export class ProjectSummaryComponent extends BaseComponent implements OnInit, On
         this.details = detail['Value'][0];
         this._maps.setAddress(this.details.Address.Address1 + ', ' + this.details.Address.City + ', '
             + this.details.Address.State);
+
+    }
+
+    locationCallback (location) {
+
+        this._location = location;
+        this._weatherService.getWeather(location);
+    }
+
+    weatherCallback (response) {
+
+        // this.weather = response.weather;
+        this.weather = mockWeather['data'].weather;
     }
 
     /******************************************************************************************************************
      * Private Methods
      ******************************************************************************************************************/
+
+
 }
