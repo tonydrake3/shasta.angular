@@ -4,12 +4,12 @@ import {Http, Response, URLSearchParams} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 import {environment} from '../../../../environments/environment';
 import {weatherConfiguration} from '../../../models/configuration/weatherConfiguration';
-import {BaseStore} from '../base-store.service';
 import * as _ from 'lodash';
 
 @Injectable()
 export class WeatherService {
 
+    // Private
     _defaultWeatherDays = '5';
     _weather = new Subject();
 
@@ -37,7 +37,7 @@ export class WeatherService {
             this.getData(params)
 
                 .subscribe(
-                    // TODO: Look into function handlers here
+
                     data => {
                         // loading.dismiss();
                         this._weather.next(data);
@@ -45,7 +45,6 @@ export class WeatherService {
                     },
 
                     error => {
-                        // TODO: Refactor for error handling.
                         // loading.dismiss();
                         reject(error);
                         if (error.status === 401) {

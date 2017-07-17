@@ -132,8 +132,8 @@ export class ProjectSummaryComponent extends BaseComponent implements OnDestroy 
 
     weatherCallback (response) {
 
-        // this.weather = response.weather;
-        this.weather = mockWeather['data'].weather;
+        this.weather = response.weather;
+        // this.weather = mockWeather['data'].weather;
     }
 
     /******************************************************************************************************************

@@ -90,7 +90,7 @@ describe('ProjectSelection Manager', () => {
 
                 const wonProj = _.filter(filteredProjects, (filtProj) => {
 
-                    return filtProj.Status === wonStatus.Key;
+                    return filtProj.Status.toString() === wonStatus.Key;
                 });
 
                 expect(wonProj).toBeDefined();
