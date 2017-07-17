@@ -1,6 +1,6 @@
 <div class="project-selection-card">
     <div class="row">
-        <div class="col-md-10" (click)="selectProject(project)">
+        <div class="col-md-10" [id]="'project-card-' + project.Id" (click)="selectProject(project)">
             <div class="row">
                 <div class="col-md-6">
                     <h5><span [esubTextHighlight]="project.Number" [filterText]="filterText"></span> - <span [esubTextHighlight]="project.Name" [filterText]="filterText"></span></h5>
