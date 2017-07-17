@@ -1,9 +1,9 @@
 import {Component, Injector, OnDestroy} from '@angular/core';
-import {ProjectSummaryService} from './project-summary.service';
 import {ActivatedRoute} from '@angular/router';
+
+import {ProjectSummaryService} from './project-summary.service';
 import {Project} from '../../../models/domain/Project';
 import {MapsService} from '../../../shared/services/utilities/maps.service';
-import {MockProjectSummaryService} from '../../../shared/mocks/mock.project.summary.service';
 import {WeatherService} from '../../../shared/services/utilities/weather.service';
 import {statusMap, StatusMap} from '../../../models/configuration/statusMap';
 import {projectPlaces} from '../../../models/configuration/projectPlaces';
