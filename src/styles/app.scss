@@ -2,7 +2,8 @@
 @import "variables";
 
 @import
-    "libs/material2/material2"
+    "libs/material2/material2",
+    "libs/mdi/css/materialdesignicons.min.css"
 ;
 
 @import
@@ -10,7 +11,8 @@
     "mixins/transform",
     "mixins/flex",
     "mixins/misc-helpers",
-    "mixins/transition"
+    "mixins/transition",
+    "mixins/background-gradient"
 ;
 
 @import
@@ -19,6 +21,7 @@
     "components/cards",
     "components/buttons",
     "components/indicators",
+    "components/maps",
     "components/badged_hour"
 ;
 
@@ -41,5 +44,6 @@
 ,   "pages/project-selection-card"
 ,   "pages/login"
 ,   "pages/projects"
+,   "pages/project-summary"
 ,   "pages/comments"
 ;

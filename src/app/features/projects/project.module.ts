@@ -9,6 +9,7 @@ import {SHARED_FORM_DIRECTIVES} from '@angular/forms/src/directives';
 import {SharedModule} from '../../shared/shared.module';
 import {MaterialModule} from '@angular/material';
 import {ProjectSelectionManager} from './project-selection.manager';
+import {ProjectSummaryService} from './project-summary/project-summary.service';
 
 @NgModule({
     imports: [
@@ -25,7 +26,8 @@ import {ProjectSelectionManager} from './project-selection.manager';
     providers: [
         // ProjectGuard,
         ProjectService,
-        ProjectSelectionManager
+        ProjectSelectionManager,
+        ProjectSummaryService
     ],
     exports: [
     ]

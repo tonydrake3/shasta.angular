@@ -13,20 +13,22 @@ export class BaseStore extends BaseHttpService {
     constructor(protected _httpPassthrough: Http) {
 
         super(_httpPassthrough);
-
     }
 
-    protected init (url: string) {
+    /******************************************************************************************************************
+     * Protected Methods
+     ******************************************************************************************************************/
+
+    protected init (url?: string) {
 
         this._route = url;
-
     }
 
     protected load (): Promise<any> {
 
         // var loading = this.loadingCtrl.create();
         // loading.present();
-        const url = environment.apiUrl + this._route;
+        const url = environment.apiUrl + (this._route ? this._route : '');
 
         return new Promise((resolve, reject) => {
 

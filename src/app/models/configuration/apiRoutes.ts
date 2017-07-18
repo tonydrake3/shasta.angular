@@ -7,3 +7,7 @@ export const apiRoutes = {
     'projects': 'Shared/Projects',
     'timeRecords': 'Time/TimeRecords'
 };
+
+export const externalApiRoutes = {
+    'geocode': 'geocode/json'
+};

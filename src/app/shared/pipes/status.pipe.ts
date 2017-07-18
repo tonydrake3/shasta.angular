@@ -11,7 +11,7 @@ import {statusMap, StatusMap} from '../../models/configuration/statusMap';
  */
 @Pipe({name: 'status'})
 export class StatusPipe implements PipeTransform {
-    transform(value: number): string {
+    transform(value: string): string {
 
         const statuses: StatusMap[] = statusMap;
 

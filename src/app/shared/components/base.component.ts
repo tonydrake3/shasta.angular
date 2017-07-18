@@ -11,6 +11,9 @@ import { Subscriber } from 'rxjs/Rx';
 import { ProjectService } from '../../features/projects/project.service';
 import { TimeRecordsService } from '../../features/time-expenses/time-records.service';
 import { UserService } from '../services/user/user.service';
+import {ProjectSummaryService} from '../../features/projects/project-summary/project-summary.service';
+import {MapsService} from '../services/utilities/maps.service';
+import {WeatherService} from '../services/utilities/weather.service';
 
 @Component({ })
 export class BaseComponent implements OnDestroy {
@@ -28,7 +31,10 @@ export class BaseComponent implements OnDestroy {
     this.autoInjections = [
       { key: 'ProjectService', serviceObject: ProjectService, subject: 'projects$', initializer: 'getLatest' },
       { key: 'TimeRecordsService', serviceObject: TimeRecordsService, subject: 'timeRecords$', initializer: 'getLatest' },
-      { key: 'UserService', serviceObject: UserService, subject: 'currentUserInfo$', initializer: 'getLatest' }
+      { key: 'UserService', serviceObject: UserService, subject: 'currentUserInfo$', initializer: 'getLatest' },
+      { key: 'ProjectSummaryService', serviceObject: ProjectSummaryService, subject: 'projectDetail$', initializer: 'getLatest' },
+      { key: 'MapsService', serviceObject: MapsService, subject: 'location$', initializer: 'getLatest'},
+      { key: 'WeatherService', serviceObject: WeatherService, subject: 'weather$', initializer: 'getLatest'}
     ];
 
     // and inject them

@@ -1,0 +1,150 @@
+.project-summary {
+
+    #map {
+        height: 200px;
+
+        .expand {
+            height: 200px;
+        }
+    }
+
+    .map-overlay {
+        @include background-gradient(rgba(255,255,255,0), rgba(0,0,0,1));
+        color: $white;
+        height: 50px;
+        padding-left: 20px;
+        padding-right: 20px;
+        position: relative;
+        margin-top: -50px;
+
+        .map-overlay-name {
+            font-size: 22px;
+            position: relative;
+            top: 16px;
+        }
+
+        .map-overlay-map-to {
+            position: relative;
+            top: 16px;
+
+            span {
+                position: relative;
+                top: -6px;
+            }
+        }
+    }
+
+    .summary-body {
+        padding: 10px 20px;
+
+        .summary-project-info {
+            padding-top: 10px;
+            padding-bottom: 20px;
+        }
+
+        .summary-status {
+            color: $true-white;
+            font-size: 12px;
+
+            span {
+                border-radius: 15px;
+                display: block;
+                width: 86px;
+                padding: 2px 12px;
+                text-align: center;
+
+                &.open {
+                    background-color: $dark-sky-blue;
+                }
+
+                &.won,
+                &.complete {
+                    background-color: $frog-green;
+                }
+
+                &.bid {
+                    background-color: #FF8000;
+                }
+
+                &.lost {
+                    background-color: $tomato;
+                }
+            }
+        }
+
+        .summary-fields {
+            padding-top: 2px;
+        }
+
+        .summary-card {
+            background-color: $true-white;
+            margin: 10px 20px;
+
+            .summary-card-title {
+                padding: 10px;
+
+                &.weather {
+                    padding-bottom: 0;
+                }
+            }
+
+            .summary-card-row {
+                padding: 10px 30px;
+
+                &.weather {
+                    padding-top: 7px;
+                }
+
+                .summary-card-item {
+                    padding: 5px 5px;
+
+                    &.places-item:hover {
+                        background: $gray-hover;
+                        cursor: pointer;
+                    }
+
+                    i.material-icons {
+                        font-size: 40px;
+                    }
+
+                    &.weather {
+                        margin-left: 5px;
+                        margin-right: 5px;
+
+                        &:first-child {
+                            margin-left: 4%;
+                        }
+
+                        .weather-day {
+                            color: rgba($gray, 0.7);
+                        }
+                    }
+
+                    .weather-item {
+                        padding: 5px 5px 0;
+
+                        .weather-icon {
+                            padding-left: 0 !important;
+                            padding-bottom: 5px !important;
+
+                            i {
+                                font-size: 44px;
+                                line-height: 36px;
+                                padding-top: 6px;
+                            }
+                        }
+
+                        .weather-temperatures {
+                            padding-left: 0 !important;
+                            padding-bottom: 6px !important;
+
+                            .min-temp {
+                                color: rgba($gray, 0.7);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

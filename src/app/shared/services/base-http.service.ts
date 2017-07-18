@@ -8,34 +8,13 @@ import 'rxjs/add/operator/map';
 @Injectable ()
 export class BaseHttpService {
 
+    _queryParams: URLSearchParams;
+
     constructor (private _http: Http) {}
 
-    addHeaders(headers: Headers) {
-
-        const authenticationData = JSON.parse(sessionStorage.getItem('authentication'));
-        const tenant = JSON.parse(sessionStorage.getItem('tenant'));
-
-        if (authenticationData && authenticationData.access_token) {
-
-            headers.append('Authorization', 'Bearer ' + authenticationData.access_token);
-
-            // TODO : Consider config for this?
-            // headers.append('X-Esub-Tenant', '1');
-        }
-
-        if (tenant) {
-
-            headers.append('X-Esub-Tenant', tenant);
-        }
-
-    }
-
-    addFormHeaders (headers: Headers) {
-
-        // TODO : Consider config for this?
-        headers.append('Content-Type', 'application/x-www-form-urlencoded');
-        headers.append('Accept', 'application/json');
-    }
+    /******************************************************************************************************************
+     * Public Methods
+     ******************************************************************************************************************/
 
     get (url: string): Observable<any> {
 
@@ -44,9 +23,14 @@ export class BaseHttpService {
 
         const options = new RequestOptions({headers : headers});
 
+        if (this._queryParams) {
+
+            options.params = this._queryParams;
+        }
+
         return this._http.get(url, options)
-                        .map(this.processSuccess)
-                        .catch(this.processError);
+            .map(this.processSuccess)
+            .catch(this.processError);
     }
 
     post (url: string, payload: any): Observable<any> {
@@ -57,8 +41,8 @@ export class BaseHttpService {
         const options = new RequestOptions({headers : headers});
 
         return this._http.post(url, payload, options)
-                        .map(this.processSuccess)
-                        .catch(this.processError);
+            .map(this.processSuccess)
+            .catch(this.processError);
     }
 
     postForm (url: string, data: any): Observable<any> {
@@ -72,14 +56,14 @@ export class BaseHttpService {
         // Convert form JSON to URL Search Params for formdata
         const params = new URLSearchParams();
         for (const key in data) {
-           if (data.hasOwnProperty(key)) {
-              params.set(key, data[key]);
+            if (data.hasOwnProperty(key)) {
+                params.set(key, data[key]);
             }
         }
 
         return this._http.post(url, params, options)
-                        .map(this.processSuccess)
-                        .catch(this.processError);
+            .map(this.processSuccess)
+            .catch(this.processError);
 
     }
 
@@ -89,8 +73,8 @@ export class BaseHttpService {
         this.addHeaders(headers);
 
         return this._http.put(url, payload, {headers: headers})
-                        .map(this.processSuccess)
-                        .catch(this.processError);
+            .map(this.processSuccess)
+            .catch(this.processError);
     }
 
     delete (url: string) {
@@ -101,6 +85,36 @@ export class BaseHttpService {
         return this._http.delete(url, {headers: headers});
     }
 
+    /******************************************************************************************************************
+     * Protected Methods
+     ******************************************************************************************************************/
+
+    protected addHeaders(headers: Headers) {
+
+        const authenticationData = JSON.parse(sessionStorage.getItem('authentication'));
+        const tenant = JSON.parse(sessionStorage.getItem('tenant'));
+
+        if (authenticationData && authenticationData.access_token) {
+
+            headers.append('Authorization', 'Bearer ' + authenticationData.access_token);
+        }
+
+        if (tenant) {
+
+            headers.append('X-Esub-Tenant', tenant);
+        }
+    }
+
+    /******************************************************************************************************************
+     * Private Methods
+     ******************************************************************************************************************/
+
+    private addFormHeaders (headers: Headers) {
+
+        // TODO : Consider config for this?
+        headers.append('Content-Type', 'application/x-www-form-urlencoded');
+        headers.append('Accept', 'application/json');
+    }
 
     private processSuccess (response: Response) {
 
@@ -120,5 +134,4 @@ export class BaseHttpService {
         }
         return Observable.throw(errMsg);
     }
-
 }
