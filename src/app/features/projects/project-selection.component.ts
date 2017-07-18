@@ -107,6 +107,7 @@ export class ProjectSelectionComponent extends BaseComponent implements OnInit, 
 
         // console.log('ProjectSelectionComponent filterProjects');
         this.filterText = this._filterField.value;
+        this._projectSelection.setTextFilter(this._filterField.value);
         this._projects.getFiltered(this._filterField.value);
     }
 
@@ -119,11 +120,21 @@ export class ProjectSelectionComponent extends BaseComponent implements OnInit, 
         // console.log('ProjectService Callback');
         this._sortColumns = _.orderBy(projectSortColumns, ['Ordinal'], ['asc']);
 
-        this._statuses = _.filter(statusMap, function (status) {
-            return status.CanDisplay;
-        });
+        this._statuses = this._projectSelection.getStatusFilters();
+        this.reloadColumns(this._projectSelection.getSortColumn());
 
-        this._projectSelection.init(<Project[]> projects['Value'], this._sortColumns[0]);
+        this._projectSelection.init(<Project[]> projects['Value']);
+
+        const textFilter = this._projectSelection.getTextFilter();
+
+        if (textFilter) {
+
+            this.filterForm.setValue({
+
+               filter: textFilter
+            });
+            this.filterText = textFilter;
+        }
     }
 
     /******************************************************************************************************************
@@ -136,5 +147,17 @@ export class ProjectSelectionComponent extends BaseComponent implements OnInit, 
 
             filter: ['']
         })
+    }
+
+    reloadColumns (sortCol: SortColumn) {
+
+        this._sortColumns.forEach((column) => {
+
+            if (sortCol.Key === column.Key) {
+
+                column.IsDescending = sortCol.IsDescending;
+                column.IsSelected = sortCol.IsSelected;
+            }
+        });
     }
 }

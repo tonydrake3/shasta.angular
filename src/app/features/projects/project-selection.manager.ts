@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Project} from 'app/models/domain/Project';
 import {Subject} from 'rxjs/Subject';
 import {StatusMap, statusMap} from '../../models/configuration/statusMap';
-import {SortColumn} from '../../models/configuration/sortColumns';
+import {projectSortColumns, SortColumn} from '../../models/configuration/sortColumns';
 import * as _ from 'lodash';
 
 @Injectable()
@@ -14,11 +14,16 @@ export class ProjectSelectionManager {
     private _filteredRecords = new Subject();
     private _statuses;
     private _sortColumn: SortColumn;
+    private _textFilter: string;
 
     constructor () {
 
         // console.log('ProjectSelectionService Ctor');
-        this._statuses = statusMap;
+        this._statuses = _.filter(statusMap, function (status) {
+            return status.CanDisplay;
+        });
+
+        this._sortColumn = _.orderBy(projectSortColumns, ['Ordinal'], ['asc'])[0];
     }
 
     /******************************************************************************************************************
@@ -30,13 +35,16 @@ export class ProjectSelectionManager {
         return this._filteredRecords.asObservable();
     }
 
-    init (projects: Project[], sortColumn: SortColumn) {
+    init (projects: Project[]) {
 
-        // console.log('ProjectSelectionService Init', projects);
         this._processedProjects = new Array<Project>();
         this._projects = projects;
-        this._sortColumn = sortColumn;
         this.processProjects();
+    }
+
+    getStatusFilters () {
+
+        return this._statuses;
     }
 
     setStatusFilter (selStatus: StatusMap) {
@@ -46,15 +54,31 @@ export class ProjectSelectionManager {
             if (status.Key === selStatus.Key) {
 
                 status.IsFiltered = !status.IsFiltered;
+                status.IsSelected = !status.IsSelected;
             }
         });
         this.processProjects();
+    }
+
+    getSortColumn () {
+
+        return this._sortColumn;
     }
 
     setSortColumn (selCol: SortColumn) {
 
         this._sortColumn = selCol;
         this.processProjects();
+    }
+
+    getTextFilter (): string {
+
+        return this._textFilter;
+    }
+
+    setTextFilter (filter: string) {
+
+        this._textFilter = filter;
     }
 
     /******************************************************************************************************************
