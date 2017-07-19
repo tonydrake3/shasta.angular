@@ -11,24 +11,22 @@ import { AppComponent } from './app.component';
 
 // Pages
 import { LoginComponent } from './login/login.component'
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { PageLayoutFullscreenComponent } from './page-layouts/fullscreen/fullscreen.component';
 
 // Sub modules
 import { HomeModule } from './home/home.module';
 import { SharedModule } from './shared/shared.module';
-import { CompanyModule } from './features/company/company.module';
-import { SettingsModule } from './features/settings/settings.module';
+import { CompanyModule } from './home/company/company.module';
+import { SettingsModule } from './home/settings/settings.module';
 
 // hmr
 import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
 import {AuthenticationService} from './shared/services/authentication/authentication.service';
 import {AuthGuard} from './shared/services/guards/auth-guard.service';
-import {DataSyncService} from './shared/services/utilities/data-sync.service';
-import {LookupDataService} from './shared/services/utilities/lookup-data.service';
+import {DataSyncService} from './home/shared/services/data-sync.service';
+import {LookupDataService} from './home/shared/services/lookup-data.service';
 
 // entry components
-import { CommentsComponent } from './shared/components/comments.component';
+import { CommentsComponent } from './home/shared/components/comments.component';
 
 @NgModule({
     imports: [
@@ -49,10 +47,7 @@ import { CommentsComponent } from './shared/components/comments.component';
     ],
     declarations: [
         AppComponent,
-        DashboardComponent,
         LoginComponent,
-        // Pages
-        PageLayoutFullscreenComponent,
     ],
     providers: [
         AuthenticationService,

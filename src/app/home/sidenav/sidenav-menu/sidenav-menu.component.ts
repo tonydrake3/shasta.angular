@@ -4,8 +4,8 @@ import {Router} from '@angular/router';
 import { NavigationLink } from '../../../models/NavigationLink';
 import {Project} from '../../../models/domain/Project';
 
-import {DataSyncService} from '../../../shared/services/utilities/data-sync.service';
-import {LookupDataService} from '../../../shared/services/utilities/lookup-data.service';
+import {DataSyncService} from '../../shared/services/data-sync.service';
+import {LookupDataService} from '../../shared/services/lookup-data.service';
 
 @Component({
     selector: 'esub-app-sidenav-menu',

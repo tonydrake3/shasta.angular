@@ -3,9 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { AuthenticationService } from '../shared/services/authentication/authentication.service';
-import { AuthorizationService } from '../shared/services/authorization/authorization.service';
-import { UserService } from '../shared/services/user/user.service';
-import { CompanyService } from '../features/company/company.service';
+import { AuthorizationService } from '../home/shared/services/authorization/authorization.service';
+import { UserService } from '../home/shared/services/user/user.service';
+import { CompanyService } from '../home/company/company.service';
 import { Credentials } from '../models/domain/Credentials';
 
 import 'rxjs/add/operator/mergeMap';

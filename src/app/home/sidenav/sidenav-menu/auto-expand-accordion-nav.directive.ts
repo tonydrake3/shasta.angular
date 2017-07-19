@@ -1,5 +1,5 @@
 import {Directive, ElementRef, OnDestroy, OnInit, Renderer2} from '@angular/core';
-import {DataSyncService} from '../../../shared/services/utilities/data-sync.service';
+import {DataSyncService} from '../../shared/services/data-sync.service';
 
 @Directive({ selector: '[esubAutoExpandAccordion]' })
 export class AutoExpandAccordionNavDirective implements OnInit, OnDestroy {

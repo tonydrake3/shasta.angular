@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 
 import { BaseHttpService } from '../base-http.service';
-import { AuthorizationService } from '../authorization/authorization.service';
+import { AuthorizationService } from '../../../home/shared/services/authorization/authorization.service';
 import { environment } from '../../../../environments/environment';
-import { apiRoutes } from '../../../models/configuration/apiRoutes';
+import { apiRoutes } from '../../../home/shared/configuration/api-routes.configuration';
 
 @Injectable ()
 export class AuthenticationService extends BaseHttpService {
