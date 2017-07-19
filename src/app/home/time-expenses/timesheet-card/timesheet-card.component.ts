@@ -256,7 +256,7 @@ export class TimesheetCardComponent extends BaseComponent {
           statusError: false,
           mapError: false
         };
-        this.showCheckboxes = true;
+        this.showCheckboxes = false;
         this.expandAllDetails(true);
         break;
     }
