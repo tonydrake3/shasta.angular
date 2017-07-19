@@ -1,5 +1,5 @@
 import {Directive, ElementRef, AfterViewInit, OnInit, OnDestroy} from '@angular/core';
-import {DataSyncService} from '../../../shared/services/utilities/data-sync.service';
+import {DataSyncService} from '../../shared/services/data-sync.service';
 
 @Directive({ selector: '[esubAccordionNav]' })
 

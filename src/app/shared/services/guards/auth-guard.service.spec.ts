@@ -9,8 +9,8 @@ import { Subject } from 'rxjs/Subject';
 import { AuthGuard } from './auth-guard.service';
 import { AuthenticationService } from '../authentication/authentication.service';
 
-import { MockRouter } from '../../mocks/mock.router';
-import { MockAuthenticationService } from '../../mocks/mock.authentication.service';
+import { MockRouter } from '../../../mocks/mock.router';
+import { MockAuthenticationService } from '../../../mocks/mock.authentication.service';
 
 import 'hammerjs';
 

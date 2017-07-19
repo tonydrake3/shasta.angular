@@ -8,7 +8,7 @@ import { Subject } from 'rxjs/Subject';
 
 import { AppComponent } from './app.component';
 
-import { MockRouter } from './shared/mocks/mock.router';
+import { MockRouter } from './mocks/mock.router';
 
 import 'hammerjs';
 
