@@ -69,10 +69,11 @@
     }
 
 
-    // 
+    //
     li {
         height: $l_header_height;
         float: left;
+        max-width: 100px;
     }
 
     a {

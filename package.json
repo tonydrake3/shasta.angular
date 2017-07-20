@@ -26,6 +26,7 @@
     "@angular/platform-server": "^4.0.2",
     "@angular/router": "^4.0.2",
     "@types/lodash": "^4.14.66",
+    "@types/signalr": "^2.2.34",
     "core-js": "^2.4.1",
     "echarts": "^3.5.3",
     "font-awesome": "^4.7.0",

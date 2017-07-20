@@ -27,6 +27,7 @@ import {LookupDataService} from './home/shared/services/lookup-data.service';
 
 // entry components
 import { CommentsComponent } from './home/shared/components/comments.component';
+import { NotificationComponent } from './home/notifications/notifications.component';
 
 @NgModule({
     imports: [
@@ -56,7 +57,7 @@ import { CommentsComponent } from './home/shared/components/comments.component';
         LookupDataService
     ],
     bootstrap: [AppComponent],
-    entryComponents: [CommentsComponent]
+    entryComponents: [CommentsComponent, NotificationComponent]
 })
 
 export class AppModule {

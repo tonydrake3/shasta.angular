@@ -33,11 +33,12 @@
                   <div class="header-btn-label"><label>Inbox</label></div>
                 </button>
               </li>
-              <li class="list-inline-item header-sticky notification-icon">
+              <li class="list-inline-item notification-icon" (click)="openNotifications()">
                   <button md-button class="md-button header-btn">
                       <i class="material-icons notifications-counter"><span>{{notificationCount}}</span></i>
                       <div class="header-btn-label"><label>Notifications</label></div>
                   </button>
+                  <esub-popover [open]="isNotificationOpen"></esub-popover>
               </li>
               <li class="profile-icon header-sticky">
                   <button md-button class="md-button header-btn" (click)="logout()">

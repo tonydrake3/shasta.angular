@@ -25,6 +25,8 @@ import {WeekSelectorComponent} from './components/week-selector.component';
 import {DateToWeekdayPipe} from './pipes/date-to-weekday.pipe';
 import {KeysPipe} from './pipes/keys.pipe';
 import {StatusPipe} from './pipes/status.pipe';
+import {PopoverComponent} from './components/popover.component';
+import {DynamicInjectionDirective} from './directives/dynamic-injector.directive';
 
 
 @NgModule({
@@ -46,7 +48,9 @@ import {StatusPipe} from './pipes/status.pipe';
         StatusPipe,
         DateToWeekdayPipe,
         KeysPipe,
-        CommentsComponent
+        CommentsComponent,
+        PopoverComponent,
+        DynamicInjectionDirective
     ],
     providers: [
         AuthorizationService,
@@ -65,7 +69,9 @@ import {StatusPipe} from './pipes/status.pipe';
         StatusPipe,
         DateToWeekdayPipe,
         KeysPipe,
-        CommentsComponent
+        CommentsComponent,
+        PopoverComponent,
+        DynamicInjectionDirective
     ]
 })
 

@@ -12,12 +12,18 @@ import {Router} from '@angular/router';
 export class AppHeaderComponent implements OnInit {
     AppConfig: any;
     public notificationCount: number;
+    public isNotificationOpen = false;
 
     constructor(private _authService: AuthenticationService, private _router: Router) {}
 
     ngOnInit() {
         this.AppConfig = APPCONFIG;
         this.notificationCount = 2;
+    }
+
+    openNotifications () {
+
+        this.isNotificationOpen = !this.isNotificationOpen;
     }
 
     logout () {
