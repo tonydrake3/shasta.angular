@@ -5,9 +5,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import 'hammerjs';
+import { SignalRModule } from 'ng2-signalr';
+import { SignalRConfiguration } from 'ng2-signalr';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { NotificationModule } from './home/notifications/notification.module';
 
 // Pages
 import { LoginComponent } from './login/login.component'
@@ -28,6 +31,7 @@ import {LookupDataService} from './home/shared/services/lookup-data.service';
 // entry components
 import { CommentsComponent } from './home/shared/components/comments.component';
 import { NotificationComponent } from './home/notifications/notifications.component';
+import {ChannelConfig, ChannelService, SignalrWindow} from './shared/services/channel.service';
 
 @NgModule({
     imports: [
@@ -38,6 +42,7 @@ import { NotificationComponent } from './home/notifications/notifications.compon
         MaterialModule,
         BrowserAnimationsModule,
         AppRoutingModule,
+        NotificationModule,
 
         // Sub modules
         HomeModule,
@@ -54,7 +59,9 @@ import { NotificationComponent } from './home/notifications/notifications.compon
         AuthenticationService,
         AuthGuard,
         DataSyncService,
-        LookupDataService
+        LookupDataService,
+        ChannelService,
+        { provide: SignalrWindow, useValue: window }
     ],
     bootstrap: [AppComponent],
     entryComponents: [CommentsComponent, NotificationComponent]

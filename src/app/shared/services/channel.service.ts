@@ -1,102 +1,105 @@
-import {EventEmitter, Inject, Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {
-    ChannelConfig, ChannelEvent, ChannelSubject, ConnectionState,
-    SignalrWindow
-} from './configuration/signalr.configuration';
-import {Subject} from 'rxjs/Subject';
+import {Injectable, Inject} from "@angular/core";
+import {Subject} from "rxjs/Subject";
+import {Observable} from "rxjs/Observable";
 
+/**
+ * When SignalR runs it will add functions to the global $ variable
+ * that you use to create connections to the hub. However, in this
+ * class we won't want to depend on any global variables, so this
+ * class provides an abstraction away from using $ directly in here.
+ */
+export class SignalrWindow extends Window {
+    $: any;
+}
+
+export enum ConnectionState {
+    Connecting = 1,
+    Connected = 2,
+    Reconnecting = 3,
+    Disconnected = 4
+}
+
+export class ChannelConfig {
+    url: string;
+    hubName: string;
+    channel: string;
+}
+
+export class ChannelEvent {
+    Name: string;
+    ChannelName: string;
+    Timestamp: Date;
+    Data: any;
+    Json: string;
+
+    constructor() {
+        this.Timestamp = new Date();
+    }
+}
+
+class ChannelSubject {
+    channel: string;
+    subject: Subject<ChannelEvent>;
+}
+
+/**
+ * ChannelService is a wrapper around the functionality that SignalR
+ * provides to expose the ideas of channels and events. With this service
+ * you can subscribe to specific channels (or groups in signalr speak) and
+ * use observables to react to specific events sent out on those channels.
+ */
 @Injectable()
-export class SignalRService {
+export class ChannelService {
 
-    // // Declare the variables
-    // private proxy: any;
-    // private proxyName = 'testHub';
-    // private connection: any;
-    //
-    // // create the Event Emitter
-    // public messageReceived: EventEmitter <any> ;
-    // public connectionEstablished: EventEmitter <boolean> ;
-    // public connectionExists: Boolean;
-    //
-    // constructor() {
-    //
-    //     console.log('SignalRService CTOR', $.fn.jquery);
-    //     // Constructor initialization
-    //     this.connectionEstablished = new EventEmitter <boolean> ();
-    //     this.messageReceived = new EventEmitter <any> ();
-    //     this.connectionExists = false;
-    //
-    //     // create hub connection
-    //     // this.connection = $.hubConnection('http://test.develop.shasta.esubonline.com/');
-    //
-    //     // create new proxy as name already given in top
-    //     this.proxy = this.connection.createHubProxy(this.proxyName);
-    //
-    //     // register on server events
-    //     this.registerOnServerEvents();
-    //
-    //     // call the connection start method to start the connection to send and receive events.
-    //     this.startConnection();
-    // }
-    //
-    // // method to hit from client
-    // // public sendTime() {
-    // //     // server side hub method using proxy.invoke with method name pass as param
-    // //     this.proxy.invoke('GetRealTime');
-    // // }
-    //
-    // // check in the browser console for either signalr connected or not
-    // private startConnection(): void {
-    //     console.log('SignalRService startConnection');
-    //     this.connection.start().done((data: any) => {
-    //         console.log('Now connected ' + data.transport.name + ', connection ID= ' + data.id);
-    //         this.connectionEstablished.emit(true);
-    //         this.connectionExists = true;
-    //     }).fail((error: any) => {
-    //         console.log('Could not connect ' + error);
-    //         this.connectionEstablished.emit(false);
-    //     });
-    // }
-    //
-    // private registerOnServerEvents(): void {
-    //
-    //     this.proxy.on('setRealTime', (data: any) => {
-    //         console.log('received in SignalRService: ' + JSON.stringify(data));
-    //         this.messageReceived.emit(data);
-    //     });
-    // }
-
+    /**
+     * starting$ is an observable available to know if the signalr
+     * connection is ready or not. On a successful connection this
+     * stream will emit a value.
+     */
     starting$: Observable<any>;
 
+    /**
+     * connectionState$ provides the current state of the underlying
+     * connection as an observable stream.
+     */
     connectionState$: Observable<ConnectionState>;
 
+    /**
+     * error$ provides a stream of any error messages that occur on the
+     * SignalR connection
+     */
     error$: Observable<string>;
 
+    // These are used to feed the public observables
+    //
     private connectionStateSubject = new Subject<ConnectionState>();
     private startingSubject = new Subject<any>();
     private errorSubject = new Subject<any>();
 
+    // These are used to track the internal SignalR state
+    //
     private hubConnection: any;
     private hubProxy: any;
 
+    // An internal array to track what channel subscriptions exist
+    //
     private subjects = new Array<ChannelSubject>();
 
-    constructor(
-        @Inject(SignalrWindow) private window: SignalrWindow,
-        @Inject('channel.config') private channelConfig: ChannelConfig
-    ) {
+    constructor(@Inject(SignalrWindow) private window: SignalrWindow) {
+
         if (this.window.$ === undefined || this.window.$.hubConnection === undefined) {
-            throw new Error('The variable "$" or the .hubConnection() function are not defined...please check the SignalR scripts have been loaded properly');
+            throw new Error("The variable '$' or the .hubConnection() function are not defined...please check the SignalR scripts have been loaded properly");
         }
 
+        // Set up our observables
+        //
         this.connectionState$ = this.connectionStateSubject.asObservable();
         this.error$ = this.errorSubject.asObservable();
         this.starting$ = this.startingSubject.asObservable();
 
         this.hubConnection = this.window.$.hubConnection();
-        this.hubConnection.url = channelConfig.url;
-        this.hubProxy = this.hubConnection.createHubProxy(channelConfig.hubName);
+        this.hubConnection.url = 'http://test.develop.shasta.esubonline.com/signalr';
+        this.hubProxy = this.hubConnection.createHubProxy('testHub');
 
         // Define handlers for the connection state events
         //
@@ -167,10 +170,12 @@ export class SignalRService {
         //  again since it's a cold observable.
         //
         this.hubConnection.start()
-            .done(() => {
-                this.startingSubject.next();
+            .done((response) => {
+                console.log(response);
+                this.startingSubject.next(response);
             })
             .fail((error: any) => {
+                console.log('ChannelService', error);
                 this.startingSubject.error(error);
             });
     }
@@ -247,4 +252,5 @@ export class SignalRService {
     publish(ev: ChannelEvent): void {
         this.hubProxy.invoke("Publish", ev);
     }
+
 }
