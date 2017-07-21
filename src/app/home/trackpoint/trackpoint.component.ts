@@ -31,33 +31,11 @@ export class TrackpointNavigationComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, @Inject(SignalrWindow) private window: SignalrWindow) {
 
-      // Let's wire up to the signalr observables
-      //
-      // this.connectionState$ = this._signalr.connectionState$
-      //     .map((state: ConnectionState) => { return ConnectionState[state]; });
-      //
-      // this._signalr.error$.subscribe(
-      //     (error: any) => { console.warn(error); },
-      //     (error: any) => { console.error("errors$ error", error); }
-      // );
-      //
-      // // Wire up a handler for the starting$ observable to log the
-      // //  success/fail result
-      // //
-      // this._signalr.starting$.subscribe(
-      //     () => { console.log("signalr service has been started"); },
-      //     () => { console.warn("signalr service failed to start!"); }
-      // );
-
       const connection = this.window.$.hubConnection();
       connection.url = 'http://test.develop.shasta.esubonline.com/signalr';
       this.hubProxy = connection.createHubProxy('testhub');
 
       this.registerOnServerEvents();
-      // this.hubConnection = this.window.$.hubConnection();
-      // this.hubConnection.url = 'http://test.develop.shasta.esubonline.com/signalr';
-      // this.hubConnection.name = 'testHub';
-      // this.hubProxy = this.hubConnection.createHubProxy('testHub');
 
      connection.start({ withCredentials: false, transport: 'serverSentEvents'})
           .done(function (data) {
@@ -92,18 +70,3 @@ export class TrackpointNavigationComponent implements OnInit {
         });
     }
 }
-
-// constructor (private _signalR: SignalR) {
-//
-//     const connection = this._signalR.createConnection();
-//     connection.status.subscribe(
-//         (s) => {
-//             console.warn(s.name);
-//         }
-//     );
-//     connection.start().then(
-//         (c) => {
-//             console.log('c');
-//         }
-//     );
-// }
