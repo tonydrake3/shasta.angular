@@ -27,6 +27,7 @@ import {KeysPipe} from './pipes/keys.pipe';
 import {StatusPipe} from './pipes/status.pipe';
 import {PopoverComponent} from './components/popover.component';
 import {DynamicInjectionDirective} from './directives/dynamic-injector.directive';
+import {MockModule} from '../../mocks/mock.module';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import {DynamicInjectionDirective} from './directives/dynamic-injector.directive
         MdDatepickerModule,
         MdNativeDateModule,
         CommonModule,
-        FormsModule
+        FormsModule,
+        MockModule
 
     ],
     declarations: [

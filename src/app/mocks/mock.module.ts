@@ -6,6 +6,7 @@ import { MaterialModule, MdDatepickerModule, MdNativeDateModule } from '@angular
 // Services
 import {MockProjectService} from '../mocks/mock.project.service';
 import {MockProjectSummaryService} from '../mocks/mock.project.summary.service';
+import {MockNotificationService} from './mock.notification.service';
 
 // Components
 
@@ -25,6 +26,7 @@ import {MockProjectSummaryService} from '../mocks/mock.project.summary.service';
     providers: [
         MockProjectService,
         MockProjectSummaryService,
+        MockNotificationService
     ],
     exports: []
 })

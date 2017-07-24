@@ -14,6 +14,8 @@ import { UserService } from '../services/user/user.service';
 import {ProjectSummaryService} from '../../projects/project-summary/project-summary.service';
 import {MapsService} from '../services/maps.service';
 import {WeatherService} from '../services/weather.service';
+import {NotificationService} from '../../notifications/notification.service';
+import {MockNotificationService} from '../../../mocks/mock.notification.service';
 
 @Component({ })
 export class BaseComponent implements OnDestroy {
@@ -34,7 +36,8 @@ export class BaseComponent implements OnDestroy {
       { key: 'UserService', serviceObject: UserService, subject: 'currentUserInfo$', initializer: 'getLatest' },
       { key: 'ProjectSummaryService', serviceObject: ProjectSummaryService, subject: 'projectDetail$', initializer: 'getLatest' },
       { key: 'MapsService', serviceObject: MapsService, subject: 'location$', initializer: 'getLatest'},
-      { key: 'WeatherService', serviceObject: WeatherService, subject: 'weather$', initializer: 'getLatest'}
+      { key: 'WeatherService', serviceObject: WeatherService, subject: 'weather$', initializer: 'getLatest'},
+      { key: 'NotificationService', serviceObject: MockNotificationService, subject: 'notifications$', initializer: 'getLatest'}
     ];
 
     // and inject them
