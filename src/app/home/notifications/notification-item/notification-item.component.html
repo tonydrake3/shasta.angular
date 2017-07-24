@@ -1,15 +1,15 @@
-<div class="notification-item">
+<div class="notification-item" (click)="navigateToAction($event)">
     <div class="row">
-        <div class="col-md-11">
+        <div class="col-md-11 no-padding notification-text">
             <div class="notification-title">
-
+                <span class="label-bold">{{notification.Subject}}</span>
             </div>
             <div class="notification-instruction">
-
+                <span></span>
             </div>
         </div>
-        <div class="col-md-1 notification-icon">
-            <i class=""></i>
+        <div class="col-md-1 no-padding notification-icon">
+            <img src="../../../assets/images/{{notification.Icon}}" />
         </div>
     </div>
 </div>

@@ -15,19 +15,19 @@ export const mockNotifications = {
         {
             '$id': '3',
             Id: '9d4c06aa-57f1-4221-bac4-e26913bf5sdf',
-            Subject: 'Your timesheet is has been approved and is ready to sign',
+            Subject: 'Your timesheet is has been approved and is ready to sign.',
             Type: 'SignTimesheet',
         },
         {
             '$id': '4',
             Id: '9d4c06aa-57f1-4321-bac4-e26913bf5sdf',
-            Subject: 'Your timesheet is has been rejected. Please update it accordingly. ',
+            Subject: 'Your timesheet is has been rejected. Please update it accordingly.',
             Type: 'RejectedTimesheet',
         },
         {
             '$id': '5',
             Id: '9d4c06aa-58f1-4321-bac4-e26913bf5sdf',
-            Subject: 'You have a new comment',
+            Subject: 'You have a new comment.',
             Type: 'NewComment'
         }
     ]

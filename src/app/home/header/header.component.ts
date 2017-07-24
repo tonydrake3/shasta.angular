@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { APPCONFIG } from '../../config'
 import {AuthenticationService} from '../../shared/services/authentication/authentication.service';
 import {Router} from '@angular/router';
+import {NotificationComponent} from '../notifications/notifications.component';
 
 @Component({
     selector: 'esub-app-header',
@@ -11,6 +12,7 @@ import {Router} from '@angular/router';
 
 export class AppHeaderComponent implements OnInit {
     AppConfig: any;
+    component = NotificationComponent;
     public notificationCount: number;
     public isNotificationOpen = false;
 

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 
 @Component({
@@ -8,13 +8,17 @@ import {Router} from '@angular/router';
 })
 export class NotificationItemComponent implements OnInit {
 
-    _notification: any;
+    @Input() notification: any;
 
     constructor (private _router: Router) {}
 
     ngOnInit () {
 
-        console.log('NotificationItemComponent OnInit');
+        // console.log('NotificationItemComponent OnInit');
     }
 
+    navigateToAction (event) {
+
+        console.log(event);
+    }
 }

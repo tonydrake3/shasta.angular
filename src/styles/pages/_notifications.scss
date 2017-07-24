@@ -1,0 +1,34 @@
+.notifications {
+    height: 180px;
+    position: relative;
+
+
+    .notification-item {
+
+        .row {
+            border-bottom: 2px solid $gray-hover;
+            height: 60px;
+            padding: 10px 25px;
+
+            &:hover {
+                background: $gray-hover;
+                cursor: pointer;
+            }
+
+            .notification-text {
+
+                .notification-title {
+                    line-height: 1.1;
+                    padding-right: 10px;
+                }
+            }
+
+            .notification-icon {
+
+                img {
+                    margin-right: 10px;
+                }
+            }
+        }
+    }
+}

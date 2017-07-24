@@ -38,7 +38,7 @@
                       <i class="material-icons notifications-counter"><span>{{notificationCount}}</span></i>
                       <div class="header-btn-label"><label>Notifications</label></div>
                   </button>
-                  <esub-popover [open]="isNotificationOpen"></esub-popover>
+                  <esub-popover [open]="isNotificationOpen" [component]="component"></esub-popover>
               </li>
               <li class="profile-icon header-sticky">
                   <button md-button class="md-button header-btn" (click)="logout()">

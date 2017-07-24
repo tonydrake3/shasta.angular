@@ -11,6 +11,8 @@ import {NotificationComponent} from '../../notifications/notifications.component
 export class PopoverComponent implements OnChanges {
 
     @Input() open: boolean;
+    @Input() component: any;
+
     @ViewChild(DynamicInjectionDirective) esubInjector: DynamicInjectionDirective;
 
     constructor (private _componentFactoryResolver: ComponentFactoryResolver) {}
@@ -23,7 +25,7 @@ export class PopoverComponent implements OnChanges {
     }
 
     loadComponent() {
-        const componentFactory = this._componentFactoryResolver.resolveComponentFactory(NotificationComponent);
+        const componentFactory = this._componentFactoryResolver.resolveComponentFactory(this.component);
 
         const viewContainerRef = this.esubInjector.viewContainerRef;
 

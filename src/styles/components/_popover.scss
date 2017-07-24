@@ -1,14 +1,13 @@
 .popover {
-    position: relative;
+    background: $true-white;
+    border: 1px solid $gray-border;
     box-shadow: 1px 3px 6px $black-50;
     box-sizing: border-box;
-    right: 317%;
-    width: 400px;
+    padding-top: 1em;
+    position: relative;
+    right: 245%;
     top: -7px;
-    padding: 1em;
-    border: 1px solid $gray-border;
-    background: #fff;
-
+    width: 320px;
 
     &:before {
         box-shadow: 0 0 2px rgba(0,0,0,0.2);

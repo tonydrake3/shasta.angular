@@ -2,5 +2,6 @@ export class Notification {
     Id: string;
     Subject: string;
     Action: string;
-    TypeId: string;
+    Type: string;
+    Icon: string;
 }

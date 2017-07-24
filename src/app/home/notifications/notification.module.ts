@@ -21,6 +21,8 @@ import {NotificationItemComponent} from './notification-item/notification-item.c
         NotificationService,
     ],
     exports: [
+        NotificationComponent,
+        NotificationItemComponent
     ]
 })
 
