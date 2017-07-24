@@ -1,5 +1,5 @@
 .notifications {
-    height: 180px;
+    height: 190px;
     position: relative;
 
 
@@ -7,8 +7,8 @@
 
         .row {
             border-bottom: 2px solid $gray-hover;
-            height: 60px;
-            padding: 10px 25px;
+            height: 65px;
+            padding: 10px 25px 20px;
 
             &:hover {
                 background: $gray-hover;
@@ -20,6 +20,14 @@
                 .notification-title {
                     line-height: 1.1;
                     padding-right: 10px;
+                }
+
+                .notification-instruction {
+                    line-height: 18px;
+
+                    .accent-bold {
+                        color: $gray-accent;
+                    }
                 }
             }
 

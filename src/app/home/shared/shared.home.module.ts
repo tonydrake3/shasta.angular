@@ -3,11 +3,13 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MaterialModule, MdDatepickerModule, MdNativeDateModule } from '@angular/material';
+import {MockModule} from '../../mocks/mock.module';
 
 // Directives
 import {EChartsDirective} from './directives/echarts.directive';
 import {SlimScrollDirective} from './directives/slim-scroll.directive';
 import {TextHighlightDirective} from './directives/highlight.directive';
+import {DynamicInjectionDirective} from './directives/dynamic-injector.directive';
 
 // Services
 import {AuthorizationService} from './services/authorization/authorization.service';
@@ -20,15 +22,12 @@ import {BaseCardComponent} from './components/base.card.component';
 import {CommentsComponent} from './components/comments.component';
 import {MapComponent} from './components/map.component';
 import {WeekSelectorComponent} from './components/week-selector.component';
+import {PopoverComponent} from './components/popover.component';
 
 // Pipes
 import {DateToWeekdayPipe} from './pipes/date-to-weekday.pipe';
 import {KeysPipe} from './pipes/keys.pipe';
 import {StatusPipe} from './pipes/status.pipe';
-import {PopoverComponent} from './components/popover.component';
-import {DynamicInjectionDirective} from './directives/dynamic-injector.directive';
-import {MockModule} from '../../mocks/mock.module';
-
 
 @NgModule({
     imports: [

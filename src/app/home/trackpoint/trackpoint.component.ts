@@ -4,8 +4,6 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { NavigationLink } from '../../models/NavigationLink';
 
 import {sidebarConfiguration} from '../shared/configuration/menu.configuration';
-import {SignalRService} from '../../shared/services/signalr.service';
-import {ChannelService, ConnectionState, SignalrWindow} from '../../shared/services/channel.service';
 import {Observable} from 'rxjs/Observable';
 
 
@@ -46,37 +44,37 @@ export class TrackpointNavigationComponent implements OnInit {
 
       setTimeout(() => {
 
-          this.hubConnection = $['connection'];
-          this.hubConnection.hub.url = 'http://test.develop.shasta.esubonline.com/signalr';
-          this.hubConnection.hub.logging = true;
+          // this.hubConnection = $['connection'];
+          // this.hubConnection.hub.url = 'http://test.develop.shasta.esubonline.com/signalr';
+          // this.hubConnection.hub.logging = true;
+          //
+          // this.hubConnection.hub.start({ withCredentials: false, transport: 'serverSentEvents'})
+          //     .done((response) => {
+          //         console.log('connected', response.transport.name);
+          //         this.hubProxy = this.hubConnection.testHub;
+          //         console.log(this.hubProxy.client);
+          //         this.hubProxy.client.send = function (message) {
+          //             console.log('connected', message);
+          //         };
+          //     })
+          //     .fail((error) => {
+          //         console.log('not connected' + error);
+          //     });
 
-          this.hubConnection.hub.start({ withCredentials: false, transport: 'serverSentEvents'})
-              .done((response) => {
-                  console.log('connected', response.transport.name);
-                  this.hubProxy = this.hubConnection.testHub;
-                  console.log(this.hubProxy.client);
-                  this.hubProxy.client.send = function (message) {
-                      console.log('connected', message);
-                  };
-              })
-              .fail((error) => {
-                  console.log('not connected' + error);
-              });
+           const connection = $['hubConnection']();
+           connection.url = 'http://test.develop.shasta.esubonline.com/signalr';
+           this.hubProxy = connection.createHubProxy('testhub');
 
-          //  const connection = $['hubConnection']();
-          //  connection.url = 'http://test.develop.shasta.esubonline.com/signalr';
-          //  this.hubProxy = connection.createHubProxy('testhub');
-          //
-          //  this.registerOnServerEvents();
-          //
-          // connection.start({ withCredentials: false, transport: 'serverSentEvents'})
-          //      .done(function (data) {
-          //          console.log('connected', data.transport.name);
-          //
-          //      })
-          //      .fail(function (a) {
-          //          console.log('not connected'+ a);
-          //      });
+           this.registerOnServerEvents();
+
+          connection.start({ withCredentials: false, transport: 'serverSentEvents'})
+               .done(function (data) {
+                   console.log('connected', data.transport.name);
+
+               })
+               .fail(function (a) {
+                   console.log('not connected'+ a);
+               });
       });
   }
 

@@ -53,6 +53,7 @@ export class NotificationComponent extends BaseComponent implements OnInit {
 
                     notificationItem.Icon = mapItem.Icon;
                     notificationItem.Action = mapItem.Action;
+                    notificationItem.ActionDescription = mapItem.ActionDescription;
                 }
             });
         });
