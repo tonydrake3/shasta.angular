@@ -1,15 +1,19 @@
 import {Injectable} from '@angular/core';
-import {BaseStore} from '../../shared/services/base-store.service';
 import {Http} from '@angular/http';
+
 import {apiRoutes} from '../shared/configuration/api-routes.configuration';
+import {BaseHttpService} from '../../shared/services/base-http.service';
+import {ReplaySubject} from 'rxjs/ReplaySubject';
+import {environment} from '../../../environments/environment';
 
 @Injectable()
-export class NotificationService extends BaseStore {
+export class NotificationService extends BaseHttpService {
+
+    private _notifications$ = new ReplaySubject();
 
     constructor(protected _httpPassthrough: Http) {
 
         super(_httpPassthrough);
-        this.init(apiRoutes.notifications);
     }
 
     public getLatest (): Promise<any> {
@@ -19,6 +23,42 @@ export class NotificationService extends BaseStore {
 
     get notifications$ () {
 
-        return this._entity$.asObservable();
+        return this._notifications$.takeLast(1);
     }
+
+    /******************************************************************************************************************
+     * Protected Methods
+     ******************************************************************************************************************/
+
+    protected load (): Promise<any> {
+
+        const url = environment.apiUrl + apiRoutes.notifications;
+
+        return new Promise((resolve, reject) => {
+
+            this.get(url)
+
+                .subscribe(
+
+                    // TODO: Look into function handlers here
+                    data => {
+
+                        this._notifications$.next(data);
+                        resolve(data);
+                    },
+
+                    error => {
+                        // TODO: Refactor for error handling.
+
+                        reject(error);
+                        if (error.status === 401) {
+
+                            // this.authService.logout();
+
+                        }
+                    })
+
+        });
+    }
+
 }

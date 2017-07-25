@@ -1,17 +1,13 @@
 import {Injectable} from '@angular/core';
 import {mockNotifications} from './data/mockNotification.data';
-import {Subject} from 'rxjs/Subject';
+import {ReplaySubject} from 'rxjs/ReplaySubject';
 
 @Injectable()
 export class MockNotificationService {
 
-    _notifications = new Subject();
+    private _notifications = new ReplaySubject(1);
 
     constructor() {}
-
-    get notifications$() {
-        return this._notifications.asObservable();
-    }
 
     getLatest() {
 
@@ -19,5 +15,9 @@ export class MockNotificationService {
         setTimeout(() => {
             this._notifications.next(mockNotifications['Value']);
         });
+    }
+
+    get notifications$() {
+        return this._notifications.asObservable();
     }
 }
