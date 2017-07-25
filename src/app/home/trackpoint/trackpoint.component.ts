@@ -73,7 +73,7 @@ export class TrackpointNavigationComponent implements OnInit {
 
                })
                .fail(function (a) {
-                   console.log('not connected'+ a);
+                   console.log('not connected' + a);
                });
       });
   }
