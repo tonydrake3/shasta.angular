@@ -16,6 +16,7 @@ import {AuthorizationService} from './services/authorization/authorization.servi
 import {MapsService} from './services/maps.service';
 import {UserService} from './services/user/user.service';
 import {WeatherService} from './services/weather.service';
+import {PopoverService} from './services/popover.service';
 
 // Components
 import {BaseCardComponent} from './components/base.card.component';
@@ -28,6 +29,7 @@ import {PopoverComponent} from './components/popover.component';
 import {DateToWeekdayPipe} from './pipes/date-to-weekday.pipe';
 import {KeysPipe} from './pipes/keys.pipe';
 import {StatusPipe} from './pipes/status.pipe';
+import {ClickCloseDirective} from './directives/click-close.directive';
 
 @NgModule({
     imports: [
@@ -51,11 +53,13 @@ import {StatusPipe} from './pipes/status.pipe';
         KeysPipe,
         CommentsComponent,
         PopoverComponent,
-        DynamicInjectionDirective
+        DynamicInjectionDirective,
+        ClickCloseDirective
     ],
     providers: [
         AuthorizationService,
         MapsService,
+        PopoverService,
         UserService,
         WeatherService
     ],
@@ -72,7 +76,8 @@ import {StatusPipe} from './pipes/status.pipe';
         KeysPipe,
         CommentsComponent,
         PopoverComponent,
-        DynamicInjectionDirective
+        DynamicInjectionDirective,
+        ClickCloseDirective
     ]
 })
 
