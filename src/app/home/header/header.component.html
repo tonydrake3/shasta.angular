@@ -33,8 +33,8 @@
                   <div class="header-btn-label"><label>Inbox</label></div>
                 </button>
               </li>
-              <li class="list-inline-item notification-icon" (click)="openNotifications()">
-                  <button id="notificationButton" md-button class="md-button header-btn">
+              <li class="list-inline-item notification-icon">
+                  <button id="notifications" md-button class="md-button header-btn" (click)="openNotifications()">
                       <i class="material-icons notifications-counter"><span>{{notificationCount}}</span></i>
                       <div class="header-btn-label"><label>Notifications</label></div>
                   </button>
