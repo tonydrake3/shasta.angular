@@ -1,25 +1,25 @@
 <ul class="nav" esubAccordionNav esubAppendSubmenuIcon esubSlimScroll esubHighlightActiveItems>
 
-    <li [ngClass]="{ 'no-display' : inSettings || !navLink.Visible }" *ngFor="let navLink of navigationLinks" [id]="navLink.Key" esubAutoExpandAccordion>
+    <li [ngClass]="{ 'no-display' : inSettings || !navLink.Visible }" *ngFor="let navLink of navigationLinks" [id]="navLink.SidebarId" esubAutoExpandAccordion>
         <a md-button (click)="navigation(navLink)">
             <i *ngIf="navLink.iconName" class="nav-icon material-icons">{{navLink.iconName}}</i>
             <span class="nav-text">{{navLink.Title}}</span>
         </a>
         <ul class="submenu" *ngIf="navLink.Children">
-            <li *ngFor="let child of navLink.Children">
+            <li *ngFor="let child of navLink.Children" [id]="child.SidebarId">
                 <a md-button class="md-button" (click)="navigation(child)" [attr.data-page-href]="child.Action">
                     <span>{{child.Title}}</span>
                 </a>
             </li>
         </ul>
     </li>
-    <li>
+    <li id="backToESUB">
         <a md-button (click)="collapseView()">
             <i class="nav-icon material-icons" *ngIf="!inSettings">settings</i>
             <span class="nav-text">{{inSettings ? 'Back to eSUB' : 'Settings'}}</span>
         </a>
         <ul class="forward">
-            <li *ngFor="let settingLink of settingLinks">
+            <li *ngFor="let settingLink of settingLinks" [id]="settingLink.SidebarId">
                 <a md-button class="md-button" [routerLink]="[settingLink.Action, settingLink.Key]" [attr.data-page-href]="settingLink.Action + '/' + settingLink.Key">
                     <span>{{settingLink.Title}}</span>
                 </a>
