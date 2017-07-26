@@ -42,13 +42,6 @@ export class AppHeaderComponent extends BaseComponent implements OnInit {
         this.AppConfig = APPCONFIG;
     }
 
-    openNotifications () {
-
-        console.log('AppHeaderComponent openNotifications');
-        // this.isNotificationOpen = !this.isNotificationOpen;
-        this._popoverService.openPopover();
-    }
-
     logout () {
         this._authService.logout();
         this._router.navigate(['../login']);

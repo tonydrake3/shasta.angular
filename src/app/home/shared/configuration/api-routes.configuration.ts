@@ -6,7 +6,8 @@ export const apiRoutes = {
     'companyTenants': '/Identity/Authorization/Tenants',
     'projects': 'Shared/Projects',
     'timeRecords': 'Time/TimeRecords',
-    'notifications': ''
+    'notifications': '',
+    'system': 'Shared/Systems'
 };
 
 export const externalApiRoutes = {

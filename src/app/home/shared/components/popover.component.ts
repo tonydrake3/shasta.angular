@@ -27,7 +27,6 @@ export class PopoverComponent implements OnInit {
 
                 (open) => {
 
-                    console.log(open);
                     this.open = open;
                     this.loadComponent();
                 }
