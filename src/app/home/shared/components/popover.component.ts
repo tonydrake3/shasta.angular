@@ -6,7 +6,7 @@ import {PopoverService} from '../services/popover.service';
 @Component({
     selector: 'esub-popover',
     template: `
-        <div class="popover arrow-top-right" [ngClass]="{ 'no-display' : !open }" esubClickClose><div esubInjector></div></div>
+        <div class="popover arrow-top-right" [ngClass]="{ 'no-display' : !open }"><div esubInjector></div></div>
     `
 })
 export class PopoverComponent implements OnInit {

@@ -46,4 +46,14 @@ export class AppHeaderComponent extends BaseComponent implements OnInit {
         this._authService.logout();
         this._router.navigate(['../login']);
     }
+
+    openNotifications () {
+
+        this._popoverService.openPopover();
+    }
+
+    closeNotifications () {
+
+        this._popoverService.closePopover();
+    }
 }
