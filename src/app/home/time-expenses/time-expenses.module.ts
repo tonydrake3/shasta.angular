@@ -3,6 +3,8 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '@angular/material';
 
+import { DpDatePickerModule } from 'ng2-date-picker';
+
 import { SharedModule } from '../../shared/shared.module';
 
 import { TimeExpensesRoutingModule } from './time-expenses-routing.module';
@@ -22,7 +24,8 @@ import { SharedHomeModule } from '../shared/shared.home.module';
       MaterialModule,
       TimeExpensesRoutingModule,
       SharedModule,
-      SharedHomeModule
+      SharedHomeModule,
+      DpDatePickerModule
     ],
     declarations: [
       TimeExpensesComponent,

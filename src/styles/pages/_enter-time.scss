@@ -1,0 +1,106 @@
+.enter-time {
+
+    .esub-card {
+        @include flex;
+        @include flex-direction(column);
+
+        padding: 30px;
+
+        > *:not(button) {
+            padding: 15px 0;
+        }
+    }
+
+    .groupings {
+
+        > * {
+        @media(max-width: 1092px) and (min-width: 992px) {
+            font-size: 10px !important;
+        }
+        @media(max-width: 841px) {
+            font-size: 10px !important;
+        }
+        }
+
+        @include noselect();
+
+        label {
+        @extend .label-light;
+        }
+        a {
+        @extend .label-regular;
+        cursor: pointer;
+        }
+
+        > .active,
+        > .active:hover {
+        text-decoration: underline;
+        cursor: default;
+        pointer-events: none;
+        }
+    }
+
+    .employee-select {
+        width: 100%;
+    }
+
+    .row.time-entry {
+
+        > * {
+            margin: 0 15px;
+        }
+    }
+
+    .row.add-more {
+        margin-top: 15px;
+
+        .groupings {
+            margin-top: 15px;
+        }
+
+        .delete {
+            margin-top: 16px;
+            @extend .paragraph-disabled;
+
+            span {
+                cursor: pointer;
+            }
+        }
+    }
+
+    .time-card {
+
+        .time-card-header {
+            padding-top: 0;
+
+            > .row:not(:first-of-type) {
+                margin-top: -8px;
+            }
+        }
+    }
+
+    .close-icon {
+        position: absolute;
+        left: 26px;
+        top: 0;
+
+        span {
+            position: absolute;
+            top: 17px;
+        }
+    }
+
+    .time-entry-method {
+        @extend .paragraph-regular;
+
+        > div {
+            padding-left: 0;
+        }
+
+        label {
+            @extend .label-light;
+        }
+    }
+
+    // TODO animate this bad boy
+}

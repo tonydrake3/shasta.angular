@@ -1,11 +1,12 @@
 <div class="container-fluid time-expenses">
+
   <div class="row">
 
-    <div class="col-md-8">
+    <div class="col-md-6">
       <esub-week-selector (dateChange)="dateChanged($event)"></esub-week-selector>
     </div>
 
-    <div class="col-md-4 groupings">
+    <div class="col-md-3 groupings">
       <label>Group by</label>
 
       <a [ngClass]="{active: groupTimesheetsBy == 'employee'}" (click)="groupTimesheets('employee')" id="time-expenses.group-by-employee">Employee</a>
@@ -15,6 +16,10 @@
 
       <a [ngClass]="{active: showFilter == 'all'}" (click)="filterResults('all')" id="time-expenses.filter-to-all">All</a>
       <a [ngClass]="{active: showFilter == 'mine'}" (click)="filterResults('mine')" id="time-expenses.filter-to-mine">Mine</a>
+    </div>
+
+    <div class="col-md-3 text-right">
+        <button md-raised-button class="esub-button secondary" [routerLink]="'/time-expenses/enter'">Enter Time</button>
     </div>
 
   </div>
