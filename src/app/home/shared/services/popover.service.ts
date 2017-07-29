@@ -18,6 +18,11 @@ export class PopoverService {
         return this._options;
     }
 
+    public getCurrentPopoverState (): boolean {
+
+        return this._isOpen$.value;
+    }
+
     public openPopover (options: PopoverOptions) {
 
         this._options = options;

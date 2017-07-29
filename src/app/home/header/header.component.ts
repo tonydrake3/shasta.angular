@@ -52,7 +52,13 @@ export class AppHeaderComponent extends BaseComponent implements OnInit {
         options.width = 320;
         options.componentName = 'notifications';
 
-        this._popoverService.openPopover(options);
+        if (this._popoverService.getCurrentPopoverState()) {
+
+            this._popoverService.closePopover();
+        } else {
+
+            this._popoverService.openPopover(options);
+        }
     }
 
     closeNotifications () {
