@@ -1,18 +1,26 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {PopoverOptions} from '../../../models/configuration/PopoverOptions';
 
 @Injectable()
 export class PopoverService {
 
-    _isOpen$ = new BehaviorSubject<boolean>(false);
+    private _isOpen$ = new BehaviorSubject<boolean>(false);
+    private _options: PopoverOptions;
 
     public get isOpen$ () {
 
         return this._isOpen$.asObservable();
     }
 
-    public openPopover () {
+    public get settings$ (): PopoverOptions {
 
+        return this._options;
+    }
+
+    public openPopover (options: PopoverOptions) {
+
+        this._options = options;
         this._isOpen$.next(true);
     }
 

@@ -2,12 +2,11 @@ import {Component, Injector, OnInit} from '@angular/core';
 import { APPCONFIG } from '../../config'
 import {AuthenticationService} from '../../shared/services/authentication/authentication.service';
 import {Router} from '@angular/router';
-import {NotificationComponent} from '../notifications/notifications.component';
 import {BaseComponent} from '../shared/components/base.component';
-import {Http} from '@angular/http';
 import {NotificationService} from '../notifications/notification.service';
 import {MockNotificationService} from '../../mocks/mock.notification.service';
 import {PopoverService} from '../shared/services/popover.service';
+import {PopoverOptions} from '../../models/configuration/PopoverOptions';
 
 @Component({
     selector: 'esub-app-header',
@@ -17,7 +16,6 @@ import {PopoverService} from '../shared/services/popover.service';
 
 export class AppHeaderComponent extends BaseComponent implements OnInit {
     AppConfig: any;
-    component = NotificationComponent;
     public notificationCount: number;
 
     constructor(protected _injector: Injector, private _authService: AuthenticationService, private _router: Router,
@@ -49,7 +47,12 @@ export class AppHeaderComponent extends BaseComponent implements OnInit {
 
     openNotifications () {
 
-        this._popoverService.openPopover();
+        const options = new PopoverOptions();
+        options.height = 205;
+        options.width = 320;
+        options.componentName = 'notifications';
+
+        this._popoverService.openPopover(options);
     }
 
     closeNotifications () {
