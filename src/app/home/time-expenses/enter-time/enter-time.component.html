@@ -4,7 +4,7 @@
 
         <div class="close-icon accent-light" *ngIf="groupedLines"><i class="material-icons" (click)="accordionOpen = false">keyboard_arrow_up</i><span>collapse</span></div>
 
-        <md-select placeholder="Project" [(ngModel)]="linesToAdd.project">
+        <md-select placeholder="Project" [ngModel]="linesToAdd.project" (ngModelChange)="projectChanged($event)">
             <md-option *ngFor="let project of projects" [value]="project">{{project.name}}</md-option>
         </md-select>
 

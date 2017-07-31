@@ -6,7 +6,7 @@ import { TimeRecordsService } from '../time-records.service';
 
 import * as moment from 'moment';
 import * as _ from 'lodash';
-import { Employee } from '../../../models/time/TimeRecord';
+import { Employee, CostCode, System } from '../../../models/time/TimeRecord';
 import { AccordionNavDirective } from '../../sidenav/sidenav-menu/accordion-nav.directive';
 
 @Component({
@@ -204,6 +204,16 @@ export class EnterTimeComponent {
                 return value[groupBy]['value'];
             });
         }
+    }
+
+    // e is of type Project
+    public projectChanged(e) {
+        this.linesToAdd.project = e;
+        this.linesToAdd.costCode = null;
+        this.linesToAdd.system = null;
+        this.linesToAdd.phase = null;
+        this.linesToAdd.employees = [];
+        // TODO reload and repopulate dropdowns based on newly selected project
     }
 
     public submitTime() {
