@@ -19,12 +19,12 @@ import {ProjectService} from './project.service';
 export class ProjectSelectionComponent extends BaseComponent implements OnInit, OnDestroy {
 
     // Private
-    private _statuses;
-    private _sortColumns: Array<SortColumn>;
     private _filterSubscription;
     private _filterField;
 
     // Public
+    statuses;
+    sortColumns: Array<SortColumn>;
     filterForm: FormGroup;
     filteredProjects: Project[];
     filterText = '';
@@ -80,7 +80,7 @@ export class ProjectSelectionComponent extends BaseComponent implements OnInit, 
 
     sortProjects (column: SortColumn) {
 
-        this._sortColumns.forEach((col) => {
+        this.sortColumns.forEach((col) => {
 
             if (col.Key === column.Key) {
 
@@ -118,9 +118,9 @@ export class ProjectSelectionComponent extends BaseComponent implements OnInit, 
     projectServiceCallback(projects) {
 
         // console.log('ProjectService Callback');
-        this._sortColumns = _.orderBy(projectSortColumns, ['Ordinal'], ['asc']);
+        this.sortColumns = _.orderBy(projectSortColumns, ['Ordinal'], ['asc']);
 
-        this._statuses = this._projectSelection.getStatusFilters();
+        this.statuses = this._projectSelection.getStatusFilters();
         this.reloadColumns(this._projectSelection.getSortColumn());
 
         this._projectSelection.init(<Project[]> projects['Value']);
@@ -151,7 +151,7 @@ export class ProjectSelectionComponent extends BaseComponent implements OnInit, 
 
     reloadColumns (sortCol: SortColumn) {
 
-        this._sortColumns.forEach((column) => {
+        this.sortColumns.forEach((column) => {
 
             if (sortCol.Key === column.Key) {
 
