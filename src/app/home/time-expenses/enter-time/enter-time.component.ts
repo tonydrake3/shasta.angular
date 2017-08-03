@@ -1,18 +1,18 @@
-import { Component } from '@angular/core';
-
-import { IDatePickerConfig } from 'ng2-date-picker';
-
-import { TimeRecordsService } from '../time-records.service';
-
+import { Component, Injector } from '@angular/core';
 import * as moment from 'moment';
 import * as _ from 'lodash';
+import { IDatePickerConfig } from 'ng2-date-picker';
+
 import { Employee, CostCode, System } from '../../../models/time/TimeRecord';
 import { AccordionNavDirective } from '../../sidenav/sidenav-menu/accordion-nav.directive';
+import { BaseComponent } from '../../shared/components/base.component';
+import { TimeRecordsService } from '../time-records.service';
+import { EmployeeService } from '../../shared/services/user/employee.service';
 
 @Component({
     templateUrl: './enter-time.component.html'
 })
-export class EnterTimeComponent {
+export class EnterTimeComponent extends BaseComponent {
 
     // view config
     public dpCalendarConfig: IDatePickerConfig = {
@@ -37,7 +37,24 @@ export class EnterTimeComponent {
     public systems: Array<any>;
     public phases: Array<any>;
 
-    constructor(private timeRecordsService: TimeRecordsService) {
+    constructor(private _injector: Injector, private timeRecordsService: TimeRecordsService) {
+
+        super(_injector, [
+            {
+                service: 'ProjectService',
+                callback: 'projectServiceCallback'
+            }
+        ]);
+
+        super.inject([
+            {
+                toInject: EmployeeService,
+                subject: 'employees$',
+                initializer: 'getLatest',
+                callback: 'employeeServiceCallback'
+            },
+        ]);
+
         this.accordionOpen = true;
 
         this.dateFormat = 'MMM. Do, YYYY';
@@ -67,13 +84,24 @@ export class EnterTimeComponent {
             { name: 'Second', value: 'second' }
         ];
 
-        this.employees = [
-            { name: 'Bin Tang', value: 'bint' },
-            { name: 'Alex Takabayashi', value: 'alext' },
-            { name: 'Guillermo Alvarez', value: 'guillermoa' },
-            { name: 'Mike O\'Gorman', value: 'mikeo' },
-            { name: 'Tony Drake', value: 'tonyd' }
-        ];
+        // this.employees = [
+        //     { name: 'Bin Tang', value: 'bint' },
+        //     { name: 'Alex Takabayashi', value: 'alext' },
+        //     { name: 'Guillermo Alvarez', value: 'guillermoa' },
+        //     { name: 'Mike O\'Gorman', value: 'mikeo' },
+        //     { name: 'Tony Drake', value: 'tonyd' }
+        // ];
+    }
+
+    projectServiceCallback (projects) {
+
+        console.log(projects['Value']);
+    }
+
+    employeeServiceCallback (employees) {
+
+        console.log(employees);
+        this.employees = employees;
     }
 
     public addLines() {

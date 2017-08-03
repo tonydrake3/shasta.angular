@@ -11,6 +11,8 @@ import {TextHighlightDirective} from './directives/highlight.directive';
 
 // Services
 import {AuthorizationService} from './services/authorization/authorization.service';
+import {EmployeeService} from './services/user/employee.service';
+import {IndirectCostCodesService} from './services/indirect-cost-codes.service';
 import {MapsService} from './services/maps.service';
 import {UserService} from './services/user/user.service';
 import {WeatherService} from './services/weather.service';
@@ -51,6 +53,8 @@ import {StatusPipe} from './pipes/status.pipe';
     ],
     providers: [
         AuthorizationService,
+        EmployeeService,
+        IndirectCostCodesService,
         MapsService,
         ProjectService,
         UserService,

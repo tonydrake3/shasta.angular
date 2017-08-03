@@ -5,16 +5,16 @@ import { apiRoutes } from '../../configuration/api-routes.configuration';
 import { BaseStore } from '../../../../shared/services/base-store.service';
 
 @Injectable()
-export class UserService extends BaseStore {
+export class EmployeeService extends BaseStore {
 
     constructor(protected _httpPassthrough: Http) {
 
         super(_httpPassthrough);
-        this.init(apiRoutes.currentUser);
+        this.init(apiRoutes.employees);
 
     }
 
-    get currentUserInfo$ () {
+    get employees$ () {
 
         return this._entity$.asObservable();
     }

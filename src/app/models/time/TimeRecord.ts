@@ -184,7 +184,7 @@ export class TimeRecord {
     RejectionComment?: string;
     CostCode: CostCode;
     CostCodeId?: number;
-    Date: number;
+
     Employee: Employee;
     EmployeeId?: number;
     Expenses: Expense[];
