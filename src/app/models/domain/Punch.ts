@@ -8,3 +8,4 @@ export class Punch {
     timeRecordId?: number;
     tenantId?: number;
 }
+
