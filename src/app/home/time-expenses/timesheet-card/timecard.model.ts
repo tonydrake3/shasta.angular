@@ -1,4 +1,4 @@
-import { Hours } from '../../../models/time/TimeRecord';
+import { Hours } from '../../../models/domain/Hours';
 
 // internal to timesheet-card ecosystem, not to be confused with TimeRecords, just used to help manage UI
 export class Timecard {
