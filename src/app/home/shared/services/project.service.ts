@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 
-import { apiRoutes } from '../shared/configuration/api-routes.configuration';
-import { BaseStore } from '../../shared/services/base-store.service';
+import { apiRoutes } from '../configuration/api-routes.configuration';
+import { BaseStore } from '../../../shared/services/base-store.service';
 
 @Injectable()
 export class ProjectService extends BaseStore {

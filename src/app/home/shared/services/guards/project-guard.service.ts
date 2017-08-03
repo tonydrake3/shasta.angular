@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { ProjectService } from '../../../projects/project.service';
+import { ProjectService } from '../project.service';
 import {routeName} from '../../../../models/configuration/routeName';
 
 @Injectable()

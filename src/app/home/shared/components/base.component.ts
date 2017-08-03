@@ -8,7 +8,7 @@ import { Component, Injector, OnDestroy } from '@angular/core';
 import { Subscriber } from 'rxjs/Rx';
 
 // imports for autoInjection
-import { ProjectService } from '../../projects/project.service';
+import { ProjectService } from '../../shared/services/project.service';
 import { TimeRecordsService } from '../../time-expenses/time-records.service';
 import { UserService } from '../services/user/user.service';
 import {ProjectSummaryService} from '../../projects/project-summary/project-summary.service';

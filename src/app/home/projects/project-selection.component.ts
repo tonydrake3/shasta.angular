@@ -10,7 +10,7 @@ import {statusMap, StatusMap} from '../shared/map/status.map';
 import {SortColumn} from '../shared/configuration/sort-column.configuration';
 import {projectSortColumns} from '../shared/configuration/sort-column.configuration';
 import {ProjectSelectionManager} from './project-selection.manager';
-import {ProjectService} from './project.service';
+import {ProjectService} from '../shared/services/project.service'
 
 @Component({
     styles: [],
@@ -21,6 +21,7 @@ export class ProjectSelectionComponent extends BaseComponent implements OnInit, 
     // Private
     private _filterSubscription;
     private _filterField;
+    private _projects;
 
     // Public
     statuses;
@@ -30,7 +31,7 @@ export class ProjectSelectionComponent extends BaseComponent implements OnInit, 
     filterText = '';
 
     constructor (protected injector: Injector, private _builder: FormBuilder, private _router: Router,
-                 private _projectSelection: ProjectSelectionManager, private _projects: ProjectService) {
+                 private _projectSelection: ProjectSelectionManager) {
 
         super(injector, [
             {
@@ -39,6 +40,7 @@ export class ProjectSelectionComponent extends BaseComponent implements OnInit, 
             }
         ]);
 
+        this._projects = super.getServiceRef('ProjectService') as ProjectService;
         this.createForm();
         this._filterField = this.filterForm.get('filter');
         // console.log('ProjectSelectionComponent Ctor', this._projectSelection);

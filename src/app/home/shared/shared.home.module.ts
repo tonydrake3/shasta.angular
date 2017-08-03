@@ -14,6 +14,7 @@ import {AuthorizationService} from './services/authorization/authorization.servi
 import {MapsService} from './services/maps.service';
 import {UserService} from './services/user/user.service';
 import {WeatherService} from './services/weather.service';
+import {ProjectService} from './services/project.service';
 
 // Components
 import {BaseCardComponent} from './components/base.card.component';
@@ -51,6 +52,7 @@ import {StatusPipe} from './pipes/status.pipe';
     providers: [
         AuthorizationService,
         MapsService,
+        ProjectService,
         UserService,
         WeatherService
     ],
