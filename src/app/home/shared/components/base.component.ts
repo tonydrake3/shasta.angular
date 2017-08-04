@@ -11,9 +11,11 @@ import { Subscriber } from 'rxjs/Rx';
 import { ProjectService } from '../../shared/services/project.service';
 import { TimeRecordsService } from '../../time-expenses/time-records.service';
 import { UserService } from '../services/user/user.service';
-import {ProjectSummaryService} from '../../projects/project-summary/project-summary.service';
-import {MapsService} from '../services/maps.service';
-import {WeatherService} from '../services/weather.service';
+import { ProjectSummaryService } from '../../projects/project-summary/project-summary.service';
+import { MapsService } from '../services/maps.service';
+import { WeatherService } from '../services/weather.service';
+import { EmployeeService } from '../../shared/services/user/employee.service';
+import { IndirectCostCodesService } from '../../shared/services/indirect-cost-codes.service'
 
 @Component({ })
 export class BaseComponent implements OnDestroy {
@@ -30,8 +32,8 @@ export class BaseComponent implements OnDestroy {
     //   must provide them in the constructor
     this.autoInjections = [
       { key: 'ProjectService', serviceObject: ProjectService, subject: 'projects$', initializer: 'getLatest' },
-      {},
-      {},
+      { key: 'EmployeeService', serviceObject: EmployeeService, subject: 'employees$', initializer: 'getLatest' },
+      { key: 'IndirectCostCodesService', serviceObject: IndirectCostCodesService, subject: 'indirectCostCodes$', initializer: 'getLatest' },
       { key: 'TimeRecordsService', serviceObject: TimeRecordsService, subject: 'timeRecords$', initializer: 'getLatest' },
       { key: 'UserService', serviceObject: UserService, subject: 'currentUserInfo$', initializer: 'getLatest' },
       { key: 'ProjectSummaryService', serviceObject: ProjectSummaryService, subject: 'projectDetail$', initializer: 'getLatest' },

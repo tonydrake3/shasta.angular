@@ -9,7 +9,7 @@
         </md-select>
 
         <md-select placeholder="Cost Code" [(ngModel)]="linesToAdd.costCode">
-            <md-option *ngFor="let costCode of costCodes" [value]="costCode">{{costCode.name}}</md-option>
+            <md-option *ngFor="let costCode of costCodes" [value]="costCode.Id">{{costCode.Description}}</md-option>
         </md-select>
 
         <md-select placeholder="System" [(ngModel)]="linesToAdd.system">

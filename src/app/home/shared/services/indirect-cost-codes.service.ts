@@ -10,7 +10,7 @@ export class IndirectCostCodesService extends BaseStore {
     constructor(protected _httpPassthrough: Http) {
 
         super(_httpPassthrough);
-        this.init(apiRoutes.projects);
+        this.init(apiRoutes.indirectCostCodes);
     }
 
     public getLatest (): Promise<any> {

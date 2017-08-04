@@ -82,32 +82,32 @@ export class Address {
     zip: string;
 }
 
-export class ExpenseCategory {
-    id?: number;
-    name?: string;
-    costCodeId?: number;
-    costCode?: CostCode;
-    tenantId?: number;
-    expenses?: Expense[];
-}
+// export class ExpenseCategory {
+//     id?: number;
+//     name?: string;
+//     costCodeId?: number;
+//     costCode?: CostCode;
+//     tenantId?: number;
+//     expenses?: Expense[];
+// }
 
-export class Expense {
-    amount?: number;
-    description?: string;
-    id?: number;
-    timeRecord?: TimeRecord;
-    timeRecordId?: number;
-    type?: ExpenseCategory;
-    typeId?: number;
-    tenantId?: number;
-    expenseTotal?: () => number;
-}
+// export class Expense {
+//     amount?: number;
+//     description?: string;
+//     id?: number;
+//     timeRecord?: TimeRecord;
+//     timeRecordId?: number;
+//     type?: ExpenseCategory;
+//     typeId?: number;
+//     tenantId?: number;
+//     expenseTotal?: () => number;
+// }
 
-export class TimeRecordExpense {
-    amount: number;
-    type: ExpenseCategory;
-    description: string;
-}
+// export class TimeRecordExpense {
+//     amount: number;
+//     type: ExpenseCategory;
+//     description: string;
+// }
 
 
 export class Employee {
@@ -129,86 +129,28 @@ export class PunchToSave {
     punchOut: string;
 }
 
-export class Punch {
-    punchIn?: Date;
-    punchInLocation?: Location;
-    punchInUserId?: number;
-    punchOut?: Date;
-    punchOutLocation?: Location;
-    punchOutUserId?: number;
-    timeRecordId?: number;
-    tenantId?: number;
-}
+// export class TimeRecordToSave {
+//     id: number;
+//     activity: string;
+//     comments: Comment[];
+//     costCodeId: number;
+//     date: string;
+//     timeIn: string;
+//     timeOut: string;
+//     employeeId: number;
+//     expenses: TimeRecordExpenseToSave[];
+//     hours: Hours;
+//     punch: PunchToSave;
+//     projectId: number;
+//     phaseId: number;
+//     units: number;
+// }
 
-// TODO clean up and organize
-export class Hours {
-    regularTime = 0;
-    overtime = 0;
-    doubleTime = 0;
-
-    constructor(regularTime: number = 0, overtime: number = 0, doubleTime: number = 0) {
-        this.regularTime = regularTime;
-        this.overtime = overtime;
-        this.doubleTime = doubleTime;
-    }
-}
-export class TimeRecordToSave {
-    id: number;
-    activity: string;
-    comments: Comment[];
-    costCodeId: number;
-    date: string;
-    timeIn: string;
-    timeOut: string;
-    employeeId: number;
-    expenses: TimeRecordExpenseToSave[];
-    hours: Hours;
-    punch: PunchToSave;
-    projectId: number;
-    phaseId: number;
-    units: number;
-}
-
-export class TimeRecord {
-    Activity?: string;
-    TimeRecordStatus?: string; // 'Pending', 'Approved', 'Rejected', 'Signed', 'Exported'
-    ApprovedByUserId?: number;
-    ApprovedDate?: string;
-    SecondLvlApprovedByUserId?: number;
-    SecondLvlApprovedDate?: string;
-    Signed?: boolean;
-    Breaks: Array<any>;
-    BreaksVerified?: boolean;
-    Comments: Array<any>;
-    Comment: string;
-    RejectionComment?: string;
-    CostCode: CostCode;
-    CostCodeId?: number;
-
-    Employee: Employee;
-    EmployeeId?: number;
-    Expenses: Expense[];
-    Hours: Hours;
-    Id: number;
-    $id: number;
-    ManualHours?: boolean;
-    Phase: Phase;
-    PhaseId?: number;
-    Project: Project;
-    ProjectId: number;
-    Punch: Punch;
-    Selected?: boolean;
-    SignedDate: string;
-    Units: number;
-    TenantId?: number;
-    Timestamps: any;
-}
-
-export class TimeTotals {
-    hours: Hours;
-    overhead: number;
-    total: number;
-}
+// export class TimeTotals {
+//     hours: Hours;
+//     overhead: number;
+//     total: number;
+// }
 
 export class TimeRecordExpenseToSave {
     id: number;
@@ -216,8 +158,6 @@ export class TimeRecordExpenseToSave {
     description: string;
     typeId: number;
 }
-
-
 
 export interface HOURTYPE {
     regularTime: string;
@@ -287,50 +227,50 @@ export class CostCode {
         regularTime?: string | number;
         doubleTime?: string | number;
         overtime?: string | number;
-        expenses?: Expense[];
+        // expenses?: Expense[];
         comments?: Comment[]
     }
 
-    export interface TimeRecordGrouping {
-        projectId?: number;
-        employeeId?: number;
-        costCodeId?: number;
-        isOpen?: boolean;
-        timeRecords: TimeRecord[];
-        timeTotals: TimeTotals;
-        title: string;
-        heading: string;
-    }
+    // export interface TimeRecordGrouping {
+    //     projectId?: number;
+    //     employeeId?: number;
+    //     costCodeId?: number;
+    //     isOpen?: boolean;
+    //     timeRecords: TimeRecord[];
+    //     timeTotals: TimeTotals;
+    //     title: string;
+    //     heading: string;
+    // }
 
-    export interface TimeRecordInputData {
-        dates?: number[]; // dates are saved as time in multiple select date picker
-        costCode?: CostCode;
-        activity?: string;
-        system?: System;
-        phase?: Phase;
-        project?: Project;
-        employees?: any[];
-        units?: number;
-        hours?: Hours;
-        punch?: Punch;
-        manualHours?: boolean;
-        expenses?: TimeRecordExpense[];
-        comment?: string;
-    }
+    // export interface TimeRecordInputData {
+    //     dates?: number[]; // dates are saved as time in multiple select date picker
+    //     costCode?: CostCode;
+    //     activity?: string;
+    //     system?: System;
+    //     phase?: Phase;
+    //     project?: Project;
+    //     employees?: any[];
+    //     units?: number;
+    //     hours?: Hours;
+    //     punch?: Punch;
+    //     manualHours?: boolean;
+    //     expenses?: TimeRecordExpense[];
+    //     comment?: string;
+    // }
 
-    export class TimeRecordLogData {
-        activity: string;
-        comments: string[];
-        costCodeId: number;
-        costCode: CostCode;
-        date: string;
-        punch: Punch;
-        employeeId: number;
-        hours: Hours;
-        id: number;
-        phaseId: number;
-        projectId: number;
-        project: Project;
-        timesheetId: number;
-        units: number;
-    }
+    // export class TimeRecordLogData {
+    //     activity: string;
+    //     comments: string[];
+    //     costCodeId: number;
+    //     costCode: CostCode;
+    //     date: string;
+    //     punch: Punch;
+    //     employeeId: number;
+    //     hours: Hours;
+    //     id: number;
+    //     phaseId: number;
+    //     projectId: number;
+    //     project: Project;
+    //     timesheetId: number;
+    //     units: number;
+    // }

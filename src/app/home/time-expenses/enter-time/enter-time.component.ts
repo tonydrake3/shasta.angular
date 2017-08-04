@@ -43,17 +43,17 @@ export class EnterTimeComponent extends BaseComponent {
             {
                 service: 'ProjectService',
                 callback: 'projectServiceCallback'
+            },
+            {
+                service: 'IndirectCostCodesService',
+                callback: 'indirectCostCodeServiceCallback'
+            },
+            {
+                service: 'EmployeeService',
+                callback: 'employeeServiceCallback'
             }
         ]);
 
-        super.inject([
-            {
-                toInject: EmployeeService,
-                subject: 'employees$',
-                initializer: 'getLatest',
-                callback: 'employeeServiceCallback'
-            },
-        ]);
 
         this.accordionOpen = true;
 
@@ -68,11 +68,11 @@ export class EnterTimeComponent extends BaseComponent {
             { name: 'Seamgen', value: 'seamgen', timeEntryMethod: 'timeInTimeOut' },
         ];
 
-        this.costCodes = [
-            { name: 'Engineering', value: 'engineering' },
-            { name: 'Maintenance', value: 'maintenance' },
-            { name: 'Overhead', value: 'overhead' }
-        ];
+        // this.costCodes = [
+        //     { name: 'Engineering', value: 'engineering' },
+        //     { name: 'Maintenance', value: 'maintenance' },
+        //     { name: 'Overhead', value: 'overhead' }
+        // ];
 
         this.systems = [
             { name: 'System A', value: 'a' },
@@ -102,6 +102,12 @@ export class EnterTimeComponent extends BaseComponent {
 
         console.log(employees);
         this.employees = employees;
+    }
+
+    indirectCostCodeServiceCallback (costCodes) {
+
+        console.log(costCodes);
+        this.costCodes = costCodes['Value'];
     }
 
     public addLines() {
