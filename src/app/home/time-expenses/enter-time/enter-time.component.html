@@ -5,25 +5,25 @@
         <div class="close-icon accent-light" *ngIf="groupedLines"><i class="material-icons" (click)="accordionOpen = false">keyboard_arrow_up</i><span>collapse</span></div>
 
         <md-select placeholder="Project" [ngModel]="linesToAdd.project" (ngModelChange)="projectChanged($event)">
-            <md-option *ngFor="let project of projects" [value]="project">{{project.name}}</md-option>
+            <md-option *ngFor="let project of projects" [value]="project">{{project.Name}}</md-option>
         </md-select>
 
         <md-select placeholder="Cost Code" [(ngModel)]="linesToAdd.costCode">
-            <md-option *ngFor="let costCode of costCodes" [value]="costCode.Id">{{costCode.Description}}</md-option>
+            <md-option *ngFor="let costCode of costCodes" [value]="costCode">{{costCode.Name}}</md-option>
         </md-select>
 
-        <md-select placeholder="System" [(ngModel)]="linesToAdd.system">
-            <md-option *ngFor="let system of systems" [value]="system">{{system.name}}</md-option>
+        <md-select *ngIf="systems.length > 0" placeholder="System" [(ngModel)]="linesToAdd.system" (ngModelChange)="systemChanged($event)">
+            <md-option *ngFor="let system of systems" [value]="system">{{system.Name}}</md-option>
         </md-select>
 
-        <md-select placeholder="Phase" [(ngModel)]="linesToAdd.phase">
-            <md-option *ngFor="let phase of phases" [value]="phase">{{phase.name}}</md-option>
+        <md-select *ngIf="phases.length > 0" placeholder="Phase" [(ngModel)]="linesToAdd.phase">
+            <md-option *ngFor="let phase of phases" [value]="phase">{{phase.Name}}</md-option>
         </md-select>
 
         <div class="row">
             <div class="col-md-10">
                 <md-select class="employee-select" placeholder="Employees" [(ngModel)]="linesToAdd.employees" multiple>
-                    <md-option *ngFor="let employee of employees" [value]="employee.Id" >{{employee.FirstName}} {{employee.LastName}}</md-option>
+                    <md-option *ngFor="let employee of employees" [value]="employee" >{{employee.FirstName}} {{employee.LastName}}</md-option>
                 </md-select>
             </div>
             <div class="col-md-2 groupings">
@@ -112,12 +112,10 @@
         <div class="time-card-header">
 
             <div class="row">
-
                 <div class="col-md-6" [ngSwitch]="groupCardsBy">
-                    <label>{{groupCardsBy}}</label>
-                    <span *ngSwitchCase="'Employee'">{{card.value.Employee?.name}}</span>
-                    <span *ngSwitchCase="'Project'">{{card.value.Project?.name}}</span>
-                    <span *ngSwitchCase="'Date'">{{card.value.Date?.format(dateFormat)}}</span>
+                    <label *ngSwitchCase="'Employee'">{{card.key}}</label>
+                    <label *ngSwitchCase="'Project'">{{card.key}}</label>
+                    <label *ngSwitchCase="'Date'">{{card.key | date:'yMMMd'}}</label>
                 </div>
                 <div class="col-md-6 text-right">
                     <span (click)="deleteGrouping(card.value)">Delete All in Grouping</span>
@@ -154,30 +152,60 @@
                 <div style="order:1; width:11%" class="table-cell" >{{record.Date.format(dateFormat)}}</div>
                 <div style="order:2; width:12%" class="table-cell" >
                     <md-select placeholder="Employee" [(ngModel)]="record.Employee">
-                        <md-option *ngFor="let employee of employees" [value]="employee">{{employee.name}}</md-option>
+                        <md-option *ngFor="let employee of employees" [value]="employee">{{employee.FirstName}} {{employee.LastName}}</md-option>
                     </md-select>
                 </div>
                 <div style="order:3; width:10%" class="table-cell" >
                     <md-select placeholder="Project" [(ngModel)]="record.Project">
-                        <md-option *ngFor="let project of projects" [value]="project">{{project.name}}</md-option>
+                        <md-option *ngFor="let project of projects" [value]="project">{{project.Name}}</md-option>
                     </md-select>
                 </div>
                 <div style="order:4; width:10%" class="table-cell" >
                     <md-select placeholder="CostCode" [(ngModel)]="record.CostCode">
-                        <md-option *ngFor="let costCode of costCodes" [value]="costCode">{{costCode.name}}</md-option>
+                        <md-option *ngFor="let costCode of costCodes" [value]="costCode">{{costCode.Name}}</md-option>
                     </md-select>
                 </div>
                 <div style="order:5; width:10%" class="table-cell" >
                     <md-select placeholder="System" [(ngModel)]="record.System">
-                        <md-option *ngFor="let system of systems" [value]="system">{{system.name}}</md-option>
+                        <md-option *ngFor="let system of systems" [value]="system">{{system.Name}}</md-option>
                     </md-select>
                 </div>
                 <div style="order:6; width:10%" class="table-cell" >
                     <md-select placeholder="Phase" [(ngModel)]="record.Phase">
-                        <md-option *ngFor="let phase of phases" [value]="phase">{{phase.name}}</md-option>
+                        <md-option *ngFor="let phase of phases" [value]="phase">{{phase.Name}}</md-option>
                     </md-select>
                 </div>
-                <div style="order:7; width:17%" class="table-cell" ></div>
+                <div style="order:7; width:17%" class="table-cell">
+                    <div *ngIf="!record.IsPunch" class="row">
+                        <div class="col-md-4 no-gutters">
+                            <md-input-container>
+                                <input mdInput placeholder="ST" [(ngModel)]="record.HoursST">
+                            </md-input-container>
+                        </div>
+                        <div class="col-md-4 no-gutters">
+                            <md-input-container>
+                                <input mdInput placeholder="OT" [(ngModel)]="record.HoursOT">
+                            </md-input-container>
+                        </div>
+                        <div class="col-md-4 no-gutters">
+                            <md-input-container>
+                                <input mdInput placeholder="DT" [(ngModel)]="record.HoursDT">
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <div *ngIf="record.IsPunch" class="row">
+                        <div class="col-md-6 no-gutters">
+                            <md-input-container>
+                                <input mdInput placeholder="Time In" [(ngModel)]="record.TimeIn">
+                            </md-input-container>
+                        </div>
+                        <div class="col-md-6 no-gutters">
+                            <md-input-container>
+                                <input mdInput placeholder="Time Out" [(ngModel)]="record.TimeOut">
+                            </md-input-container>
+                        </div>
+                    </div>
+                </div>
                 <div style="order:8; width:17%" class="table-cell" ><input [(ngModel)]="record.Comment"></div>
                 <div style="order:9; width:03%" class="table-cell" ><i class="material-icons" (click)="deleteRecord(record)">delete</i></div>
             </div>

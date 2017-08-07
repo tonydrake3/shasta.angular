@@ -3,16 +3,30 @@ import * as moment from 'moment';
 import * as _ from 'lodash';
 import { IDatePickerConfig } from 'ng2-date-picker';
 
-import { Employee, CostCode, System } from '../../../models/time/TimeRecord';
 import { AccordionNavDirective } from '../../sidenav/sidenav-menu/accordion-nav.directive';
 import { BaseComponent } from '../../shared/components/base.component';
+import { LinesToAdd } from './models/LinesToAdd';
+import { LineToSubmit } from './models/LinesToSubmit';
+
+// Service Imports
 import { TimeRecordsService } from '../time-records.service';
 import { EmployeeService } from '../../shared/services/user/employee.service';
+
+// Model Imports
+import { Project } from '../../../models/domain/Project';
+import { Employee } from '../../../models/domain/Employee';
+import { CostCode } from '../../../models/domain/CostCode';
+import { System } from '../../../models/domain/System';
+import { Phase } from '../../../models/domain/Phase';
+
 
 @Component({
     templateUrl: './enter-time.component.html'
 })
 export class EnterTimeComponent extends BaseComponent {
+
+    private _tenantEmployees: Array<Employee>;
+    private _indirectCodes: Array<CostCode>;
 
     // view config
     public dpCalendarConfig: IDatePickerConfig = {
@@ -29,13 +43,15 @@ export class EnterTimeComponent extends BaseComponent {
     // the actual lines we want to create
     public linesToSubmit: Array<LineToSubmit>;
     public groupedLines: _.Dictionary<Array<LineToSubmit>>;
+    public stdHours: number;
+    public totalHours: number;
 
-    // dummy data
-    public projects: Array<any>;
-    public costCodes: Array<any>;
-    public employees: Array<any>;
-    public systems: Array<any>;
-    public phases: Array<any>;
+    // data
+    public projects: Array<Project>;
+    public costCodes: Array<CostCode>;
+    public employees: Array<Employee>;
+    public systems: Array<System>;
+    public phases: Array<Phase>;
 
     constructor(private _injector: Injector, private timeRecordsService: TimeRecordsService) {
 
@@ -63,51 +79,30 @@ export class EnterTimeComponent extends BaseComponent {
         this.initLinesToAdd();
         this.linesToSubmit = [];
 
-        this.projects = [
-            { name: 'eSUB', value: 'esub', timeEntryMethod: 'hoursWorked' },
-            { name: 'Seamgen', value: 'seamgen', timeEntryMethod: 'timeInTimeOut' },
-        ];
+        this.systems = [];
 
-        // this.costCodes = [
-        //     { name: 'Engineering', value: 'engineering' },
-        //     { name: 'Maintenance', value: 'maintenance' },
-        //     { name: 'Overhead', value: 'overhead' }
-        // ];
-
-        this.systems = [
-            { name: 'System A', value: 'a' },
-            { name: 'System B', value: 'b' }
-        ];
-
-        this.phases = [
-            { name: 'First', value: 'first' },
-            { name: 'Second', value: 'second' }
-        ];
-
-        // this.employees = [
-        //     { name: 'Bin Tang', value: 'bint' },
-        //     { name: 'Alex Takabayashi', value: 'alext' },
-        //     { name: 'Guillermo Alvarez', value: 'guillermoa' },
-        //     { name: 'Mike O\'Gorman', value: 'mikeo' },
-        //     { name: 'Tony Drake', value: 'tonyd' }
-        // ];
+        this.phases = [];
     }
 
     projectServiceCallback (projects) {
 
-        console.log(projects['Value']);
+        this.projects = projects['Value'] as Array<Project>;
+        this.mockEntryFlag();
+        // console.log(projects['Value']);
     }
 
     employeeServiceCallback (employees) {
 
-        console.log(employees);
-        this.employees = employees;
+        // console.log(employees);
+        this._tenantEmployees = this.concatName(employees);
+        this.employees = this._tenantEmployees;
     }
 
     indirectCostCodeServiceCallback (costCodes) {
 
-        console.log(costCodes);
-        this.costCodes = costCodes['Value'];
+        // console.log(costCodes);
+        this._indirectCodes = this.mapCostCodes(costCodes['Value']) as Array<CostCode>;
+        this.costCodes = this._indirectCodes;
     }
 
     public addLines() {
@@ -135,6 +130,10 @@ export class EnterTimeComponent extends BaseComponent {
         this.linesToSubmit = [];
         this.groupedLines = null;
         this.accordionOpen = true;
+        this.employees = this._tenantEmployees;
+        this.costCodes = this._indirectCodes;
+        this.systems = [];
+        this.phases = [];
     }
 
     public deleteGrouping(grouping) {
@@ -164,6 +163,7 @@ export class EnterTimeComponent extends BaseComponent {
     }
 
     public selectAllEmployees() {
+
         this.linesToAdd.employees = [];
         this.employees.forEach(employee => {
             this.linesToAdd.employees.push(employee);
@@ -172,6 +172,69 @@ export class EnterTimeComponent extends BaseComponent {
 
     public selectNoneEmployees() {
         this.linesToAdd.employees = [];
+    }
+
+    public updateGrouping(by: string, doNotScroll?: boolean) {
+        this.groupCardsBy = by;
+        this.groupLinesToSubmit(this.linesToSubmit, by);
+        if (!doNotScroll) document.body.scrollTop = document.documentElement.scrollTop = 0;
+    }
+
+    // e is of type Project
+    public projectChanged(e) {
+
+        this.linesToAdd.project = e;
+        this.linesToAdd.employees = [];
+        // TODO reload and repopulate dropdowns based on newly selected project
+
+        this.checkDefaultSystem(e.Systems);
+        this.checkDefaultCostCode(e.CostCodes);
+        this.filterEmployees(e.Id);
+        // console.log(this.employees);
+    }
+
+    public systemChanged(e) {
+
+        this.checkDefaultPhase(e.Phases);
+    }
+
+    public submitTime() {
+
+    }
+
+    private checkDefaultSystem (systems: Array<System>) {
+
+        this.systems = systems;
+        if (systems.length === 1) {
+
+            this.linesToAdd.system = systems[0];
+            this.checkDefaultPhase(systems[0].Phases);
+        } else {
+
+            this.linesToAdd.phase = null;
+            this.phases = [];
+        }
+    }
+
+    private checkDefaultPhase (phases: Array<Phase>) {
+
+        this.phases = phases;
+        if (phases.length === 1) {
+
+            this.linesToAdd.phase = phases[0];
+        }
+    }
+
+    private checkDefaultCostCode (costCodes: Array<CostCode>) {
+
+        this.costCodes = costCodes;
+        if (costCodes.length === 1) {
+
+            this.linesToAdd.costCode = costCodes[0];
+        } else {
+
+            this.linesToAdd.costCode = null;
+        }
     }
 
     private initLinesToAdd() {
@@ -208,6 +271,7 @@ export class EnterTimeComponent extends BaseComponent {
                     CostCode: lines.costCode,
                     System: lines.system,
                     Phase: lines.phase,
+                    IsPunch: lines.project.timeEntryMethod === 'timeInTimeOut',
                     HoursST: lines.hoursWorked.st,
                     HoursOT: lines.hoursWorked.ot,
                     HoursDT: lines.hoursWorked.dt,
@@ -223,69 +287,66 @@ export class EnterTimeComponent extends BaseComponent {
         this.groupLinesToSubmit(this.linesToSubmit, this.groupCardsBy);
     }
 
-    public updateGrouping(by: string, doNotScroll?: boolean) {
-        this.groupCardsBy = by;
-        this.groupLinesToSubmit(this.linesToSubmit, by);
-        if (!doNotScroll) document.body.scrollTop = document.documentElement.scrollTop = 0;
-    }
-
     // take the TimeRecords that are ready to submit, and group them and turn them into display friendly cards
     private groupLinesToSubmit(lines: Array<LineToSubmit>, groupBy: string) {
+
         if (groupBy === 'Date') {
+
             this.groupedLines = _.groupBy(lines, groupBy);
-        } else if (groupBy === 'Employee' || groupBy === 'Project') {
+        } else if (groupBy === 'Employee') {
+
             this.groupedLines = _.groupBy(lines, value => {
-                return value[groupBy]['value'];
+                return value[groupBy]['FullName'];
+            });
+        } else if (groupBy === 'Project') {
+
+            this.groupedLines = _.groupBy(lines, value => {
+                return value[groupBy]['Name'];
             });
         }
+        console.log(this.groupedLines);
     }
 
-    // e is of type Project
-    public projectChanged(e) {
-        this.linesToAdd.project = e;
-        this.linesToAdd.costCode = null;
-        this.linesToAdd.system = null;
-        this.linesToAdd.phase = null;
-        this.linesToAdd.employees = [];
-        // TODO reload and repopulate dropdowns based on newly selected project
+    private mapCostCodes (costCodes: Array<any>) {
+
+        return _.map(costCodes, function(code) {
+            return _.extend({}, code, {Name: code.Description});
+        });
     }
 
-    public submitTime() {
+    // TODO: Remove when settings flag is added
+    private mockEntryFlag () {
 
+        this.projects.forEach(
+
+            (project, index) => {
+
+                if (index % 2) {
+
+                    project['timeEntryMethod'] = 'hoursWorked';
+                } else {
+
+                    project['timeEntryMethod'] = 'timeInTimeOut';
+                }
+            }
+        )
+    }
+
+    private concatName (employees: Array<Employee>) {
+
+        return _.map(employees, function(employee) {
+            return _.extend({}, employee, {FullName: employee.FirstName + ' ' + employee.LastName});
+        });
+    }
+
+    private filterEmployees (projectId: string) {
+
+        this.employees = _.filter(this._tenantEmployees, function (employee) {
+            return employee.ProjectIds.includes(projectId);
+        });
     }
 }
 
-class LinesToAdd {
-    selectedDates: Array<moment.Moment>;
-    project: any;
-    costCode: any;
-    system: any;
-    phase: any
-    employees: Array<any>;
-    // TODO figure out time typing
-    hoursWorked: {
-        st: number;
-        ot: number;
-        dt: number;
-    }
-    timeInTimeOut: {
-        in: any;
-        out: any
-    };
-    comment: string
-}
 
-class LineToSubmit {
-    Date: moment.Moment;
-    Employee: any;
-    Project: any;
-    CostCode: any;
-    System: any;
-    Phase: any;
-    HoursST: number;
-    HoursOT: number;
-    HoursDT: number;
-    TimeIn: any;
-    TimeOut: any;
-    Comment: string;
-}
+
+
