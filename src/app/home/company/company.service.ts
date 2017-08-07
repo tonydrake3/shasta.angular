@@ -3,9 +3,6 @@ import { Http } from '@angular/http';
 
 import { apiRoutes } from '../shared/configuration/api-routes.configuration';
 import { BaseStore } from '../../shared/services/base-store.service';
-import {AuthenticationService} from '../../shared/services/authentication/authentication.service';
-
-
 
 @Injectable()
 export class CompanyService extends BaseStore {
