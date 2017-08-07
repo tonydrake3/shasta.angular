@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import { CompanyService } from './company.service';
 import {Router} from '@angular/router';
+import { Company } from '../../models/domain/Company';
+import {mockCompanies} from '../../mocks/data/mockCompany.data';
 
 @Component({
     selector: 'esub-company-selection',
@@ -9,7 +11,7 @@ import {Router} from '@angular/router';
 })
 export class CompanySelectionComponent implements OnInit {
 
-    _companyList: any;
+    companyList: Array<Company>;
 
     constructor (private _companyService: CompanyService, private _router: Router) {}
 
@@ -17,13 +19,14 @@ export class CompanySelectionComponent implements OnInit {
 
         this._companyService.getLatest();
         this._companyService.companies$
+
+            .map(val => val as Array<Company>)
             .subscribe(
+
                 (companies) => {
-                    this._companyList = companies['value'];
-                    if (this._companyList.length <= 1) {
-                        sessionStorage.setItem('tenant', JSON.stringify(companies['value'][0].Id));
-                        this._router.navigate(['project']);
-                    }
+
+                    this.companyList = companies;
+                    // this.companyList = mockCompanies;
                 },
                 (error) => {
                     console.log(error);
