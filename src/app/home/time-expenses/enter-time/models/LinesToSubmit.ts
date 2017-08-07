@@ -13,5 +13,6 @@ export class LineToSubmit {
     HoursDT: number;
     TimeIn: any;
     TimeOut: any;
+    TimeTotal: any;
     Comment: string;
 }

@@ -8,16 +8,16 @@
             <md-option *ngFor="let project of projects" [value]="project">{{project.Name}}</md-option>
         </md-select>
 
-        <md-select placeholder="Cost Code" [(ngModel)]="linesToAdd.costCode">
-            <md-option *ngFor="let costCode of costCodes" [value]="costCode">{{costCode.Name}}</md-option>
-        </md-select>
-
         <md-select *ngIf="systems.length > 0" placeholder="System" [(ngModel)]="linesToAdd.system" (ngModelChange)="systemChanged($event)">
             <md-option *ngFor="let system of systems" [value]="system">{{system.Name}}</md-option>
         </md-select>
 
         <md-select *ngIf="phases.length > 0" placeholder="Phase" [(ngModel)]="linesToAdd.phase">
             <md-option *ngFor="let phase of phases" [value]="phase">{{phase.Name}}</md-option>
+        </md-select>
+
+        <md-select placeholder="Cost Code" [(ngModel)]="linesToAdd.costCode">
+            <md-option *ngFor="let costCode of costCodes" [value]="costCode">{{costCode.Name}}</md-option>
         </md-select>
 
         <div class="row">
@@ -70,13 +70,9 @@
 
                 <div class="row time-entry">
                     <!-- TODO convert these to real time picker fields, saw a few online for angularJS but no good material options for angular  -->
-                    <md-input-container>
-                        <input mdInput placeholder="Time In" [(ngModel)]="linesToAdd.timeInTimeOut.in">
-                    </md-input-container>
+                    <dp-time-select [(ngModel)]="linesToAdd.timeInTimeOut.in" [config]="dpTimeInConfig" [theme]="'dp-material'"></dp-time-select>
 
-                    <md-input-container>
-                        <input mdInput placeholder="Time Out" [(ngModel)]="linesToAdd.timeInTimeOut.out">
-                    </md-input-container>
+                    <dp-time-select [(ngModel)]="linesToAdd.timeInTimeOut.out" [config]="dpTimeOutConfig" [theme]="'dp-material'"></dp-time-select>
                 </div>
             </div>
             <div class="col-md-12" *ngSwitchDefault>
@@ -194,14 +190,19 @@
                         </div>
                     </div>
                     <div *ngIf="record.IsPunch" class="row">
-                        <div class="col-md-6 no-gutters">
+                        <div class="col-md-4 no-gutters">
                             <md-input-container>
                                 <input mdInput placeholder="Time In" [(ngModel)]="record.TimeIn">
                             </md-input-container>
                         </div>
-                        <div class="col-md-6 no-gutters">
+                        <div class="col-md-4 no-gutters">
                             <md-input-container>
                                 <input mdInput placeholder="Time Out" [(ngModel)]="record.TimeOut">
+                            </md-input-container>
+                        </div>
+                        <div class="col-md-4 no-gutters">
+                            <md-input-container>
+                                <input mdInput placeholder="Total" [(ngModel)]="record.TimeTotal">
                             </md-input-container>
                         </div>
                     </div>

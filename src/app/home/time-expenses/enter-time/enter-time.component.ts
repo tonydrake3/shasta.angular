@@ -2,6 +2,7 @@ import { Component, Injector } from '@angular/core';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import { IDatePickerConfig } from 'ng2-date-picker';
+import { ITimeSelectConfig } from 'ng2-date-picker/time-select/time-select-config.model';
 
 import { AccordionNavDirective } from '../../sidenav/sidenav-menu/accordion-nav.directive';
 import { BaseComponent } from '../../shared/components/base.component';
@@ -28,17 +29,29 @@ export class EnterTimeComponent extends BaseComponent {
     private _tenantEmployees: Array<Employee>;
     private _indirectCodes: Array<CostCode>;
 
+    // working model to add
+    public linesToAdd: LinesToAdd;
+
     // view config
     public dpCalendarConfig: IDatePickerConfig = {
         allowMultiSelect: true
+    };
+    public dpTimeInConfig: ITimeSelectConfig = {
+        // maxTime: this.linesToAdd.timeInTimeOut.out,
+        minutesInterval: 5,
+        showTwentyFourHours: false,
+        showSeconds: false
+    };
+    public dpTimeOutConfig: ITimeSelectConfig = {
+        // minTime: this.linesToAdd.timeInTimeOut.in,
+        minutesInterval: 5,
+        showTwentyFourHours: false,
+        showSeconds: false
     };
     public accordionOpen: boolean;
     public dateFormat: string;
     public groupCardsBy: string;  // Date, Employee, Project
     public moment = moment;
-
-    // working model to add
-    public linesToAdd: LinesToAdd;
 
     // the actual lines we want to create
     public linesToSubmit: Array<LineToSubmit>;
@@ -277,6 +290,7 @@ export class EnterTimeComponent extends BaseComponent {
                     HoursDT: lines.hoursWorked.dt,
                     TimeIn: lines.timeInTimeOut.in,
                     TimeOut: lines.timeInTimeOut.out,
+                    TimeTotal: this.calculateTotalTimeFromPunch(lines.timeInTimeOut.in, lines.timeInTimeOut.out),
                     Comment: lines.comment,
                 };
 
@@ -285,6 +299,14 @@ export class EnterTimeComponent extends BaseComponent {
         });
 
         this.groupLinesToSubmit(this.linesToSubmit, this.groupCardsBy);
+    }
+
+    private calculateTotalTimeFromPunch (timeIn, timeOut) {
+
+        const punchIn =  moment(timeIn).utc('HH:mm');
+        const punchOut =  moment(timeOut).utc('HH:mm');
+
+        return moment.duration(punchOut.diff(punchIn));
     }
 
     // take the TimeRecords that are ready to submit, and group them and turn them into display friendly cards
