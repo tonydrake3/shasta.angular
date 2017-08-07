@@ -2,7 +2,7 @@ import {Injectable, OnDestroy} from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { CompanyService } from '../../../company/company.service';
 import { routeName } from '../../../../models/configuration/routeName';
-import { Company } from "../../../../models/domain/Company";
+import { Company } from '../../../../models/domain/Company';
 
 @Injectable()
 export class CompanyGuard implements CanActivate, OnDestroy {
