@@ -1,8 +1,9 @@
 import {Injectable, OnDestroy} from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+
 import { CompanyService } from '../../../company/company.service';
-import { routeName } from '../../../../models/configuration/routeName';
 import { Company } from '../../../../models/domain/Company';
+import { routeName } from '../../configuration/web-route-names.configuration';
 
 @Injectable()
 export class CompanyGuard implements CanActivate, OnDestroy {
@@ -22,7 +23,7 @@ export class CompanyGuard implements CanActivate, OnDestroy {
                 .subscribe(
 
                     (companies) => {
-                        // console.log('canActivateCallback', companies);
+                        // console.log('CompanyGuard canActivateCallback', companies);
                         if (companies.length > 1) {
 
                             resolve(true);
