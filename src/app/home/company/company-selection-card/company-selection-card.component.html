@@ -1,4 +1,4 @@
-<div class="company-selection-card esub-card" (click)="selectCompany(company)">
+<div class="company-selection-card esub-card" (click)="selectCompany(company)" [id]="'companyCard' + company.$id">
     <h4 class="text-center title-bold">{{company.Name}}</h4>
-    <img [src]="company.LogoUrl" width="300" height="200">
+    <img [src]="company.LogoUrl" width="200" height="100">
 </div>
