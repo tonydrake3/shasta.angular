@@ -1,16 +1,17 @@
-import {Component, Injector, OnDestroy, OnInit} from '@angular/core';
+import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BaseComponent } from '../shared/components/base.component';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import * as _ from 'lodash';
 
 import { Project } from '../../models/domain/Project';
-import { routeName } from '../../models/configuration/routeName';
-import {statusMap, StatusMap} from '../shared/map/status.map';
-import {SortColumn} from '../shared/configuration/sort-column.configuration';
-import {projectSortColumns} from '../shared/configuration/sort-column.configuration';
-import {ProjectSelectionManager} from './project-selection.manager';
-import {ProjectService} from '../shared/services/project.service'
+import { statusMap, StatusMap } from '../shared/map/status.map';
+import { SortColumn } from '../shared/configuration/sort-column.configuration';
+import { projectSortColumns } from '../shared/configuration/sort-column.configuration';
+import { ProjectSelectionManager } from './project-selection.manager';
+import { ProjectService } from '../shared/services/project.service';
+import { routeName } from '../shared/configuration/web-route-names.configuration';
+
 
 @Component({
     styles: [],

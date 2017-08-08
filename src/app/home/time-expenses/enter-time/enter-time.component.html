@@ -22,7 +22,8 @@
 
         <div class="row">
             <div class="col-md-10">
-                <md-select class="employee-select" placeholder="Employees" [(ngModel)]="linesToAdd.employees" multiple>
+                <md-select class="employee-select" placeholder="Employees" [(ngModel)]="linesToAdd.employees" multiple
+                    (change)="selectEmployee($event)">
                     <md-option *ngFor="let employee of employees" [value]="employee" >{{employee.FirstName}} {{employee.LastName}}</md-option>
                 </md-select>
             </div>
@@ -65,14 +66,35 @@
                 </div>
 
             </div>
-            <div class="col-md-12"  *ngSwitchCase="'timeInTimeOut'">
-                <label>Time Entry Method</label> Time In / Time Out
+            <div class="col-md-12" *ngSwitchCase="'timeInTimeOut'">
+                <div class="row">
+                    <div class="col-md-2">
+                        <span class="label-bold">Time In</span>
 
-                <div class="row time-entry">
-                    <!-- TODO convert these to real time picker fields, saw a few online for angularJS but no good material options for angular  -->
-                    <dp-time-select [(ngModel)]="linesToAdd.timeInTimeOut.in" [config]="dpTimeInConfig" [theme]="'dp-material'"></dp-time-select>
+                        <div class="row time-entry">
+                            <dp-time-select [(ngModel)]="linesToAdd.timeInTimeOut.in" [config]="dpTimeConfig" [theme]="'dp-material'"></dp-time-select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <span class="label-bold">Time Out</span>
+                        <div class="row time-entry">
+                            <dp-time-select [(ngModel)]="linesToAdd.timeInTimeOut.out" [config]="dpTimeConfig" [theme]="'dp-material'"></dp-time-select>
+                        </div>
+                    </div>
+                    <div class="col-md-2 offset-1">
+                        <span class="label-bold">Break Time In</span>
 
-                    <dp-time-select [(ngModel)]="linesToAdd.timeInTimeOut.out" [config]="dpTimeOutConfig" [theme]="'dp-material'"></dp-time-select>
+                        <div class="row time-entry">
+                            <dp-time-select [(ngModel)]="linesToAdd.break.in" [config]="dpTimeConfig" [theme]="'dp-material'"></dp-time-select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <span class="label-bold">Break Time Out</span>
+
+                        <div class="row time-entry">
+                            <dp-time-select [(ngModel)]="linesToAdd.break.out" [config]="dpTimeConfig" [theme]="'dp-material'"></dp-time-select>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="col-md-12" *ngSwitchDefault>
@@ -81,7 +103,7 @@
         </div>
 
         <md-input-container>
-            <input mdInput placeholder="Comment" [(ngModel)]="linesToAdd.comment">
+            <input mdInput placeholder="Notes" [(ngModel)]="linesToAdd.comment">
         </md-input-container>
 
         <button md-raised-button (click)="addLines()" class="primary" [disabled]="linesToAddCount() === 0">Add {{linesToAddCount()}} Lines</button>
@@ -133,20 +155,21 @@
         <div class="esub-table">
 
             <div class="table-row">
-                <div style="order:1; width:11%" class="table-cell table-header">Date</div>
-                <div style="order:2; width:12%" class="table-cell table-header">Employee</div>
+                <div style="order:1; width:10%" class="table-cell table-header">Date</div>
+                <div style="order:2; width:10%" class="table-cell table-header">Employee</div>
                 <div style="order:3; width:10%" class="table-cell table-header">Project</div>
                 <div style="order:4; width:10%" class="table-cell table-header">CostCode</div>
                 <div style="order:5; width:10%" class="table-cell table-header">System</div>
                 <div style="order:6; width:10%" class="table-cell table-header">Phase</div>
-                <div style="order:7; width:17%" class="table-cell table-header">Time</div>
-                <div style="order:8; width:17%" class="table-cell table-header">Comment</div>
-                <div style="order:9; width:03%" class="table-cell table-header"></div>
+                <div style="order:7; width:12%" class="table-cell table-header">Time</div>
+                <div style="order:8; width:12%" class="table-cell table-header">Break</div>
+                <div style="order:9; width:13%" class="table-cell table-header">Hours</div>
+                <div style="order:10; width:03%" class="table-cell table-header"></div>
             </div>
 
             <div class="table-row" *ngFor="let record of card.value">
-                <div style="order:1; width:11%" class="table-cell" >{{record.Date.format(dateFormat)}}</div>
-                <div style="order:2; width:12%" class="table-cell" >
+                <div style="order:1; width:10%" class="table-cell" >{{record.Date.format(dateFormat)}}</div>
+                <div style="order:2; width:10%" class="table-cell" >
                     <md-select placeholder="Employee" [(ngModel)]="record.Employee">
                         <md-option *ngFor="let employee of employees" [value]="employee">{{employee.FirstName}} {{employee.LastName}}</md-option>
                     </md-select>
@@ -171,8 +194,36 @@
                         <md-option *ngFor="let phase of phases" [value]="phase">{{phase.Name}}</md-option>
                     </md-select>
                 </div>
-                <div style="order:7; width:17%" class="table-cell">
-                    <div *ngIf="!record.IsPunch" class="row">
+                <div style="order:7; width:12%" class="table-cell table-time-entry">
+                    <div *ngIf="record.IsPunch" class="row no-gutters">
+                        <div class="col-md-5">
+                            <md-input-container>
+                                <input mdInput placeholder="Time In" [(ngModel)]="record.TimeIn">
+                            </md-input-container>
+                        </div>
+                        <div class="col-md-5">
+                            <md-input-container>
+                                <input mdInput placeholder="Time Out" [(ngModel)]="record.TimeOut">
+                            </md-input-container>
+                        </div>
+                    </div>
+                </div>
+                <div style="order:8; width:12%" class="table-cell table-time-entry">
+                    <div *ngIf="record.IsPunch" class="row no-gutters">
+                        <div class="col-md-5">
+                            <md-input-container>
+                                <input mdInput placeholder="Time In" [(ngModel)]="record.BreakIn">
+                            </md-input-container>
+                        </div>
+                        <div class="col-md-5">
+                            <md-input-container>
+                                <input mdInput placeholder="Time Out" [(ngModel)]="record.BreakOut">
+                            </md-input-container>
+                        </div>
+                    </div>
+                </div>
+                <div style="order:9; width:13%" class="table-cell table-time-entry">
+                    <div class="row">
                         <div class="col-md-4 no-gutters">
                             <md-input-container>
                                 <input mdInput placeholder="ST" [(ngModel)]="record.HoursST">
@@ -189,26 +240,8 @@
                             </md-input-container>
                         </div>
                     </div>
-                    <div *ngIf="record.IsPunch" class="row">
-                        <div class="col-md-4 no-gutters">
-                            <md-input-container>
-                                <input mdInput placeholder="Time In" [(ngModel)]="record.TimeIn">
-                            </md-input-container>
-                        </div>
-                        <div class="col-md-4 no-gutters">
-                            <md-input-container>
-                                <input mdInput placeholder="Time Out" [(ngModel)]="record.TimeOut">
-                            </md-input-container>
-                        </div>
-                        <div class="col-md-4 no-gutters">
-                            <md-input-container>
-                                <input mdInput placeholder="Total" [(ngModel)]="record.TimeTotal">
-                            </md-input-container>
-                        </div>
-                    </div>
                 </div>
-                <div style="order:8; width:17%" class="table-cell" ><input [(ngModel)]="record.Comment"></div>
-                <div style="order:9; width:03%" class="table-cell" ><i class="material-icons" (click)="deleteRecord(record)">delete</i></div>
+                <div style="order:10; width:03%" class="table-cell" ><i class="material-icons" (click)="deleteRecord(record)">delete</i></div>
             </div>
 
         </div>

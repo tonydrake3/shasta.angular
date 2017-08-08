@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+
 import { ProjectService } from '../project.service';
-import {routeName} from '../../../../models/configuration/routeName';
+import { routeName } from '../../configuration/web-route-names.configuration';
 
 @Injectable()
 export class ProjectGuard implements CanActivate  {
@@ -17,7 +18,7 @@ export class ProjectGuard implements CanActivate  {
 
                 .subscribe(
                     (projects) => {
-                        console.log('canActivateCallback', projects['Value'].length > 1);
+                        // console.log('canActivateCallback', projects['Value'].length > 1);
                         if (projects['Value'].length > 1) {
 
                             resolve(true);

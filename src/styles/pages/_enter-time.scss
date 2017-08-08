@@ -102,5 +102,26 @@
         }
     }
 
+    .esub-table {
+
+        .table-row {
+
+            .table-cell {
+
+                &.table-time-entry {
+
+                    .total-time {
+                        margin-top: -3px;
+
+                        .total-time-label {
+                            color: rgba(0, 0, 0, 0.38);
+                            font-size: 10px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     // TODO animate this bad boy
 }

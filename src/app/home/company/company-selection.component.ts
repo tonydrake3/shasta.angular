@@ -1,34 +1,55 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Injector} from '@angular/core';
 import { CompanyService } from './company.service';
-import {Router} from '@angular/router';
+import { Company } from '../../models/domain/Company';
+import {mockCompanies} from '../../mocks/data/mockCompany.data';
+import {BaseComponent} from '../shared/components/base.component';
 
 @Component({
     selector: 'esub-company-selection',
     styles: [],
     templateUrl: './company-selection.component.html'
 })
-export class CompanySelectionComponent implements OnInit {
+export class CompanySelectionComponent extends BaseComponent {
 
-    _companyList: any;
+    // Public
+    companyList: Array<Company>;
 
-    constructor (private _companyService: CompanyService, private _router: Router) {}
+    constructor (private _injector: Injector) {
 
-    ngOnInit () {
+        super(_injector, []);
 
-        this._companyService.getLatest();
-        this._companyService.companies$
-            .subscribe(
-                (companies) => {
-                    this._companyList = companies['value'];
-                    if (this._companyList.length <= 1) {
-                        sessionStorage.setItem('tenant', JSON.stringify(companies['value'][0].Id));
-                        this._router.navigate(['project']);
-                    }
-                },
-                (error) => {
-                    console.log(error);
-                }
-            )
+        super.inject([
+            {
+                toInject: CompanyService,
+                subject: 'companies$',
+                initializer: 'getLatest',
+                callback: 'companyServiceCallback'
+            }
+        ])
     }
 
+    /******************************************************************************************************************
+     * Callback Handler
+     ******************************************************************************************************************/
+
+    companyServiceCallback (companies) {
+
+        // console.log('CompanySelection CompanyServiceCallback');
+        this.companyList = companies as Array<Company>;
+        // this.companyList = mockCompanies;
+
+        this.addLogos();
+    }
+
+    /******************************************************************************************************************
+     * Private Methods
+     ******************************************************************************************************************/
+
+    // TODO: Remove when logos are fixed
+    addLogos () {
+        this.companyList.forEach((company) => {
+
+            company.LogoUrl = 'https://2k4s4k3wofhp2b3qaf1365bl-wpengine.netdna-ssl.com/wp-content/uploads/2017/03/esublogo2017-1.jpg';
+        });
+    }
 }

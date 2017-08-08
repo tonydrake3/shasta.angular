@@ -36,14 +36,7 @@ export class EnterTimeComponent extends BaseComponent {
     public dpCalendarConfig: IDatePickerConfig = {
         allowMultiSelect: true
     };
-    public dpTimeInConfig: ITimeSelectConfig = {
-        // maxTime: this.linesToAdd.timeInTimeOut.out,
-        minutesInterval: 5,
-        showTwentyFourHours: false,
-        showSeconds: false
-    };
-    public dpTimeOutConfig: ITimeSelectConfig = {
-        // minTime: this.linesToAdd.timeInTimeOut.in,
+    public dpTimeConfig: ITimeSelectConfig = {
         minutesInterval: 5,
         showTwentyFourHours: false,
         showSeconds: false
@@ -56,8 +49,6 @@ export class EnterTimeComponent extends BaseComponent {
     // the actual lines we want to create
     public linesToSubmit: Array<LineToSubmit>;
     public groupedLines: _.Dictionary<Array<LineToSubmit>>;
-    public stdHours: number;
-    public totalHours: number;
 
     // data
     public projects: Array<Project>;
@@ -119,6 +110,7 @@ export class EnterTimeComponent extends BaseComponent {
     }
 
     public addLines() {
+        // console.log(this.linesToAdd);
         this.generateNewLines(this.linesToAdd);
         this.accordionOpen = false;
         this.initLinesToAdd();
@@ -211,6 +203,11 @@ export class EnterTimeComponent extends BaseComponent {
         this.checkDefaultPhase(e.Phases);
     }
 
+    selectEmployee (event) {
+
+        console.log('SelectEmployee', event);
+    }
+
     public submitTime() {
 
     }
@@ -267,6 +264,10 @@ export class EnterTimeComponent extends BaseComponent {
                 in: null,
                 out: null
             },
+            break: {
+                in: null,
+                out: null
+            },
             comment: null
         }
     }
@@ -288,9 +289,11 @@ export class EnterTimeComponent extends BaseComponent {
                     HoursST: lines.hoursWorked.st,
                     HoursOT: lines.hoursWorked.ot,
                     HoursDT: lines.hoursWorked.dt,
-                    TimeIn: lines.timeInTimeOut.in,
-                    TimeOut: lines.timeInTimeOut.out,
-                    TimeTotal: this.calculateTotalTimeFromPunch(lines.timeInTimeOut.in, lines.timeInTimeOut.out),
+                    TimeIn: lines.timeInTimeOut.in ? lines.timeInTimeOut.in.format('h:mm A') : moment().format('h:mm A'),
+                    TimeOut: lines.timeInTimeOut.out ? lines.timeInTimeOut.out.format('h:mm A') : moment().format('h:mm A'),
+                    BreakIn: lines.break.in ? lines.break.in.format('h:mm A') : moment().format('h:mm A'),
+                    BreakOut: lines.break.out ? lines.break.out.format('h:mm A') : moment().format('h:mm A'),
+                    PunchTotal: this.calculateTotalTimeFromPunch(lines.timeInTimeOut.in, lines.timeInTimeOut.out),
                     Comment: lines.comment,
                 };
 
@@ -303,10 +306,12 @@ export class EnterTimeComponent extends BaseComponent {
 
     private calculateTotalTimeFromPunch (timeIn, timeOut) {
 
-        const punchIn =  moment(timeIn).utc('HH:mm');
-        const punchOut =  moment(timeOut).utc('HH:mm');
+        const punchIn = timeIn ? timeIn : moment();
+        const punchOut = timeOut ? timeOut : moment();
 
-        return moment.duration(punchOut.diff(punchIn));
+        const duration = moment.duration(punchOut.diff(punchIn));
+
+        return (duration.hours() + (duration.minutes() / 60));
     }
 
     // take the TimeRecords that are ready to submit, and group them and turn them into display friendly cards
@@ -326,6 +331,8 @@ export class EnterTimeComponent extends BaseComponent {
                 return value[groupBy]['Name'];
             });
         }
+
+
         console.log(this.groupedLines);
     }
 

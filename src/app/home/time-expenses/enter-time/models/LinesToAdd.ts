@@ -15,7 +15,11 @@ export class LinesToAdd {
     };
     timeInTimeOut: {
         'in': any;
-        out: any
+        'out': any
+    };
+    break: {
+        'in': any;
+        'out': any
     };
     comment: string
 }
