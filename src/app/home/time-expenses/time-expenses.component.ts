@@ -9,6 +9,7 @@ import { Timecard, TimecardSection } from './timesheet-card/timecard.model';
 
 import * as moment from 'moment';
 import * as _ from 'lodash';
+import {Employee} from '../../models/domain/Employee';
 
 @Component({
     selector: 'esub-time-expenses',
@@ -48,18 +49,21 @@ export class TimeExpensesComponent extends BaseComponent implements OnInit {
     });
   }
 
-  timeRecordsCallback(response) {
+  timeRecordsCallback (response) {
+
     this.loading = false;
     this.timerecords = response.Value;
     this.buildTimesheets();
   }
 
   groupTimesheets(grouping: string) {
+
     this.groupTimesheetsBy = grouping;
     this.buildTimesheets();
   }
 
   dateChanged(e) {
+
     this.dateRange = e;
     this.buildTimesheets();
   }
