@@ -21,5 +21,5 @@ export class LinesToAdd {
         'in': any;
         'out': any
     };
-    comment: string
+    note: string
 }

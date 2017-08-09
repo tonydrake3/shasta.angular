@@ -15,6 +15,5 @@ export class LineToSubmit {
     TimeOut: any;
     BreakIn: any;
     BreakOut: any;
-    PunchTotal: any;
-    Comment: string;
+    Note: string;
 }

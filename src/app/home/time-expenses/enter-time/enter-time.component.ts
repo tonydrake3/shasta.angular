@@ -19,6 +19,7 @@ import { Employee } from '../../../models/domain/Employee';
 import { CostCode } from '../../../models/domain/CostCode';
 import { System } from '../../../models/domain/System';
 import { Phase } from '../../../models/domain/Phase';
+import {Line} from 'tslint/lib/test/lines';
 
 
 @Component({
@@ -28,6 +29,8 @@ export class EnterTimeComponent extends BaseComponent {
 
     private _tenantEmployees: Array<Employee>;
     private _indirectCodes: Array<CostCode>;
+
+    private _timeThreshold = 8;
 
     // working model to add
     public linesToAdd: LinesToAdd;
@@ -268,7 +271,7 @@ export class EnterTimeComponent extends BaseComponent {
                 in: null,
                 out: null
             },
-            comment: null
+            note: null
         }
     }
 
@@ -278,30 +281,96 @@ export class EnterTimeComponent extends BaseComponent {
         lines.selectedDates.forEach((date, dateIdx) => {
             lines.employees.forEach((employee, employeeIdx) => {
 
-                const model: LineToSubmit = {
-                    Date: date,
-                    Employee: employee,
-                    Project: lines.project,
-                    CostCode: lines.costCode,
-                    System: lines.system,
-                    Phase: lines.phase,
-                    IsPunch: lines.project.timeEntryMethod === 'timeInTimeOut',
-                    HoursST: lines.hoursWorked.st,
-                    HoursOT: lines.hoursWorked.ot,
-                    HoursDT: lines.hoursWorked.dt,
-                    TimeIn: lines.timeInTimeOut.in ? lines.timeInTimeOut.in.format('h:mm A') : moment().format('h:mm A'),
-                    TimeOut: lines.timeInTimeOut.out ? lines.timeInTimeOut.out.format('h:mm A') : moment().format('h:mm A'),
-                    BreakIn: lines.break.in ? lines.break.in.format('h:mm A') : moment().format('h:mm A'),
-                    BreakOut: lines.break.out ? lines.break.out.format('h:mm A') : moment().format('h:mm A'),
-                    PunchTotal: this.calculateTotalTimeFromPunch(lines.timeInTimeOut.in, lines.timeInTimeOut.out),
-                    Comment: lines.comment,
-                };
+                let model: LineToSubmit;
+
+                if (!lines.timeInTimeOut) {
+
+                    model = this.buildHoursToSubmit(date, employee, lines);
+                } else {
+
+                    model = this.buildTimeToSubmit(date, employee, lines);
+                }
 
                 this.linesToSubmit.push(model);
             })
         });
 
         this.groupLinesToSubmit(this.linesToSubmit, this.groupCardsBy);
+    }
+
+    private buildHoursToSubmit (date, employee, lines: LinesToAdd): LineToSubmit {
+
+        return {
+            Date: date,
+            Employee: employee,
+            Project: lines.project,
+            CostCode: lines.costCode,
+            System: lines.system,
+            Phase: lines.phase,
+            IsPunch: false,
+            HoursST: lines.hoursWorked.st,
+            HoursOT: lines.hoursWorked.ot,
+            HoursDT: lines.hoursWorked.dt,
+            TimeIn: moment().startOf('day').format('h:mm A'),
+            TimeOut: moment().startOf('day').format('h:mm A'),
+            BreakIn: moment().startOf('day').format('h:mm A'),
+            BreakOut: moment().startOf('day').format('h:mm A'),
+            Note: lines.note,
+        };
+    }
+
+    private buildTimeToSubmit (date, employee, lines: LinesToAdd): LineToSubmit {
+
+        let timeSubmission: LineToSubmit = {
+            Date: date,
+            Employee: employee,
+            Project: lines.project,
+            CostCode: lines.costCode,
+            System: lines.system,
+            Phase: lines.phase,
+            IsPunch: true,
+            HoursST: 0,
+            HoursOT: 0,
+            HoursDT: 0,
+            TimeIn: lines.timeInTimeOut.in.format('h:mm A'),
+            TimeOut: lines.timeInTimeOut.out.format('h:mm A'),
+            BreakIn: lines.break.in.format('h:mm A'),
+            BreakOut: lines.break.out.format('h:mm A'),
+            Note: lines.note
+        };
+
+        const punchIn = lines.timeInTimeOut.in;
+        const punchOut = lines.timeInTimeOut.out;
+
+        let timeDuration = moment.duration(punchOut.diff(punchIn));
+        console.log(timeDuration.hours());
+
+        let breakIn, breakOut, breakDuration;
+
+        if (lines.break) {
+
+            breakIn = lines.break.in ? lines.break.in : null;
+            breakOut = lines.break.out ? lines.break.out : null;
+            breakDuration = moment.duration(breakOut.diff(breakIn));
+
+            console.log(breakDuration.hours());
+            timeDuration = timeDuration.subtract(breakDuration);
+            console.log(timeDuration.hours());
+        }
+
+        if (timeDuration.hours() > this._timeThreshold) {
+
+            timeSubmission.HoursST = this._timeThreshold;
+            timeSubmission.HoursOT = (timeDuration.hours() + (timeDuration.minutes() / 60)) - this._timeThreshold;
+            timeSubmission.HoursDT = 0;
+        } else {
+
+            timeSubmission.HoursST = (timeDuration.hours() + (timeDuration.minutes() / 60));
+            timeSubmission.HoursOT = 0;
+            timeSubmission.HoursDT = 0;
+        }
+
+        return timeSubmission;
     }
 
     private calculateTotalTimeFromPunch (timeIn, timeOut) {

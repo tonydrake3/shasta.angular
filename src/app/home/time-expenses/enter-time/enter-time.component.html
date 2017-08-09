@@ -103,7 +103,7 @@
         </div>
 
         <md-input-container>
-            <input mdInput placeholder="Notes" [(ngModel)]="linesToAdd.comment">
+            <input mdInput placeholder="Notes" [(ngModel)]="linesToAdd.note">
         </md-input-container>
 
         <button md-raised-button (click)="addLines()" class="primary" [disabled]="linesToAddCount() === 0">Add {{linesToAddCount()}} Lines</button>
