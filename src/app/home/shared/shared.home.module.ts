@@ -11,6 +11,7 @@ import {TextHighlightDirective} from './directives/highlight.directive';
 
 // Services
 import {AuthorizationService} from './services/authorization/authorization.service';
+import {CurrentEmployeeService} from './services/user/current-employee.service';
 import {MapsService} from './services/maps.service';
 import {UserService} from './services/user/user.service';
 import {WeatherService} from './services/weather.service';
@@ -50,6 +51,7 @@ import {StatusPipe} from './pipes/status.pipe';
     ],
     providers: [
         AuthorizationService,
+        CurrentEmployeeService,
         MapsService,
         UserService,
         WeatherService

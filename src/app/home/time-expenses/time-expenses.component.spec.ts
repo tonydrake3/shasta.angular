@@ -14,13 +14,14 @@ import { BadgedHourComponent } from './timesheet-card/badged-hour.component';
 
 import { TimeRecordsService } from './time-records.service';
 import { MockTimeRecordsService } from '../../mocks/mock.time-records.service';
-import { UserService } from '../shared/services/user/user.service';
-import { MockUserService } from '../../mocks/mock.user.service';
+import {CurrentEmployeeService} from '../shared/services/user/current-employee.service';
+import {MockCurrentEmployeeService} from '../../mocks/mock.current-employee.service';
 
 import { KeysPipe } from '../shared/pipes/keys.pipe';
 
 import * as moment from 'moment';
 import 'hammerjs';
+
 
 describe('TimeExpenses Component', () => {
 
@@ -30,13 +31,13 @@ describe('TimeExpenses Component', () => {
   let el:      HTMLElement;
 
   let mockTimeRecordsService;
-  let mockUserService;
+  let mockEmployeeService;
   let timeRecords;
 
   beforeEach(() => {
 
     mockTimeRecordsService = new MockTimeRecordsService();
-    mockUserService = new MockUserService();
+      mockEmployeeService = new MockCurrentEmployeeService();
     timeRecords = new Array();
 
     TestBed.configureTestingModule({
@@ -47,7 +48,7 @@ describe('TimeExpenses Component', () => {
       ],
       providers: [
         { provide: TimeRecordsService, useValue: mockTimeRecordsService },
-        { provide: UserService, useValue: mockUserService },
+        { provide: CurrentEmployeeService, useValue: mockEmployeeService },
         { provide: ActivatedRoute,
           useValue: {
             params: Observable.of({id: 'view'})
