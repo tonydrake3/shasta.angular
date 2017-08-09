@@ -9,7 +9,6 @@ import { Timecard, TimecardSection } from './timesheet-card/timecard.model';
 
 import * as moment from 'moment';
 import * as _ from 'lodash';
-import {Employee} from '../../models/domain/Employee';
 
 @Component({
     selector: 'esub-time-expenses',
