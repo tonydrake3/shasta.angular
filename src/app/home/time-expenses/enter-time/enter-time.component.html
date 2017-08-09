@@ -22,8 +22,7 @@
 
         <div class="row">
             <div class="col-md-10">
-                <md-select class="employee-select" placeholder="Employees" [(ngModel)]="linesToAdd.employees" multiple
-                    (change)="selectEmployee($event)">
+                <md-select class="employee-select" placeholder="Employees" [(ngModel)]="linesToAdd.employees" multiple>
                     <md-option *ngFor="let employee of employees" [value]="employee" >{{employee.FirstName}} {{employee.LastName}}</md-option>
                 </md-select>
             </div>

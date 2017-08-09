@@ -332,18 +332,18 @@ export class EnterTimeComponent extends BaseComponent {
             HoursST: 0,
             HoursOT: 0,
             HoursDT: 0,
-            TimeIn: lines.timeInTimeOut.in.format('h:mm A'),
-            TimeOut: lines.timeInTimeOut.out.format('h:mm A'),
-            BreakIn: lines.break.in.format('h:mm A'),
-            BreakOut: lines.break.out.format('h:mm A'),
+            TimeIn: lines.timeInTimeOut.in ? lines.timeInTimeOut.in.format('h:mm A') : moment().format('h:mm A'),
+            TimeOut: lines.timeInTimeOut.out ? lines.timeInTimeOut.out.format('h:mm A') : moment().format('h:mm A'),
+            BreakIn: lines.break.in,
+            BreakOut: lines.break.out,
             Note: lines.note
         };
 
-        const punchIn = lines.timeInTimeOut.in;
-        const punchOut = lines.timeInTimeOut.out;
+        const punchIn = lines.timeInTimeOut.in ? lines.timeInTimeOut.in : moment();
+        const punchOut = lines.timeInTimeOut.out ? lines.timeInTimeOut.out : moment();
 
         let timeDuration = moment.duration(punchOut.diff(punchIn));
-        console.log(timeDuration.hours());
+        // console.log(timeDuration.hours());
 
         let breakIn, breakOut, breakDuration;
 
@@ -351,11 +351,11 @@ export class EnterTimeComponent extends BaseComponent {
 
             breakIn = lines.break.in ? lines.break.in : null;
             breakOut = lines.break.out ? lines.break.out : null;
-            breakDuration = moment.duration(breakOut.diff(breakIn));
 
-            console.log(breakDuration.hours());
-            timeDuration = timeDuration.subtract(breakDuration);
-            console.log(timeDuration.hours());
+            if (breakIn && breakOut) {
+                breakDuration = moment.duration(breakOut.diff(breakIn));
+                timeDuration = timeDuration.subtract(breakDuration);
+            }
         }
 
         if (timeDuration.hours() > this._timeThreshold) {
