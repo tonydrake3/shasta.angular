@@ -14,6 +14,8 @@ import { EnterTimeComponent } from './enter-time/enter-time.component';
 
 import { TimeRecordsService } from './time-records.service';
 import { SharedHomeModule } from '../shared/shared.home.module';
+import {TimeSettingsComponent} from './settings/settings.component';
+import {TimeSettingsService} from './settings/time-settings.service';
 
 @NgModule({
     imports: [
@@ -28,10 +30,12 @@ import { SharedHomeModule } from '../shared/shared.home.module';
       TimeExpensesComponent,
       TimesheetCardComponent,
       BadgedHourComponent,
-      EnterTimeComponent
+      EnterTimeComponent,
+      TimeSettingsComponent,
     ],
     providers: [
-      TimeRecordsService
+      TimeRecordsService,
+      TimeSettingsService
     ]
 })
 

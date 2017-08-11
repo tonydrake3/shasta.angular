@@ -118,6 +118,19 @@ export const timeSidebarConfiguration = [
         'Ordinal': 3,
         'Visible': true,
         'expandFull': false
+    },
+    {
+        '$id': '4',
+        'Action': '/time-expenses/settings',
+        'Children': null,
+        'Key': '',
+        'System': 1,
+        'Title': 'Settings',
+        'SidebarId': 'timeSettings',
+        'iconName': '',
+        'Ordinal': 4,
+        'Visible': true,
+        'expandFull': false
     }
 ];
 
