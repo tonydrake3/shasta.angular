@@ -6,9 +6,9 @@ import {TimeSettingsComponent} from './settings/settings.component';
 
 export const TimeExpensesRoutes: Routes = [
   { path: '', redirectTo: '/time-expenses/timesheets', pathMatch: 'full' },
-  { path: ':view', component: TimeExpensesComponent },
   { path: 'enter', component: EnterTimeComponent },
-  { path: 'settings', component: TimeSettingsComponent }
+  { path: 'settings', component: TimeSettingsComponent },
+    { path: ':view', component: TimeExpensesComponent },
 ];
 
 export const TimeExpensesRoutingModule = RouterModule.forChild(TimeExpensesRoutes);
