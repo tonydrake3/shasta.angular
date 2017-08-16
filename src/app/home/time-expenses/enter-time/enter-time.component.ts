@@ -63,18 +63,18 @@ export class EnterTimeComponent extends BaseComponent {
     constructor(private _injector: Injector, private timeRecordsService: TimeRecordsService) {
 
         super(_injector, [
-            {
-                service: 'ProjectService',
-                callback: 'projectServiceCallback'
-            },
-            {
-                service: 'IndirectCostCodesService',
-                callback: 'indirectCostCodeServiceCallback'
-            },
-            {
-                service: 'EmployeeService',
-                callback: 'employeeServiceCallback'
-            }
+        //     {
+        //         service: 'ProjectService',
+        //         callback: 'projectServiceCallback'
+        //     },
+        //     {
+        //         service: 'IndirectCostCodesService',
+        //         callback: 'indirectCostCodeServiceCallback'
+        //     },
+        //     {
+        //         service: 'EmployeeService',
+        //         callback: 'employeeServiceCallback'
+        //     }
         ]);
 
 
@@ -91,48 +91,48 @@ export class EnterTimeComponent extends BaseComponent {
         this.phases = [];
     }
 
-    projectServiceCallback (projects) {
+    // projectServiceCallback (projects) {
+    //
+    //     this.projects = projects['Value'] as Array<Project>;
+    //     this.mockEntryFlag();
+    //     // console.log(projects['Value']);
+    // }
+    //
+    // employeeServiceCallback (employees) {
+    //
+    //     // console.log(employees);
+    //     this._tenantEmployees = this.concatName(employees);
+    //     this.employees = this._tenantEmployees;
+    // }
+    //
+    // indirectCostCodeServiceCallback (costCodes) {
+    //
+    //     // console.log(costCodes);
+    //     this._indirectCodes = this.mapCostCodes(costCodes['Value']) as Array<CostCode>;
+    //     this.costCodes = this._indirectCodes;
+    // }
 
-        this.projects = projects['Value'] as Array<Project>;
-        this.mockEntryFlag();
-        // console.log(projects['Value']);
-    }
-
-    employeeServiceCallback (employees) {
-
-        // console.log(employees);
-        this._tenantEmployees = this.concatName(employees);
-        this.employees = this._tenantEmployees;
-    }
-
-    indirectCostCodeServiceCallback (costCodes) {
-
-        // console.log(costCodes);
-        this._indirectCodes = this.mapCostCodes(costCodes['Value']) as Array<CostCode>;
-        this.costCodes = this._indirectCodes;
-    }
-
-    public addLines() {
-        // console.log(this.linesToAdd);
-        this.generateNewLines(this.linesToAdd);
-        this.accordionOpen = false;
-        this.initLinesToAdd();
-    }
-
-    public removeDate(removeDate: moment.Moment) {
-        let indexToRemove: number;
-        this.linesToAdd.selectedDates.forEach((date, idx) => {
-            if (date.isSame(removeDate)) {
-                indexToRemove = idx;
-            }
-        });
-
-        if (indexToRemove != null) {
-            this.linesToAdd.selectedDates.splice(indexToRemove--, 1);
-            // TODO UI won't update but developer has resolved this issue, should resolve itself once merged and updated on npm
-            //    see commit associated with https://github.com/vlio20/angular-datepicker/issues/127
-        }
-    }
+    // public addLines() {
+    //     // console.log(this.linesToAdd);
+    //     this.generateNewLines(this.linesToAdd);
+    //     this.accordionOpen = false;
+    //     this.initLinesToAdd();
+    // }
+    //
+    // public removeDate(removeDate: moment.Moment) {
+    //     let indexToRemove: number;
+    //     this.linesToAdd.selectedDates.forEach((date, idx) => {
+    //         if (date.isSame(removeDate)) {
+    //             indexToRemove = idx;
+    //         }
+    //     });
+    //
+    //     if (indexToRemove != null) {
+    //         this.linesToAdd.selectedDates.splice(indexToRemove--, 1);
+    //         // TODO UI won't update but developer has resolved this issue, should resolve itself once merged and updated on npm
+    //         //    see commit associated with https://github.com/vlio20/angular-datepicker/issues/127
+    //     }
+    // }
 
     public deleteAllLines() {
         this.linesToSubmit = [];
@@ -166,21 +166,21 @@ export class EnterTimeComponent extends BaseComponent {
         this.updateGrouping(this.groupCardsBy, true);
     }
 
-    public linesToAddCount(): number {
-        return this.linesToAdd.selectedDates.length * this.linesToAdd.employees.length;
-    }
+    // public linesToAddCount(): number {
+    //     return this.linesToAdd.selectedDates.length * this.linesToAdd.employees.length;
+    // }
 
-    public selectAllEmployees() {
-
-        this.linesToAdd.employees = [];
-        this.employees.forEach(employee => {
-            this.linesToAdd.employees.push(employee);
-        });
-    }
-
-    public selectNoneEmployees() {
-        this.linesToAdd.employees = [];
-    }
+    // public selectAllEmployees() {
+    //
+    //     this.linesToAdd.employees = [];
+    //     this.employees.forEach(employee => {
+    //         this.linesToAdd.employees.push(employee);
+    //     });
+    // }
+    //
+    // public selectNoneEmployees() {
+    //     this.linesToAdd.employees = [];
+    // }
 
     public updateGrouping(by: string, doNotScroll?: boolean) {
         this.groupCardsBy = by;
@@ -189,66 +189,66 @@ export class EnterTimeComponent extends BaseComponent {
     }
 
     // e is of type Project
-    public projectChanged(e) {
-
-        this.linesToAdd.project = e;
-        this.linesToAdd.employees = [];
-        // TODO reload and repopulate dropdowns based on newly selected project
-
-        this.checkDefaultSystem(e.Systems);
-        this.checkDefaultCostCode(e.CostCodes);
-        this.filterEmployees(e.Id);
-        // console.log(this.employees);
-    }
-
-    public systemChanged(e) {
-
-        this.checkDefaultPhase(e.Phases);
-    }
-
-    selectEmployee (event) {
-
-        console.log('SelectEmployee', event);
-    }
+    // public projectChanged(e) {
+    //
+    //     this.linesToAdd.project = e;
+    //     this.linesToAdd.employees = [];
+    //     // TODO reload and repopulate dropdowns based on newly selected project
+    //
+    //     this.checkDefaultSystem(e.Systems);
+    //     this.checkDefaultCostCode(e.CostCodes);
+    //     this.filterEmployees(e.Id);
+    //     // console.log(this.employees);
+    // }
+    //
+    // public systemChanged(e) {
+    //
+    //     this.checkDefaultPhase(e.Phases);
+    // }
+    //
+    // selectEmployee (event) {
+    //
+    //     console.log('SelectEmployee', event);
+    // }
 
     public submitTime() {
 
     }
 
-    private checkDefaultSystem (systems: Array<System>) {
-
-        this.systems = systems;
-        if (systems.length === 1) {
-
-            this.linesToAdd.system = systems[0];
-            this.checkDefaultPhase(systems[0].Phases);
-        } else {
-
-            this.linesToAdd.phase = null;
-            this.phases = [];
-        }
-    }
-
-    private checkDefaultPhase (phases: Array<Phase>) {
-
-        this.phases = phases;
-        if (phases.length === 1) {
-
-            this.linesToAdd.phase = phases[0];
-        }
-    }
-
-    private checkDefaultCostCode (costCodes: Array<CostCode>) {
-
-        this.costCodes = costCodes;
-        if (costCodes.length === 1) {
-
-            this.linesToAdd.costCode = costCodes[0];
-        } else {
-
-            this.linesToAdd.costCode = null;
-        }
-    }
+    // private checkDefaultSystem (systems: Array<System>) {
+    //
+    //     this.systems = systems;
+    //     if (systems.length === 1) {
+    //
+    //         this.linesToAdd.system = systems[0];
+    //         this.checkDefaultPhase(systems[0].Phases);
+    //     } else {
+    //
+    //         this.linesToAdd.phase = null;
+    //         this.phases = [];
+    //     }
+    // }
+    //
+    // private checkDefaultPhase (phases: Array<Phase>) {
+    //
+    //     this.phases = phases;
+    //     if (phases.length === 1) {
+    //
+    //         this.linesToAdd.phase = phases[0];
+    //     }
+    // }
+    //
+    // private checkDefaultCostCode (costCodes: Array<CostCode>) {
+    //
+    //     this.costCodes = costCodes;
+    //     if (costCodes.length === 1) {
+    //
+    //         this.linesToAdd.costCode = costCodes[0];
+    //     } else {
+    //
+    //         this.linesToAdd.costCode = null;
+    //     }
+    // }
 
     private initLinesToAdd() {
         this.linesToAdd = {
@@ -276,27 +276,27 @@ export class EnterTimeComponent extends BaseComponent {
     }
 
     // take the lines the user wants to add, and make them into TimeRecords that are ready to submit
-    private generateNewLines(lines: LinesToAdd) {
-
-        lines.selectedDates.forEach((date, dateIdx) => {
-            lines.employees.forEach((employee, employeeIdx) => {
-
-                let model: LineToSubmit;
-
-                if (!lines.timeInTimeOut) {
-
-                    model = this.buildHoursToSubmit(date, employee, lines);
-                } else {
-
-                    model = this.buildTimeToSubmit(date, employee, lines);
-                }
-
-                this.linesToSubmit.push(model);
-            })
-        });
-
-        this.groupLinesToSubmit(this.linesToSubmit, this.groupCardsBy);
-    }
+    // private generateNewLines(lines: LinesToAdd) {
+    //
+    //     lines.selectedDates.forEach((date, dateIdx) => {
+    //         lines.employees.forEach((employee, employeeIdx) => {
+    //
+    //             let model: LineToSubmit;
+    //
+    //             if (!lines.timeInTimeOut) {
+    //
+    //                 model = this.buildHoursToSubmit(date, employee, lines);
+    //             } else {
+    //
+    //                 model = this.buildTimeToSubmit(date, employee, lines);
+    //             }
+    //
+    //             this.linesToSubmit.push(model);
+    //         })
+    //     });
+    //
+    //     this.groupLinesToSubmit(this.linesToSubmit, this.groupCardsBy);
+    // }
 
     private buildHoursToSubmit (date, employee, lines: LinesToAdd): LineToSubmit {
 

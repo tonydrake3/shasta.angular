@@ -1,0 +1,36 @@
+.enter-time-form {
+
+    .form-field{
+        padding: 15px 0;
+        width: 100%;
+    }
+
+    .groupings {
+
+        line-height: 60px;
+        vertical-align: middle;
+        //> * {
+        //    @media(max-width: 1092px) and (min-width: 992px) {
+        //        font-size: 10px !important;
+        //    }
+        //    @media(max-width: 841px) {
+        //        font-size: 10px !important;
+        //    }
+        //}
+
+        @include noselect();
+
+        label {
+            @extend .label-light;
+        }
+        a {
+            @extend .label-regular;
+            cursor: pointer;
+            font-weight: 500;
+
+            &:hover {
+                text-decoration: underline !important;
+            }
+        }
+    }
+}

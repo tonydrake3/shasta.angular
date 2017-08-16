@@ -4,6 +4,8 @@
 
         <div class="close-icon accent-light" *ngIf="groupedLines"><i class="material-icons" (click)="accordionOpen = false">keyboard_arrow_up</i><span>collapse</span></div>
 
+        <esub-enter-time-form></esub-enter-time-form>
+        <!--
         <md-select placeholder="Project" [ngModel]="linesToAdd.project" (ngModelChange)="projectChanged($event)">
             <md-option *ngFor="let project of projects" [value]="project">{{project.Name}}</md-option>
         </md-select>
@@ -106,7 +108,7 @@
         </md-input-container>
 
         <button md-raised-button (click)="addLines()" class="primary" [disabled]="linesToAddCount() === 0">Add {{linesToAddCount()}} Lines</button>
-
+-->
     </div>
 
     <div class="row add-more" *ngIf="groupedLines">

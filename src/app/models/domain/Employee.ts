@@ -12,4 +12,5 @@ export class Employee {
     // SourceId?: number;
     // TenantId?: number;
     ProjectIds: string[];
+    FullName: string;
 }

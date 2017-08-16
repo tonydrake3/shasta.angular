@@ -1,0 +1,139 @@
+<div class="enter-time-form">
+    <form [formGroup]="enterTimeForm" (ngSubmit)="createLines(enterTimeForm)" novalidate>
+        <div class="row">
+            <div class="col-md-12">
+                <md-select class="form-field" placeholder="Project" formControlName="project">
+                    <md-option *ngFor="let project of projects" [value]="project">{{project.Name}}</md-option>
+                </md-select>
+            </div>
+        </div>
+
+        <div class="row" *ngIf="systems.length > 0">
+            <div class="col-md-12">
+                <md-select class="form-field" placeholder="System" formControlName="system">
+                    <md-option *ngFor="let system of systems" [value]="system">{{system.Name}}</md-option>
+                </md-select>
+            </div>
+        </div>
+
+        <div class="row" *ngIf="phases.length > 0">
+            <div class="col-md-12">
+                <md-select class="form-field" placeholder="Phase" formControlName="phase">
+                    <md-option *ngFor="let phase of phases" [value]="phase">{{phase.Name}}</md-option>
+                </md-select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <md-select class="form-field" placeholder="Cost Code" formControlName="costCode">
+                    <md-option *ngFor="let costCode of costCodes" [value]="costCode">{{costCode.Name}}</md-option>
+                </md-select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-10">
+                <md-select class="employee-select form-field" placeholder="Employees" formControlName="employees" multiple
+                           #select="mdSelect">
+                    <md-option *ngFor="let employee of employees" [value]="employee" >{{employee.FullName}}</md-option>
+                </md-select>
+            </div>
+            <div class="col-md-2 groupings">
+                <label>select</label>
+                <a (click)="selectAllEmployees()">All</a>
+                <a (click)="selectNoneEmployees()">None</a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-field">
+                    <dp-day-calendar #dayPicker [(ngModel)]="linesToAdd.selectedDates" formControlName="selectedDates"
+                                     [config]="dpCalendarConfig" [theme]="'dp-material'" ></dp-day-calendar>
+                </div>
+
+            </div>
+
+            <div class="col-md-4">
+                <div class="row" *ngFor="let date of linesToAdd.selectedDates">
+                    <div class="col-md-6">{{date.format(dateFormat)}}</div>
+                    <div class="col-md-1"><i class="material-icons" (click)="removeDate(date)">delete</i></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" [ngSwitch]="linesToAdd.project?.timeEntryMethod" class="time-entry-method">
+            <div class="col-md-12" *ngSwitchCase="'hoursWorked'">
+                <label>Time Entry Method</label> Hours Worked
+
+                <div class="row time-entry">
+                    <md-input-container>
+                        <input mdInput placeholder="ST" formControlName="standardHours">
+                    </md-input-container>
+
+                    <md-input-container>
+                        <input mdInput placeholder="OT" formControlName="overtimeHours">
+                    </md-input-container>
+
+                    <md-input-container>
+                        <input mdInput placeholder="DT" formControlName="doubleTimeHours">
+                    </md-input-container>
+                </div>
+
+            </div>
+            <div class="col-md-12" *ngSwitchCase="'timeInTimeOut'">
+                <div class="row">
+                    <div class="col-md-2">
+                        <span class="label-bold">Time In</span>
+
+                        <div class="row time-entry">
+                            <dp-time-select [(ngModel)]="linesToAdd.timeInTimeOut.in" [ngModelOptions]="{standalone: true}"
+                                            [config]="dpTimeConfig" [theme]="'dp-material'"></dp-time-select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <span class="label-bold">Time Out</span>
+                        <div class="row time-entry">
+                            <dp-time-select [(ngModel)]="linesToAdd.timeInTimeOut.out" [ngModelOptions]="{standalone: true}"
+                                            [config]="dpTimeConfig" [theme]="'dp-material'"></dp-time-select>
+                        </div>
+                    </div>
+                    <div class="col-md-2 offset-1">
+                        <span class="label-bold">Break Time In</span>
+
+                        <div class="row time-entry">
+                            <dp-time-select [(ngModel)]="linesToAdd.break.in" [ngModelOptions]="{standalone: true}"
+                                            [config]="dpTimeConfig" [theme]="'dp-material'"></dp-time-select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <span class="label-bold">Break Time Out</span>
+
+                        <div class="row time-entry">
+                            <dp-time-select [(ngModel)]="linesToAdd.break.out" [ngModelOptions]="{standalone: true}"
+                                            [config]="dpTimeConfig" [theme]="'dp-material'"></dp-time-select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <md-input-container class="form-field">
+                    <input mdInput placeholder="Notes" formControlName="notes">
+                </md-input-container>
+            </div>
+        </div>
+        <p>Form status: {{ enterTimeForm.status | json }}</p>
+
+        <div class="row">
+            <div class="col-md-12">
+                <button md-raised-button type="submit" class="primary" [disabled]="linesToAddCount() === 0">Add {{linesToAddCount()}} Lines</button>
+            </div>
+        </div>
+
+    </form>
+
+</div>
