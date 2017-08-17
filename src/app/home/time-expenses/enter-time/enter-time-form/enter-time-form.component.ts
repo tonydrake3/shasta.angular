@@ -15,8 +15,7 @@ import { CostCode } from '../../../../models/domain/CostCode';
 import { System } from '../../../../models/domain/System';
 import { Phase } from '../../../../models/domain/Phase';
 import { LinesToAdd } from '../models/LinesToAdd';
-import {SelectListRewriteDirective} from '../../../shared/directives/select-list-rewrite.directive';
-import {SelectListRewriteOptions} from '../../../../models/configuration/SelectListRewriteOptions';
+import { dependentFieldValidator } from '../../../shared/validators/dependent-field.validator';
 
 @Component({
     selector: 'esub-enter-time-form',
@@ -24,7 +23,6 @@ import {SelectListRewriteOptions} from '../../../../models/configuration/SelectL
 })
 export class EnterTimeFormComponent extends BaseComponent implements AfterViewInit {
 
-    @ViewChild('select') mdSelect;
     // Public
     public enterTimeForm: FormGroup;
     public linesToAdd: LinesToAdd;
@@ -33,8 +31,6 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
     public employees: Array<Employee>;
     public systems: Array<System>;
     public phases: Array<Phase>;
-
-    public selectedEmployees: Array<any>;
 
     // Private
     private _tenantEmployees: Array<Employee>;
@@ -49,13 +45,6 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
         minutesInterval: 5,
         showTwentyFourHours: false,
         showSeconds: false
-    };
-
-    // Rewrite Config
-    public employeeRewriteConfig: SelectListRewriteOptions = {
-        target: 'mat-select-text-value',
-        fieldName: 'FullName',
-        labelText: 'Employees'
     };
 
     @ViewChild('dayPicker') dayPicker: DatePickerComponent;
@@ -281,6 +270,7 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
 
         this.projectChange();
         this.systemChange();
+        this.costCodeChange();
         // this.employeeChange();
     }
 
@@ -297,6 +287,10 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
                 this.checkDefaultSystem(project.Systems);
                 this.checkDefaultCostCode(project.CostCodes);
                 this.filterEmployees(project.Id);
+
+                const costCodeSelect = this.enterTimeForm.get('costCode');
+                costCodeSelect.clearValidators();
+                costCodeSelect.setErrors(null);
             }
         );
     }
@@ -305,8 +299,18 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
         const systemSelect = this.enterTimeForm.get('system');
         systemSelect.valueChanges.forEach(
             (system: System) => {
-                console.log(system);
                 this.checkDefaultPhase(system.Phases);
+            }
+        );
+    }
+
+    costCodeChange() {
+        const costCodeSelect = this.enterTimeForm.get('costCode');
+        costCodeSelect.valueChanges.forEach(
+            (costCode: CostCode) => {
+                const projectSelect = this.enterTimeForm.get('project');
+                projectSelect.clearValidators();
+                projectSelect.setErrors(null);
             }
         );
     }
@@ -316,10 +320,6 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
         employeeSelect.valueChanges.forEach(
             (employees: Array<Employee>) => {
                 console.log('employeeChange', employees);
-                setTimeout(() => {
-                    console.log('employeeChange postTimeout');
-                    this.selectedEmployees = employees;
-                });
             }
         );
     }

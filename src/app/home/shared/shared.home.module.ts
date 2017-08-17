@@ -29,7 +29,6 @@ import {DateToWeekdayPipe} from './pipes/date-to-weekday.pipe';
 import {KeysPipe} from './pipes/keys.pipe';
 import {StatusPipe} from './pipes/status.pipe';
 import {NumericPrecisionPipe} from './pipes/numeric-precision.pipe';
-import {SelectListRewriteDirective} from './directives/select-list-rewrite.directive';
 
 
 @NgModule({
@@ -52,8 +51,7 @@ import {SelectListRewriteDirective} from './directives/select-list-rewrite.direc
         DateToWeekdayPipe,
         KeysPipe,
         CommentsComponent,
-        NumericPrecisionPipe,
-        SelectListRewriteDirective
+        NumericPrecisionPipe
     ],
     providers: [
         AuthorizationService,
@@ -76,8 +74,7 @@ import {SelectListRewriteDirective} from './directives/select-list-rewrite.direc
         DateToWeekdayPipe,
         KeysPipe,
         CommentsComponent,
-        NumericPrecisionPipe,
-        SelectListRewriteDirective
+        NumericPrecisionPipe
     ]
 })
 
