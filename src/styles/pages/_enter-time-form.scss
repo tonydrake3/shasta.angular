@@ -1,8 +1,24 @@
 .enter-time-form {
 
+    .mat-input-wrapper {
+        margin: 0;
+    }
+
     .form-field{
         padding: 15px 0;
         width: 100%;
+
+        &.notes,
+        &.dates {
+            font-size: 16px;
+        }
+    }
+
+    .time-entry-calendar {
+        background-color: $true-white;
+        position: absolute;
+        top: 47px;
+        z-index: 999;
     }
 
     .groupings {
@@ -31,6 +47,12 @@
             &:hover {
                 text-decoration: underline !important;
             }
+        }
+    }
+
+    .esub-button-group {
+        button {
+            width: 100%;
         }
     }
 }

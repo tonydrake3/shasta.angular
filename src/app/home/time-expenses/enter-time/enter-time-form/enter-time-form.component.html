@@ -47,21 +47,32 @@
         </div>
 
         <div class="row">
-            <div class="col-md-4">
-                <div class="form-field">
+            <div class="col-md-12">
+                <md-input-container class="form-field dates">
+                    <input mdInput id="txtDates" placeholder="Dates" formControlName="dates" (click)="toggleDatepicker()">
+                </md-input-container>
+                <div class="time-entry-calendar" *ngIf="isCalendarDisplayed">
                     <dp-day-calendar #dayPicker [(ngModel)]="linesToAdd.selectedDates" formControlName="selectedDates"
                                      [config]="dpCalendarConfig" [theme]="'dp-material'" ></dp-day-calendar>
                 </div>
-
-            </div>
-
-            <div class="col-md-4">
-                <div class="row" *ngFor="let date of linesToAdd.selectedDates">
-                    <div class="col-md-6">{{date.format(dateFormat)}}</div>
-                    <div class="col-md-1"><i class="material-icons" (click)="removeDate(date)">delete</i></div>
-                </div>
             </div>
         </div>
+
+        <!--<div class="row">-->
+            <!--<div class="col-md-4">-->
+                <!--<div class="form-field">-->
+
+                <!--</div>-->
+
+            <!--</div>-->
+
+            <!--<div class="col-md-4">-->
+                <!--<div class="row" *ngFor="let date of linesToAdd.selectedDates">-->
+                    <!--<div class="col-md-6">{{date.format(dateFormat)}}</div>-->
+                    <!--<div class="col-md-1"><i class="material-icons" (click)="removeDate(date)">delete</i></div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
 
         <div class="row" [ngSwitch]="linesToAdd.project?.timeEntryMethod" class="time-entry-method">
             <div class="col-md-12" *ngSwitchCase="'hoursWorked'">
@@ -121,16 +132,15 @@
 
         <div class="row">
             <div class="col-md-12">
-                <md-input-container class="form-field">
+                <md-input-container class="notes form-field">
                     <input mdInput placeholder="Notes" formControlName="notes">
                 </md-input-container>
             </div>
         </div>
-        <p>Form status: {{ enterTimeForm.status | json }}</p>
 
         <div class="row">
-            <div class="col-md-12">
-                <button md-raised-button type="submit" class="primary" [disabled]="linesToAddCount() === 0">Add {{linesToAddCount()}} Lines</button>
+            <div class="col-md-12 esub-button-group">
+                <button md-raised-button type="submit" class="secondary" [disabled]="enterTimeForm.invalid">Create {{linesToAddCount()}} time entries</button>
             </div>
         </div>
 

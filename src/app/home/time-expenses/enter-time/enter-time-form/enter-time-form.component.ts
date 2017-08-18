@@ -1,9 +1,9 @@
-import {AfterViewInit, Component, Injector, OnInit, ViewChild, ViewChildren} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import { Component, Injector, ViewChild} from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import { ITimeSelectConfig } from 'ng2-date-picker/time-select/time-select-config.model';
-import {DatePickerComponent, IDatePickerConfig} from 'ng2-date-picker';
+import { DatePickerComponent, IDatePickerConfig } from 'ng2-date-picker';
 
 // Components
 import {BaseComponent} from '../../../shared/components/base.component';
@@ -21,16 +21,19 @@ import { dependentFieldValidator } from '../../../shared/validators/dependent-fi
     selector: 'esub-enter-time-form',
     templateUrl: './enter-time-form.component.html'
 })
-export class EnterTimeFormComponent extends BaseComponent implements AfterViewInit {
+export class EnterTimeFormComponent extends BaseComponent {
 
     // Public
     public enterTimeForm: FormGroup;
     public linesToAdd: LinesToAdd;
+    public dateFormat: string;
     public projects: Array<Project>;
     public costCodes: Array<CostCode>;
     public employees: Array<Employee>;
     public systems: Array<System>;
     public phases: Array<Phase>;
+    public dates: any;
+    public isCalendarDisplayed: boolean;
 
     // Private
     private _tenantEmployees: Array<Employee>;
@@ -38,6 +41,11 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
 
     // Calendar Config
     public dpCalendarConfig: IDatePickerConfig = {
+        appendTo: '#txtDates',
+        allowMultiSelect: true,
+        max: moment()
+    };
+    public dpDatepickerConfig: IDatePickerConfig = {
         allowMultiSelect: true,
         max: moment()
     };
@@ -48,6 +56,7 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
     };
 
     @ViewChild('dayPicker') dayPicker: DatePickerComponent;
+    @ViewChild('datePicker') datePicker: DatePickerComponent;
 
     constructor (private _builder: FormBuilder, private _injector: Injector) {
 
@@ -66,6 +75,8 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
             }
         ]);
 
+        this.dateFormat = 'MMM. Do, YYYY';
+        this.isCalendarDisplayed = false;
         this.initLinesToAdd();
         this.systems = [];
         this.phases = [];
@@ -76,11 +87,7 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
      * Lifecycle Methods
      ******************************************************************************************************************/
 
-    ngAfterViewInit () {
 
-        // console.log(this.mdSelect);
-        // console.log(this.dayPicker);
-    }
 
     /******************************************************************************************************************
      * Callback Handler
@@ -109,6 +116,11 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
     /******************************************************************************************************************
      * Public Methods
      ******************************************************************************************************************/
+    public toggleDatepicker () {
+        console.log('openDate');
+        this.isCalendarDisplayed = !this.isCalendarDisplayed;
+    }
+
     public selectAllEmployees() {
 
         let all = [];
@@ -118,6 +130,7 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
         this.enterTimeForm.patchValue({
            employees: all
         });
+        this.linesToAdd.employees = all;
     }
 
     public selectNoneEmployees() {
@@ -125,6 +138,7 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
         this.enterTimeForm.patchValue({
             employees: none
         });
+        this.linesToAdd.employees = [];
     }
 
     public removeDate(removeDate: moment.Moment) {
@@ -262,6 +276,7 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
             costCode: ['', [Validators.required]],
             employees: ['', [Validators.required]],
             selectedDates: ['', [Validators.required]],
+            dates: [''],
             standardHours: '',
             overtimeHours: '',
             doubleTimeHours: '',
@@ -271,7 +286,8 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
         this.projectChange();
         this.systemChange();
         this.costCodeChange();
-        // this.employeeChange();
+        this.employeeChange();
+        this.datepickerChange();
     }
 
     /******************************************************************************************************************
@@ -319,7 +335,19 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
         const employeeSelect = this.enterTimeForm.get('employees');
         employeeSelect.valueChanges.forEach(
             (employees: Array<Employee>) => {
-                console.log('employeeChange', employees);
+                this.linesToAdd.employees = employees;
+            }
+        );
+    }
+
+    datepickerChange() {
+        const datesCalendar = this.enterTimeForm.get('selectedDates');
+        datesCalendar.valueChanges.forEach(
+            (dates: Array<moment.Moment>) => {
+                this.enterTimeForm.patchValue({
+                    dates: dates
+                });
+                this.linesToAdd.selectedDates = dates;
             }
         );
     }
