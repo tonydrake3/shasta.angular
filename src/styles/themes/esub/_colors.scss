@@ -7,11 +7,11 @@ $white: #f4f4f4;
 $true-white: #ffffff;
 $black: #333333;
 $true-black: #000000;
-$warm-grey: #929292;
+$warm-grey: #4A4A4A;
 
 // theme colors
 
-$orangey-yellow: #fcb712;
+$orangey-yellow: #FDB913;
 $tomato: #eb4343;
 $butterscotch: #ffc63b;
 $frog-green: #31c40a;
@@ -21,8 +21,8 @@ $dark-sky-blue: #2094de;
 
 // gray variants
 $gray: $warm-grey;
-$gray-20: #8f8e94;
-$gray-40: #6d6d72;
+$gray-20: #D8D8D8;
+$gray-40: #F4F4F4;
 $gray-bg: rgba($gray, 0.1);
 $gray-hover: rgba($gray, 0.3);
 $gray-border: rgba($gray, 0.5);
@@ -53,7 +53,7 @@ $blue: $dark-sky-blue;
 // component specific colors
 //
 
-$nav-link-active: $yellow;
-$sub-nav-link-odd: $yellow-10;
-$sub-nav-link-even: $yellow-80;
+$nav-link-active: $true-white;
+$sub-nav-link-odd: $gray-20;
+$sub-nav-link-even: $gray-20;
 $nav_link_active_color: $true-white;

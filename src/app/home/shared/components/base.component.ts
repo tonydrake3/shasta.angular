@@ -16,6 +16,7 @@ import {MapsService} from '../services/maps.service';
 import {WeatherService} from '../services/weather.service';
 import {NotificationService} from '../../notifications/notification.service';
 import {MockNotificationService} from '../../../mocks/mock.notification.service';
+import {CurrentEmployeeService} from '../services/user/current-employee.service';
 
 @Component({ })
 export class BaseComponent implements OnDestroy {
@@ -33,6 +34,7 @@ export class BaseComponent implements OnDestroy {
     this.autoInjections = [
       { key: 'ProjectService', serviceObject: ProjectService, subject: 'projects$', initializer: 'getLatest' },
       { key: 'TimeRecordsService', serviceObject: TimeRecordsService, subject: 'timeRecords$', initializer: 'getLatest' },
+      { key: 'CurrentEmployeeService', serviceObject: CurrentEmployeeService, subject: 'currentEmployee$', initializer: 'getLatest' },
       { key: 'UserService', serviceObject: UserService, subject: 'currentUserInfo$', initializer: 'getLatest' },
       { key: 'ProjectSummaryService', serviceObject: ProjectSummaryService, subject: 'projectDetail$', initializer: 'getLatest' },
       { key: 'MapsService', serviceObject: MapsService, subject: 'location$', initializer: 'getLatest'},

@@ -13,6 +13,7 @@ import {DynamicInjectionDirective} from './directives/dynamic-injector.directive
 
 // Services
 import {AuthorizationService} from './services/authorization/authorization.service';
+import {CurrentEmployeeService} from './services/user/current-employee.service';
 import {MapsService} from './services/maps.service';
 import {UserService} from './services/user/user.service';
 import {WeatherService} from './services/weather.service';
@@ -58,6 +59,7 @@ import {ClickCloseDirective} from './directives/click-close.directive';
     ],
     providers: [
         AuthorizationService,
+        CurrentEmployeeService,
         MapsService,
         PopoverService,
         UserService,
