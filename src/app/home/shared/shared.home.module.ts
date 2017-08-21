@@ -3,8 +3,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MaterialModule, MdDatepickerModule, MdNativeDateModule } from '@angular/material';
+import {DpDatePickerModule} from 'ng2-date-picker';
 
 // Directives
+import {CloseDateFlyoutDirective} from './directives/date-flyout.directive';
 import {EChartsDirective} from './directives/echarts.directive';
 import {SlimScrollDirective} from './directives/slim-scroll.directive';
 import {TextHighlightDirective} from './directives/highlight.directive';
@@ -17,12 +19,14 @@ import {MapsService} from './services/maps.service';
 import {UserService} from './services/user/user.service';
 import {WeatherService} from './services/weather.service';
 import {ProjectService} from './services/project.service';
+import {DateFlyoutService} from './components/date-flyout/date-flyout.service';
 
 // Components
 import {BaseCardComponent} from './components/base.card.component';
 import {CommentsComponent} from './components/comments.component';
 import {MapComponent} from './components/map.component';
 import {WeekSelectorComponent} from './components/week-selector.component';
+import {DaypickerFlyoutComponent} from './components/date-flyout/daypicker-flyout.component';
 
 // Pipes
 import {DateToWeekdayPipe} from './pipes/date-to-weekday.pipe';
@@ -30,18 +34,18 @@ import {KeysPipe} from './pipes/keys.pipe';
 import {StatusPipe} from './pipes/status.pipe';
 import {NumericPrecisionPipe} from './pipes/numeric-precision.pipe';
 
-
 @NgModule({
     imports: [
         MaterialModule,
         MdDatepickerModule,
         MdNativeDateModule,
         CommonModule,
-        FormsModule
-
+        FormsModule,
+        DpDatePickerModule,
     ],
     declarations: [
         BaseCardComponent,
+        DaypickerFlyoutComponent,
         EChartsDirective,
         MapComponent,
         SlimScrollDirective,
@@ -51,10 +55,12 @@ import {NumericPrecisionPipe} from './pipes/numeric-precision.pipe';
         DateToWeekdayPipe,
         KeysPipe,
         CommentsComponent,
-        NumericPrecisionPipe
+        NumericPrecisionPipe,
+        CloseDateFlyoutDirective
     ],
     providers: [
         AuthorizationService,
+        DateFlyoutService,
         EmployeeService,
         IndirectCostCodesService,
         MapsService,
@@ -64,6 +70,7 @@ import {NumericPrecisionPipe} from './pipes/numeric-precision.pipe';
     ],
     exports: [
         BaseCardComponent,
+        DaypickerFlyoutComponent,
         EChartsDirective,
         MapComponent,
         SlimScrollDirective,
@@ -74,7 +81,8 @@ import {NumericPrecisionPipe} from './pipes/numeric-precision.pipe';
         DateToWeekdayPipe,
         KeysPipe,
         CommentsComponent,
-        NumericPrecisionPipe
+        NumericPrecisionPipe,
+        CloseDateFlyoutDirective
     ]
 })
 

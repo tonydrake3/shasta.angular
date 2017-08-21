@@ -47,13 +47,14 @@
         </div>
 
         <div class="row">
-            <div class="col-md-12">
-                <md-input-container class="form-field dates">
-                    <input mdInput id="txtDates" placeholder="Dates" formControlName="dates" (click)="toggleDatepicker()">
-                </md-input-container>
-                <div class="time-entry-calendar" *ngIf="isCalendarDisplayed">
-                    <dp-day-calendar #dayPicker [(ngModel)]="linesToAdd.selectedDates" formControlName="selectedDates"
-                                     [config]="dpCalendarConfig" [theme]="'dp-material'" ></dp-day-calendar>
+            <div class="col-md-12" >
+                {{isCalendarDisplayed}}
+                <div esubCloseDateFlyout>
+                    <md-input-container class="form-field dates">
+                        <input mdInput id="txtDates" placeholder="Dates" formControlName="dates">
+                    </md-input-container>
+                    <esub-daypicker-flyout #enterTimeDaypicker [daypickerConfig]="dpDatepickerConfig"
+                                           [selectedDates]="linesToAdd.selectedDates" (selectedDatesChange)="onDatesChanged($event)" ></esub-daypicker-flyout>
                 </div>
             </div>
         </div>
@@ -144,6 +145,8 @@
             </div>
         </div>
 
+
+        <span>{{enterTimeForm.valid}}</span>
     </form>
 
 </div>

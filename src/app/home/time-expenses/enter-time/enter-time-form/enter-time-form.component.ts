@@ -1,4 +1,4 @@
-import { Component, Injector, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, Injector, ViewChild} from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import * as _ from 'lodash';
@@ -16,12 +16,13 @@ import { System } from '../../../../models/domain/System';
 import { Phase } from '../../../../models/domain/Phase';
 import { LinesToAdd } from '../models/LinesToAdd';
 import { dependentFieldValidator } from '../../../shared/validators/dependent-field.validator';
+import {DateFlyoutService} from '../../../shared/components/date-flyout/date-flyout.service';
 
 @Component({
     selector: 'esub-enter-time-form',
     templateUrl: './enter-time-form.component.html'
 })
-export class EnterTimeFormComponent extends BaseComponent {
+export class EnterTimeFormComponent extends BaseComponent implements AfterViewInit {
 
     // Public
     public enterTimeForm: FormGroup;
@@ -33,7 +34,7 @@ export class EnterTimeFormComponent extends BaseComponent {
     public systems: Array<System>;
     public phases: Array<Phase>;
     public dates: any;
-    public isCalendarDisplayed: boolean;
+    // public isCalendarDisplayed: boolean;
 
     // Private
     private _tenantEmployees: Array<Employee>;
@@ -55,10 +56,8 @@ export class EnterTimeFormComponent extends BaseComponent {
         showSeconds: false
     };
 
-    @ViewChild('dayPicker') dayPicker: DatePickerComponent;
-    @ViewChild('datePicker') datePicker: DatePickerComponent;
-
-    constructor (private _builder: FormBuilder, private _injector: Injector) {
+    constructor (private _builder: FormBuilder, private _injector: Injector, private _changeRef: ChangeDetectorRef,
+                 private _dateFlyoutService: DateFlyoutService) {
 
         super(_injector, [
             {
@@ -76,7 +75,7 @@ export class EnterTimeFormComponent extends BaseComponent {
         ]);
 
         this.dateFormat = 'MMM. Do, YYYY';
-        this.isCalendarDisplayed = false;
+        // this.isCalendarDisplayed = false;
         this.initLinesToAdd();
         this.systems = [];
         this.phases = [];
@@ -87,7 +86,10 @@ export class EnterTimeFormComponent extends BaseComponent {
      * Lifecycle Methods
      ******************************************************************************************************************/
 
+    ngAfterViewInit () {
 
+
+    }
 
     /******************************************************************************************************************
      * Callback Handler
@@ -116,9 +118,24 @@ export class EnterTimeFormComponent extends BaseComponent {
     /******************************************************************************************************************
      * Public Methods
      ******************************************************************************************************************/
-    public toggleDatepicker () {
-        console.log('openDate');
-        this.isCalendarDisplayed = !this.isCalendarDisplayed;
+    public onDatesChanged (event) {
+
+        if (event.length !== 0) {
+
+            let dateFieldValue: string;
+            if (event.length > 1) {
+
+                dateFieldValue = event.length + ' dates selected';
+            } else {
+
+                dateFieldValue = event[0].format('M/d/YYYY')
+            }
+            this.enterTimeForm.patchValue({
+                dates: dateFieldValue
+            });
+            this.linesToAdd.selectedDates = event;
+            // console.log(event);
+        }
     }
 
     public selectAllEmployees() {
@@ -275,8 +292,7 @@ export class EnterTimeFormComponent extends BaseComponent {
             phase: '',
             costCode: ['', [Validators.required]],
             employees: ['', [Validators.required]],
-            selectedDates: ['', [Validators.required]],
-            dates: [''],
+            dates: ['', [Validators.required]],
             standardHours: '',
             overtimeHours: '',
             doubleTimeHours: '',
@@ -287,7 +303,6 @@ export class EnterTimeFormComponent extends BaseComponent {
         this.systemChange();
         this.costCodeChange();
         this.employeeChange();
-        this.datepickerChange();
     }
 
     /******************************************************************************************************************
@@ -336,18 +351,6 @@ export class EnterTimeFormComponent extends BaseComponent {
         employeeSelect.valueChanges.forEach(
             (employees: Array<Employee>) => {
                 this.linesToAdd.employees = employees;
-            }
-        );
-    }
-
-    datepickerChange() {
-        const datesCalendar = this.enterTimeForm.get('selectedDates');
-        datesCalendar.valueChanges.forEach(
-            (dates: Array<moment.Moment>) => {
-                this.enterTimeForm.patchValue({
-                    dates: dates
-                });
-                this.linesToAdd.selectedDates = dates;
             }
         );
     }
