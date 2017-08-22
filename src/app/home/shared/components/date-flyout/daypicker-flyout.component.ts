@@ -30,7 +30,6 @@ export class DaypickerFlyoutComponent implements OnInit {
 
                 (open) => {
 
-                    console.log('Open', open);
                     this.open = open;
                 }
             );
@@ -38,7 +37,6 @@ export class DaypickerFlyoutComponent implements OnInit {
 
     onDateSelected (event) {
 
-        console.log('onDateSelected', event);
         this.selectedDatesChange.emit(event);
     }
 }

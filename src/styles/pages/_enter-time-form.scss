@@ -12,13 +12,23 @@
         &.dates {
             font-size: 16px;
         }
-    }
 
-    .time-entry-calendar {
-        background-color: $true-white;
-        position: absolute;
-        top: 47px;
-        z-index: 999;
+        &.notes {
+            margin-bottom: 20px;
+        }
+
+        &.dates {
+
+            *:hover {
+                cursor: pointer;
+            }
+        }
+
+
+
+        label.mat-input-placeholder {
+            padding-left: 2px;
+        }
     }
 
     .groupings {
@@ -47,6 +57,22 @@
             &:hover {
                 text-decoration: underline !important;
             }
+        }
+    }
+
+    .time-entry-method {
+
+        span.label-bold {
+            color: $gray-50;
+            padding-left: 2px;
+        }
+    }
+
+    .time-entry {
+
+        label.mat-input-placeholder {
+            color: $gray-70;
+            padding-left: 2px;
         }
     }
 

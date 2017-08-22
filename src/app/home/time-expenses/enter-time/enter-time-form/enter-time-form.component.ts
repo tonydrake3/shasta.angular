@@ -1,9 +1,9 @@
-import {AfterViewInit, ChangeDetectorRef, Component, Injector, ViewChild} from '@angular/core';
+import { ChangeDetectorRef, Component, Injector } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import { ITimeSelectConfig } from 'ng2-date-picker/time-select/time-select-config.model';
-import { DatePickerComponent, IDatePickerConfig } from 'ng2-date-picker';
+import { IDatePickerConfig } from 'ng2-date-picker';
 
 // Components
 import {BaseComponent} from '../../../shared/components/base.component';
@@ -22,7 +22,7 @@ import {DateFlyoutService} from '../../../shared/components/date-flyout/date-fly
     selector: 'esub-enter-time-form',
     templateUrl: './enter-time-form.component.html'
 })
-export class EnterTimeFormComponent extends BaseComponent implements AfterViewInit {
+export class EnterTimeFormComponent extends BaseComponent {
 
     // Public
     public enterTimeForm: FormGroup;
@@ -33,8 +33,7 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
     public employees: Array<Employee>;
     public systems: Array<System>;
     public phases: Array<Phase>;
-    public dates: any;
-    // public isCalendarDisplayed: boolean;
+    public isTimeInTimeOut: boolean;
 
     // Private
     private _tenantEmployees: Array<Employee>;
@@ -56,8 +55,7 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
         showSeconds: false
     };
 
-    constructor (private _builder: FormBuilder, private _injector: Injector, private _changeRef: ChangeDetectorRef,
-                 private _dateFlyoutService: DateFlyoutService) {
+    constructor (private _builder: FormBuilder, private _injector: Injector) {
 
         super(_injector, [
             {
@@ -75,7 +73,7 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
         ]);
 
         this.dateFormat = 'MMM. Do, YYYY';
-        // this.isCalendarDisplayed = false;
+        this.isTimeInTimeOut = false;
         this.initLinesToAdd();
         this.systems = [];
         this.phases = [];
@@ -86,10 +84,6 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
      * Lifecycle Methods
      ******************************************************************************************************************/
 
-    ngAfterViewInit () {
-
-
-    }
 
     /******************************************************************************************************************
      * Callback Handler
@@ -114,7 +108,6 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
         this.costCodes = this._indirectCodes;
     }
 
-
     /******************************************************************************************************************
      * Public Methods
      ******************************************************************************************************************/
@@ -128,13 +121,18 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
                 dateFieldValue = event.length + ' dates selected';
             } else {
 
-                dateFieldValue = event[0].format('M/d/YYYY')
+                dateFieldValue = event[0].format(this.dateFormat);
             }
             this.enterTimeForm.patchValue({
                 dates: dateFieldValue
             });
             this.linesToAdd.selectedDates = event;
-            // console.log(event);
+
+        } else if (this.enterTimeForm.get('dates').value && event.length === 0) {
+
+            this.enterTimeForm.patchValue({
+                dates: ''
+            });
         }
     }
 
@@ -158,20 +156,10 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
         this.linesToAdd.employees = [];
     }
 
-    public removeDate(removeDate: moment.Moment) {
-        let indexToRemove: number;
-        this.linesToAdd.selectedDates.forEach((date, idx) => {
-            if (date.isSame(removeDate)) {
-                indexToRemove = idx;
-            }
-        });
+    public clearKeystroke (event) {
 
-        if (indexToRemove != null) {
-            const clone = _.cloneDeep(this.linesToAdd.selectedDates).splice(indexToRemove--, 1);
-            this.linesToAdd.selectedDates = clone;
-            // TODO UI won't update but developer has resolved this issue, should resolve itself once merged and updated on npm
-            //    see commit associated with https://github.com/vlio20/angular-datepicker/issues/127
-        }
+        event.preventDefault();
+        return false;
     }
 
     public linesToAddCount(): number {
@@ -223,6 +211,9 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
         if (systems.length === 1) {
 
             this.linesToAdd.system = systems[0];
+            this.enterTimeForm.patchValue({
+                system: systems[0]
+            });
             this.checkDefaultPhase(systems[0].Phases);
         } else {
 
@@ -237,6 +228,9 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
         if (phases.length === 1) {
 
             this.linesToAdd.phase = phases[0];
+            this.enterTimeForm.patchValue({
+                phase: phases[0]
+            });
         }
     }
 
@@ -246,6 +240,9 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
         if (costCodes.length === 1) {
 
             this.linesToAdd.costCode = costCodes[0];
+            this.enterTimeForm.patchValue({
+                costCode: costCodes[0]
+            });
         } else {
 
             this.linesToAdd.costCode = null;
@@ -267,7 +264,7 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
                     project['timeEntryMethod'] = 'timeInTimeOut';
                 }
             }
-        )
+        );
     }
 
     private concatName (employees: Array<Employee>) {
@@ -310,8 +307,17 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
      ******************************************************************************************************************/
     projectChange() {
         const projectSelect = this.enterTimeForm.get('project');
-        projectSelect.valueChanges.forEach(
+        projectSelect.valueChanges.subscribe(
             (project: Project) => {
+
+                if (project['timeEntryMethod'] === 'timeInTimeOut') {
+
+                    this.isTimeInTimeOut = true;
+                } else {
+
+                    this.isTimeInTimeOut = false;
+                }
+
                 this.linesToAdd.project = project;
                 this.linesToAdd.employees = [];
 
@@ -328,7 +334,7 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
 
     systemChange() {
         const systemSelect = this.enterTimeForm.get('system');
-        systemSelect.valueChanges.forEach(
+        systemSelect.valueChanges.subscribe(
             (system: System) => {
                 this.checkDefaultPhase(system.Phases);
             }
@@ -337,8 +343,9 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
 
     costCodeChange() {
         const costCodeSelect = this.enterTimeForm.get('costCode');
-        costCodeSelect.valueChanges.forEach(
+        costCodeSelect.valueChanges.subscribe(
             (costCode: CostCode) => {
+                this.linesToAdd.costCode = costCode;
                 const projectSelect = this.enterTimeForm.get('project');
                 projectSelect.clearValidators();
                 projectSelect.setErrors(null);
@@ -348,7 +355,7 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
 
     employeeChange() {
         const employeeSelect = this.enterTimeForm.get('employees');
-        employeeSelect.valueChanges.forEach(
+        employeeSelect.valueChanges.subscribe(
             (employees: Array<Employee>) => {
                 this.linesToAdd.employees = employees;
             }
