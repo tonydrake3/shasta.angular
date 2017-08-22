@@ -321,7 +321,7 @@ export class EnterTimeComponent extends BaseComponent {
 
     private buildTimeToSubmit (date, employee, lines: LinesToAdd): LineToSubmit {
 
-        let timeSubmission: LineToSubmit = {
+        const timeSubmission: LineToSubmit = {
             Date: date,
             Employee: employee,
             Project: lines.project,

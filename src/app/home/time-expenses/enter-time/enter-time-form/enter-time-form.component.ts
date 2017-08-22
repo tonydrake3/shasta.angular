@@ -138,7 +138,7 @@ export class EnterTimeFormComponent extends BaseComponent {
 
     public selectAllEmployees() {
 
-        let all = [];
+        const all = [];
         this.employees.forEach(employee => {
             all.push(employee);
         });
