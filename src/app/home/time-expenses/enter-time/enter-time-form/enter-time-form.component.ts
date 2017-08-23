@@ -14,11 +14,11 @@ import { Employee } from '../../../../models/domain/Employee';
 import { CostCode } from '../../../../models/domain/CostCode';
 import { System } from '../../../../models/domain/System';
 import { Phase } from '../../../../models/domain/Phase';
-import { LinesToAdd } from '../models/LinesToAdd';
-import { dependentFieldValidator } from '../../../shared/validators/dependent-field.validator';
-import {DateFlyoutService} from '../../../shared/components/date-flyout/date-flyout.service';
+// import { dependentFieldValidator } from '../../../shared/validators/dependent-field.validator';
+// import {DateFlyoutService} from '../../../shared/components/date-flyout/date-flyout.service';
 import {EnterTimeManager} from '../enter-time.manager';
 import {TimeEntry} from '../models/TimeEntry';
+import {TimeEntryMode} from '../models/TimeEntry';
 
 @Component({
     selector: 'esub-enter-time-form',
@@ -32,16 +32,16 @@ export class EnterTimeFormComponent extends BaseComponent {
 
     // Public
     public enterTimeForm: FormGroup;
-    public linesToAdd: LinesToAdd;
     public dateFormat: string;
     public projects: Array<Project>;
     public costCodes: Array<CostCode>;
     public employees: Array<Employee>;
     public systems: Array<System>;
     public phases: Array<Phase>;
-    public isTimeInTimeOut: boolean;
+    public timeEntryMode: TimeEntryMode;
     public selectedDates: Array<moment.Moment>;
     public time: TimeEntry;
+    public timeEntryModeEnum;
 
     // Calendar Config
     public dpDatepickerConfig: IDatePickerConfig = {
@@ -72,8 +72,10 @@ export class EnterTimeFormComponent extends BaseComponent {
         ]);
 
         this.dateFormat = 'MMM. Do, YYYY';
-        this.isTimeInTimeOut = false;
-        this.selectedDates = new Array<moment.Moment>();
+        this.timeEntryMode = TimeEntryMode.Hours;
+        this._enterTimeManager.setTimeEntryMode(this.timeEntryMode);
+        this.timeEntryModeEnum = TimeEntryMode;
+        this.selectedDates = [];
         this.time = new TimeEntry();
         this.systems = [];
         this.phases = [];
@@ -169,7 +171,7 @@ export class EnterTimeFormComponent extends BaseComponent {
 
     public createLines (enterTimeForm: FormControl) {
 
-        this._enterTimeManager.processLines(enterTimeForm);
+        this._enterTimeManager.processLines(enterTimeForm, this.time);
     }
 
     /******************************************************************************************************************
@@ -217,9 +219,6 @@ export class EnterTimeFormComponent extends BaseComponent {
             this.enterTimeForm.patchValue({
                 costCode: costCodes[0]
             });
-        } else {
-
-            this.linesToAdd.costCode = null;
         }
     }
 
@@ -273,7 +272,6 @@ export class EnterTimeFormComponent extends BaseComponent {
         this.projectChange();
         this.systemChange();
         this.costCodeChange();
-        // this.employeeChange();
     }
 
     /******************************************************************************************************************
@@ -286,11 +284,13 @@ export class EnterTimeFormComponent extends BaseComponent {
 
                 if (project['timeEntryMethod'] === 'timeInTimeOut') {
 
-                    this.isTimeInTimeOut = true;
+                    this.timeEntryMode = TimeEntryMode.TimeInTimeOut;
                 } else {
 
-                    this.isTimeInTimeOut = false;
+                    // Need this condition if project is changed to one with TimeInTimeOut
+                    this.timeEntryMode = TimeEntryMode.Hours;
                 }
+                this._enterTimeManager.setTimeEntryMode(this.timeEntryMode);
 
                 this.checkDefaultSystem(project.Systems);
                 this.checkDefaultCostCode(project.CostCodes);
@@ -322,13 +322,4 @@ export class EnterTimeFormComponent extends BaseComponent {
             }
         );
     }
-
-    // employeeChange() {
-    //     const employeeSelect = this.enterTimeForm.get('employees');
-    //     employeeSelect.valueChanges.subscribe(
-    //         (employees: Array<Employee>) => {
-    //             this.linesToAdd.employees = employees;
-    //         }
-    //     );
-    // }
 }

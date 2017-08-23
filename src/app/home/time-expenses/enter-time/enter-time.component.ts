@@ -6,7 +6,6 @@ import { ITimeSelectConfig } from 'ng2-date-picker/time-select/time-select-confi
 
 import { AccordionNavDirective } from '../../sidenav/sidenav-menu/accordion-nav.directive';
 import { BaseComponent } from '../../shared/components/base.component';
-import { LinesToAdd } from './models/LinesToAdd';
 import { LineToSubmit } from './models/LinesToSubmit';
 
 // Service Imports
@@ -20,6 +19,7 @@ import { CostCode } from '../../../models/domain/CostCode';
 import { System } from '../../../models/domain/System';
 import { Phase } from '../../../models/domain/Phase';
 import {Line} from 'tslint/lib/test/lines';
+import {LinesToAdd} from './models/LinesToAdd';
 
 
 @Component({
