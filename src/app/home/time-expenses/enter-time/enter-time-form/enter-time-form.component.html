@@ -52,14 +52,14 @@
                     <md-input-container class="form-field dates">
                         <input mdInput id="txtDates" placeholder="Dates" formControlName="dates" (keydown)="clearKeystroke($event)">
                     </md-input-container>
-                    <esub-daypicker-flyout [daypickerConfig]="dpDatepickerConfig" [selectedDates]="linesToAdd.selectedDates"
+                    <esub-daypicker-flyout [daypickerConfig]="dpDatepickerConfig" [selectedDates]="selectedDates"
                                            (selectedDatesChange)="onDatesChanged($event)" ></esub-daypicker-flyout>
                 </div>
             </div>
         </div>
 
         <div class="row" class="time-entry-method">
-            <div class="col-md-12" *ngIf="!isTimeInTimeOut && this.linesToAdd">
+            <div class="col-md-12" *ngIf="!isTimeInTimeOut">
                 <span class="label-bold">Hours Worked</span>
 
                 <div class="row time-entry form-field">
@@ -83,14 +83,14 @@
                         <span class="label-bold">Time In</span>
 
                         <div class="row time-entry">
-                            <dp-time-select [(ngModel)]="linesToAdd.timeInTimeOut.in" [ngModelOptions]="{standalone: true}"
+                            <dp-time-select [(ngModel)]="time.In" [ngModelOptions]="{standalone: true}"
                                             [config]="dpTimeConfig" [theme]="'dp-material'"></dp-time-select>
                         </div>
                     </div>
                     <div class="col-md-2">
                         <span class="label-bold">Time Out</span>
                         <div class="row time-entry">
-                            <dp-time-select [(ngModel)]="linesToAdd.timeInTimeOut.out" [ngModelOptions]="{standalone: true}"
+                            <dp-time-select [(ngModel)]="time.Out" [ngModelOptions]="{standalone: true}"
                                             [config]="dpTimeConfig" [theme]="'dp-material'"></dp-time-select>
                         </div>
                     </div>
@@ -98,7 +98,7 @@
                         <span class="label-bold">Break Time In</span>
 
                         <div class="row time-entry">
-                            <dp-time-select [(ngModel)]="linesToAdd.break.in" [ngModelOptions]="{standalone: true}"
+                            <dp-time-select [(ngModel)]="time.BreakIn" [ngModelOptions]="{standalone: true}"
                                             [config]="dpTimeConfig" [theme]="'dp-material'"></dp-time-select>
                         </div>
                     </div>
@@ -106,7 +106,7 @@
                         <span class="label-bold">Break Time Out</span>
 
                         <div class="row time-entry">
-                            <dp-time-select [(ngModel)]="linesToAdd.break.out" [ngModelOptions]="{standalone: true}"
+                            <dp-time-select [(ngModel)]="time.BreakOut" [ngModelOptions]="{standalone: true}"
                                             [config]="dpTimeConfig" [theme]="'dp-material'"></dp-time-select>
                         </div>
                     </div>

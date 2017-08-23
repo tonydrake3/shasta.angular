@@ -17,12 +17,18 @@ import { Phase } from '../../../../models/domain/Phase';
 import { LinesToAdd } from '../models/LinesToAdd';
 import { dependentFieldValidator } from '../../../shared/validators/dependent-field.validator';
 import {DateFlyoutService} from '../../../shared/components/date-flyout/date-flyout.service';
+import {EnterTimeManager} from '../enter-time.manager';
+import {TimeEntry} from '../models/TimeEntry';
 
 @Component({
     selector: 'esub-enter-time-form',
     templateUrl: './enter-time-form.component.html'
 })
 export class EnterTimeFormComponent extends BaseComponent {
+
+    // Private
+    private _tenantEmployees: Array<Employee>;
+    private _indirectCodes: Array<CostCode>;
 
     // Public
     public enterTimeForm: FormGroup;
@@ -34,17 +40,10 @@ export class EnterTimeFormComponent extends BaseComponent {
     public systems: Array<System>;
     public phases: Array<Phase>;
     public isTimeInTimeOut: boolean;
-
-    // Private
-    private _tenantEmployees: Array<Employee>;
-    private _indirectCodes: Array<CostCode>;
+    public selectedDates: Array<moment.Moment>;
+    public time: TimeEntry;
 
     // Calendar Config
-    public dpCalendarConfig: IDatePickerConfig = {
-        appendTo: '#txtDates',
-        allowMultiSelect: true,
-        max: moment()
-    };
     public dpDatepickerConfig: IDatePickerConfig = {
         allowMultiSelect: true,
         max: moment()
@@ -55,7 +54,7 @@ export class EnterTimeFormComponent extends BaseComponent {
         showSeconds: false
     };
 
-    constructor (private _builder: FormBuilder, private _injector: Injector) {
+    constructor (private _builder: FormBuilder, private _injector: Injector, private _enterTimeManager: EnterTimeManager) {
 
         super(_injector, [
             {
@@ -74,7 +73,8 @@ export class EnterTimeFormComponent extends BaseComponent {
 
         this.dateFormat = 'MMM. Do, YYYY';
         this.isTimeInTimeOut = false;
-        this.initLinesToAdd();
+        this.selectedDates = new Array<moment.Moment>();
+        this.time = new TimeEntry();
         this.systems = [];
         this.phases = [];
         this.createForm();
@@ -92,13 +92,15 @@ export class EnterTimeFormComponent extends BaseComponent {
 
         this.projects = projects['Value'] as Array<Project>;
         this.mockEntryFlag();
+        this._enterTimeManager.loadProjects(this.projects);
         // console.log(projects['Value']);
     }
 
     employeeServiceCallback (employees) {
 
-        this._tenantEmployees = this.concatName(employees['Value']);
+        this._tenantEmployees = this.concatName(employees['Value'] as Array<Employee>);
         this.employees = this._tenantEmployees;
+        this._enterTimeManager.loadEmployees(this._tenantEmployees);
     }
 
     indirectCostCodeServiceCallback (costCodes) {
@@ -106,6 +108,7 @@ export class EnterTimeFormComponent extends BaseComponent {
         // console.log(costCodes);
         this._indirectCodes = this.mapCostCodes(costCodes['Value']) as Array<CostCode>;
         this.costCodes = this._indirectCodes;
+        this._enterTimeManager.loadIndirectCodes(this._indirectCodes);
     }
 
     /******************************************************************************************************************
@@ -126,7 +129,7 @@ export class EnterTimeFormComponent extends BaseComponent {
             this.enterTimeForm.patchValue({
                 dates: dateFieldValue
             });
-            this.linesToAdd.selectedDates = event;
+            this._enterTimeManager.setSelectedDates(event);
 
         } else if (this.enterTimeForm.get('dates').value && event.length === 0) {
 
@@ -145,7 +148,6 @@ export class EnterTimeFormComponent extends BaseComponent {
         this.enterTimeForm.patchValue({
            employees: all
         });
-        this.linesToAdd.employees = all;
     }
 
     public selectNoneEmployees() {
@@ -153,7 +155,6 @@ export class EnterTimeFormComponent extends BaseComponent {
         this.enterTimeForm.patchValue({
             employees: none
         });
-        this.linesToAdd.employees = [];
     }
 
     public clearKeystroke (event) {
@@ -163,40 +164,17 @@ export class EnterTimeFormComponent extends BaseComponent {
     }
 
     public linesToAddCount(): number {
-        return this.linesToAdd.selectedDates.length * this.linesToAdd.employees.length;
+        return this._enterTimeManager.getSelectedDatesCount() * this.enterTimeForm.get('employees').value.length;
     }
 
     public createLines (enterTimeForm: FormControl) {
 
+        this._enterTimeManager.processLines(enterTimeForm);
     }
 
     /******************************************************************************************************************
      * Private Methods
      ******************************************************************************************************************/
-    private initLinesToAdd() {
-        this.linesToAdd = {
-            selectedDates: [],
-            project: null,
-            costCode: null,
-            system: null,
-            phase: null,
-            employees: [],
-            hoursWorked: {
-                st: null,
-                ot: null,
-                dt: null
-            },
-            timeInTimeOut: {
-                in: null,
-                out: null
-            },
-            break: {
-                in: null,
-                out: null
-            },
-            note: null
-        }
-    }
 
     private mapCostCodes (costCodes: Array<any>) {
 
@@ -210,14 +188,12 @@ export class EnterTimeFormComponent extends BaseComponent {
         this.systems = systems;
         if (systems.length === 1) {
 
-            this.linesToAdd.system = systems[0];
             this.enterTimeForm.patchValue({
                 system: systems[0]
             });
             this.checkDefaultPhase(systems[0].Phases);
         } else {
 
-            this.linesToAdd.phase = null;
             this.phases = [];
         }
     }
@@ -227,7 +203,6 @@ export class EnterTimeFormComponent extends BaseComponent {
         this.phases = phases;
         if (phases.length === 1) {
 
-            this.linesToAdd.phase = phases[0];
             this.enterTimeForm.patchValue({
                 phase: phases[0]
             });
@@ -239,7 +214,6 @@ export class EnterTimeFormComponent extends BaseComponent {
         this.costCodes = costCodes;
         if (costCodes.length === 1) {
 
-            this.linesToAdd.costCode = costCodes[0];
             this.enterTimeForm.patchValue({
                 costCode: costCodes[0]
             });
@@ -299,7 +273,7 @@ export class EnterTimeFormComponent extends BaseComponent {
         this.projectChange();
         this.systemChange();
         this.costCodeChange();
-        this.employeeChange();
+        // this.employeeChange();
     }
 
     /******************************************************************************************************************
@@ -317,9 +291,6 @@ export class EnterTimeFormComponent extends BaseComponent {
 
                     this.isTimeInTimeOut = false;
                 }
-
-                this.linesToAdd.project = project;
-                this.linesToAdd.employees = [];
 
                 this.checkDefaultSystem(project.Systems);
                 this.checkDefaultCostCode(project.CostCodes);
@@ -345,7 +316,6 @@ export class EnterTimeFormComponent extends BaseComponent {
         const costCodeSelect = this.enterTimeForm.get('costCode');
         costCodeSelect.valueChanges.subscribe(
             (costCode: CostCode) => {
-                this.linesToAdd.costCode = costCode;
                 const projectSelect = this.enterTimeForm.get('project');
                 projectSelect.clearValidators();
                 projectSelect.setErrors(null);
@@ -353,12 +323,12 @@ export class EnterTimeFormComponent extends BaseComponent {
         );
     }
 
-    employeeChange() {
-        const employeeSelect = this.enterTimeForm.get('employees');
-        employeeSelect.valueChanges.subscribe(
-            (employees: Array<Employee>) => {
-                this.linesToAdd.employees = employees;
-            }
-        );
-    }
+    // employeeChange() {
+    //     const employeeSelect = this.enterTimeForm.get('employees');
+    //     employeeSelect.valueChanges.subscribe(
+    //         (employees: Array<Employee>) => {
+    //             this.linesToAdd.employees = employees;
+    //         }
+    //     );
+    // }
 }
