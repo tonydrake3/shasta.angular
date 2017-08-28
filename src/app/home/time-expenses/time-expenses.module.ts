@@ -15,6 +15,7 @@ import { TimesheetCardComponent } from './timesheet-card/timesheet-card.componen
 import { BadgedHourComponent } from './timesheet-card/badged-hour.component';
 import { EnterTimeComponent } from './enter-time/enter-time.component';
 import { EnterTimeFormComponent } from './enter-time/enter-time-form/enter-time-form.component';
+import { EnterTimeGridComponent } from './enter-time/enter-time-grid/enter-time-grid.component';
 
 // Services
 import { TimeRecordsService } from './time-records.service';
@@ -36,7 +37,8 @@ import { EnterTimeManager } from './enter-time/enter-time.manager';
       TimesheetCardComponent,
       BadgedHourComponent,
       EnterTimeComponent,
-      EnterTimeFormComponent
+      EnterTimeFormComponent,
+      EnterTimeGridComponent
     ],
     providers: [
       TimeRecordsService,

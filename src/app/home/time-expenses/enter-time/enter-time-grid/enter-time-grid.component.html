@@ -1,10 +1,192 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<div class="row add-more">
+    <div class="col-md-4">
+        <button md-raised-button (click)="addMoreLines()" class="secondary">Add More Lines</button>
+    </div>
+    <div class="col-md-3 groupings">
+        <label>Group by</label>
 
-</body>
-</html>
+        <a [ngClass]="{active: groupCardsBy == 'Date'}" (click)="updateGrouping('Date')">Date</a>
+        <a [ngClass]="{active: groupCardsBy == 'Employee'}" (click)="updateGrouping('Employee')">Employee</a>
+        <a [ngClass]="{active: groupCardsBy == 'Project'}" (click)="updateGrouping('Project')">Project</a>
+    </div>
+    <div class="col-md-5 delete">
+        <span (click)="deleteAllLines()">Delete All</span>
+    </div>
+</div>
+
+<div class="esub-card no-hover time-card" *ngFor="let card of groupedLines | keys">
+    <div class="time-card-header">
+
+        <div class="row">
+            <div class="col-md-6" [ngSwitch]="groupCardsBy">
+                <label *ngSwitchCase="'Employee'">{{card.key}}</label>
+                <label *ngSwitchCase="'Project'">{{card.key}}</label>
+                <label *ngSwitchCase="'Date'">{{card.key | date:'yMMMd'}}</label>
+            </div>
+            <div class="col-md-6 text-right">
+                <span (click)="deleteGrouping(card.value)">Delete All in Grouping</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <label>ST Total</label> 0
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <label>Total Hours</label> 0
+            </div>
+        </div>
+
+    </div>
+
+    <div class="esub-table" *ngIf="card.value.projectLines.length > 0">
+
+        <div class="table-row">
+            <div style="order:1; width:10%" class="table-cell table-header">Date</div>
+            <div style="order:2; width:10%" class="table-cell table-header">Employee</div>
+            <div style="order:3; width:10%" class="table-cell table-header">Project</div>
+            <div style="order:4; width:10%" class="table-cell table-header">CostCode</div>
+            <div style="order:5; width:10%" class="table-cell table-header">System</div>
+            <div style="order:6; width:10%" class="table-cell table-header">Phase</div>
+            <div style="order:7; width:12%" class="table-cell table-header">Time</div>
+            <div style="order:8; width:12%" class="table-cell table-header">Break</div>
+            <div style="order:9; width:13%" class="table-cell table-header">Hours</div>
+            <div style="order:10; width:03%" class="table-cell table-header"></div>
+        </div>
+
+        <div class="table-row" *ngFor="let record of card.value.projectLines">
+            <div style="order:1; width:10%" class="table-cell" >{{record.Date.format(dateFormat)}}</div>
+            <div style="order:2; width:10%" class="table-cell" >
+                <md-select placeholder="Employee" [(ngModel)]="record.Employee">
+                    <md-option *ngFor="let employee of getFilteredEmployees(record.Project.Id)" [value]="employee">{{employee.FullName}}</md-option>
+                </md-select>
+            </div>
+            <div style="order:3; width:10%" class="table-cell" >
+                <md-select placeholder="Project" [(ngModel)]="record.Project">
+                    <md-option *ngFor="let project of projects" [value]="project">{{project.Name}}</md-option>
+                </md-select>
+            </div>
+            <div style="order:4; width:10%" class="table-cell" >
+                <md-select placeholder="CostCode" [(ngModel)]="record.CostCode">
+                    <md-option *ngFor="let costCode of record.Project.CostCodes" [value]="costCode">{{costCode.Name}}</md-option>
+                </md-select>
+            </div>
+            <div style="order:5; width:10%" class="table-cell" >
+                <md-select placeholder="System" [(ngModel)]="record.System">
+                    <md-option *ngFor="let system of record.Project.Systems" [value]="system">{{system.Name}}</md-option>
+                </md-select>
+            </div>
+            <div style="order:6; width:10%" class="table-cell" >
+                <md-select placeholder="Phase" [(ngModel)]="record.Phase">
+                    <md-option *ngFor="let phase of phases" [value]="phase">{{phase.Name}}</md-option>
+                </md-select>
+            </div>
+            <div style="order:7; width:12%" class="table-cell table-time-entry">
+                <div *ngIf="record.IsPunch" class="row no-gutters">
+                    <div class="col-md-5">
+                        <md-input-container>
+                            <input mdInput placeholder="Time In" [(ngModel)]="record.TimeIn">
+                        </md-input-container>
+                    </div>
+                    <div class="col-md-5">
+                        <md-input-container>
+                            <input mdInput placeholder="Time Out" [(ngModel)]="record.TimeOut">
+                        </md-input-container>
+                    </div>
+                </div>
+            </div>
+            <div style="order:8; width:12%" class="table-cell table-time-entry">
+                <div *ngIf="record.IsPunch" class="row no-gutters">
+                    <div class="col-md-5">
+                        <md-input-container>
+                            <input mdInput placeholder="Time In" [(ngModel)]="record.BreakIn">
+                        </md-input-container>
+                    </div>
+                    <div class="col-md-5">
+                        <md-input-container>
+                            <input mdInput placeholder="Time Out" [(ngModel)]="record.BreakOut">
+                        </md-input-container>
+                    </div>
+                </div>
+            </div>
+            <div style="order:9; width:13%" class="table-cell table-time-entry">
+                <div class="row">
+                    <div class="col-md-4 no-gutters">
+                        <md-input-container>
+                            <input mdInput placeholder="ST" [(ngModel)]="record.HoursST">
+                        </md-input-container>
+                    </div>
+                    <div class="col-md-4 no-gutters">
+                        <md-input-container>
+                            <input mdInput placeholder="OT" [(ngModel)]="record.HoursOT">
+                        </md-input-container>
+                    </div>
+                    <div class="col-md-4 no-gutters">
+                        <md-input-container>
+                            <input mdInput placeholder="DT" [(ngModel)]="record.HoursDT">
+                        </md-input-container>
+                    </div>
+                </div>
+            </div>
+            <div style="order:10; width:03%" class="table-cell" >
+                <i class="material-icons" (click)="deleteRecord(record)" mdTooltip="Delete"
+                   [mdTooltipPosition]="'after'">delete</i>
+                <i class="material-icons" mdTooltip="Comment"
+                   [mdTooltipPosition]="'after'">chat</i>
+                <i class="material-icons" mdTooltip="Note"
+                   [mdTooltipPosition]="'after'">description</i>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="esub-table" *ngIf="card.value.indirectLines.length > 0">
+
+        <div class="table-row">
+            <div style="order:1; width:10%" class="table-cell table-header">Date</div>
+            <div style="order:2; width:25%" class="table-cell table-header">Employee</div>
+            <div style="order:3; width:25%" class="table-cell table-header">CostCode</div>
+            <div style="order:4; width:37%" class="table-cell table-header">Hours</div>
+            <div style="order:5; width:03%" class="table-cell table-header"></div>
+        </div>
+
+        <div class="table-row" *ngFor="let record of card.value.indirectLines">
+            <div style="order:1; width:10%" class="table-cell" >{{record.Date.format(dateFormat)}}</div>
+            <div style="order:2; width:25%" class="table-cell" >
+                <md-select placeholder="Employee" [(ngModel)]="record.Employee">
+                    <md-option *ngFor="let employee of employees" [value]="employee">{{employee.FullName}}</md-option>
+                </md-select>
+            </div>
+            <div style="order:3; width:25%" class="table-cell" >
+                <md-select placeholder="CostCode" [(ngModel)]="record.CostCode">
+                    <md-option *ngFor="let costCode of indirectCosts" [value]="costCode">{{costCode.Name}}</md-option>
+                </md-select>
+            </div>
+            <div style="order:4; width:37%" class="table-cell table-time-entry">
+                <div class="row">
+                    <div class="col-md-12 no-gutters">
+                        <md-input-container>
+                            <input mdInput placeholder="ST" [(ngModel)]="record.HoursST">
+                        </md-input-container>
+                    </div>
+                </div>
+            </div>
+            <div style="order:5; width:03%" class="table-cell" >
+                <i class="material-icons" (click)="deleteRecord(record)" mdTooltip="Delete"
+                   [mdTooltipPosition]="'after'">delete</i>
+                <i class="material-icons" mdTooltip="Comment"
+                   [mdTooltipPosition]="'after'">chat</i>
+                <i class="material-icons" mdTooltip="Note"
+                   [mdTooltipPosition]="'after'">description</i>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="row" *ngIf="groupedLines">
+    <div class="col-md-12">
+        <button md-raised-button class="esub-button secondary" [routerLink]="'/time-expenses/timesheets'" (click)="submitTime()">Submit Time</button>
+    </div>
+</div>

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Injector } from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, Injector, Output} from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import * as _ from 'lodash';
@@ -19,6 +19,7 @@ import { Phase } from '../../../../models/domain/Phase';
 import {EnterTimeManager} from '../enter-time.manager';
 import {TimeEntry} from '../models/TimeEntry';
 import {TimeEntryMode} from '../models/TimeEntry';
+import {DateFlyoutService} from '../../../shared/components/date-flyout/date-flyout.service';
 
 @Component({
     selector: 'esub-enter-time-form',
@@ -26,6 +27,7 @@ import {TimeEntryMode} from '../models/TimeEntry';
 })
 export class EnterTimeFormComponent extends BaseComponent {
 
+    @Output() timeEntryComplete: EventEmitter<boolean> = new EventEmitter<boolean>();
     // Private
     private _tenantEmployees: Array<Employee>;
     private _indirectCodes: Array<CostCode>;
@@ -54,7 +56,8 @@ export class EnterTimeFormComponent extends BaseComponent {
         showSeconds: false
     };
 
-    constructor (private _builder: FormBuilder, private _injector: Injector, private _enterTimeManager: EnterTimeManager) {
+    constructor (private _builder: FormBuilder, private _injector: Injector, private _enterTimeManager: EnterTimeManager,
+                 private _dateFlyoutService: DateFlyoutService) {
 
         super(_injector, [
             {
@@ -94,7 +97,7 @@ export class EnterTimeFormComponent extends BaseComponent {
 
         this.projects = projects['Value'] as Array<Project>;
         this.mockEntryFlag();
-        this._enterTimeManager.loadProjects(this.projects);
+        this._enterTimeManager.setProjects(this.projects);
         // console.log(projects['Value']);
     }
 
@@ -102,7 +105,7 @@ export class EnterTimeFormComponent extends BaseComponent {
 
         this._tenantEmployees = this.concatName(employees['Value'] as Array<Employee>);
         this.employees = this._tenantEmployees;
-        this._enterTimeManager.loadEmployees(this._tenantEmployees);
+        this._enterTimeManager.setEmployees(this._tenantEmployees);
     }
 
     indirectCostCodeServiceCallback (costCodes) {
@@ -110,7 +113,7 @@ export class EnterTimeFormComponent extends BaseComponent {
         // console.log(costCodes);
         this._indirectCodes = this.mapCostCodes(costCodes['Value']) as Array<CostCode>;
         this.costCodes = this._indirectCodes;
-        this._enterTimeManager.loadIndirectCodes(this._indirectCodes);
+        this._enterTimeManager.setIndirectCodes(this._indirectCodes);
     }
 
     /******************************************************************************************************************
@@ -161,8 +164,17 @@ export class EnterTimeFormComponent extends BaseComponent {
 
     public clearKeystroke (event) {
 
+        if (event.key.toLowerCase() === 'tab' || event.keyCode === 9) {
+            this._dateFlyoutService.closeDateFlyout();
+            return true;
+        }
         event.preventDefault();
         return false;
+    }
+
+    public onFocus (event) {
+
+        this._dateFlyoutService.openDateFlyout();
     }
 
     public linesToAddCount(): number {
@@ -171,7 +183,8 @@ export class EnterTimeFormComponent extends BaseComponent {
 
     public createLines (enterTimeForm: FormControl) {
 
-        this._enterTimeManager.processLines(enterTimeForm, this.time);
+        this._enterTimeManager.setLineData(enterTimeForm, this.time);
+        this.timeEntryComplete.emit(true);
     }
 
     /******************************************************************************************************************

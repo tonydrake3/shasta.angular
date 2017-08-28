@@ -1,10 +1,13 @@
 <div class="container-fluid enter-time">
 
-    <div class="esub-card no-hover" *ngIf="accordionOpen">
+
+
+    <!--<div class="esub-card no-hover" *ngIf="accordionOpen">-->
+    <div class="esub-card no-hover" *ngIf="!showGrid">
 
         <div class="close-icon accent-light" *ngIf="groupedLines"><i class="material-icons" (click)="accordionOpen = false">keyboard_arrow_up</i><span>collapse</span></div>
 
-        <esub-enter-time-form></esub-enter-time-form>
+        <esub-enter-time-form (timeEntryComplete)="onTimeEntryComplete($event)"></esub-enter-time-form>
         <!--
         <md-select placeholder="Project" [ngModel]="linesToAdd.project" (ngModelChange)="projectChanged($event)">
             <md-option *ngFor="let project of projects" [value]="project">{{project.Name}}</md-option>
@@ -111,6 +114,11 @@
 -->
     </div>
 
+    <div *ngIf="showGrid">
+        <esub-enter-time-grid (displayGrid)="onDisplayGrid($event)"></esub-enter-time-grid>
+    </div>
+
+<!--
     <div class="row add-more" *ngIf="groupedLines">
         <div class="col-md-4">
             <button md-raised-button (click)="accordionOpen = true" *ngIf="!accordionOpen" class="primary">Add More Lines</button>
@@ -256,6 +264,6 @@
         <div class="col-md-12">
             <button md-raised-button class="esub-button secondary" [routerLink]="'/time-expenses/timesheets'" (click)="submitTime()">Submit Time</button>
         </div>
-    </div>
+    </div> -->
 
 </div>

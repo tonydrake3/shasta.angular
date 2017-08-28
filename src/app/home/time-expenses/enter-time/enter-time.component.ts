@@ -34,6 +34,7 @@ export class EnterTimeComponent extends BaseComponent {
 
     // working model to add
     public linesToAdd: LinesToAdd;
+    public showGrid: boolean;
 
     // view config
     public dpCalendarConfig: IDatePickerConfig = {
@@ -79,6 +80,7 @@ export class EnterTimeComponent extends BaseComponent {
 
 
         this.accordionOpen = true;
+        this.showGrid = false;
 
         this.dateFormat = 'MMM. Do, YYYY';
         this.groupCardsBy = 'Date';
@@ -133,6 +135,16 @@ export class EnterTimeComponent extends BaseComponent {
     //         //    see commit associated with https://github.com/vlio20/angular-datepicker/issues/127
     //     }
     // }
+
+    public onTimeEntryComplete (event) {
+
+        this.showGrid = event;
+    }
+
+    public onDisplayGrid (event) {
+
+        this.showGrid = event;
+    }
 
     public deleteAllLines() {
         this.linesToSubmit = [];

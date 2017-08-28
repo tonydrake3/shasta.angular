@@ -17,3 +17,13 @@ export class LineToSubmit {
     BreakOut: any;
     Note: string;
 }
+
+export class IndirectToSubmit {
+    Date: moment.Moment;
+    Employee: any;
+    CostCode: any;
+    HoursST: number;
+    HoursOT: number;
+    HoursDT: number;
+    Note: string;
+}

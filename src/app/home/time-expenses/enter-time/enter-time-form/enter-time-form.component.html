@@ -50,7 +50,7 @@
             <div class="col-md-12" >
                 <div esubCloseDateFlyout>
                     <md-input-container class="form-field dates">
-                        <input mdInput id="txtDates" placeholder="Dates" formControlName="dates" (keydown)="clearKeystroke($event)">
+                        <input mdInput id="txtDates" placeholder="Dates" formControlName="dates" (focus)="onFocus($event)" (keydown)="clearKeystroke($event)">
                     </md-input-container>
                     <esub-daypicker-flyout [daypickerConfig]="dpDatepickerConfig" [selectedDates]="selectedDates"
                                            (selectedDatesChange)="onDatesChanged($event)" ></esub-daypicker-flyout>
