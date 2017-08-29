@@ -9,8 +9,7 @@ import { BaseComponent } from '../../shared/components/base.component';
 import { LineToSubmit } from './models/LinesToSubmit';
 
 // Service Imports
-import { TimeRecordsService } from '../time-records.service';
-import { EmployeeService } from '../../shared/services/user/employee.service';
+import {EnterTimeManager} from './enter-time.manager';
 
 // Model Imports
 import { Project } from '../../../models/domain/Project';
@@ -20,6 +19,7 @@ import { System } from '../../../models/domain/System';
 import { Phase } from '../../../models/domain/Phase';
 import {Line} from 'tslint/lib/test/lines';
 import {LinesToAdd} from './models/LinesToAdd';
+
 
 
 @Component({
@@ -61,7 +61,7 @@ export class EnterTimeComponent extends BaseComponent {
     public systems: Array<System>;
     public phases: Array<Phase>;
 
-    constructor(private _injector: Injector, private timeRecordsService: TimeRecordsService) {
+    constructor(private _injector: Injector, private _enterTimeManager: EnterTimeManager) {
 
         super(_injector, [
         //     {
@@ -144,16 +144,6 @@ export class EnterTimeComponent extends BaseComponent {
     public onDisplayGrid (event) {
 
         this.showGrid = event;
-    }
-
-    public deleteAllLines() {
-        this.linesToSubmit = [];
-        this.groupedLines = null;
-        this.accordionOpen = true;
-        this.employees = this._tenantEmployees;
-        this.costCodes = this._indirectCodes;
-        this.systems = [];
-        this.phases = [];
     }
 
     public deleteGrouping(grouping) {

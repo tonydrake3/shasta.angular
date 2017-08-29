@@ -34,6 +34,7 @@ export class EnterTimeGridComponent implements OnInit, AfterViewChecked {
         this.employees = this._enterTimeManager.getEmployees();
         this.projects = this._enterTimeManager.getProjects();
         this.indirectCosts = this._enterTimeManager.getIndirectCodes();
+        this.groupCardsBy = this._enterTimeManager.getGroupBy();
 
         this._enterTimeManager.gridLines$
             .subscribe(
@@ -56,10 +57,21 @@ export class EnterTimeGridComponent implements OnInit, AfterViewChecked {
         this.displayGrid.emit(false);
     }
 
+    public deleteCard () {
+
+
+    }
+
+    public deleteAllLines() {
+
+        this._enterTimeManager.clearLines();
+        this.displayGrid.emit(false);
+    }
+
     public updateGrouping (groupBy: string) {
 
         this.groupCardsBy = groupBy;
-        this._enterTimeManager.updateGrouping(groupBy);
+        this._enterTimeManager.setGroupBy(groupBy);
     }
 
     public getFilteredEmployees (projectId: string) {

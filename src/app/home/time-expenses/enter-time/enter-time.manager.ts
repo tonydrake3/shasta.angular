@@ -99,7 +99,12 @@ export class EnterTimeManager {
         this._timeEntryState.TimeEntryMode = _.cloneDeep(entryMode);
     }
 
-    public updateGrouping (groupBy: string) {
+    public getGroupBy () {
+
+        return this._groupBy;
+    }
+
+    public setGroupBy (groupBy: string) {
 
         this._groupBy = groupBy;
         // return this.groupLinesToSubmit(this._linesToSubmit, this._indirectToSubmit);
@@ -129,6 +134,13 @@ export class EnterTimeManager {
         // return this.generateNewLines(this._enterTimeFormData);
         this.generateNewLines(this._enterTimeFormData);
         // Build collection of dropdown contents?
+    }
+
+    public clearLines () {
+
+        this._groupedLines = {};
+        this._linesToSubmit = [];
+        this._indirectToSubmit = [];
     }
 
     /******************************************************************************************************************
@@ -306,7 +318,7 @@ export class EnterTimeManager {
             this.groupLinesByProject(projectLines, indirectLines);
         }
 
-        console.log('EnterTimeManager groupLinesToSubmit');
+        console.log('EnterTimeManager groupLinesToSubmit', this._groupBy);
         this._gridLines$.next(this._groupedLines);
     }
 
