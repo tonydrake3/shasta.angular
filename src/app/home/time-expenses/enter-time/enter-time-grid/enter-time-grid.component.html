@@ -1,6 +1,4 @@
-<esub-base-card *ngIf="loading" class="timesheet-card" [loading]="true"></esub-base-card>
-
-<div class="row add-more" *ngIf="!loading">
+<div class="row add-more">
     <div class="col-md-4">
         <button md-raised-button (click)="addMoreLines()" class="secondary">Add More Lines</button>
     </div>
@@ -16,8 +14,8 @@
     </div>
 </div>
 
-<div *ngIf="!loading">
-    <div class="esub-card no-hover time-card" *ngFor="let card of groupedLines | keys">
+<div>
+    <div class="esub-card no-hover time-card" *ngFor="let card of groupedLines">
         <div class="time-card-header">
 
             <div class="row">
@@ -27,7 +25,7 @@
                     <label *ngSwitchCase="'Date'">{{card.key | date:'yMMMd'}}</label>
                 </div>
                 <div class="col-md-6 text-right">
-                    <span (click)="deleteGrouping(card.value)">Delete All in Grouping</span>
+                    <span (click)="deleteGrouping(card)">Delete All in Grouping</span>
                 </div>
             </div>
             <div class="row">
@@ -43,7 +41,7 @@
 
         </div>
 
-        <div class="esub-table" *ngIf="card.value.projectLines?.length > 0">
+        <div class="esub-table" *ngIf="card.projectLines?.length > 0">
 
             <div class="table-row">
                 <div style="order:1; width:10%" class="table-cell table-header">Date</div>
@@ -58,7 +56,7 @@
                 <div style="order:10; width:03%" class="table-cell table-header"></div>
             </div>
 
-            <div class="table-row" *ngFor="let record of card.value.projectLines">
+            <div class="table-row" *ngFor="let record of card.projectLines">
                 <div style="order:1; width:10%" class="table-cell" >{{record.Date.format(dateFormat)}}</div>
                 <div style="order:2; width:10%" class="table-cell" >
                     <md-select placeholder="Employee" >
@@ -144,7 +142,7 @@
 
         </div>
 
-        <div class="esub-table" *ngIf="card.value.indirectLines?.length > 0">
+        <div class="esub-table" *ngIf="card.indirectLines?.length > 0">
 
             <div class="table-row">
                 <div style="order:1; width:10%" class="table-cell table-header">Date</div>
@@ -154,7 +152,7 @@
                 <div style="order:5; width:03%" class="table-cell table-header"></div>
             </div>
 
-            <div class="table-row" *ngFor="let record of card.value.indirectLines">
+            <div class="table-row" *ngFor="let record of card.indirectLines">
                 <div style="order:1; width:10%" class="table-cell" >{{record.Date.format(dateFormat)}}</div>
                 <div style="order:2; width:25%" class="table-cell" >
                     <md-select placeholder="Employee" >

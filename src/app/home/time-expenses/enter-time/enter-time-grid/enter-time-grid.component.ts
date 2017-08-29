@@ -1,7 +1,6 @@
-import {
-    AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, EventEmitter, OnInit,
-    Output
-} from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
+import * as _ from 'lodash';
+
 import {EnterTimeManager} from '../enter-time.manager';
 import {Employee} from '../../../../models/domain/Employee';
 import {Project} from '../../../../models/domain/Project';
@@ -11,7 +10,7 @@ import {CostCode} from '../../../../models/domain/CostCode';
     selector: 'esub-enter-time-grid',
     templateUrl: './enter-time-grid.component.html'
 })
-export class EnterTimeGridComponent implements OnInit, AfterViewChecked {
+export class EnterTimeGridComponent implements OnInit {
 
     @Output() displayGrid: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -36,20 +35,19 @@ export class EnterTimeGridComponent implements OnInit, AfterViewChecked {
         this.indirectCosts = this._enterTimeManager.getIndirectCodes();
         this.groupCardsBy = this._enterTimeManager.getGroupBy();
 
+        this.groupedLines = [];
+
         this._enterTimeManager.gridLines$
             .subscribe(
-                (lines) => {
+                (line) => {
 
-                    console.log('EnterTimeGridComponent gridlines', lines);
-                    this.groupedLines = lines;
+                    // console.log('EnterTimeGridComponent gridlines', line);
+                    this.groupedLines.push(line);
+                    // this.buildCards(lines);
+                    // this.groupedLines = line;
                 });
 
         this._enterTimeManager.getGroupedLines();
-    }
-
-    ngAfterViewChecked () {
-
-        console.log('EnterTimeGridComponent AfterViewInit');
     }
 
     public addMoreLines () {
@@ -71,6 +69,7 @@ export class EnterTimeGridComponent implements OnInit, AfterViewChecked {
     public updateGrouping (groupBy: string) {
 
         this.groupCardsBy = groupBy;
+        this.groupedLines = [];
         this._enterTimeManager.setGroupBy(groupBy);
     }
 
@@ -78,5 +77,17 @@ export class EnterTimeGridComponent implements OnInit, AfterViewChecked {
 
         // console.log('EnterTimeGridComponent getFilteredEmployees', projectId);
         return this._enterTimeManager.filterEmployees(projectId);
+    }
+
+    private buildCards (lines) {
+
+        console.log('EnterTimeGridComponent buildCards enter');
+        for (let i = 0; i < lines.length; i++) {
+            console.log('EnterTimeGridComponent buildCards', this.groupedLines);
+            setTimeout(() => {
+                this.groupedLines.push(lines[i]);
+                console.log('EnterTimeGridComponent buildCards', this.groupedLines);
+            }, 200 * i);
+        }
     }
 }

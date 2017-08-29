@@ -305,24 +305,47 @@ export class EnterTimeManager {
     // // take the TimeRecords that are ready to submit, and group them and turn them into display friendly cards
     private groupLinesToSubmit (projectLines: Array<LineToSubmit>, indirectLines: Array<IndirectToSubmit>) {
 
-        this._groupedLines = {};
+        let groupedLines: Array<any> = [];
 
         if (this._groupBy === 'Date') {
 
-            this.groupLinesByDate(projectLines, indirectLines);
+            groupedLines = this.groupLinesByDate(projectLines, indirectLines);
         } else if (this._groupBy === 'Employee') {
 
-            this.groupLinesByEmployee(projectLines, indirectLines);
+            groupedLines = this.groupLinesByEmployee(projectLines, indirectLines);
         } else if (this._groupBy === 'Project') {
 
-            this.groupLinesByProject(projectLines, indirectLines);
+            groupedLines = this.groupLinesByProject(projectLines, indirectLines);
         }
 
-        console.log('EnterTimeManager groupLinesToSubmit', this._groupBy);
-        this._gridLines$.next(this._groupedLines);
+        // console.log('EnterTimeManager groupLinesToSubmit', groupedLines.length);
+        // this._gridLines$.next(groupedLines);
+
+        groupedLines.forEach((groupedLine, index) => {
+
+            // console.log('EnterTimeManager groupLinesToSubmit', groupedLine);
+            setTimeout(() => {
+
+                // console.log('EnterTimeManager groupLinesToSubmit', index);
+                this._gridLines$.next(groupedLine);
+            }, index * 20);
+        });
+
+        // console.log('EnterTimeManager groupLinesToSubmit', this._groupBy);
+
+        // _.forEach(this._groupedLines, (groupedLine) => {
+        //     setTimeout(() => {
+        //         this._gridLines$.next(groupedLine);
+        //     }, 200);
+        // });
+
+
     }
 
     private groupLinesByDate (projectLines: Array<LineToSubmit>, indirectLines: Array<IndirectToSubmit>) {
+
+        console.log('groupLinesByDate');
+        const lines = [];
 
         const projectDates = this.getUniqueDates(projectLines);
         const indirectDates = this.getUniqueDates(indirectLines);
@@ -336,28 +359,34 @@ export class EnterTimeManager {
 
             const dateIndex = date.format();
 
-            if (_.isEmpty(this._groupedLines[dateIndex])) {
-                this._groupedLines[dateIndex] = {
-                    'projectLines': [],
-                    'indirectLines': []
-                };
-            }
+            const line = {
+                key: dateIndex,
+                'projectLines': [],
+                'indirectLines': []
+            };
 
             // console.log('EnterTimeManager groupedLines', this._groupedLines);
-            _.forEach(projectLines, (line) => {
-                if (line.Date.startOf('day').isSame(date, 'day')) {
-                    this._groupedLines[dateIndex].projectLines.push(line);
+            _.forEach(projectLines, (projectLine) => {
+                if (projectLine.Date.startOf('day').isSame(date, 'day')) {
+                    line.projectLines.push(projectLine);
                 }
             });
-            _.forEach(indirectLines, (line) => {
-                if (line.Date.startOf('day').isSame(date, 'day')) {
-                    this._groupedLines[dateIndex].indirectLines.push(line);
+            _.forEach(indirectLines, (indirectLine) => {
+                if (indirectLine.Date.startOf('day').isSame(date, 'day')) {
+                    line.indirectLines.push(indirectLine);
                 }
             });
+
+            lines.push(line);
         });
+
+        return lines;
     }
 
     private groupLinesByEmployee (projectLines: Array<LineToSubmit>, indirectLines: Array<IndirectToSubmit>) {
+
+        console.log('groupLinesByEmployee');
+        const lines = [];
 
         const projectEmployees = this.getUniqueEmployees(projectLines);
         const indirectEmployees = this.getUniqueEmployees(indirectLines);
@@ -366,59 +395,69 @@ export class EnterTimeManager {
 
         _.forEach(employeeArray, (employee) => {
 
-            if (_.isEmpty(this._groupedLines[employee.FullName])) {
-                this._groupedLines[employee.FullName] = {
-                    'projectLines': [],
-                    'indirectLines': []
-                };
-            }
+            const line = {
+                key: employee.FullName,
+                'projectLines': [],
+                'indirectLines': []
+            };
 
             // console.log('EnterTimeManager groupedLines', this._groupedLines);
-            _.forEach(projectLines, (line) => {
-                if (_.isEqual(line.Employee.Id, employee.Id)) {
-                    this._groupedLines[employee.FullName].projectLines.push(line);
+            _.forEach(projectLines, (projectLine) => {
+                if (_.isEqual(projectLine.Employee.Id, employee.Id)) {
+                    line.projectLines.push(projectLine);
                 }
             });
-            _.forEach(indirectLines, (line) => {
-                if (_.isEqual(line.Employee.Id, employee.Id)) {
-                    this._groupedLines[employee.FullName].indirectLines.push(line);
+            _.forEach(indirectLines, (indirectLine) => {
+                if (_.isEqual(indirectLine.Employee.Id, employee.Id)) {
+                    line.indirectLines.push(indirectLine);
                 }
             });
+
+            lines.push(line);
         });
+
+        return lines;
     }
 
     private groupLinesByProject (projectLines: Array<LineToSubmit>, indirectLines: Array<IndirectToSubmit>) {
+
+        console.log('groupLinesByProject');
+        const lines = [];
 
         const projects = this.getUniqueProjects(projectLines);
 
         _.forEach(projects, (project) => {
 
-            if (_.isEmpty(this._groupedLines[project.Name])) {
-                this._groupedLines[project.Name] = {
-                    'projectLines': []
-                };
-            }
+            const line = {
+                key: project.Name,
+                'projectLines': []
+            };
 
             // console.log('EnterTimeManager groupedLines', this._groupedLines);
-            _.forEach(projectLines, (line) => {
-                if (_.isEqual(line.Project.Id, project.Id)) {
-                    this._groupedLines[project.Name].projectLines.push(line);
+            _.forEach(projectLines, (projectLine) => {
+                if (_.isEqual(projectLine.Project.Id, project.Id)) {
+                    line.projectLines.push(projectLine);
                 }
             });
+
+            lines.push(line);
         });
 
         if (indirectLines.length > 0) {
 
-            if (_.isEmpty(this._groupedLines[this._INDIRECT])) {
-                this._groupedLines[this._INDIRECT] = {
-                    'indirectLines': []
-                };
-            }
+            const line = {
+                key: this._INDIRECT,
+                'indirectLines': []
+            };
 
-            _.forEach(indirectLines, (line) => {
-                this._groupedLines[this._INDIRECT].indirectLines.push(line);
+            _.forEach(indirectLines, (indirectLine) => {
+                line.indirectLines.push(indirectLine);
             });
+
+            lines.push(line);
         }
+
+        return lines;
     }
 
     private getUniqueDates (array: any[]) {
