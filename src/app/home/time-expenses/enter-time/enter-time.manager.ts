@@ -15,6 +15,8 @@ import {Line} from 'tslint/lib/test/lines';
 @Injectable()
 export class EnterTimeManager {
 
+    public _gridLines$ = new Subject();
+
     // Private
     private _timeRecords: Array<TimeRecord>;
     private _indirectCodes: Array<CostCode>;
@@ -28,12 +30,20 @@ export class EnterTimeManager {
     private _enterTimeFormData;
     private _groupedLines;
 
+    // Private Consts
+    private _INDIRECT = 'Indirect Costs';
+
     constructor () {
 
         this._timeEntryState = new TimeEntryState();
         this._timeRecords = [];
         this._linesToSubmit = [];
         this._indirectToSubmit = [];
+    }
+
+    get gridLines$ () {
+
+        return this._gridLines$.asObservable();
     }
 
     /******************************************************************************************************************
@@ -79,12 +89,21 @@ export class EnterTimeManager {
 
     public setSelectedDates (dates: Array<moment.Moment>) {
 
-        this._timeEntryState.SelectedDates = _.cloneDeep(dates);
+        this._timeEntryState.SelectedDates = _.sortBy(_.cloneDeep(dates), (date) => {
+            return date.startOf('day').format();
+        });
     }
 
     public setTimeEntryMode (entryMode: TimeEntryMode) {
 
         this._timeEntryState.TimeEntryMode = _.cloneDeep(entryMode);
+    }
+
+    public updateGrouping (groupBy: string) {
+
+        this._groupBy = groupBy;
+        // return this.groupLinesToSubmit(this._linesToSubmit, this._indirectToSubmit);
+        this.groupLinesToSubmit(this._linesToSubmit, this._indirectToSubmit);
     }
 
     public filterEmployees (projectId: string): Array<Employee> {
@@ -102,13 +121,13 @@ export class EnterTimeManager {
         console.log('EnterTimeManager setLineData', this._enterTimeFormData);
         // TODO: Clear Private Property values?
         this.resetManager();
-
     }
 
     public getGroupedLines () {
 
         console.log('EnterTimeManager getGroupedLines');
-        return this.generateNewLines(this._enterTimeFormData);
+        // return this.generateNewLines(this._enterTimeFormData);
+        this.generateNewLines(this._enterTimeFormData);
         // Build collection of dropdown contents?
     }
 
@@ -127,7 +146,8 @@ export class EnterTimeManager {
             this.processIndirectLines(lines);
         }
 
-        return this.groupLinesToSubmit(this._linesToSubmit, this._indirectToSubmit, this._groupBy);
+        // return this.groupLinesToSubmit(this._linesToSubmit, this._indirectToSubmit);
+        this.groupLinesToSubmit(this._linesToSubmit, this._indirectToSubmit);
     }
 
     private processProjectLines (lines) {
@@ -271,21 +291,23 @@ export class EnterTimeManager {
     // }
 
     // // take the TimeRecords that are ready to submit, and group them and turn them into display friendly cards
-    private groupLinesToSubmit (projectLines: Array<LineToSubmit>, indirectLines: Array<IndirectToSubmit>, groupBy: string) {
+    private groupLinesToSubmit (projectLines: Array<LineToSubmit>, indirectLines: Array<IndirectToSubmit>) {
 
         this._groupedLines = {};
 
-        if (groupBy === 'Date') {
+        if (this._groupBy === 'Date') {
 
             this.groupLinesByDate(projectLines, indirectLines);
-        } else if (groupBy === 'Employee') {
+        } else if (this._groupBy === 'Employee') {
 
             this.groupLinesByEmployee(projectLines, indirectLines);
+        } else if (this._groupBy === 'Project') {
+
+            this.groupLinesByProject(projectLines, indirectLines);
         }
 
-        // console.log('EnterTimeManager groupedLines', this._groupedLines);
-
-        return this._groupedLines;
+        console.log('EnterTimeManager groupLinesToSubmit');
+        this._gridLines$.next(this._groupedLines);
     }
 
     private groupLinesByDate (projectLines: Array<LineToSubmit>, indirectLines: Array<IndirectToSubmit>) {
@@ -353,23 +375,39 @@ export class EnterTimeManager {
         });
     }
 
-    // private groupLines (lines, groupBy: string) {
-    //
-    //     if (groupBy === 'Date') {
-    //
-    //         return _.groupBy(lines, groupBy);
-    //     } else if (groupBy === 'Employee') {
-    //
-    //         return _.groupBy(lines, value => {
-    //             return value[groupBy]['FullName'];
-    //         });
-    //     } else if (groupBy === 'Project') {
-    //
-    //         return _.groupBy(lines, value => {
-    //             return value[groupBy]['Name'];
-    //         });
-    //     }
-    // }
+    private groupLinesByProject (projectLines: Array<LineToSubmit>, indirectLines: Array<IndirectToSubmit>) {
+
+        const projects = this.getUniqueProjects(projectLines);
+
+        _.forEach(projects, (project) => {
+
+            if (_.isEmpty(this._groupedLines[project.Name])) {
+                this._groupedLines[project.Name] = {
+                    'projectLines': []
+                };
+            }
+
+            // console.log('EnterTimeManager groupedLines', this._groupedLines);
+            _.forEach(projectLines, (line) => {
+                if (_.isEqual(line.Project.Id, project.Id)) {
+                    this._groupedLines[project.Name].projectLines.push(line);
+                }
+            });
+        });
+
+        if (indirectLines.length > 0) {
+
+            if (_.isEmpty(this._groupedLines[this._INDIRECT])) {
+                this._groupedLines[this._INDIRECT] = {
+                    'indirectLines': []
+                };
+            }
+
+            _.forEach(indirectLines, (line) => {
+                this._groupedLines[this._INDIRECT].indirectLines.push(line);
+            });
+        }
+    }
 
     private getUniqueDates (array: any[]) {
 
@@ -394,6 +432,21 @@ export class EnterTimeManager {
                 return {
                     Id: uniqueLines.Employee.Id,
                     FullName: uniqueLines.Employee.FullName
+                };
+            });
+    }
+
+    private getUniqueProjects (array: any[]) {
+
+        return _.map(
+            _.uniqBy(array,
+                (line) => {
+                    return line.Project.Name;
+                }),
+            (uniqueLines) => {
+                return {
+                    Id: uniqueLines.Project.Id,
+                    Name: uniqueLines.Project.Name
                 };
             });
     }

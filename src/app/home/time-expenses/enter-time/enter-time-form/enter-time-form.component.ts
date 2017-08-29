@@ -183,8 +183,8 @@ export class EnterTimeFormComponent extends BaseComponent {
 
     public createLines (enterTimeForm: FormControl) {
 
-        this._enterTimeManager.setLineData(enterTimeForm, this.time);
         this.timeEntryComplete.emit(true);
+        this._enterTimeManager.setLineData(enterTimeForm, this.time);
     }
 
     /******************************************************************************************************************
