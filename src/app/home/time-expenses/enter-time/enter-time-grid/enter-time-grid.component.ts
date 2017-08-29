@@ -14,6 +14,7 @@ export class EnterTimeGridComponent implements OnInit {
 
     @Output() displayGrid: EventEmitter<boolean> = new EventEmitter<boolean>();
 
+    public dateFormat: string;
     public groupCardsBy: string;
     public groupedLines;
     public employees: Array<Employee>;
@@ -24,6 +25,7 @@ export class EnterTimeGridComponent implements OnInit {
 
     constructor (private _enterTimeManager: EnterTimeManager, private _changeRef: ChangeDetectorRef) {
 
+        this.dateFormat = 'MMM. Do, YYYY';
         this.groupCardsBy = 'Date';
         this.loading = false;
     }

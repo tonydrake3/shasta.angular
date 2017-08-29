@@ -59,28 +59,28 @@
             <div class="table-row" *ngFor="let record of card.projectLines">
                 <div style="order:1; width:10%" class="table-cell" >{{record.Date.format(dateFormat)}}</div>
                 <div style="order:2; width:10%" class="table-cell" >
-                    <md-select placeholder="Employee" >
-                        <md-option *ngFor="let employee of getFilteredEmployees(record.Project.Id)" [value]="employee">{{employee.FullName}}</md-option>
-                    </md-select>
-                </div>
-                <div style="order:3; width:10%" class="table-cell" >
                     <md-select placeholder="Project" >
                         <md-option *ngFor="let project of projects" [value]="project">{{project.Name}}</md-option>
                     </md-select>
                 </div>
-                <div style="order:4; width:10%" class="table-cell" >
-                    <md-select placeholder="CostCode" >
-                        <md-option *ngFor="let costCode of record.Project.CostCodes" [value]="costCode">{{costCode.Name}}</md-option>
-                    </md-select>
-                </div>
-                <div style="order:5; width:10%" class="table-cell" >
+                <div style="order:3; width:10%" class="table-cell" >
                     <md-select placeholder="System" >
                         <md-option *ngFor="let system of record.Project.Systems" [value]="system">{{system.Name}}</md-option>
                     </md-select>
                 </div>
-                <div style="order:6; width:10%" class="table-cell" >
+                <div style="order:4; width:10%" class="table-cell" >
                     <md-select placeholder="Phase" >
                         <md-option *ngFor="let phase of phases" [value]="phase">{{phase.Name}}</md-option>
+                    </md-select>
+                </div>
+                <div style="order:5; width:10%" class="table-cell" >
+                    <md-select placeholder="CostCode" >
+                        <md-option *ngFor="let costCode of record.Project.CostCodes" [value]="costCode">{{costCode.Name}}</md-option>
+                    </md-select>
+                </div>
+                <div style="order:6; width:10%" class="table-cell" >
+                    <md-select placeholder="Employee" >
+                        <md-option *ngFor="let employee of getFilteredEmployees(record.Project.Id)" [value]="employee">{{employee.FullName}}</md-option>
                     </md-select>
                 </div>
                 <div style="order:7; width:12%" class="table-cell table-time-entry">
