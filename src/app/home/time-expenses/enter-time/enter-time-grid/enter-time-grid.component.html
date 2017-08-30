@@ -45,43 +45,75 @@
 
             <div class="table-row">
                 <div style="order:1; width:10%" class="table-cell table-header">Date</div>
-                <div style="order:2; width:10%" class="table-cell table-header">Employee</div>
-                <div style="order:3; width:10%" class="table-cell table-header">Project</div>
-                <div style="order:4; width:10%" class="table-cell table-header">CostCode</div>
-                <div style="order:5; width:10%" class="table-cell table-header">System</div>
-                <div style="order:6; width:10%" class="table-cell table-header">Phase</div>
+                <div style="order:2; width:10%" class="table-cell table-header">Project</div>
+                <div style="order:3; width:10%" class="table-cell table-header">System</div>
+                <div style="order:4; width:10%" class="table-cell table-header">Phase</div>
+                <div style="order:5; width:10%" class="table-cell table-header">Cost Code</div>
+                <div style="order:6; width:10%" class="table-cell table-header">Employee</div>
                 <div style="order:7; width:12%" class="table-cell table-header">Time</div>
                 <div style="order:8; width:12%" class="table-cell table-header">Break</div>
                 <div style="order:9; width:13%" class="table-cell table-header">Hours</div>
                 <div style="order:10; width:03%" class="table-cell table-header"></div>
             </div>
+            <!--<div class="table-row">-->
+                <!--<div style="order:1; width:10%" class="table-cell table-header"></div>-->
+                <!--<div style="order:2; width:10%" class="table-cell table-header"></div>-->
+                <!--<div style="order:3; width:10%" class="table-cell table-header"></div>-->
+                <!--<div style="order:4; width:10%" class="table-cell table-header"></div>-->
+                <!--<div style="order:5; width:10%" class="table-cell table-header"></div>-->
+                <!--<div style="order:6; width:10%" class="table-cell table-header"></div>-->
+                <!--<div style="order:7; width:6%" class="table-cell table-header">In</div>-->
+                <!--<div style="order:8; width:6%" class="table-cell table-header">Out</div>-->
+                <!--<div style="order:9; width:6%" class="table-cell table-header">Break</div>-->
+                <!--<div style="order:10; width:6%" class="table-cell table-header">Break</div>-->
+                <!--<div style="order:11; width:13%" class="table-cell table-header">Hours</div>-->
+                <!--<div style="order:11; width:13%" class="table-cell table-header">Hours</div>-->
+                <!--<div style="order:11; width:13%" class="table-cell table-header">Hours</div>-->
+                <!--<div style="order:10; width:03%" class="table-cell table-header"></div>-->
+            <!--</div>-->
 
             <div class="table-row" *ngFor="let record of card.projectLines">
                 <div style="order:1; width:10%" class="table-cell" >{{record.Date.format(dateFormat)}}</div>
                 <div style="order:2; width:10%" class="table-cell" >
-                    <md-select placeholder="Project" >
-                        <md-option *ngFor="let project of projects" [value]="project">{{project.Name}}</md-option>
-                    </md-select>
+                    <!--<esub-grid-typeahead [field]="record.Project" [list]="projects"></esub-grid-typeahead>-->
+                    <md-input-container>
+                        <input mdInput placeholder="Project" [(ngModel)]="record.Project.Name">
+                    </md-input-container>
+                    <!--<md-select placeholder="Project" >-->
+                        <!--<md-option *ngFor="let project of projects" [value]="project">{{project.Name}}</md-option>-->
+                    <!--</md-select>-->
                 </div>
                 <div style="order:3; width:10%" class="table-cell" >
-                    <md-select placeholder="System" >
-                        <md-option *ngFor="let system of record.Project.Systems" [value]="system">{{system.Name}}</md-option>
-                    </md-select>
+                    <md-input-container>
+                        <input mdInput placeholder="System" [(ngModel)]="record.System.Name">
+                    </md-input-container>
+                    <!--<md-select placeholder="System" >-->
+                        <!--<md-option *ngFor="let system of record.Project.Systems" [value]="system">{{system.Name}}</md-option>-->
+                    <!--</md-select>-->
                 </div>
                 <div style="order:4; width:10%" class="table-cell" >
-                    <md-select placeholder="Phase" >
-                        <md-option *ngFor="let phase of phases" [value]="phase">{{phase.Name}}</md-option>
-                    </md-select>
+                    <md-input-container>
+                        <input mdInput placeholder="Phase" [(ngModel)]="record.Phase.Name">
+                    </md-input-container>
+                    <!--<md-select placeholder="Phase" >-->
+                        <!--<md-option *ngFor="let phase of phases" [value]="phase">{{phase.Name}}</md-option>-->
+                    <!--</md-select>-->
                 </div>
                 <div style="order:5; width:10%" class="table-cell" >
-                    <md-select placeholder="CostCode" >
-                        <md-option *ngFor="let costCode of record.Project.CostCodes" [value]="costCode">{{costCode.Name}}</md-option>
-                    </md-select>
+                    <md-input-container>
+                        <input mdInput placeholder="Cost Code" [(ngModel)]="record.CostCode.Name">
+                    </md-input-container>
+                    <!--<md-select placeholder="CostCode" >-->
+                        <!--<md-option *ngFor="let costCode of record.Project.CostCodes" [value]="costCode">{{costCode.Name}}</md-option>-->
+                    <!--</md-select>-->
                 </div>
                 <div style="order:6; width:10%" class="table-cell" >
-                    <md-select placeholder="Employee" >
-                        <md-option *ngFor="let employee of getFilteredEmployees(record.Project.Id)" [value]="employee">{{employee.FullName}}</md-option>
-                    </md-select>
+                    <md-input-container>
+                        <input mdInput placeholder="Name" [(ngModel)]="record.Employee.FullName">
+                    </md-input-container>
+                    <!--<md-select placeholder="Employee" >-->
+                        <!--<md-option *ngFor="let employee of getFilteredEmployees(record.Project.Id)" [value]="employee">{{employee.FullName}}</md-option>-->
+                    <!--</md-select>-->
                 </div>
                 <div style="order:7; width:12%" class="table-cell table-time-entry">
                     <div *ngIf="record.IsPunch" class="row no-gutters">
