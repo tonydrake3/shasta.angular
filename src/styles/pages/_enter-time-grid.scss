@@ -1,0 +1,56 @@
+.enter-time-grid {
+
+    .enter-time-grid-progress {
+        height: 8px;
+        z-index: 950;
+        margin-left: -28px;
+        width: 110%;
+    }
+
+    .enter-time-grid-overlay {
+        height: 100%;
+        width: 100%;
+        background-color: $true-black;
+        opacity: .25;
+        position: absolute;
+        z-index: 949;
+        margin-top: -10px;
+        margin-left: -30px;
+    }
+
+    .enter-time-grid-card-title {
+        label {
+            @extend .title-light
+        }
+    }
+
+    .groupings {
+
+        > * {
+            @media(max-width: 1092px) and (min-width: 992px) {
+                font-size: 10px !important;
+            }
+            @media(max-width: 841px) {
+                font-size: 10px !important;
+            }
+        }
+
+        @include noselect();
+
+        label {
+            @extend .label-light;
+        }
+        a {
+            @extend .label-regular;
+            cursor: pointer;
+        }
+
+        > .active,
+        > .active:hover {
+            text-decoration: underline;
+            cursor: default;
+            pointer-events: none;
+        }
+    }
+}
+

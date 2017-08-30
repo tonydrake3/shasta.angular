@@ -22,6 +22,7 @@ export class EnterTimeGridComponent implements OnInit {
     public projects: Array<Project>;
     public indirectCosts: Array<CostCode>;
     public loading: boolean;
+    public progressConfig;
 
 
     constructor (private _enterTimeManager: EnterTimeManager, private _changeRef: ChangeDetectorRef) {
@@ -29,6 +30,12 @@ export class EnterTimeGridComponent implements OnInit {
         this.dateFormat = 'MMM. Do, YYYY';
         this.groupCardsBy = 'Date';
         this.loading = true;
+        this.progressConfig = {
+            color: 'primary',
+            mode: 'indeterminate',
+            value: 50,
+            bufferValue: 75
+        };
     }
 
     ngOnInit () {
@@ -45,7 +52,7 @@ export class EnterTimeGridComponent implements OnInit {
             .subscribe(
                 (card) => {
 
-                    console.log('EnterTimeGridComponent card', card);
+                    // console.log('EnterTimeGridComponent card', card);
                     this.groupedLines.push(card);
                     // this.buildCards(lines);
                     // this.groupedLines = line;
@@ -76,7 +83,7 @@ export class EnterTimeGridComponent implements OnInit {
         this._enterTimeManager.processing$
             .subscribe(
                 (processing) => {
-                    console.log('PROCESSING', processing);
+                    // console.log('PROCESSING', processing);
                     this.loading = processing;
             });
 

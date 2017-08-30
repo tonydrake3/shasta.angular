@@ -345,8 +345,6 @@ export class EnterTimeManager {
     private groupLinesByDate (projectLines: Array<LineToSubmit>, indirectLines: Array<IndirectToSubmit>) {
 
         console.log('groupLinesByDate');
-        const lines = [];
-
         const projectDates = this.getUniqueDates(projectLines);
         const indirectDates = this.getUniqueDates(indirectLines);
 
@@ -373,29 +371,27 @@ export class EnterTimeManager {
                         if (index === projectLines.length - 1) {
                             this._processing$.next(false);
                         }
-                        // const gridLine = new EntryGridLine();
-                        // gridLine.Key = dateIndex;
-                        // gridLine.ProjectLine = projectLine;
-                        // this._gridLines$.next(gridLine);
                     }, 20 * index);
                 }
             });
-            // _.forEach(indirectLines, (indirectLine) => {
-            //     if (indirectLine.Date.startOf('day').isSame(date, 'day')) {
-            //         line.indirectLines.push(indirectLine);
-            //     }
-            // });
+            indirectLines.forEach((indirectLine, index) => {
+                this._processing$.next(true);
+                if (indirectLine.Date.startOf('day').isSame(date, 'day')) {
+                    setTimeout(() => {
+                        line.IndirectLines.push(indirectLine);
+                        if (index === indirectLines.length - 1) {
+                            this._processing$.next(false);
+                        }
+                    }, 20 * index);
+                }
+            });
 
-            // lines.push(line);
         });
-        return lines;
     }
 
     private groupLinesByEmployee (projectLines: Array<LineToSubmit>, indirectLines: Array<IndirectToSubmit>) {
 
         console.log('groupLinesByEmployee');
-        const lines = [];
-
         const projectEmployees = this.getUniqueEmployees(projectLines);
         const indirectEmployees = this.getUniqueEmployees(indirectLines);
 
@@ -410,30 +406,33 @@ export class EnterTimeManager {
 
             // console.log('EnterTimeManager groupedLines', this._groupedLines);
             projectLines.forEach((projectLine, index) => {
+                this._processing$.next(true);
                 if (_.isEqual(projectLine.Employee.Id, employee.Id)) {
                     setTimeout(() => {
-                        // line.projectLines.push(projectLine);
-                        this._gridLines$.next(line);
+                        line.ProjectLines.push(projectLine);
+                        if (index === projectLines.length - 1) {
+                            this._processing$.next(false);
+                        }
                     }, 20 * index);
                 }
             });
-            // _.forEach(indirectLines, (indirectLine) => {
-            //     if (_.isEqual(indirectLine.Employee.Id, employee.Id)) {
-            //         line.indirectLines.push(indirectLine);
-            //     }
-            // });
-
-            lines.push(line);
+            indirectLines.forEach((indirectLine, index) => {
+                this._processing$.next(true);
+                if (_.isEqual(indirectLine.Employee.Id, employee.Id)) {
+                    setTimeout(() => {
+                        line.IndirectLines.push(indirectLine);
+                        if (index === indirectLines.length - 1) {
+                            this._processing$.next(false);
+                        }
+                    }, 20 * index);
+                }
+            });
         });
-
-        return lines;
     }
 
     private groupLinesByProject (projectLines: Array<LineToSubmit>, indirectLines: Array<IndirectToSubmit>) {
 
         console.log('groupLinesByProject');
-        const lines = [];
-
         const projects = this.getUniqueProjects(projectLines);
 
         _.forEach(projects, (project) => {
@@ -445,31 +444,33 @@ export class EnterTimeManager {
 
             // console.log('EnterTimeManager groupedLines', this._groupedLines);
             projectLines.forEach((projectLine, index) => {
+                this._processing$.next(true);
                 if (_.isEqual(projectLine.Project.Id, project.Id)) {
                     setTimeout(() => {
                         line.ProjectLines.push(projectLine);
+                        if (index === projectLines.length - 1) {
+                            this._processing$.next(false);
+                        }
                     }, 20 * index);
                 }
             });
-
-            lines.push(line);
         });
 
-        // if (indirectLines.length > 0) {
-        //
-        //     const line = {
-        //         key: this._INDIRECT,
-        //         'indirectLines': []
-        //     };
-        //
-        //     _.forEach(indirectLines, (indirectLine) => {
-        //         line.indirectLines.push(indirectLine);
-        //     });
-        //
-        //     lines.push(line);
-        // }
+        if (indirectLines.length > 0) {
 
-        return lines;
+            const line: EntryCard = new EntryCard();
+            line.Key = this._INDIRECT;
+
+            indirectLines.forEach((indirectLine, index) => {
+                this._processing$.next(true);
+                setTimeout(() => {
+                    line.IndirectLines.push(indirectLine);
+                    if (index === indirectLines.length - 1) {
+                        this._processing$.next(false);
+                    }
+                }, 20 * index);
+            });
+        }
     }
 
     private getUniqueDates (array: any[]) {

@@ -50,6 +50,7 @@
       border-bottom-right-radius: 6px;
       background-color: $yellow-40;
       min-width: 70px;
+      z-index: 999;
 
       .material-icons,
       .header-btn-label > label {
