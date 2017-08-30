@@ -45,120 +45,97 @@
 
             <div class="table-row">
                 <div style="order:1; width:10%" class="table-cell table-header">Date</div>
-                <div style="order:2; width:10%" class="table-cell table-header">Project</div>
+                <div style="order:2; width:11%" class="table-cell table-header">Project</div>
                 <div style="order:3; width:10%" class="table-cell table-header">System</div>
                 <div style="order:4; width:10%" class="table-cell table-header">Phase</div>
                 <div style="order:5; width:10%" class="table-cell table-header">Cost Code</div>
                 <div style="order:6; width:10%" class="table-cell table-header">Employee</div>
                 <div style="order:7; width:12%" class="table-cell table-header">Time</div>
                 <div style="order:8; width:12%" class="table-cell table-header">Break</div>
-                <div style="order:9; width:13%" class="table-cell table-header">Hours</div>
-                <div style="order:10; width:03%" class="table-cell table-header"></div>
+                <div style="order:9; width:12%" class="table-cell table-header">Hours</div>
+                <div style="order:10; width:3%" class="table-cell table-header"></div>
             </div>
-            <!--<div class="table-row">-->
-                <!--<div style="order:1; width:10%" class="table-cell table-header"></div>-->
-                <!--<div style="order:2; width:10%" class="table-cell table-header"></div>-->
-                <!--<div style="order:3; width:10%" class="table-cell table-header"></div>-->
-                <!--<div style="order:4; width:10%" class="table-cell table-header"></div>-->
-                <!--<div style="order:5; width:10%" class="table-cell table-header"></div>-->
-                <!--<div style="order:6; width:10%" class="table-cell table-header"></div>-->
-                <!--<div style="order:7; width:6%" class="table-cell table-header">In</div>-->
-                <!--<div style="order:8; width:6%" class="table-cell table-header">Out</div>-->
-                <!--<div style="order:9; width:6%" class="table-cell table-header">Break</div>-->
-                <!--<div style="order:10; width:6%" class="table-cell table-header">Break</div>-->
-                <!--<div style="order:11; width:13%" class="table-cell table-header">Hours</div>-->
-                <!--<div style="order:11; width:13%" class="table-cell table-header">Hours</div>-->
-                <!--<div style="order:11; width:13%" class="table-cell table-header">Hours</div>-->
-                <!--<div style="order:10; width:03%" class="table-cell table-header"></div>-->
-            <!--</div>-->
+            <div class="table-row">
+                <div style="order:1; width:10%" class="table-cell table-header"></div>
+                <div style="order:2; width:11%" class="table-cell table-header"></div>
+                <div style="order:3; width:10%" class="table-cell table-header"></div>
+                <div style="order:4; width:10%" class="table-cell table-header"></div>
+                <div style="order:5; width:10%" class="table-cell table-header"></div>
+                <div style="order:6; width:10%" class="table-cell table-header"></div>
+                <div style="order:7; width:6%" class="table-cell table-header">In</div>
+                <div style="order:8; width:6%" class="table-cell table-header">Out</div>
+                <div style="order:9; width:6%" class="table-cell table-header">In</div>
+                <div style="order:10; width:6%" class="table-cell table-header">Out</div>
+                <div style="order:11; width:4%" class="table-cell table-header">ST</div>
+                <div style="order:12; width:4%" class="table-cell table-header">OT</div>
+                <div style="order:13; width:4%" class="table-cell table-header">DT</div>
+                <div style="order:14; width:3%" class="table-cell table-header"></div>
+            </div>
 
             <div class="table-row" *ngFor="let record of card.projectLines">
                 <div style="order:1; width:10%" class="table-cell" >{{record.Date.format(dateFormat)}}</div>
-                <div style="order:2; width:10%" class="table-cell" >
-                    <!--<esub-grid-typeahead [field]="record.Project" [list]="projects"></esub-grid-typeahead>-->
-                    <md-input-container>
-                        <input mdInput placeholder="Project" [(ngModel)]="record.Project.Name">
-                    </md-input-container>
+                <div style="order:2; width:11%" class="table-cell" >
+                    <esub-grid-typeahead [field]="record.Project" [list]="projects"></esub-grid-typeahead>
+                        <!--<input placeholder="Project" [(ngModel)]="record.Project.Name">-->
+
                     <!--<md-select placeholder="Project" >-->
                         <!--<md-option *ngFor="let project of projects" [value]="project">{{project.Name}}</md-option>-->
                     <!--</md-select>-->
                 </div>
                 <div style="order:3; width:10%" class="table-cell" >
-                    <md-input-container>
-                        <input mdInput placeholder="System" [(ngModel)]="record.System.Name">
-                    </md-input-container>
+                        <input placeholder="System" [(ngModel)]="record.System.Name">
                     <!--<md-select placeholder="System" >-->
                         <!--<md-option *ngFor="let system of record.Project.Systems" [value]="system">{{system.Name}}</md-option>-->
                     <!--</md-select>-->
                 </div>
                 <div style="order:4; width:10%" class="table-cell" >
-                    <md-input-container>
-                        <input mdInput placeholder="Phase" [(ngModel)]="record.Phase.Name">
-                    </md-input-container>
+                        <input placeholder="Phase" [(ngModel)]="record.Phase.Name">
                     <!--<md-select placeholder="Phase" >-->
                         <!--<md-option *ngFor="let phase of phases" [value]="phase">{{phase.Name}}</md-option>-->
                     <!--</md-select>-->
                 </div>
                 <div style="order:5; width:10%" class="table-cell" >
-                    <md-input-container>
-                        <input mdInput placeholder="Cost Code" [(ngModel)]="record.CostCode.Name">
-                    </md-input-container>
+                        <input placeholder="Cost Code" [(ngModel)]="record.CostCode.Name">
                     <!--<md-select placeholder="CostCode" >-->
                         <!--<md-option *ngFor="let costCode of record.Project.CostCodes" [value]="costCode">{{costCode.Name}}</md-option>-->
                     <!--</md-select>-->
                 </div>
                 <div style="order:6; width:10%" class="table-cell" >
-                    <md-input-container>
-                        <input mdInput placeholder="Name" [(ngModel)]="record.Employee.FullName">
-                    </md-input-container>
+                        <input placeholder="Name" [(ngModel)]="record.Employee.FullName">
                     <!--<md-select placeholder="Employee" >-->
                         <!--<md-option *ngFor="let employee of getFilteredEmployees(record.Project.Id)" [value]="employee">{{employee.FullName}}</md-option>-->
                     <!--</md-select>-->
                 </div>
-                <div style="order:7; width:12%" class="table-cell table-time-entry">
-                    <div *ngIf="record.IsPunch" class="row no-gutters">
-                        <div class="col-md-5">
-                            <md-input-container>
-                                <input mdInput placeholder="Time In" [(ngModel)]="record.TimeIn">
-                            </md-input-container>
-                        </div>
-                        <div class="col-md-5">
-                            <md-input-container>
-                                <input mdInput placeholder="Time Out" [(ngModel)]="record.TimeOut">
-                            </md-input-container>
-                        </div>
+                <div style="order:7; width:6%" class="table-cell">
+                    <div *ngIf="record.IsPunch">
+                        <input placeholder="Time In" [(ngModel)]="record.TimeIn">
                     </div>
                 </div>
-                <div style="order:8; width:12%" class="table-cell table-time-entry">
-                    <div *ngIf="record.IsPunch" class="row no-gutters">
-                        <div class="col-md-5">
-                            <md-input-container>
-                                <input mdInput placeholder="Time In" [(ngModel)]="record.BreakIn">
-                            </md-input-container>
-                        </div>
-                        <div class="col-md-5">
-                            <md-input-container>
-                                <input mdInput placeholder="Time Out" [(ngModel)]="record.BreakOut">
-                            </md-input-container>
-                        </div>
+                <div style="order:7; width:6%" class="table-cell">
+                    <div *ngIf="record.IsPunch">
+                        <input placeholder="Time Out" [(ngModel)]="record.TimeOut">
                     </div>
                 </div>
-                <div style="order:9; width:13%" class="table-cell table-time-entry">
+                <div style="order:8; width:6%" class="table-cell table-time-entry">
+                    <div *ngIf="record.IsPunch">
+                        <input placeholder="Time In" [(ngModel)]="record.BreakIn">
+                    </div>
+                </div>
+                <div style="order:8; width:6%" class="table-cell table-time-entry">
+                    <div *ngIf="record.IsPunch">
+                        <input placeholder="Time Out" [(ngModel)]="record.BreakOut">
+                    </div>
+                </div>
+                <div style="order:9; width:12%" class="table-cell table-time-entry">
                     <div class="row">
                         <div class="col-md-4 no-gutters">
-                            <md-input-container>
-                                <input mdInput placeholder="ST" [(ngModel)]="record.HoursST">
-                            </md-input-container>
+                            <input placeholder="ST" [(ngModel)]="record.HoursST">
                         </div>
                         <div class="col-md-4 no-gutters">
-                            <md-input-container>
-                                <input mdInput placeholder="OT" [(ngModel)]="record.HoursOT">
-                            </md-input-container>
+                            <input placeholder="OT" [(ngModel)]="record.HoursOT">
                         </div>
                         <div class="col-md-4 no-gutters">
-                            <md-input-container>
-                                <input mdInput placeholder="DT" [(ngModel)]="record.HoursDT">
-                            </md-input-container>
+                            <input placeholder="DT" [(ngModel)]="record.HoursDT">
                         </div>
                     </div>
                 </div>

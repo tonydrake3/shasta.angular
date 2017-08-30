@@ -133,7 +133,7 @@ export class EnterTimeManager {
         console.log('EnterTimeManager getGroupedLines');
         // return this.generateNewLines(this._enterTimeFormData);
         this.generateNewLines(this._enterTimeFormData);
-        // Build collection of dropdown contents?
+
     }
 
     public clearLines () {

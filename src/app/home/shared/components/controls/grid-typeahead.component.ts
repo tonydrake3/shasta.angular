@@ -11,8 +11,6 @@ export class GridTypeaheadComponent implements OnInit {
     @Input() field;
     @Input() list;
 
-    public typeahead: FormControl;
-
     public typeaheadList: Array<any>;
     public open: boolean;
 
@@ -20,15 +18,32 @@ export class GridTypeaheadComponent implements OnInit {
 
         this.typeaheadList = [];
         this.open = false;
-        this.typeahead = new FormControl();
     }
 
     ngOnInit () {
 
-        console.log(this.field, this.list);
+        // console.log(this.field);
+        // console.log(this.list);
 
 
     }
 
+    showTypeahead () {
 
+        this.open = true;
+        this.typeaheadList = _.take(this.list, 5);
+    }
+
+    closeTypeahead () {
+
+        this.open = false;
+        this.typeaheadList = [];
+    }
+
+    findItem (id: string) {
+
+        _.filter(this.list, (item) => {
+
+        })
+    }
 }
