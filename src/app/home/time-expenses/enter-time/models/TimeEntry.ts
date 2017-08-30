@@ -1,4 +1,5 @@
 import * as moment from 'moment';
+import {IndirectToSubmit, LineToSubmit} from './LinesToSubmit';
 
 export class TimeEntry {
     public In: moment.Moment = moment();
@@ -16,4 +17,16 @@ export class TimeEntryState {
     SelectedDates: Array<moment.Moment> = [];
     TimeEntryMode: TimeEntryMode;
     Times: TimeEntry = new TimeEntry();
+}
+
+export class EntryCard {
+    Key: string;
+    ProjectLines?: Array<LineToSubmit> = [];
+    IndirectLines?: Array<IndirectToSubmit> = [];
+}
+
+export class EntryGridLine {
+    Key: string;
+    ProjectLine?: LineToSubmit;
+    IndirectLine?: IndirectToSubmit;
 }

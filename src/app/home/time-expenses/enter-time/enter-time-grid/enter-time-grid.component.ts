@@ -5,6 +5,7 @@ import {EnterTimeManager} from '../enter-time.manager';
 import {Employee} from '../../../../models/domain/Employee';
 import {Project} from '../../../../models/domain/Project';
 import {CostCode} from '../../../../models/domain/CostCode';
+import {EntryCard, EntryGridLine} from '../models/TimeEntry';
 
 @Component({
     selector: 'esub-enter-time-grid',
@@ -16,7 +17,7 @@ export class EnterTimeGridComponent implements OnInit {
 
     public dateFormat: string;
     public groupCardsBy: string;
-    public groupedLines;
+    public groupedLines: Array<EntryCard>;
     public employees: Array<Employee>;
     public projects: Array<Project>;
     public indirectCosts: Array<CostCode>;
@@ -27,7 +28,7 @@ export class EnterTimeGridComponent implements OnInit {
 
         this.dateFormat = 'MMM. Do, YYYY';
         this.groupCardsBy = 'Date';
-        this.loading = false;
+        this.loading = true;
     }
 
     ngOnInit () {
@@ -39,17 +40,50 @@ export class EnterTimeGridComponent implements OnInit {
 
         this.groupedLines = [];
 
-        this._enterTimeManager.gridLines$
+        this._enterTimeManager.cards$
+            .map(c => c as EntryCard)
             .subscribe(
-                (line) => {
+                (card) => {
 
-                    // console.log('EnterTimeGridComponent gridlines', line);
-                    this.groupedLines.push(line);
+                    console.log('EnterTimeGridComponent card', card);
+                    this.groupedLines.push(card);
                     // this.buildCards(lines);
                     // this.groupedLines = line;
                 });
 
-        this._enterTimeManager.getGroupedLines();
+        // this._enterTimeManager.gridLines$
+        //     .map(gl => gl as EntryGridLine)
+        //     .subscribe(
+        //         (line) => {
+        //
+        //             console.log('EnterTimeGridComponent gridlines', line);
+        //
+        //             if (this.groupedLines.length > 0) {
+        //
+        //                 const card = _.filter(this.groupedLines, (group) => {
+        //
+        //                     return group.Key === line.Key;
+        //                 });
+        //
+        //                 card[0].ProjectLines.push(line.ProjectLine);
+        //             }
+        //
+        //             // this.groupedLines.push(line);
+        //             // this.buildCards(lines);
+        //             // this.groupedLines = line;
+        //         });
+
+        this._enterTimeManager.processing$
+            .subscribe(
+                (processing) => {
+                    console.log('PROCESSING', processing);
+                    this.loading = processing;
+            });
+
+        setTimeout(() => {
+
+            this._enterTimeManager.getGroupedLines();
+        }, 20);
     }
 
     public addMoreLines () {
