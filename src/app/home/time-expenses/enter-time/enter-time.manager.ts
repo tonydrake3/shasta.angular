@@ -8,14 +8,15 @@ import { Project } from '../../../models/domain/Project';
 import { Employee } from '../../../models/domain/Employee';
 import {IndirectToSubmit, LineToSubmit} from './models/LinesToSubmit';
 import { TimeRecord } from '../../../models/domain/TimeRecord';
-import {TimeEntry, TimeEntryMode} from './models/TimeEntry';
+import {EntryCard, EntryGridLine, TimeEntry, TimeEntryMode} from './models/TimeEntry';
 import { TimeEntryState } from './models/TimeEntry';
-import {Line} from 'tslint/lib/test/lines';
 
 @Injectable()
 export class EnterTimeManager {
 
+    public _cards$ = new Subject<EntryCard>();
     public _gridLines$ = new Subject();
+    public _processing$ = new Subject<boolean>();
 
     // Private
     private _timeRecords: Array<TimeRecord>;
@@ -44,6 +45,16 @@ export class EnterTimeManager {
     get gridLines$ () {
 
         return this._gridLines$.asObservable();
+    }
+
+    get processing$ () {
+
+        return this._processing$.asObservable();
+    }
+
+    get cards$ () {
+
+        return this._cards$.asObservable();
     }
 
     /******************************************************************************************************************
@@ -120,6 +131,7 @@ export class EnterTimeManager {
 
     public setLineData (formData, times: TimeEntry) {
 
+        this._processing$.next(true);
         this._enterTimeFormData = _.cloneDeep(formData.value);
         this._timeEntryState.Times = _.cloneDeep(times);
 
@@ -133,7 +145,43 @@ export class EnterTimeManager {
         console.log('EnterTimeManager getGroupedLines');
         // return this.generateNewLines(this._enterTimeFormData);
         this.generateNewLines(this._enterTimeFormData);
+    }
 
+    public insertProjectLine (record: LineToSubmit) {
+
+        let keyToAdd: number;
+
+        this._linesToSubmit.forEach((line, idx) => {
+            if (line === record) {
+                keyToAdd = idx;
+            }
+        });
+
+        if (keyToAdd != null) {
+            this._linesToSubmit.splice(keyToAdd + 1, 0, record);
+        }
+    }
+
+    public deleteProjectLine (record: LineToSubmit) {
+
+        let keyToDelete: number;
+
+        this._linesToSubmit.forEach((line, idx) => {
+            if (line === record) {
+                keyToDelete = idx;
+            }
+        });
+
+        if (keyToDelete != null) {
+            this._linesToSubmit.splice(keyToDelete--, 1);
+        }
+    }
+
+    public deleteCardGroup (card: EntryCard) {
+
+        card.ProjectLines.forEach(record => {
+            this.deleteProjectLine(record);
+        });
     }
 
     public clearLines () {
@@ -203,12 +251,12 @@ export class EnterTimeManager {
     private buildHoursToSubmit (date, employee, lines): LineToSubmit {
 
         return {
-            Date: date,
-            Employee: employee,
-            Project: lines.project,
-            CostCode: lines.costCode,
-            System: lines.system,
-            Phase: lines.phase,
+            Date: _.cloneDeep(date),
+            Employee: _.cloneDeep(employee),
+            Project: _.cloneDeep(lines.project),
+            CostCode: _.cloneDeep(lines.costCode),
+            System: _.cloneDeep(lines.system),
+            Phase: _.cloneDeep(lines.phase),
             IsPunch: false,
             HoursST: lines.standardHours,
             HoursOT: lines.overtimeHours,
@@ -224,9 +272,9 @@ export class EnterTimeManager {
     private buildIndirectHoursToSubmit (date, employee, lines): IndirectToSubmit {
 
         return {
-            Date: date,
-            Employee: employee,
-            CostCode: lines.costCode,
+            Date: _.cloneDeep(date),
+            Employee: _.cloneDeep(employee),
+            CostCode: _.cloneDeep(lines.costCode),
             HoursST: lines.standardHours,
             HoursOT: lines.overtimeHours,
             HoursDT: lines.doubleTime,
@@ -240,12 +288,12 @@ export class EnterTimeManager {
         const punchOut = this._timeEntryState.Times.Out ? this._timeEntryState.Times.Out : moment();
 
         const timeSubmission: LineToSubmit = {
-            Date: date,
-            Employee: employee,
-            Project: lines.project,
-            CostCode: lines.costCode,
-            System: lines.system,
-            Phase: lines.phase,
+            Date: _.cloneDeep(date),
+            Employee: _.cloneDeep(employee),
+            Project: _.cloneDeep(lines.project),
+            CostCode: _.cloneDeep(lines.costCode),
+            System: _.cloneDeep(lines.system),
+            Phase: _.cloneDeep(lines.phase),
             IsPunch: true,
             HoursST: 0,
             HoursOT: 0,
@@ -305,48 +353,34 @@ export class EnterTimeManager {
     // // take the TimeRecords that are ready to submit, and group them and turn them into display friendly cards
     private groupLinesToSubmit (projectLines: Array<LineToSubmit>, indirectLines: Array<IndirectToSubmit>) {
 
-        let groupedLines: Array<any> = [];
-
         if (this._groupBy === 'Date') {
 
-            groupedLines = this.groupLinesByDate(projectLines, indirectLines);
+            this.groupLinesByDate(projectLines, indirectLines);
         } else if (this._groupBy === 'Employee') {
 
-            groupedLines = this.groupLinesByEmployee(projectLines, indirectLines);
+            this.groupLinesByEmployee(projectLines, indirectLines);
         } else if (this._groupBy === 'Project') {
 
-            groupedLines = this.groupLinesByProject(projectLines, indirectLines);
+            this.groupLinesByProject(projectLines, indirectLines);
         }
-
-        // console.log('EnterTimeManager groupLinesToSubmit', groupedLines.length);
-        // this._gridLines$.next(groupedLines);
-
-        groupedLines.forEach((groupedLine, index) => {
-
-            // console.log('EnterTimeManager groupLinesToSubmit', groupedLine);
-            setTimeout(() => {
-
-                // console.log('EnterTimeManager groupLinesToSubmit', index);
-                this._gridLines$.next(groupedLine);
-            }, index * 20);
-        });
-
-        // console.log('EnterTimeManager groupLinesToSubmit', this._groupBy);
-
-        // _.forEach(this._groupedLines, (groupedLine) => {
-        //     setTimeout(() => {
-        //         this._gridLines$.next(groupedLine);
-        //     }, 200);
-        // });
-
-
     }
+
+    // private publishLines () {
+    //
+    //     groupedLines.forEach((groupedLine, index) => {
+    //
+    //         // console.log('EnterTimeManager groupLinesToSubmit', groupedLine);
+    //         setTimeout(() => {
+    //
+    //             // console.log('EnterTimeManager groupLinesToSubmit', index);
+    //             this._gridLines$.next(groupedLine);
+    //         }, index * 20);
+    //     });
+    // }
 
     private groupLinesByDate (projectLines: Array<LineToSubmit>, indirectLines: Array<IndirectToSubmit>) {
 
         console.log('groupLinesByDate');
-        const lines = [];
-
         const projectDates = this.getUniqueDates(projectLines);
         const indirectDates = this.getUniqueDates(indirectLines);
 
@@ -359,35 +393,41 @@ export class EnterTimeManager {
 
             const dateIndex = date.format();
 
-            const line = {
-                key: dateIndex,
-                'projectLines': [],
-                'indirectLines': []
-            };
+            const line: EntryCard = new EntryCard();
+            line.Key = dateIndex;
+
+            this._cards$.next(line);
 
             // console.log('EnterTimeManager groupedLines', this._groupedLines);
-            _.forEach(projectLines, (projectLine) => {
+            projectLines.forEach((projectLine, index) => {
+                this._processing$.next(true);
                 if (projectLine.Date.startOf('day').isSame(date, 'day')) {
-                    line.projectLines.push(projectLine);
+                    setTimeout(() => {
+                        line.ProjectLines.push(projectLine);
+                        if (index === projectLines.length - 1) {
+                            this._processing$.next(false);
+                        }
+                    }, 20 * index);
                 }
             });
-            _.forEach(indirectLines, (indirectLine) => {
+            indirectLines.forEach((indirectLine, index) => {
+                this._processing$.next(true);
                 if (indirectLine.Date.startOf('day').isSame(date, 'day')) {
-                    line.indirectLines.push(indirectLine);
+                    setTimeout(() => {
+                        line.IndirectLines.push(indirectLine);
+                        if (index === indirectLines.length - 1) {
+                            this._processing$.next(false);
+                        }
+                    }, 20 * index);
                 }
             });
 
-            lines.push(line);
         });
-
-        return lines;
     }
 
     private groupLinesByEmployee (projectLines: Array<LineToSubmit>, indirectLines: Array<IndirectToSubmit>) {
 
         console.log('groupLinesByEmployee');
-        const lines = [];
-
         const projectEmployees = this.getUniqueEmployees(projectLines);
         const indirectEmployees = this.getUniqueEmployees(indirectLines);
 
@@ -395,69 +435,78 @@ export class EnterTimeManager {
 
         _.forEach(employeeArray, (employee) => {
 
-            const line = {
-                key: employee.FullName,
-                'projectLines': [],
-                'indirectLines': []
-            };
+            const line: EntryCard = new EntryCard();
+            line.Key = employee.FullName;
+
+            this._cards$.next(line);
 
             // console.log('EnterTimeManager groupedLines', this._groupedLines);
-            _.forEach(projectLines, (projectLine) => {
+            projectLines.forEach((projectLine, index) => {
+                this._processing$.next(true);
                 if (_.isEqual(projectLine.Employee.Id, employee.Id)) {
-                    line.projectLines.push(projectLine);
+                    setTimeout(() => {
+                        line.ProjectLines.push(projectLine);
+                        if (index === projectLines.length - 1) {
+                            this._processing$.next(false);
+                        }
+                    }, 20 * index);
                 }
             });
-            _.forEach(indirectLines, (indirectLine) => {
+            indirectLines.forEach((indirectLine, index) => {
+                this._processing$.next(true);
                 if (_.isEqual(indirectLine.Employee.Id, employee.Id)) {
-                    line.indirectLines.push(indirectLine);
+                    setTimeout(() => {
+                        line.IndirectLines.push(indirectLine);
+                        if (index === indirectLines.length - 1) {
+                            this._processing$.next(false);
+                        }
+                    }, 20 * index);
                 }
             });
-
-            lines.push(line);
         });
-
-        return lines;
     }
 
     private groupLinesByProject (projectLines: Array<LineToSubmit>, indirectLines: Array<IndirectToSubmit>) {
 
         console.log('groupLinesByProject');
-        const lines = [];
-
         const projects = this.getUniqueProjects(projectLines);
 
         _.forEach(projects, (project) => {
 
-            const line = {
-                key: project.Name,
-                'projectLines': []
-            };
+            const line: EntryCard = new EntryCard();
+            line.Key = project.Name;
+
+            this._cards$.next(line);
 
             // console.log('EnterTimeManager groupedLines', this._groupedLines);
-            _.forEach(projectLines, (projectLine) => {
+            projectLines.forEach((projectLine, index) => {
+                this._processing$.next(true);
                 if (_.isEqual(projectLine.Project.Id, project.Id)) {
-                    line.projectLines.push(projectLine);
+                    setTimeout(() => {
+                        line.ProjectLines.push(projectLine);
+                        if (index === projectLines.length - 1) {
+                            this._processing$.next(false);
+                        }
+                    }, 20 * index);
                 }
             });
-
-            lines.push(line);
         });
 
         if (indirectLines.length > 0) {
 
-            const line = {
-                key: this._INDIRECT,
-                'indirectLines': []
-            };
+            const line: EntryCard = new EntryCard();
+            line.Key = this._INDIRECT;
 
-            _.forEach(indirectLines, (indirectLine) => {
-                line.indirectLines.push(indirectLine);
+            indirectLines.forEach((indirectLine, index) => {
+                this._processing$.next(true);
+                setTimeout(() => {
+                    line.IndirectLines.push(indirectLine);
+                    if (index === indirectLines.length - 1) {
+                        this._processing$.next(false);
+                    }
+                }, 20 * index);
             });
-
-            lines.push(line);
         }
-
-        return lines;
     }
 
     private getUniqueDates (array: any[]) {

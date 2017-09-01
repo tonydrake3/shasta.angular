@@ -1,47 +1,59 @@
-<div class="row add-more">
-    <div class="col-md-4">
-        <button md-raised-button (click)="addMoreLines()" class="secondary">Add More Lines</button>
+<div class="enter-time-grid">
+    <div *ngIf="loading">
+        <md-progress-bar
+            class="enter-time-grid-progress"
+            [color]="progressConfig.color"
+            [mode]="progressConfig.mode"
+            [value]="progressConfig.value"
+            [bufferValue]="progressConfig.bufferValue">
+        </md-progress-bar>
     </div>
-    <div class="col-md-3 groupings">
-        <label>Group by</label>
+    <div class="enter-time-grid-overlay" *ngIf="loading"></div>
 
-        <a [ngClass]="{active: groupCardsBy == 'Date'}" (click)="updateGrouping('Date')">Date</a>
-        <a [ngClass]="{active: groupCardsBy == 'Employee'}" (click)="updateGrouping('Employee')">Employee</a>
-        <a [ngClass]="{active: groupCardsBy == 'Project'}" (click)="updateGrouping('Project')">Project</a>
-    </div>
-    <div class="col-md-5 delete">
-        <span (click)="deleteAllLines()">Delete All</span>
-    </div>
-</div>
-
-<div>
-    <div class="esub-card no-hover time-card" *ngFor="let card of groupedLines">
-        <div class="time-card-header">
-
-            <div class="row">
-                <div class="col-md-6" [ngSwitch]="groupCardsBy">
-                    <label *ngSwitchCase="'Employee'">{{card.key}}</label>
-                    <label *ngSwitchCase="'Project'">{{card.key}}</label>
-                    <label *ngSwitchCase="'Date'">{{card.key | date:'yMMMd'}}</label>
-                </div>
-                <div class="col-md-6 text-right">
-                    <span (click)="deleteGrouping(card)">Delete All in Grouping</span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <label>ST Total</label> 0
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <label>Total Hours</label> 0
-                </div>
-            </div>
-
+    <div class="row add-more">
+        <div class="col-md-4">
+            <button md-raised-button (click)="addMoreLines()" class="secondary">Add More Lines</button>
         </div>
+        <div class="col-md-3 groupings">
+            <label>Group by</label>
 
-        <div class="esub-table" *ngIf="card.projectLines?.length > 0">
+            <a [ngClass]="{active: groupCardsBy == 'Date'}" (click)="updateGrouping('Date')">Date</a>
+            <a [ngClass]="{active: groupCardsBy == 'Employee'}" (click)="updateGrouping('Employee')">Employee</a>
+            <a [ngClass]="{active: groupCardsBy == 'Project'}" (click)="updateGrouping('Project')">Project</a>
+        </div>
+        <div class="col-md-5 delete">
+            <span (click)="deleteAllLines()">Delete all cards</span>
+        </div>
+    </div>
+
+    <div >
+        <div class="esub-card no-hover time-card" *ngFor="let card of groupedLines; let cardIndex = index">
+            <div class="time-card-header">
+
+                <div class="row">
+                    <div class="col-md-6 enter-time-grid-card-title" [ngSwitch]="groupCardsBy">
+                        <label *ngSwitchCase="'Employee'">{{card.Key}}</label>
+                        <label *ngSwitchCase="'Project'">{{card.Key}}</label>
+                        <label *ngSwitchCase="'Date'">{{card.Key | date:'yMMMd'}}</label>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <span (click)="deleteCard(card, cardIndex)">Delete card</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label>ST Total</label> 0
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label>Total Hours</label> 0
+                    </div>
+                </div>
+
+            </div>
+
+        <div class="esub-table" *ngIf="card.ProjectLines?.length > 0">
 
             <div class="table-row">
                 <div style="order:1; width:10%" class="table-cell table-header">Date</div>
@@ -50,37 +62,36 @@
                 <div style="order:4; width:10%" class="table-cell table-header">Phase</div>
                 <div style="order:5; width:10%" class="table-cell table-header">Cost Code</div>
                 <div style="order:6; width:10%" class="table-cell table-header">Employee</div>
-                <div style="order:7; width:12%" class="table-cell table-header">Time</div>
-                <div style="order:8; width:12%" class="table-cell table-header">Break</div>
+                <div style="order:7; width:6%" class="table-cell table-header">Time</div>
+                <div style="order:8; width:6%" class="table-cell table-header">Break</div>
+                <div style="order:7; width:6%" class="table-cell table-header">Break</div>
+                <div style="order:8; width:6%" class="table-cell table-header">Time</div>
                 <div style="order:9; width:12%" class="table-cell table-header">Hours</div>
                 <div style="order:10; width:3%" class="table-cell table-header"></div>
             </div>
             <div class="table-row">
-                <div style="order:1; width:10%" class="table-cell table-header"></div>
-                <div style="order:2; width:11%" class="table-cell table-header"></div>
-                <div style="order:3; width:10%" class="table-cell table-header"></div>
-                <div style="order:4; width:10%" class="table-cell table-header"></div>
-                <div style="order:5; width:10%" class="table-cell table-header"></div>
-                <div style="order:6; width:10%" class="table-cell table-header"></div>
-                <div style="order:7; width:6%" class="table-cell table-header">In</div>
-                <div style="order:8; width:6%" class="table-cell table-header">Out</div>
-                <div style="order:9; width:6%" class="table-cell table-header">In</div>
-                <div style="order:10; width:6%" class="table-cell table-header">Out</div>
-                <div style="order:11; width:4%" class="table-cell table-header">ST</div>
-                <div style="order:12; width:4%" class="table-cell table-header">OT</div>
-                <div style="order:13; width:4%" class="table-cell table-header">DT</div>
-                <div style="order:14; width:3%" class="table-cell table-header"></div>
+                <div style="order:1; width:10%" class="table-cell table-header no-sub-header"></div>
+                <div style="order:2; width:11%" class="table-cell table-header no-sub-header"></div>
+                <div style="order:3; width:10%" class="table-cell table-header no-sub-header"></div>
+                <div style="order:4; width:10%" class="table-cell table-header no-sub-header"></div>
+                <div style="order:5; width:10%" class="table-cell table-header no-sub-header"></div>
+                <div style="order:6; width:10%" class="table-cell table-header no-sub-header"></div>
+                <div style="order:7; width:6%" class="table-cell table-header sub-header">In</div>
+                <div style="order:8; width:6%" class="table-cell table-header sub-header">In</div>
+                <div style="order:9; width:6%" class="table-cell table-header sub-header">Out</div>
+                <div style="order:10; width:6%" class="table-cell table-header sub-header">Out</div>
+                <div style="order:11; width:4%" class="table-cell table-header sub-header">ST</div>
+                <div style="order:12; width:4%" class="table-cell table-header sub-header">OT</div>
+                <div style="order:13; width:4%" class="table-cell table-header sub-header">DT</div>
+                <div style="order:14; width:3%" class="table-cell table-header no-sub-header"></div>
             </div>
 
-            <div class="table-row" *ngFor="let record of card.projectLines">
-                <div style="order:1; width:10%" class="table-cell" >{{record.Date.format(dateFormat)}}</div>
+            <div class="table-row" *ngFor="let record of card.ProjectLines; let rowIndex = index">
+                <div style="order:1; width:10%" class="table-cell" >
+                    <label>{{record.Date.format(dateFormat)}}</label>
+                </div>
                 <div style="order:2; width:11%" class="table-cell" >
                     <esub-grid-typeahead [field]="record.Project" [list]="projects"></esub-grid-typeahead>
-                        <!--<input placeholder="Project" [(ngModel)]="record.Project.Name">-->
-
-                    <!--<md-select placeholder="Project" >-->
-                        <!--<md-option *ngFor="let project of projects" [value]="project">{{project.Name}}</md-option>-->
-                    <!--</md-select>-->
                 </div>
                 <div style="order:3; width:10%" class="table-cell" >
                         <input placeholder="System" [(ngModel)]="record.System.Name">
@@ -111,94 +122,88 @@
                         <input placeholder="Time In" [(ngModel)]="record.TimeIn">
                     </div>
                 </div>
-                <div style="order:7; width:6%" class="table-cell">
+                <div style="order:8; width:6%" class="table-cell">
                     <div *ngIf="record.IsPunch">
                         <input placeholder="Time Out" [(ngModel)]="record.TimeOut">
                     </div>
                 </div>
-                <div style="order:8; width:6%" class="table-cell table-time-entry">
+                <div style="order:9; width:6%" class="table-cell table-time-entry">
                     <div *ngIf="record.IsPunch">
                         <input placeholder="Time In" [(ngModel)]="record.BreakIn">
                     </div>
                 </div>
-                <div style="order:8; width:6%" class="table-cell table-time-entry">
+                <div style="order:10; width:6%" class="table-cell table-time-entry">
                     <div *ngIf="record.IsPunch">
                         <input placeholder="Time Out" [(ngModel)]="record.BreakOut">
                     </div>
                 </div>
-                <div style="order:9; width:12%" class="table-cell table-time-entry">
-                    <div class="row">
-                        <div class="col-md-4 no-gutters">
-                            <input placeholder="ST" [(ngModel)]="record.HoursST">
-                        </div>
-                        <div class="col-md-4 no-gutters">
-                            <input placeholder="OT" [(ngModel)]="record.HoursOT">
-                        </div>
-                        <div class="col-md-4 no-gutters">
-                            <input placeholder="DT" [(ngModel)]="record.HoursDT">
-                        </div>
-                    </div>
+                <div style="order:11; width:4%" class="table-cell table-time-entry">
+                    <input placeholder="ST" [(ngModel)]="record.HoursST">
                 </div>
-                <div style="order:10; width:03%" class="table-cell" >
-                    <i class="material-icons" (click)="deleteRecord(record)" mdTooltip="Delete"
-                       [mdTooltipPosition]="'after'">delete</i>
-                    <i class="material-icons" mdTooltip="Comment"
-                       [mdTooltipPosition]="'after'">chat</i>
+                <div style="order:12; width:4%" class="table-cell table-time-entry">
+                    <input placeholder="OT" [(ngModel)]="record.HoursOT">
+                </div>
+                <div style="order:13; width:4%" class="table-cell table-time-entry">
+                    <input placeholder="DT" [(ngModel)]="record.HoursDT">
+                </div>
+                <div style="order:14; width:3%" class="table-cell" >
+                    <i class="material-icons" mdTooltip="Copy" (click)="copyRow(record, rowIndex, cardIndex)"
+                       [mdTooltipPosition]="'after'">content_copy</i>
                     <i class="material-icons" mdTooltip="Note"
                        [mdTooltipPosition]="'after'">description</i>
+                    <i class="material-icons" mdTooltip="Delete" (click)="deleteRow(record, rowIndex, cardIndex)"
+                       [mdTooltipPosition]="'after'">delete</i>
                 </div>
             </div>
 
-        </div>
+            <div class="esub-table" *ngIf="card.IndirectLines?.length > 0">
 
-        <div class="esub-table" *ngIf="card.indirectLines?.length > 0">
-
-            <div class="table-row">
-                <div style="order:1; width:10%" class="table-cell table-header">Date</div>
-                <div style="order:2; width:25%" class="table-cell table-header">Employee</div>
-                <div style="order:3; width:25%" class="table-cell table-header">CostCode</div>
-                <div style="order:4; width:37%" class="table-cell table-header">Hours</div>
-                <div style="order:5; width:03%" class="table-cell table-header"></div>
-            </div>
-
-            <div class="table-row" *ngFor="let record of card.indirectLines">
-                <div style="order:1; width:10%" class="table-cell" >{{record.Date.format(dateFormat)}}</div>
-                <div style="order:2; width:25%" class="table-cell" >
-                    <md-select placeholder="Employee" >
-                        <md-option *ngFor="let employee of employees" [value]="employee">{{employee.FullName}}</md-option>
-                    </md-select>
+                <div class="table-row">
+                    <div style="order:1; width:10%" class="table-cell table-header">Date</div>
+                    <div style="order:2; width:25%" class="table-cell table-header">Employee</div>
+                    <div style="order:3; width:25%" class="table-cell table-header">CostCode</div>
+                    <div style="order:4; width:37%" class="table-cell table-header">Hours</div>
+                    <div style="order:5; width:03%" class="table-cell table-header"></div>
                 </div>
-                <div style="order:3; width:25%" class="table-cell" >
-                    <md-select placeholder="CostCode" >
-                        <md-option *ngFor="let costCode of indirectCosts" [value]="costCode">{{costCode.Name}}</md-option>
-                    </md-select>
-                </div>
-                <div style="order:4; width:37%" class="table-cell table-time-entry">
-                    <div class="row">
-                        <div class="col-md-12 no-gutters">
-                            <md-input-container>
-                                <input mdInput placeholder="ST" [(ngModel)]="record.HoursST">
-                            </md-input-container>
+
+                <div class="table-row" *ngFor="let record of card.IndirectLines">
+                    <div style="order:1; width:10%" class="table-cell" >{{record.Date.format(dateFormat)}}</div>
+                    <div style="order:2; width:25%" class="table-cell" >
+                        <md-select placeholder="Employee" >
+                            <md-option *ngFor="let employee of employees" [value]="employee">{{employee.FullName}}</md-option>
+                        </md-select>
+                    </div>
+                    <div style="order:3; width:25%" class="table-cell" >
+                        <md-select placeholder="CostCode" >
+                            <md-option *ngFor="let costCode of indirectCosts" [value]="costCode">{{costCode.Name}}</md-option>
+                        </md-select>
+                    </div>
+                    <div style="order:4; width:37%" class="table-cell table-time-entry">
+                        <div class="row">
+                            <div class="col-md-12 no-gutters">
+                                <md-input-container>
+                                    <input mdInput placeholder="ST" [(ngModel)]="record.HoursST">
+                                </md-input-container>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div style="order:5; width:03%" class="table-cell" >
-                    <i class="material-icons" (click)="deleteRecord(record)" mdTooltip="Delete"
-                       [mdTooltipPosition]="'after'">delete</i>
-                    <i class="material-icons" mdTooltip="Comment"
-                       [mdTooltipPosition]="'after'">chat</i>
-                    <i class="material-icons" mdTooltip="Note"
-                       [mdTooltipPosition]="'after'">description</i>
+                    <div style="order:5; width:03%" class="table-cell" >
+                        <i class="material-icons" mdTooltip="Copy row" (click)="copyRow(record)"
+                           [mdTooltipPosition]="'after'">content copy</i>
+                        <i class="material-icons" mdTooltip="Note"
+                           [mdTooltipPosition]="'after'">description</i>
+                        <i class="material-icons" (click)="deleteRecord(record)" mdTooltip="Delete"
+                           [mdTooltipPosition]="'after'">delete</i>
+                    </div>
                 </div>
             </div>
-
         </div>
     </div>
-
+</div>
     <div class="row" *ngIf="groupedLines">
         <div class="col-md-12">
             <button md-raised-button class="esub-button secondary" [routerLink]="'/time-expenses/timesheets'" (click)="submitTime()">Submit Time</button>
         </div>
     </div>
-</div>
+
 

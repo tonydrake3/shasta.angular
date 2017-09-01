@@ -1,18 +1,19 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 import * as _ from 'lodash';
-import {FormControl} from '@angular/forms';
 
 @Component({
     selector: 'esub-grid-typeahead',
-    templateUrl: './grid-typeahead.component.html'
+    templateUrl: './grid-typeahead.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GridTypeaheadComponent implements OnInit {
 
     @Input() field;
-    @Input() list;
+    @Input() list: Array<any>;
 
     public typeaheadList: Array<any>;
     public open: boolean;
+    public textFieldValue: string;
 
     constructor () {
 
@@ -24,14 +25,25 @@ export class GridTypeaheadComponent implements OnInit {
 
         // console.log(this.field);
         // console.log(this.list);
-
-
+        this.textFieldValue = this.field.Name;
     }
 
-    showTypeahead () {
+    showTypeahead (event) {
 
+        console.log(event);
         this.open = true;
-        this.typeaheadList = _.take(this.list, 5);
+
+        const currentItem = this.findItem(this.textFieldValue);
+
+        if (currentItem.length > 0) {
+
+            this.typeaheadList = currentItem;
+        } else {
+
+            this.typeaheadList = _.take(this.list, 5);
+        }
+
+
     }
 
     closeTypeahead () {
@@ -40,10 +52,10 @@ export class GridTypeaheadComponent implements OnInit {
         this.typeaheadList = [];
     }
 
-    findItem (id: string) {
+    findItem (fieldValue: string) {
 
-        _.filter(this.list, (item) => {
-
-        })
+        return _.filter(this.list, (item) => {
+            return _.includes(item.Name, fieldValue);
+        });
     }
 }

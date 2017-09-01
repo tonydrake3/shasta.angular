@@ -51,6 +51,10 @@ export class TimesheetCardComponent extends BaseComponent {
   // build timesheets from timerecords, timerecords should already be pre-filtered for date & user
     // valid groupBy is 'employee' or 'project'
   public buildTimesheets(timerecords: Array<any>, dateRange: WeekDateRange, groupTimesheetsBy: string, showFilter: string) {
+      console.log(_.filter(timerecords, timerecord => {
+          return !timerecord.Project  ;
+      }));
+
     if (!timerecords || timerecords.length === 0) return;
 
     this.entityLookupTable = [];

@@ -24,10 +24,17 @@
             }
         }
 
-
-
         label.mat-input-placeholder {
             padding-left: 2px;
+
+            .enter-time-date-placeholder {
+                position: relative;
+                top: -4px;
+            }
+
+            i {
+                margin-top: -3px;
+            }
         }
     }
 

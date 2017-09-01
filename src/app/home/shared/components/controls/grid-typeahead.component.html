@@ -1,5 +1,5 @@
 <div class="grid-typeahead">
-    <input type="text" [value]="field.Name" (focus)="showTypeahead()" (blur)="closeTypeahead()">
+    <input type="text" [value]="textFieldValue" (keydown)="showTypeahead($event)" (blur)="closeTypeahead()">
     <div class="typeahead-list" [ngClass]="{ 'no-display' : !open }" >
         <div class="typeahead-list-item" *ngFor="let item of typeaheadList">
             {{item.Name}}

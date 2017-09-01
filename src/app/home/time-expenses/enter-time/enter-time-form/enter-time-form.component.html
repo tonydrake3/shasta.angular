@@ -3,23 +3,23 @@
         <div class="row">
             <div class="col-md-12">
                 <md-select class="form-field" placeholder="Project" formControlName="project">
-                    <md-option *ngFor="let project of projects" [value]="project">{{project.Name}}</md-option>
+                    <md-option *ngFor="let project of projects" [value]="project">{{project.Number}} - {{project.Name}}</md-option>
                 </md-select>
             </div>
         </div>
 
-        <div class="row" *ngIf="systems.length > 0">
+        <div class="row" *ngIf="systems.length > 1">
             <div class="col-md-12">
                 <md-select class="form-field" placeholder="System" formControlName="system">
-                    <md-option *ngFor="let system of systems" [value]="system">{{system.Name}}</md-option>
+                    <md-option *ngFor="let system of systems" [value]="system">{{system.Number}} - {{system.Name}}</md-option>
                 </md-select>
             </div>
         </div>
 
-        <div class="row" *ngIf="phases.length > 0">
+        <div class="row" *ngIf="phases.length > 1">
             <div class="col-md-12">
                 <md-select class="form-field" placeholder="Phase" formControlName="phase">
-                    <md-option *ngFor="let phase of phases" [value]="phase">{{phase.Name}}</md-option>
+                    <md-option *ngFor="let phase of phases" [value]="phase">{{phase.Number}} - {{phase.Name}}</md-option>
                 </md-select>
             </div>
         </div>
@@ -27,7 +27,7 @@
         <div class="row">
             <div class="col-md-12">
                 <md-select class="form-field" placeholder="Cost Code" formControlName="costCode">
-                    <md-option *ngFor="let costCode of costCodes" [value]="costCode">{{costCode.Name}}</md-option>
+                    <md-option *ngFor="let costCode of costCodes" [value]="costCode">{{costCode.Code}} - {{costCode.Name}}</md-option>
                 </md-select>
             </div>
         </div>
@@ -36,7 +36,7 @@
             <div class="col-md-10">
                 <md-select class="employee-select form-field" placeholder="Employees" formControlName="employees" multiple
                            #select="mdSelect">
-                    <md-option *ngFor="let employee of employees" [value]="employee" >{{employee.FullName}}</md-option>
+                    <md-option *ngFor="let employee of employees" [value]="employee" >{{employee.Number}} - {{employee.FullName}}</md-option>
                 </md-select>
             </div>
             <div class="col-md-2 groupings">
@@ -50,7 +50,10 @@
             <div class="col-md-12" >
                 <div esubCloseDateFlyout>
                     <md-input-container class="form-field dates">
-                        <input mdInput id="txtDates" placeholder="Dates" formControlName="dates" (focus)="onFocus($event)" (keydown)="clearKeystroke($event)">
+                        <md-placeholder>
+                            <span class="enter-time-date-placeholder">Dates</span> <i class="material-icons">date_range</i>
+                        </md-placeholder>
+                        <input mdInput id="txtDates" formControlName="dates" (focus)="onFocus($event)" (keydown)="clearKeystroke($event)">
                     </md-input-container>
                     <esub-daypicker-flyout [daypickerConfig]="dpDatepickerConfig" [selectedDates]="selectedDates"
                                            (selectedDatesChange)="onDatesChanged($event)" ></esub-daypicker-flyout>
