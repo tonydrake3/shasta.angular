@@ -21,6 +21,9 @@ export class TimeEntryState {
 
 export class EntryCard {
     Key: string;
+    ST = 0;
+    OT = 0;
+    DT = 0;
     ProjectLines?: Array<LineToSubmit> = [];
     IndirectLines?: Array<IndirectToSubmit> = [];
 }

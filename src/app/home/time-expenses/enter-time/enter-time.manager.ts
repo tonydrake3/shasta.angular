@@ -258,9 +258,9 @@ export class EnterTimeManager {
             System: _.cloneDeep(lines.system),
             Phase: _.cloneDeep(lines.phase),
             IsPunch: false,
-            HoursST: lines.standardHours,
-            HoursOT: lines.overtimeHours,
-            HoursDT: lines.doubleTime,
+            HoursST: Number(lines.standardHours),
+            HoursOT: Number(lines.overtimeHours),
+            HoursDT: Number(lines.doubleTimeHours),
             TimeIn: moment().startOf('day').format('h:mm A'),
             TimeOut: moment().startOf('day').format('h:mm A'),
             BreakIn: moment().startOf('day').format('h:mm A'),
@@ -275,10 +275,10 @@ export class EnterTimeManager {
             Date: _.cloneDeep(date),
             Employee: _.cloneDeep(employee),
             CostCode: _.cloneDeep(lines.costCode),
-            HoursST: lines.standardHours,
-            HoursOT: lines.overtimeHours,
-            HoursDT: lines.doubleTime,
-            Note: lines.notes,
+            HoursST: Number(lines.standardHours),
+            HoursOT: Number(lines.overtimeHours),
+            HoursDT: Number(lines.doubleTimeHours),
+            Note: lines.notes
         };
     }
 
@@ -403,6 +403,7 @@ export class EnterTimeManager {
                 this._processing$.next(true);
                 if (projectLine.Date.startOf('day').isSame(date, 'day')) {
                     setTimeout(() => {
+                        line.ST += projectLine.HoursST;
                         line.ProjectLines.push(projectLine);
                         if (index === projectLines.length - 1) {
                             this._processing$.next(false);
@@ -414,6 +415,7 @@ export class EnterTimeManager {
                 this._processing$.next(true);
                 if (indirectLine.Date.startOf('day').isSame(date, 'day')) {
                     setTimeout(() => {
+                        line.ST += indirectLine.HoursST;
                         line.IndirectLines.push(indirectLine);
                         if (index === indirectLines.length - 1) {
                             this._processing$.next(false);
@@ -445,6 +447,7 @@ export class EnterTimeManager {
                 this._processing$.next(true);
                 if (_.isEqual(projectLine.Employee.Id, employee.Id)) {
                     setTimeout(() => {
+                        line.ST += projectLine.HoursST;
                         line.ProjectLines.push(projectLine);
                         if (index === projectLines.length - 1) {
                             this._processing$.next(false);
@@ -456,6 +459,7 @@ export class EnterTimeManager {
                 this._processing$.next(true);
                 if (_.isEqual(indirectLine.Employee.Id, employee.Id)) {
                     setTimeout(() => {
+                        line.ST += indirectLine.HoursST;
                         line.IndirectLines.push(indirectLine);
                         if (index === indirectLines.length - 1) {
                             this._processing$.next(false);
@@ -483,6 +487,7 @@ export class EnterTimeManager {
                 this._processing$.next(true);
                 if (_.isEqual(projectLine.Project.Id, project.Id)) {
                     setTimeout(() => {
+                        line.ST += projectLine.HoursST;
                         line.ProjectLines.push(projectLine);
                         if (index === projectLines.length - 1) {
                             this._processing$.next(false);
@@ -500,6 +505,7 @@ export class EnterTimeManager {
             indirectLines.forEach((indirectLine, index) => {
                 this._processing$.next(true);
                 setTimeout(() => {
+                    line.ST += indirectLine.HoursST;
                     line.IndirectLines.push(indirectLine);
                     if (index === indirectLines.length - 1) {
                         this._processing$.next(false);
