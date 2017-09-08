@@ -1,6 +1,7 @@
+<md-checkbox [(ngModel)]="isTimeIn" (checked)="changeTimeInTimeOut()">Use Time In/Time Out to enter time</md-checkbox>
 <div class="enter-time-form">
     <form [formGroup]="enterTimeForm" (ngSubmit)="createLines(enterTimeForm)" novalidate>
-        <div class="row">
+        <div class="row mb-2">
             <div class="col-md-12">
                 <md-input-container class="form-field">
                     <input type="text" mdInput placeholder="Project" formControlName="project" [mdAutocomplete]="autoProject"
@@ -15,7 +16,7 @@
             </div>
         </div>
 
-        <div class="row" *ngIf="systems.length > 1">
+        <div class="row mb-2" *ngIf="systems.length > 1">
             <div class="col-md-12">
                 <md-input-container class="form-field">
                     <input type="text" mdInput placeholder="System" formControlName="system" [mdAutocomplete]="autoSystem"
@@ -27,13 +28,10 @@
                         {{system.Number}} - {{system.Name}}
                     </md-option>
                 </md-autocomplete>
-                <!--<md-select class="form-field" placeholder="System" formControlName="system">-->
-                    <!--<md-option *ngFor="let system of systems" [value]="system">{{system.Number}} - {{system.Name}}</md-option>-->
-                <!--</md-select>-->
             </div>
         </div>
 
-        <div class="row" *ngIf="phases.length > 1">
+        <div class="row mb-2" *ngIf="phases.length > 1">
             <div class="col-md-12">
                 <md-input-container class="form-field">
                     <input type="text" mdInput placeholder="Phase" formControlName="phase" [mdAutocomplete]="autoPhase"
@@ -45,13 +43,10 @@
                         {{phase.Number}} - {{phase.Name}}
                     </md-option>
                 </md-autocomplete>
-                <!--<md-select class="form-field" placeholder="Phase" formControlName="phase">-->
-                    <!--<md-option *ngFor="let phase of phases" [value]="phase">{{phase.Number}} - {{phase.Name}}</md-option>-->
-                <!--</md-select>-->
             </div>
         </div>
 
-        <div class="row">
+        <div class="row mb-2">
             <div class="col-md-12">
                 <md-input-container class="form-field">
                     <input type="text" mdInput placeholder="Cost Code" formControlName="costCode" [mdAutocomplete]="autoCostCode"
@@ -63,9 +58,6 @@
                         {{costCode.Code}} - {{costCode.Name}}
                     </md-option>
                 </md-autocomplete>
-                <!--<md-select class="form-field" placeholder="Cost Code" formControlName="costCode">-->
-                    <!--<md-option *ngFor="let costCode of costCodes" [value]="costCode">{{costCode.Code}} - {{costCode.Name}}</md-option>-->
-                <!--</md-select>-->
             </div>
         </div>
 
@@ -81,10 +73,6 @@
                         {{employee.Number}} - {{employee.Name}}
                     </md-option>
                 </md-autocomplete>
-                <!--<md-select class="employee-select form-field" placeholder="Employees" formControlName="employees" multiple-->
-                           <!--#select="mdSelect">-->
-                    <!--<md-option *ngFor="let employee of employees" [value]="employee" >{{employee.Number}} - {{employee.FullName}}</md-option>-->
-                <!--</md-select>-->
             </div>
             <div class="col-md-2 groupings">
                 <label>select</label>
@@ -101,9 +89,8 @@
                     </div>
                     <div class="selected-employee-list" esubSlimScroll>
                         <md-chip-list>
-                            <md-chip *ngFor="let employee of selectedEmployees" (click)="remove(employee)">
+                            <md-chip *ngFor="let employee of selectedEmployees" (click)="removeEmployee(employee)">
                                 <span>{{employee.Number}} - {{employee.Name}}</span>
-                                <!--<md-icon mdChipRemove>cancel</md-icon>-->
                                 <i class="mdi mdi-close-circle"></i>
                             </md-chip>
                         </md-chip-list>
@@ -112,7 +99,7 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row mb-3">
             <div class="col-md-12" >
                 <div esubCloseDateFlyout>
                     <md-input-container class="form-field dates">
@@ -127,8 +114,8 @@
             </div>
         </div>
 
-        <div class="row" class="time-entry-method" [ngSwitch]="timeEntryMode">
-            <div class="col-md-12" *ngSwitchCase="timeEntryModeEnum.Hours">
+        <div class="row mb-2" class="time-entry-method">
+            <div class="col-md-12" *ngIf="!isTimeIn">
                 <span class="label-bold">Hours Worked</span>
 
                 <div class="row time-entry form-field">
@@ -146,8 +133,8 @@
                 </div>
 
             </div>
-            <div class="col-md-12" *ngSwitchCase="timeEntryModeEnum.TimeInTimeOut">
-                <div class="row form-field">
+            <div class="col-md-12" *ngIf="isTimeIn">
+                <div class="row">
                     <div class="col-md-2">
                         <span class="label-bold">Time In</span>
 
@@ -183,7 +170,7 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row mt-1 mb-3">
             <div class="col-md-12">
                 <md-input-container class="notes form-field">
                     <input mdInput placeholder="Notes" formControlName="notes">

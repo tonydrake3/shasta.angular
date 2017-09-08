@@ -51,6 +51,8 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
     public selectedDates: Array<moment.Moment>;
     public time: TimeEntry;
     public timeEntryModeEnum;
+    public isTimeIn: boolean;
+    public isProjectTimeEntry: boolean;
 
     public filteredProjects: Observable<Project[]>;
     public filteredSystems: Observable<System[]>;
@@ -90,8 +92,9 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
         ]);
 
         this.dateFormat = 'MMM. Do, YYYY';
-        this.timeEntryMode = TimeEntryMode.Hours;
-        this._enterTimeManager.setTimeEntryMode(this.timeEntryMode);
+        this.isProjectTimeEntry = true;
+        this.isTimeIn = true;
+        this._enterTimeManager.setTimeEntryMode(TimeEntryMode.TimeInTimeOut);
         this.timeEntryModeEnum = TimeEntryMode;
         this.selectedDates = [];
         this.time = new TimeEntry();
@@ -125,7 +128,6 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
     projectServiceCallback (projects) {
 
         this.projects = projects['Value'] as Array<Project>;
-        this.mockEntryFlag();
         this._enterTimeManager.setProjects(this.projects);
 
         // this.projectChange();
@@ -171,10 +173,6 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
                 dates: ''
             });
         }
-    }
-
-    test (event) {
-        console.log(event);
     }
 
     public selectAllEmployees() {
@@ -278,16 +276,23 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
 
             if (this.employees.length > 0) {
 
-                this.filteredEmployees = this.filterCollection(employeeSelect.value, this.employees);
+                this.filteredEmployees = this.filterEmployees(employeeSelect.value, this.employees);
             } else {
 
-                this.filteredEmployees = this.filterCollection(employeeSelect.value, this._tenantEmployees);
+                this.filteredEmployees = this.filterEmployees(employeeSelect.value, this._tenantEmployees);
             }
         } else {
 
             if (this.employees.length > 0) {
 
-                this.filteredEmployees = Observable.of(this.employees);
+                if (this.selectedEmployees.length > 0) {
+
+                    this.filteredEmployees = this.filterEmployees('', this.employees);
+                } else {
+
+                    this.filteredEmployees = Observable.of(this.employees);
+                }
+
             } else {
 
                 this.filteredEmployees = Observable.of(this._tenantEmployees);
@@ -304,24 +309,6 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
         return '';
     }
 
-    // public displaySystem (value) {
-    //
-    //     if (value) {
-    //
-    //         return value.Number + ' - ' + value.Name;
-    //     }
-    //     return '';
-    // }
-    //
-    // public displayPhase (value) {
-    //
-    //     if (value) {
-    //
-    //         return value.Number + ' - ' + value.Name;
-    //     }
-    //     return '';
-    // }
-
     public displayCostCode (value) {
 
         if (value) {
@@ -330,15 +317,6 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
         }
         return '';
     }
-
-    // public displayEmployee (value) {
-    //
-    //     if (value) {
-    //
-    //         return value.Number + ' - ' + value.Name;
-    //     }
-    //     return '';
-    // }
 
     public projectSelected (event) {
 
@@ -367,13 +345,13 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
     public systemSelected (event) {
 
         const system = event.source.value;
-        console.log('EnterTimeFormComponent systemSelected', system.Phases);
+        // console.log('EnterTimeFormComponent systemSelected', system.Phases);
         this.checkDefaultPhase(system.Phases);
     }
 
     public phaseSelected (event) {
 
-        console.log('EnterTimeFormComponent phaseSelected', event.source.value);
+        // console.log('EnterTimeFormComponent phaseSelected', event.source.value);
         const phase = event.source.value;
     }
 
@@ -387,7 +365,7 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
             employees: this.selectedEmployees
         });
         const employeeSelect = this.enterTimeForm.get('employee');
-        employeeSelect.setValue('');
+        employeeSelect.setValue(null);
     }
 
     public costCodeSelected (event) {
@@ -402,19 +380,13 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
         }
     }
 
-    public remove (employee) {
-        console.log(employee);
-        let keyToDelete: number;
+    public removeEmployee (employee) {
+        // console.log(employee);
 
-        this.selectedEmployees.forEach((emp, idx) => {
-            if (emp === employee) {
-                keyToDelete = idx;
-            }
+        this.removeFromCollection(employee, this.selectedEmployees);
+        this.enterTimeForm.patchValue({
+            employees: this.selectedEmployees
         });
-
-        if (keyToDelete != null) {
-            this.selectedEmployees.splice(keyToDelete--, 1);
-        }
     }
 
     public clearKeystroke (event) {
@@ -434,6 +406,19 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
 
     public linesToAddCount(): number {
         return this._enterTimeManager.getSelectedDatesCount() * this.enterTimeForm.get('employees').value.length;
+    }
+
+    // TODO: Remove when setting is implemented
+    public changeTimeInTimeOut () {
+
+        this.isTimeIn = !this.isTimeIn;
+        if (this.isTimeIn) {
+
+            this._enterTimeManager.setTimeEntryMode(TimeEntryMode.TimeInTimeOut);
+        } else {
+
+            this._enterTimeManager.setTimeEntryMode(TimeEntryMode.Hours);
+        }
     }
 
     public createLines (enterTimeForm: FormControl) {
@@ -467,7 +452,9 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
             });
             this.checkDefaultPhase(systems[0].Phases);
         } else {
-
+            this.enterTimeForm.patchValue({
+                system: ''
+            });
             this.phases = [];
         }
     }
@@ -480,6 +467,11 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
             this.enterTimeForm.patchValue({
                 phase: phases[0]
             });
+        } else {
+
+            this.enterTimeForm.patchValue({
+                phase: ''
+            });
         }
     }
 
@@ -491,25 +483,12 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
             this.enterTimeForm.patchValue({
                 costCode: costCodes[0]
             });
+        } else {
+
+            this.enterTimeForm.patchValue({
+                costCode: ''
+            });
         }
-    }
-
-    // TODO: Remove when settings flag is added
-    private mockEntryFlag () {
-
-        this.projects.forEach(
-
-            (project, index) => {
-
-                if (index % 2) {
-
-                    project['timeEntryMethod'] = 'hoursWorked';
-                } else {
-
-                    project['timeEntryMethod'] = 'timeInTimeOut';
-                }
-            }
-        );
     }
 
     private concatName (employees: Array<Employee>) {
@@ -537,6 +516,29 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
                     item.Number.toLowerCase().includes(match.toLowerCase()) ||
                     (item.Number.toLowerCase() + ' - ' + item.Name.toLowerCase()).includes(match.toLowerCase());
             });
+        }
+
+        return Observable.of(filtered);
+    }
+
+    private filterEmployees (match, employeeList: Array<Employee>): Observable<Array<any>> {
+
+        let filtered = [];
+
+        if (typeof match === 'string') {
+
+            filtered = _.filter(employeeList, (employee) => {
+                return employee.Name.toLowerCase().includes(match.toLowerCase()) ||
+                    employee.Number.toLowerCase().includes(match.toLowerCase()) ||
+                    (employee.Number.toLowerCase() + ' - ' + employee.Name.toLowerCase()).includes(match.toLowerCase());
+            });
+
+            if (this.selectedEmployees.length > 0) {
+
+                _.forEach(this.selectedEmployees, (employee) => {
+                    this.removeFromCollection(employee, filtered);
+                });
+            }
         }
 
         return Observable.of(filtered);
@@ -584,8 +586,8 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
             system: '',
             phase: '',
             costCode: ['', [Validators.required]],
-            employee: ['', [Validators.required]],
-            employees: '',
+            employee: '',
+            employees: ['', [Validators.required]],
             dates: ['', [Validators.required]],
             standardHours: '',
             overtimeHours: '',
@@ -598,6 +600,21 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
         this.phaseChange();
         this.costCodeChange();
         this.employeeChange();
+    }
+
+    public removeFromCollection (employee, collection: Array<any>) {
+
+        let keyToDelete: number;
+
+        collection.forEach((emp, idx) => {
+            if (emp === employee) {
+                keyToDelete = idx;
+            }
+        });
+
+        if (keyToDelete != null) {
+            collection.splice(keyToDelete--, 1);
+        }
     }
 
     /******************************************************************************************************************
@@ -660,10 +677,10 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
 
                 if (this.employees.length > 0) {
 
-                    this.filteredEmployees = this.filterCollection(employee, this.employees);
+                    this.filteredEmployees = this.filterEmployees(employee, this.employees);
                 } else {
 
-                    this.filteredEmployees = this.filterCollection(employee, this._tenantEmployees);
+                    this.filteredEmployees = this.filterEmployees(employee, this._tenantEmployees);
                 }
             }
         );
