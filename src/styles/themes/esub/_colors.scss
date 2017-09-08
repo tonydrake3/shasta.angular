@@ -29,6 +29,8 @@ $gray-50: rgba($gray, 0.5);
 $gray-70: rgba($gray, 0.7);
 
 // black variants
+$true-black-12: rgba($true-black, 0.12);
+
 $black-10: rgba($black, 0.1);
 $black-25: rgba($black, 0.25);
 $black-50: rgba($true-black, 0.5);
@@ -62,3 +64,5 @@ $nav-link-active: $true-white;
 $sub-nav-link-odd: $gray-20;
 $sub-nav-link-even: $gray-20;
 $nav_link_active_color: $true-white;
+$chip-text: rgba($true-black, 0.87);
+$chip-close-icon: rgba($true-black, 0.54);

@@ -2,47 +2,113 @@
     <form [formGroup]="enterTimeForm" (ngSubmit)="createLines(enterTimeForm)" novalidate>
         <div class="row">
             <div class="col-md-12">
-                <md-select class="form-field" placeholder="Project" formControlName="project">
-                    <md-option *ngFor="let project of projects" [value]="project">{{project.Number}} - {{project.Name}}</md-option>
-                </md-select>
+                <md-input-container class="form-field">
+                    <input type="text" mdInput placeholder="Project" formControlName="project" [mdAutocomplete]="autoProject"
+                            (focus)="openProjects()" >
+                </md-input-container>
+                <md-autocomplete #autoProject="mdAutocomplete" [displayWith]="displayFormatted">
+                    <md-option *ngFor="let project of filteredProjects | async" (onSelectionChange)="projectSelected($event)"
+                               [value]="project">
+                        {{project.Number}} - {{project.Name}}
+                    </md-option>
+                </md-autocomplete>
             </div>
         </div>
 
         <div class="row" *ngIf="systems.length > 1">
             <div class="col-md-12">
-                <md-select class="form-field" placeholder="System" formControlName="system">
-                    <md-option *ngFor="let system of systems" [value]="system">{{system.Number}} - {{system.Name}}</md-option>
-                </md-select>
+                <md-input-container class="form-field">
+                    <input type="text" mdInput placeholder="System" formControlName="system" [mdAutocomplete]="autoSystem"
+                           (focus)="openSystems()" >
+                </md-input-container>
+                <md-autocomplete #autoSystem="mdAutocomplete" [displayWith]="displayFormatted">
+                    <md-option *ngFor="let system of filteredSystems | async" (onSelectionChange)="systemSelected($event)"
+                               [value]="system">
+                        {{system.Number}} - {{system.Name}}
+                    </md-option>
+                </md-autocomplete>
+                <!--<md-select class="form-field" placeholder="System" formControlName="system">-->
+                    <!--<md-option *ngFor="let system of systems" [value]="system">{{system.Number}} - {{system.Name}}</md-option>-->
+                <!--</md-select>-->
             </div>
         </div>
 
         <div class="row" *ngIf="phases.length > 1">
             <div class="col-md-12">
-                <md-select class="form-field" placeholder="Phase" formControlName="phase">
-                    <md-option *ngFor="let phase of phases" [value]="phase">{{phase.Number}} - {{phase.Name}}</md-option>
-                </md-select>
+                <md-input-container class="form-field">
+                    <input type="text" mdInput placeholder="Phase" formControlName="phase" [mdAutocomplete]="autoPhase"
+                           (focus)="openPhases()" >
+                </md-input-container>
+                <md-autocomplete #autoPhase="mdAutocomplete" [displayWith]="displayFormatted">
+                    <md-option *ngFor="let phase of filteredPhases | async" (onSelectionChange)="phaseSelected($event)"
+                               [value]="phase">
+                        {{phase.Number}} - {{phase.Name}}
+                    </md-option>
+                </md-autocomplete>
+                <!--<md-select class="form-field" placeholder="Phase" formControlName="phase">-->
+                    <!--<md-option *ngFor="let phase of phases" [value]="phase">{{phase.Number}} - {{phase.Name}}</md-option>-->
+                <!--</md-select>-->
             </div>
         </div>
 
         <div class="row">
             <div class="col-md-12">
-                <md-select class="form-field" placeholder="Cost Code" formControlName="costCode">
-                    <md-option *ngFor="let costCode of costCodes" [value]="costCode">{{costCode.Code}} - {{costCode.Name}}</md-option>
-                </md-select>
+                <md-input-container class="form-field">
+                    <input type="text" mdInput placeholder="Cost Code" formControlName="costCode" [mdAutocomplete]="autoCostCode"
+                           (focus)="openCostCodes()" >
+                </md-input-container>
+                <md-autocomplete #autoCostCode="mdAutocomplete" [displayWith]="displayCostCode">
+                    <md-option *ngFor="let costCode of filteredCostCodes | async" (onSelectionChange)="costCodeSelected($event)"
+                               [value]="costCode">
+                        {{costCode.Code}} - {{costCode.Name}}
+                    </md-option>
+                </md-autocomplete>
+                <!--<md-select class="form-field" placeholder="Cost Code" formControlName="costCode">-->
+                    <!--<md-option *ngFor="let costCode of costCodes" [value]="costCode">{{costCode.Code}} - {{costCode.Name}}</md-option>-->
+                <!--</md-select>-->
             </div>
         </div>
 
         <div class="row">
             <div class="col-md-10">
-                <md-select class="employee-select form-field" placeholder="Employees" formControlName="employees" multiple
-                           #select="mdSelect">
-                    <md-option *ngFor="let employee of employees" [value]="employee" >{{employee.Number}} - {{employee.FullName}}</md-option>
-                </md-select>
+                <md-input-container class="form-field selected-employees-field">
+                    <input type="text" mdInput placeholder="Employees" formControlName="employee" [mdAutocomplete]="autoEmployee"
+                           (focus)="openEmployee()">
+                </md-input-container>
+                <md-autocomplete #autoEmployee="mdAutocomplete" [displayWith]="displayFormatted">
+                    <md-option *ngFor="let employee of filteredEmployees | async" (onSelectionChange)="employeeSelected($event)"
+                               [value]="employee">
+                        {{employee.Number}} - {{employee.Name}}
+                    </md-option>
+                </md-autocomplete>
+                <!--<md-select class="employee-select form-field" placeholder="Employees" formControlName="employees" multiple-->
+                           <!--#select="mdSelect">-->
+                    <!--<md-option *ngFor="let employee of employees" [value]="employee" >{{employee.Number}} - {{employee.FullName}}</md-option>-->
+                <!--</md-select>-->
             </div>
             <div class="col-md-2 groupings">
                 <label>select</label>
                 <a (click)="selectAllEmployees()">All</a>
-                <a (click)="selectNoneEmployees()">None</a>
+                <a (click)="clearEmployeeSelection()">None</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="enter-time-selected-employees" *ngIf="selectedEmployees.length > 0">
+                    <div class="selected-header">
+                        <span class="selected-header-label expansion-title-regular">{{selectedEmployees.length}} employees selected</span>
+                        <i class="material-icons pull-right">keyboard_arrow_up</i>
+                    </div>
+                    <div class="selected-employee-list" esubSlimScroll>
+                        <md-chip-list>
+                            <md-chip *ngFor="let employee of selectedEmployees" (click)="remove(employee)">
+                                <span>{{employee.Number}} - {{employee.Name}}</span>
+                                <!--<md-icon mdChipRemove>cancel</md-icon>-->
+                                <i class="mdi mdi-close-circle"></i>
+                            </md-chip>
+                        </md-chip-list>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -53,7 +119,7 @@
                         <md-placeholder>
                             <span class="enter-time-date-placeholder">Dates</span> <i class="material-icons">date_range</i>
                         </md-placeholder>
-                        <input mdInput id="txtDates" formControlName="dates" (focus)="onFocus($event)" (keydown)="clearKeystroke($event)">
+                        <input mdInput id="txtDates" formControlName="dates" (focus)="onFocus()" (keydown)="clearKeystroke($event)">
                     </md-input-container>
                     <esub-daypicker-flyout [daypickerConfig]="dpDatepickerConfig" [selectedDates]="selectedDates"
                                            (selectedDatesChange)="onDatesChanged($event)" ></esub-daypicker-flyout>
