@@ -154,6 +154,8 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
 
         if (event.length !== 0) {
 
+            this.enterTimeForm.markAsDirty();
+            
             let dateFieldValue: string;
             if (event.length > 1) {
 
@@ -421,6 +423,33 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
         }
     }
 
+    public clearForm () {
+
+        this.enterTimeForm.reset();
+        this.enterTimeForm.patchValue({
+            project: null,
+            system: '',
+            phase: '',
+            costCode: null,
+            employee: null,
+            employees: [],
+            dates: '',
+            standardHours: '',
+            overtimeHours: '',
+            doubleTimeHours: '',
+            timeIn: moment().format('HH:mm'),
+            timeOut: moment().format('HH:mm'),
+            breakIn: moment().format('HH:mm'),
+            breakOut: moment().format('HH:mm'),
+            notes: ''
+        });
+        this.systems = [];
+        this.phases = [];
+        this.employees = [];
+        this.selectedEmployees = [];
+        this.costCodes = [];
+    }
+
     public createLines (enterTimeForm: FormControl) {
 
         this.timeEntryComplete.emit(true);
@@ -592,7 +621,18 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
             standardHours: '',
             overtimeHours: '',
             doubleTimeHours: '',
+            timeIn: '',
+            timeOut: '',
+            breakIn: '',
+            breakOut: '',
             notes: ''
+        });
+
+        this.enterTimeForm.patchValue({
+            timeIn: moment().format('HH:mm'),
+            timeOut: moment().format('HH:mm'),
+            breakIn: moment().format('HH:mm'),
+            breakOut: moment().format('HH:mm')
         });
 
         this.projectChange();
@@ -600,6 +640,7 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
         this.phaseChange();
         this.costCodeChange();
         this.employeeChange();
+        this.timeInChange();
     }
 
     public removeFromCollection (employee, collection: Array<any>) {
@@ -684,5 +725,14 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
                 }
             }
         );
+    }
+
+    timeInChange () {
+
+        const timeIn = this.enterTimeForm.get('timeIn');
+        timeIn.valueChanges.subscribe(
+            (time) => {
+                console.log(timeIn);
+            });
     }
 }

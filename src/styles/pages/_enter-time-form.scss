@@ -134,6 +134,15 @@
     }
 
     .time-entry {
+        width: 135px;
+        input {
+            padding-left: 2px;
+        }
+
+    }
+
+    .hours-entry {
+        margin-top: 3px;
 
         label.mat-input-placeholder {
             color: $gray-70;

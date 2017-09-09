@@ -118,18 +118,22 @@
             <div class="col-md-12" *ngIf="!isTimeIn">
                 <span class="label-bold">Hours Worked</span>
 
-                <div class="row time-entry form-field">
-                    <md-input-container>
-                        <input mdInput placeholder="ST" formControlName="standardHours">
-                    </md-input-container>
-
-                    <md-input-container>
-                        <input mdInput placeholder="OT" formControlName="overtimeHours">
-                    </md-input-container>
-
-                    <md-input-container>
-                        <input mdInput placeholder="DT" formControlName="doubleTimeHours">
-                    </md-input-container>
+                <div class="row hours-entry form-field">
+                    <div class="col-md-2">
+                        <md-input-container>
+                            <input mdInput placeholder="ST" formControlName="standardHours">
+                        </md-input-container>
+                    </div>
+                    <div class="col-md-2">
+                        <md-input-container>
+                            <input mdInput placeholder="OT" formControlName="overtimeHours">
+                        </md-input-container>
+                    </div>
+                    <div class="col-md-2">
+                        <md-input-container>
+                            <input mdInput placeholder="DT" formControlName="doubleTimeHours">
+                        </md-input-container>
+                    </div>
                 </div>
 
             </div>
@@ -139,31 +143,35 @@
                         <span class="label-bold">Time In</span>
 
                         <div class="row time-entry">
-                            <dp-time-select [(ngModel)]="time.In" [ngModelOptions]="{standalone: true}"
-                                            [config]="dpTimeConfig" [theme]="'dp-material'"></dp-time-select>
+                            <md-input-container class="form-field">
+                                <input mdInput type="time" formControlName="timeIn">
+                            </md-input-container>
                         </div>
                     </div>
                     <div class="col-md-2">
                         <span class="label-bold">Time Out</span>
                         <div class="row time-entry">
-                            <dp-time-select [(ngModel)]="time.Out" [ngModelOptions]="{standalone: true}"
-                                            [config]="dpTimeConfig" [theme]="'dp-material'"></dp-time-select>
+                            <md-input-container class="form-field">
+                                <input mdInput type="time" formControlName="timeOut">
+                            </md-input-container>
                         </div>
                     </div>
                     <div class="col-md-2 offset-1">
                         <span class="label-bold">Break Time In</span>
 
                         <div class="row time-entry">
-                            <dp-time-select [(ngModel)]="time.BreakIn" [ngModelOptions]="{standalone: true}"
-                                            [config]="dpTimeConfig" [theme]="'dp-material'"></dp-time-select>
+                            <md-input-container class="form-field">
+                                <input mdInput type="time" formControlName="breakIn">
+                            </md-input-container>
                         </div>
                     </div>
                     <div class="col-md-2">
                         <span class="label-bold">Break Time Out</span>
 
                         <div class="row time-entry">
-                            <dp-time-select [(ngModel)]="time.BreakOut" [ngModelOptions]="{standalone: true}"
-                                            [config]="dpTimeConfig" [theme]="'dp-material'"></dp-time-select>
+                            <md-input-container class="form-field">
+                                <input mdInput type="time" formControlName="breakOut">
+                            </md-input-container>
                         </div>
                     </div>
                 </div>
@@ -179,7 +187,10 @@
         </div>
 
         <div class="row">
-            <div class="col-md-12 esub-button-group">
+            <div class="col-md-6 esub-button-group">
+                <button md-raised-button class="primary" [disabled]="enterTimeForm.pristine" (click)="clearForm()">Clear form</button>
+            </div>
+            <div class="col-md-6 esub-button-group">
                 <button md-raised-button type="submit" class="secondary" [disabled]="enterTimeForm.invalid">Create {{linesToAddCount()}} time entries</button>
             </div>
         </div>
