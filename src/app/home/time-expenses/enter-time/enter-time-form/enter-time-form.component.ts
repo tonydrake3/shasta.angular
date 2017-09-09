@@ -52,8 +52,9 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
     public time: TimeEntry;
     public timeEntryModeEnum;
     public isTimeIn: boolean;
-    public isProjectTimeEntry: boolean;
     public isEmployeeSelectionVisible: boolean;
+    public isProjectCostEntry: boolean;
+    public enterTimeTabIndex: number;
 
     public filteredProjects: Observable<Project[]>;
     public filteredSystems: Observable<System[]>;
@@ -93,9 +94,10 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
         ]);
 
         this.dateFormat = 'MMM. Do, YYYY';
-        this.isProjectTimeEntry = true;
         this.isEmployeeSelectionVisible = true;
-        this.isTimeIn = true;
+        this.isProjectCostEntry = true;
+        this.enterTimeTabIndex = 0;
+        this.isTimeIn = false;
         this._enterTimeManager.setTimeEntryMode(TimeEntryMode.TimeInTimeOut);
         this.timeEntryModeEnum = TimeEntryMode;
         this.selectedDates = [];
@@ -114,7 +116,7 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
      ******************************************************************************************************************/
 
     ngAfterViewInit () {
-        console.log(this.trigger);
+        // console.log(this.trigger);
         // this.trigger.panelClosingActions
         //     .subscribe(
         //         (result) => {
@@ -152,6 +154,26 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
     /******************************************************************************************************************
      * Public Methods
      ******************************************************************************************************************/
+    public tabIndexChange (event) {
+
+        switch(event) {
+            case 0:
+                this.isProjectCostEntry = true;
+                this.isTimeIn = false;
+                this._enterTimeManager.setTimeEntryMode(TimeEntryMode.Hours);
+                break;
+            case 1:
+                this.isProjectCostEntry = true;
+                this.isTimeIn = true;
+                this._enterTimeManager.setTimeEntryMode(TimeEntryMode.TimeInTimeOut);
+                break;
+            case 2:
+                this.isProjectCostEntry = false;
+                this.isTimeIn = false;
+                break;
+        }
+    }
+
     public onDatesChanged (event) {
 
         if (event.length !== 0) {
@@ -417,19 +439,7 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
         return this._enterTimeManager.getSelectedDatesCount() * this.enterTimeForm.get('employees').value.length;
     }
 
-    // TODO: Remove when setting is implemented
-    public changeTimeInTimeOut () {
-
-        this.isTimeIn = !this.isTimeIn;
-        if (this.isTimeIn) {
-
-            this._enterTimeManager.setTimeEntryMode(TimeEntryMode.TimeInTimeOut);
-        } else {
-
-            this._enterTimeManager.setTimeEntryMode(TimeEntryMode.Hours);
-        }
-    }
-
+    // TODO: Move to component
     public getExpandContainer (className: string) {
 
         const classes = [];
@@ -446,6 +456,7 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
         return classes;
     }
 
+    // TODO: Move to component
     public getExpandIcon () {
 
         const classes = [];
