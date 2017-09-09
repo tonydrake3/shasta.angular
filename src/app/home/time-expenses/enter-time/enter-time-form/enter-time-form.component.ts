@@ -53,6 +53,7 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
     public timeEntryModeEnum;
     public isTimeIn: boolean;
     public isProjectTimeEntry: boolean;
+    public isEmployeeSelectionVisible: boolean;
 
     public filteredProjects: Observable<Project[]>;
     public filteredSystems: Observable<System[]>;
@@ -93,6 +94,7 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
 
         this.dateFormat = 'MMM. Do, YYYY';
         this.isProjectTimeEntry = true;
+        this.isEmployeeSelectionVisible = true;
         this.isTimeIn = true;
         this._enterTimeManager.setTimeEntryMode(TimeEntryMode.TimeInTimeOut);
         this.timeEntryModeEnum = TimeEntryMode;
@@ -155,7 +157,7 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
         if (event.length !== 0) {
 
             this.enterTimeForm.markAsDirty();
-            
+
             let dateFieldValue: string;
             if (event.length > 1) {
 
@@ -203,6 +205,11 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
         this.enterTimeForm.patchValue({
             employees: this.selectedEmployees
         });
+    }
+
+    public toggleSelectedEmployees () {
+
+        this.isEmployeeSelectionVisible = !this.isEmployeeSelectionVisible;
     }
 
     public openProjects () {
@@ -421,6 +428,41 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
 
             this._enterTimeManager.setTimeEntryMode(TimeEntryMode.Hours);
         }
+    }
+
+    public getExpandContainer (className: string) {
+
+        const classes = [];
+        classes.push(
+            className
+        );
+
+        if (this.isEmployeeSelectionVisible) {
+
+            classes.push(
+                'expanded'
+            );
+        }
+        return classes;
+    }
+
+    public getExpandIcon () {
+
+        const classes = [];
+        classes.push(
+            'material-icons'
+        );
+        classes.push(
+            'pull-right'
+        );
+
+        if (!this.isEmployeeSelectionVisible) {
+
+            classes.push(
+                'rotate-icon'
+            );
+        }
+        return classes;
     }
 
     public clearForm () {

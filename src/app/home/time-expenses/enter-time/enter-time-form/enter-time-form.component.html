@@ -83,17 +83,19 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="enter-time-selected-employees" *ngIf="selectedEmployees.length > 0">
-                    <div class="selected-header">
-                        <span class="selected-header-label expansion-title-regular">{{selectedEmployees.length}} employees selected</span>
-                        <i class="material-icons pull-right">keyboard_arrow_up</i>
-                    </div>
-                    <div class="selected-employee-list" esubSlimScroll>
-                        <md-chip-list>
-                            <md-chip *ngFor="let employee of selectedEmployees" (click)="removeEmployee(employee)">
-                                <span>{{employee.Number}} - {{employee.Name}}</span>
-                                <i class="mdi mdi-close-circle"></i>
-                            </md-chip>
-                        </md-chip-list>
+                    <div [ngClass]="getExpandContainer('enter-time-selected-employees-container')">
+                        <div class="selected-header" (click)="toggleSelectedEmployees()">
+                            <span class="selected-header-label expansion-title-regular">{{selectedEmployees.length}} employees selected</span>
+                            <i [ngClass]="getExpandIcon()">keyboard_arrow_up</i>
+                        </div>
+                        <div [ngClass]="getExpandContainer('selected-employee-list')">
+                            <md-chip-list>
+                                <md-chip *ngFor="let employee of selectedEmployees" (click)="removeEmployee(employee)">
+                                    <span>{{employee.Number}} - {{employee.Name}}</span>
+                                    <i class="mdi mdi-close-circle"></i>
+                                </md-chip>
+                            </md-chip-list>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -188,7 +190,7 @@
 
         <div class="row">
             <div class="col-md-6 esub-button-group">
-                <button md-raised-button class="primary" [disabled]="enterTimeForm.pristine" (click)="clearForm()">Clear form</button>
+                <button md-raised-button type="button" class="primary" [disabled]="enterTimeForm.pristine" (click)="clearForm()">Clear form</button>
             </div>
             <div class="col-md-6 esub-button-group">
                 <button md-raised-button type="submit" class="secondary" [disabled]="enterTimeForm.invalid">Create {{linesToAddCount()}} time entries</button>
