@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, EventEmitter, Injector, Output, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Injector, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import * as _ from 'lodash';
@@ -25,12 +25,15 @@ import {DateFlyoutService} from '../../../shared/components/date-flyout/date-fly
 import {Observable} from 'rxjs/Observable';
 import {MdAutocomplete, MdAutocompleteTrigger} from '@angular/material';
 import {Subscription} from 'rxjs/Subscription';
+import {ProjectService} from '../../../shared/services/project.service';
+import {IndirectCostCodesService} from '../../../shared/services/indirect-cost-codes.service';
+import {EmployeeService} from '../../../shared/services/user/employee.service';
 
 @Component({
     selector: 'esub-enter-time-form',
     templateUrl: './enter-time-form.component.html'
 })
-export class EnterTimeFormComponent extends BaseComponent implements AfterViewInit {
+export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
     @ViewChild(MdAutocompleteTrigger) trigger: MdAutocompleteTrigger;
 
@@ -38,6 +41,10 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
     // Private
     private _tenantEmployees: Array<Employee>;
     private _indirectCodes: Array<CostCode>;
+
+    private _projectSubscription;
+    private _employeeSubscription;
+    private _indirectCostsSubscription;
 
     // Public
     public enterTimeForm: FormGroup;
@@ -76,22 +83,23 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
     };
 
     constructor (private _builder: FormBuilder, private _injector: Injector, private _enterTimeManager: EnterTimeManager,
-                 private _dateFlyoutService: DateFlyoutService) {
+                 private _dateFlyoutService: DateFlyoutService, private _projectService: ProjectService,
+                 private _indirectCostsService: IndirectCostCodesService, private _employeeService: EmployeeService) {
 
-        super(_injector, [
-            {
-                service: 'ProjectService',
-                callback: 'projectServiceCallback'
-            },
-            {
-                service: 'IndirectCostCodesService',
-                callback: 'indirectCostCodeServiceCallback'
-            },
-            {
-                service: 'EmployeeService',
-                callback: 'employeeServiceCallback'
-            }
-        ]);
+        // super(_injector, [
+        //     {
+        //         service: 'ProjectService',
+        //         callback: 'projectServiceCallback'
+        //     },
+        //     {
+        //         service: 'IndirectCostCodesService',
+        //         callback: 'indirectCostCodeServiceCallback'
+        //     },
+        //     {
+        //         service: 'EmployeeService',
+        //         callback: 'employeeServiceCallback'
+        //     }
+        // ]);
 
         this.dateFormat = 'MMM. Do, YYYY';
         this.isEmployeeSelectionVisible = true;
@@ -115,6 +123,59 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
      * Lifecycle Methods
      ******************************************************************************************************************/
 
+    ngOnInit () {
+
+        this.projects = this._enterTimeManager.getProjects();
+        this._tenantEmployees = this._enterTimeManager.getEmployees();
+        this._indirectCodes = this._enterTimeManager.getIndirectCodes();
+
+        this._projectSubscription = this._projectService.projects$
+            .subscribe(
+                (projects) => {
+                    this.projects = projects['Value'] as Array<Project>;
+                    this._enterTimeManager.setProjects(this.projects);
+                }
+            );
+
+        this._indirectCostsSubscription = this._indirectCostsService.indirectCostCodes$
+            .subscribe(
+                (costCodes) => {
+                    this._indirectCodes = this.mapCostCodes(costCodes['Value']) as Array<CostCode>;
+                    this._enterTimeManager.setIndirectCodes(this._indirectCodes);
+                }
+            );
+
+        this._employeeSubscription = this._employeeService.employees$
+            .subscribe(
+                (employees) => {
+                    this._tenantEmployees = this.concatName(employees['Value'] as Array<Employee>);
+                    this._enterTimeManager.setEmployees(this._tenantEmployees);
+                }
+            );
+
+        if (this.projects.length === 0) {
+
+            this._projectService.getLatest();
+        }
+
+        if (this._tenantEmployees.length === 0) {
+
+            this._employeeService.getLatest();
+        }
+
+        if (this._indirectCodes.length === 0) {
+
+            this._indirectCostsService.getLatest();
+        }
+    }
+
+    ngOnDestroy () {
+
+        this._projectSubscription.unsubscribe();
+        this._indirectCostsSubscription.unsubscribe();
+        this._employeeSubscription.unsubscribe();
+    }
+
     ngAfterViewInit () {
         // console.log(this.trigger);
         // this.trigger.panelClosingActions
@@ -129,47 +190,49 @@ export class EnterTimeFormComponent extends BaseComponent implements AfterViewIn
     /******************************************************************************************************************
      * Callback Handler
      ******************************************************************************************************************/
-    projectServiceCallback (projects) {
-
-        this.projects = projects['Value'] as Array<Project>;
-        this._enterTimeManager.setProjects(this.projects);
-
-        // this.projectChange();
-        // console.log(projects['Value']);
-    }
-
-    employeeServiceCallback (employees) {
-
-        this._tenantEmployees = this.concatName(employees['Value'] as Array<Employee>);
-        this._enterTimeManager.setEmployees(this._tenantEmployees);
-    }
-
-    indirectCostCodeServiceCallback (costCodes) {
-
-        // console.log(costCodes);
-        this._indirectCodes = this.mapCostCodes(costCodes['Value']) as Array<CostCode>;
-        this._enterTimeManager.setIndirectCodes(this._indirectCodes);
-    }
+    // projectServiceCallback (projects) {
+    //
+    //     this.projects = projects['Value'] as Array<Project>;
+    //     this._enterTimeManager.setProjects(this.projects);
+    //     // this.projectChange();
+    //     // console.log(projects['Value']);
+    // }
+    //
+    // employeeServiceCallback (employees) {
+    //
+    //     this._tenantEmployees = this.concatName(employees['Value'] as Array<Employee>);
+    //     this._enterTimeManager.setEmployees(this._tenantEmployees);
+    // }
+    //
+    // indirectCostCodeServiceCallback (costCodes) {
+    //
+    //     // console.log(costCodes);
+    //     this._indirectCodes = this.mapCostCodes(costCodes['Value']) as Array<CostCode>;
+    //     this._enterTimeManager.setIndirectCodes(this._indirectCodes);
+    // }
 
     /******************************************************************************************************************
      * Public Methods
      ******************************************************************************************************************/
     public tabIndexChange (event) {
 
-        switch(event) {
+        switch (event) {
             case 0:
                 this.isProjectCostEntry = true;
                 this.isTimeIn = false;
                 this._enterTimeManager.setTimeEntryMode(TimeEntryMode.Hours);
+                this.clearForm();
                 break;
             case 1:
                 this.isProjectCostEntry = true;
                 this.isTimeIn = true;
                 this._enterTimeManager.setTimeEntryMode(TimeEntryMode.TimeInTimeOut);
+                this.clearForm();
                 break;
             case 2:
                 this.isProjectCostEntry = false;
                 this.isTimeIn = false;
+                this.clearForm();
                 break;
         }
     }

@@ -55,7 +55,7 @@
             </div>
         </div>
 
-        <div class="row mb-2">
+        <div class="row mb-2" *ngIf="isProjectCostEntry && costCodes.length > 0 || !isProjectCostEntry">
             <div class="col-md-12">
                 <md-input-container class="form-field">
                     <input type="text" mdInput placeholder="Cost Code" formControlName="costCode" [mdAutocomplete]="autoCostCode"

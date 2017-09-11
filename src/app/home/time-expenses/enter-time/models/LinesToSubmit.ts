@@ -21,7 +21,9 @@ export class LineToSubmit {
 export class IndirectToSubmit {
     Date: moment.Moment;
     Employee: any;
+    EmployeeId: string;
     CostCode: any;
+    IndirectCostId: string;
     HoursST: number;
     HoursOT: number;
     HoursDT: number;

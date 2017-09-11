@@ -4,8 +4,7 @@
             class="enter-time-grid-progress"
             [color]="progressConfig.color"
             [mode]="progressConfig.mode"
-            [value]="progressConfig.value"
-            [bufferValue]="progressConfig.bufferValue">
+            [value]="progressConfig.value">
         </md-progress-bar>
     </div>
     <div class="enter-time-grid-overlay" *ngIf="loading"></div>
@@ -26,32 +25,30 @@
         </div>
     </div>
 
-    <div >
-        <div class="esub-card no-hover time-card" *ngFor="let card of groupedLines; let cardIndex = index">
-            <div class="time-card-header">
+    <div class="esub-card no-hover time-card" *ngFor="let card of groupedLines; let cardIndex = index">
+        <div class="time-card-header">
 
-                <div class="row">
-                    <div class="col-md-6 enter-time-grid-card-title" [ngSwitch]="groupCardsBy">
-                        <label *ngSwitchCase="'Employee'">{{card.Key}}</label>
-                        <label *ngSwitchCase="'Project'">{{card.Key}}</label>
-                        <label *ngSwitchCase="'Date'">{{card.Key | date:'yMMMd'}}</label>
-                    </div>
-                    <div class="col-md-6 text-right">
-                        <span (click)="deleteCard(card, cardIndex)">Delete card</span>
-                    </div>
+            <div class="row">
+                <div class="col-md-6 enter-time-grid-card-title" [ngSwitch]="groupCardsBy">
+                    <label *ngSwitchCase="'Employee'">{{card.Key}}</label>
+                    <label *ngSwitchCase="'Project'">{{card.Key}}</label>
+                    <label *ngSwitchCase="'Date'">{{card.Key | date:'yMMMd'}}</label>
                 </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <label>ST Total:</label> {{card.ST}}
-                    </div>
+                <div class="col-md-6 text-right">
+                    <span (click)="deleteCard(card, cardIndex)">Delete card</span>
                 </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <label>Total Hours</label> 0
-                    </div>
-                </div>
-
             </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <label>ST Total:</label> {{card.ST}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <label>Total Hours</label> 0
+                </div>
+            </div>
+        </div>
 
         <div class="esub-table" *ngIf="card.ProjectLines?.length > 0">
 
@@ -91,31 +88,64 @@
                     <label>{{record.Date.format(dateFormat)}}</label>
                 </div>
                 <div style="order:2; width:11%" class="table-cell" >
-                    <esub-grid-typeahead [field]="record.Project" [list]="projects"></esub-grid-typeahead>
+                    <md-input-container class="form-field">
+                        <input type="text" mdInput [mdAutocomplete]="autoProject"
+                               [(ngModel)]="record.Project" (ngModelChange)="filteredProjects = filterCollection(record.Project, projects)">
+                    </md-input-container>
+                    <md-autocomplete #autoProject="mdAutocomplete" [displayWith]="displayFormatted">
+                        <md-option *ngFor="let project of filteredProjects | async" (onSelectionChange)="onProjectSelected(record)"
+                                   [value]="project">
+                            {{project.Number}} - {{project.Name}}
+                        </md-option>
+                    </md-autocomplete>
                 </div>
                 <div style="order:3; width:10%" class="table-cell" >
-                        <input placeholder="System" [(ngModel)]="record.System.Name">
-                    <!--<md-select placeholder="System" >-->
-                        <!--<md-option *ngFor="let system of record.Project.Systems" [value]="system">{{system.Name}}</md-option>-->
-                    <!--</md-select>-->
+                    <md-input-container class="form-field">
+                        <input type="text" mdInput [mdAutocomplete]="autoSystem"
+                               [(ngModel)]="record.System" (ngModelChange)="filteredSystems = filterCollection(record.System, record.Project.Systems)">
+                    </md-input-container>
+                    <md-autocomplete #autoSystem="mdAutocomplete" [displayWith]="displayFormatted">
+                        <md-option *ngFor="let system of filteredSystems | async" (onSelectionChange)="onSystemSelected(record)"
+                                   [value]="system">
+                            {{system.Number}} - {{system.Name}}
+                        </md-option>
+                    </md-autocomplete>
                 </div>
                 <div style="order:4; width:10%" class="table-cell" >
-                        <input placeholder="Phase" [(ngModel)]="record.Phase.Name">
-                    <!--<md-select placeholder="Phase" >-->
-                        <!--<md-option *ngFor="let phase of phases" [value]="phase">{{phase.Name}}</md-option>-->
-                    <!--</md-select>-->
+                    <md-input-container class="form-field">
+                        <input type="text" mdInput [mdAutocomplete]="autoPhase"
+                               [(ngModel)]="record.Phase" (ngModelChange)="filteredPhases = filterCollection(record.Phase, record.System.Phases)">
+                    </md-input-container>
+                    <md-autocomplete #autoPhase="mdAutocomplete" [displayWith]="displayFormatted">
+                        <md-option *ngFor="let phase of filteredPhases | async"
+                                   [value]="phase">
+                            {{phase.Number}} - {{phase.Name}}
+                        </md-option>
+                    </md-autocomplete>
                 </div>
                 <div style="order:5; width:10%" class="table-cell" >
-                        <input placeholder="Cost Code" [(ngModel)]="record.CostCode.Name">
-                    <!--<md-select placeholder="CostCode" >-->
-                        <!--<md-option *ngFor="let costCode of record.Project.CostCodes" [value]="costCode">{{costCode.Name}}</md-option>-->
-                    <!--</md-select>-->
+                    <md-input-container class="form-field">
+                        <input type="text" mdInput [mdAutocomplete]="autoCostCode"
+                               [(ngModel)]="record.CostCode" (ngModelChange)="filteredCostCodes = filterCollection(record.CostCode, record.Project.CostCodes)">
+                    </md-input-container>
+                    <md-autocomplete #autoCostCode="mdAutocomplete" [displayWith]="displayCode">
+                        <md-option *ngFor="let costCode of filteredCostCodes | async"
+                                   [value]="costCode">
+                            {{costCode.Code}} - {{costCode.Name}}
+                        </md-option>
+                    </md-autocomplete>
                 </div>
                 <div style="order:6; width:10%" class="table-cell" >
-                        <input placeholder="Name" [(ngModel)]="record.Employee.FullName">
-                    <!--<md-select placeholder="Employee" >-->
-                        <!--<md-option *ngFor="let employee of getFilteredEmployees(record.Project.Id)" [value]="employee">{{employee.FullName}}</md-option>-->
-                    <!--</md-select>-->
+                    <md-input-container class="form-field">
+                        <input type="text" mdInput [mdAutocomplete]="autoEmployee"
+                               [(ngModel)]="record.Employee" (ngModelChange)="filteredEmployees = filterEmployees(record.Employee, record.Project.Id)">
+                    </md-input-container>
+                    <md-autocomplete #autoEmployee="mdAutocomplete" [displayWith]="displayFormatted">
+                        <md-option *ngFor="let employee of filteredEmployees | async"
+                                   [value]="employee">
+                            {{employee.Number}} - {{employee.Name}}
+                        </md-option>
+                    </md-autocomplete>
                 </div>
                 <div style="order:7; width:6%" class="table-cell">
                     <div *ngIf="record.IsPunch">
@@ -155,46 +185,59 @@
                        [mdTooltipPosition]="'after'">delete</i>
                 </div>
             </div>
+        </div>
+        <div class="esub-table" *ngIf="card.IndirectLines?.length > 0">
 
-            <div class="esub-table" *ngIf="card.IndirectLines?.length > 0">
+            <div class="table-row">
+                <div style="order:1; width:10%" class="table-cell table-header">Date</div>
+                <div style="order:2; width:25%" class="table-cell table-header">Employee</div>
+                <div style="order:3; width:25%" class="table-cell table-header">CostCode</div>
+                <div style="order:4; width:37%" class="table-cell table-header">Hours</div>
+                <div style="order:5; width:03%" class="table-cell table-header"></div>
+            </div>
 
-                <div class="table-row">
-                    <div style="order:1; width:10%" class="table-cell table-header">Date</div>
-                    <div style="order:2; width:25%" class="table-cell table-header">Employee</div>
-                    <div style="order:3; width:25%" class="table-cell table-header">CostCode</div>
-                    <div style="order:4; width:37%" class="table-cell table-header">Hours</div>
-                    <div style="order:5; width:03%" class="table-cell table-header"></div>
+            <div class="table-row" *ngFor="let record of card.IndirectLines; let rowIndex = index">
+                <div style="order:1; width:10%" class="table-cell" >{{record.Date.format(dateFormat)}}</div>
+                <div style="order:2; width:25%" class="table-cell" >
+                    <md-input-container class="form-field">
+                        <input type="text" mdInput [mdAutocomplete]="autoEmployee"
+                               [(ngModel)]="record.Employee" (ngModelChange)="filteredEmployees = filterAllEmployees(record.Employee)">
+                    </md-input-container>
+                    <md-autocomplete #autoEmployee="mdAutocomplete" [displayWith]="displayFormatted">
+                        <md-option *ngFor="let employee of filteredEmployees | async"
+                                   [value]="employee">
+                            {{employee.Number}} - {{employee.Name}}
+                        </md-option>
+                    </md-autocomplete>
                 </div>
-
-                <div class="table-row" *ngFor="let record of card.IndirectLines">
-                    <div style="order:1; width:10%" class="table-cell" >{{record.Date.format(dateFormat)}}</div>
-                    <div style="order:2; width:25%" class="table-cell" >
-                        <md-select placeholder="Employee" >
-                            <md-option *ngFor="let employee of employees" [value]="employee">{{employee.FullName}}</md-option>
-                        </md-select>
-                    </div>
-                    <div style="order:3; width:25%" class="table-cell" >
-                        <md-select placeholder="CostCode" >
-                            <md-option *ngFor="let costCode of indirectCosts" [value]="costCode">{{costCode.Name}}</md-option>
-                        </md-select>
-                    </div>
-                    <div style="order:4; width:37%" class="table-cell table-time-entry">
-                        <div class="row">
-                            <div class="col-md-12 no-gutters">
-                                <md-input-container>
-                                    <input mdInput placeholder="ST" [(ngModel)]="record.HoursST">
-                                </md-input-container>
-                            </div>
+                <div style="order:3; width:25%" class="table-cell" >
+                    <md-input-container class="form-field">
+                        <input type="text" mdInput [mdAutocomplete]="autoCostCodes"
+                               [(ngModel)]="record.CostCode" (ngModelChange)="filteredCostCodes = filterIndirectCodes(record.CostCode)">
+                    </md-input-container>
+                    <md-autocomplete #autoCostCodes="mdAutocomplete" [displayWith]="displayCode">
+                        <md-option *ngFor="let costCode of filteredCostCodes | async"
+                                   [value]="costCode">
+                            {{costCode.Code}} - {{costCode.Name}}
+                        </md-option>
+                    </md-autocomplete>
+                </div>
+                <div style="order:4; width:37%" class="table-cell table-time-entry">
+                    <div class="row">
+                        <div class="col-md-12 no-gutters">
+                            <md-input-container>
+                                <input mdInput placeholder="ST" [(ngModel)]="record.HoursST">
+                            </md-input-container>
                         </div>
                     </div>
-                    <div style="order:5; width:03%" class="table-cell" >
-                        <i class="material-icons" mdTooltip="Copy row" (click)="copyRow(record)"
-                           [mdTooltipPosition]="'after'">content copy</i>
-                        <i class="material-icons" mdTooltip="Note"
-                           [mdTooltipPosition]="'after'">description</i>
-                        <i class="material-icons" (click)="deleteRecord(record)" mdTooltip="Delete"
-                           [mdTooltipPosition]="'after'">delete</i>
-                    </div>
+                </div>
+                <div style="order:5; width:03%" class="table-cell" >
+                    <i class="material-icons" mdTooltip="Copy" (click)="copyIndirectRow(record, rowIndex, cardIndex)"
+                       [mdTooltipPosition]="'after'">content_copy</i>
+                    <i class="material-icons" mdTooltip="Note"
+                       [mdTooltipPosition]="'after'">description</i>
+                    <i class="material-icons" mdTooltip="Delete" (click)="deleteIndirectRow(record, rowIndex, cardIndex)"
+                       [mdTooltipPosition]="'after'">delete</i>
                 </div>
             </div>
         </div>

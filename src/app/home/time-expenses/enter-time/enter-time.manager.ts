@@ -15,7 +15,7 @@ import { TimeEntryState } from './models/TimeEntry';
 export class EnterTimeManager {
 
     public _cards$ = new Subject<EntryCard>();
-    public _gridLines$ = new Subject();
+    // public _gridLines$ = new Subject();
     public _processing$ = new Subject<boolean>();
 
     // Private
@@ -40,11 +40,9 @@ export class EnterTimeManager {
         this._timeRecords = [];
         this._linesToSubmit = [];
         this._indirectToSubmit = [];
-    }
-
-    get gridLines$ () {
-
-        return this._gridLines$.asObservable();
+        this._projects = [];
+        this._employees = [];
+        this._indirectCodes = [];
     }
 
     get processing$ () {
@@ -120,6 +118,14 @@ export class EnterTimeManager {
         this._groupBy = groupBy;
         // return this.groupLinesToSubmit(this._linesToSubmit, this._indirectToSubmit);
         this.groupLinesToSubmit(this._linesToSubmit, this._indirectToSubmit);
+    }
+
+    public getLineCount () {
+
+        console.log('getLineCount _linesToSubmit.length', this._linesToSubmit.length);
+        console.log('getLineCount _indirectToSubmit.length', this._indirectToSubmit.length);
+        return this._linesToSubmit.length + this._indirectToSubmit.length +
+            (this._timeEntryState.SelectedDates.length * this._enterTimeFormData.employees.length);
     }
 
     public filterEmployees (projectId: string): Array<Employee> {
@@ -274,6 +280,8 @@ export class EnterTimeManager {
         return {
             Date: _.cloneDeep(date),
             Employee: _.cloneDeep(employee),
+            EmployeeId: '',
+            IndirectCostId: '',
             CostCode: _.cloneDeep(lines.costCode),
             HoursST: Number(lines.standardHours),
             HoursOT: Number(lines.overtimeHours),
@@ -380,7 +388,7 @@ export class EnterTimeManager {
 
     private groupLinesByDate (projectLines: Array<LineToSubmit>, indirectLines: Array<IndirectToSubmit>) {
 
-        console.log('groupLinesByDate');
+        // console.log('groupLinesByDate');
         const projectDates = this.getUniqueDates(projectLines);
         const indirectDates = this.getUniqueDates(indirectLines);
 
@@ -400,9 +408,10 @@ export class EnterTimeManager {
 
             // console.log('EnterTimeManager groupedLines', this._groupedLines);
             projectLines.forEach((projectLine, index) => {
-                this._processing$.next(true);
                 if (projectLine.Date.startOf('day').isSame(date, 'day')) {
+                    this._processing$.next(true);
                     setTimeout(() => {
+                        // console.log('groupLinesByDate projectLines', projectLine);
                         line.ST += projectLine.HoursST;
                         line.ProjectLines.push(projectLine);
                         if (index === projectLines.length - 1) {
@@ -412,9 +421,10 @@ export class EnterTimeManager {
                 }
             });
             indirectLines.forEach((indirectLine, index) => {
-                this._processing$.next(true);
                 if (indirectLine.Date.startOf('day').isSame(date, 'day')) {
+                    this._processing$.next(true);
                     setTimeout(() => {
+                        // console.log('groupLinesByDate indirectLines', index);
                         line.ST += indirectLine.HoursST;
                         line.IndirectLines.push(indirectLine);
                         if (index === indirectLines.length - 1) {
@@ -438,14 +448,14 @@ export class EnterTimeManager {
         _.forEach(employeeArray, (employee) => {
 
             const line: EntryCard = new EntryCard();
-            line.Key = employee.FullName;
+            line.Key = employee.Name;
 
             this._cards$.next(line);
 
             // console.log('EnterTimeManager groupedLines', this._groupedLines);
             projectLines.forEach((projectLine, index) => {
-                this._processing$.next(true);
                 if (_.isEqual(projectLine.Employee.Id, employee.Id)) {
+                    this._processing$.next(true);
                     setTimeout(() => {
                         line.ST += projectLine.HoursST;
                         line.ProjectLines.push(projectLine);
@@ -456,8 +466,8 @@ export class EnterTimeManager {
                 }
             });
             indirectLines.forEach((indirectLine, index) => {
-                this._processing$.next(true);
                 if (_.isEqual(indirectLine.Employee.Id, employee.Id)) {
+                    this._processing$.next(true);
                     setTimeout(() => {
                         line.ST += indirectLine.HoursST;
                         line.IndirectLines.push(indirectLine);
@@ -484,8 +494,8 @@ export class EnterTimeManager {
 
             // console.log('EnterTimeManager groupedLines', this._groupedLines);
             projectLines.forEach((projectLine, index) => {
-                this._processing$.next(true);
                 if (_.isEqual(projectLine.Project.Id, project.Id)) {
+                    this._processing$.next(true);
                     setTimeout(() => {
                         line.ST += projectLine.HoursST;
                         line.ProjectLines.push(projectLine);
@@ -537,7 +547,7 @@ export class EnterTimeManager {
             (uniqueLines) => {
                 return {
                     Id: uniqueLines.Employee.Id,
-                    FullName: uniqueLines.Employee.FullName
+                    Name: uniqueLines.Employee.Name
                 };
             });
     }

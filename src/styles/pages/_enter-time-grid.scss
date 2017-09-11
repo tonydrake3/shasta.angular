@@ -77,28 +77,32 @@
         .table-row {
 
             .table-cell {
-                input {
-                    border: 0;
-                    background: transparent;
-                    border-bottom: 1px solid $gray-50;
-                    color: $gray-70;
-                    height: 20px;
-                    outline: 0;
-                    margin-top: 10px;
-                    padding: 15px 0;
 
-                    &:focus {
-                        color: $blue;
-                        border-bottom: 1px solid $blue;
-                    }
+                .form-field {
+                    width: 100%;
                 }
-
-                label {
-                    color: $gray-70;
-                    height: 20px;
-                    margin-top: 6px;
-                    padding: 15px 0;
-                }
+                //input {
+                //    border: 0;
+                //    background: transparent;
+                //    border-bottom: 1px solid $gray-50;
+                //    color: $gray-70;
+                //    height: 20px;
+                //    outline: 0;
+                //    margin-top: 10px;
+                //    padding: 15px 0;
+                //
+                //    &:focus {
+                //        color: $blue;
+                //        border-bottom: 1px solid $blue;
+                //    }
+                //}
+                //
+                //label {
+                //    color: $gray-70;
+                //    height: 20px;
+                //    margin-top: 6px;
+                //    padding: 15px 0;
+                //}
             }
         }
     }
