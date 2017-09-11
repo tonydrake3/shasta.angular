@@ -82,7 +82,7 @@
                     margin-right: 24px;
                     position: relative;
                     top: -2px;
-                    @include transition(1s ease-in-out);
+                    @include transition(1.2s ease-in-out);
 
                     &.rotate-icon {
                         @include rotate(180deg);

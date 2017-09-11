@@ -62,6 +62,7 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
     public isEmployeeSelectionVisible: boolean;
     public isProjectCostEntry: boolean;
     public enterTimeTabIndex: number;
+    public isFirefoxTimeMaskEnabled: boolean;
 
     public filteredProjects: Observable<Project[]>;
     public filteredSystems: Observable<System[]>;
@@ -70,6 +71,7 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
     public filteredEmployees: Observable<Employee[]>;
 
     public selectedEmployees: Array<Employee>;
+    public costCodePlaceholder: string;
 
     // Calendar Config
     public dpDatepickerConfig: IDatePickerConfig = {
@@ -102,11 +104,12 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
         // ]);
 
         this.dateFormat = 'MMM. Do, YYYY';
+        this.costCodePlaceholder = 'Cost Code';
         this.isEmployeeSelectionVisible = true;
         this.isProjectCostEntry = true;
         this.enterTimeTabIndex = 0;
         this.isTimeIn = false;
-        this._enterTimeManager.setTimeEntryMode(TimeEntryMode.TimeInTimeOut);
+        this._enterTimeManager.setTimeEntryMode(TimeEntryMode.Hours);
         this.timeEntryModeEnum = TimeEntryMode;
         this.selectedDates = [];
         this.time = new TimeEntry();
@@ -177,14 +180,15 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
     }
 
     ngAfterViewInit () {
-        // console.log(this.trigger);
-        // this.trigger.panelClosingActions
-        //     .subscribe(
-        //         (result) => {
-        //
-        //             console.log(result);
-        //         }
-        //     );
+
+        // Firefox Detection
+        const userAgent = window.navigator.userAgent;
+        const firefoxIndex = userAgent.toLowerCase().indexOf('firefox');
+
+        if (firefoxIndex > 0) {
+
+            this.isFirefoxTimeMaskEnabled = true;
+        }
     }
 
     /******************************************************************************************************************
@@ -220,18 +224,22 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
             case 0:
                 this.isProjectCostEntry = true;
                 this.isTimeIn = false;
+                this.costCodePlaceholder = 'Cost Code';
                 this._enterTimeManager.setTimeEntryMode(TimeEntryMode.Hours);
                 this.clearForm();
                 break;
             case 1:
                 this.isProjectCostEntry = true;
                 this.isTimeIn = true;
+                this.costCodePlaceholder = 'Cost Code';
                 this._enterTimeManager.setTimeEntryMode(TimeEntryMode.TimeInTimeOut);
                 this.clearForm();
                 break;
             case 2:
                 this.isProjectCostEntry = false;
                 this.isTimeIn = false;
+                this.costCodePlaceholder = 'Indirect Cost';
+                this._enterTimeManager.setTimeEntryMode(TimeEntryMode.Hours);
                 this.clearForm();
                 break;
         }
@@ -417,16 +425,6 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
         // console.log('EnterTimeFormComponent projectSelected', event.source.value);
         const project = event.source.value;
 
-        if (project['timeEntryMethod'] === 'timeInTimeOut') {
-
-            this.timeEntryMode = TimeEntryMode.TimeInTimeOut;
-        } else {
-
-            // Need this condition if project is changed to one with TimeInTimeOut
-            this.timeEntryMode = TimeEntryMode.Hours;
-        }
-        this._enterTimeManager.setTimeEntryMode(this.timeEntryMode);
-
         this.checkDefaultSystem(project.Systems);
         this.checkDefaultCostCode(project.CostCodes);
         this.filterEmployeesByProject(project.Id);
@@ -563,6 +561,8 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
         this.phases = [];
         this.employees = [];
         this.selectedEmployees = [];
+        this.selectedDates = [];
+        this._enterTimeManager.clearSelectedDates();
         this.costCodes = [];
     }
 
@@ -848,7 +848,7 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
         const timeIn = this.enterTimeForm.get('timeIn');
         timeIn.valueChanges.subscribe(
             (time) => {
-                console.log(timeIn);
+                console.log(time);
             });
     }
 }

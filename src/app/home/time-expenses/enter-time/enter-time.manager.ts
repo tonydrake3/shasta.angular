@@ -103,9 +103,14 @@ export class EnterTimeManager {
         });
     }
 
+    public clearSelectedDates () {
+        this._timeEntryState.SelectedDates = [];
+    }
+
     public setTimeEntryMode (entryMode: TimeEntryMode) {
 
         this._timeEntryState.TimeEntryMode = _.cloneDeep(entryMode);
+        // console.log('setTimeEntryMode', this._timeEntryState.TimeEntryMode);
     }
 
     public getGroupBy () {
@@ -122,8 +127,6 @@ export class EnterTimeManager {
 
     public getLineCount () {
 
-        console.log('getLineCount _linesToSubmit.length', this._linesToSubmit.length);
-        console.log('getLineCount _indirectToSubmit.length', this._indirectToSubmit.length);
         return this._linesToSubmit.length + this._indirectToSubmit.length +
             (this._timeEntryState.SelectedDates.length * this._enterTimeFormData.employees.length);
     }
@@ -141,14 +144,14 @@ export class EnterTimeManager {
         this._enterTimeFormData = _.cloneDeep(formData.value);
         this._timeEntryState.Times = _.cloneDeep(times);
 
-        console.log('EnterTimeManager setLineData', this._enterTimeFormData);
+        // console.log('EnterTimeManager setLineData', this._enterTimeFormData, this._timeEntryState);
         // TODO: Clear Private Property values?
         this.resetManager();
     }
 
     public getGroupedLines () {
 
-        console.log('EnterTimeManager getGroupedLines');
+        // console.log('EnterTimeManager getGroupedLines');
         // return this.generateNewLines(this._enterTimeFormData);
         this.generateNewLines(this._enterTimeFormData);
     }
@@ -218,7 +221,7 @@ export class EnterTimeManager {
 
     private processProjectLines (lines) {
 
-        // console.log('EnterTimeManager processProjectLines', lines);
+        // console.log('EnterTimeManager processProjectLines TimeEntryMode', this._timeEntryState.TimeEntryMode);
         _.forEach(this._timeEntryState.SelectedDates, (date) => {
 
             _.forEach(lines.employees, (employee) => {
@@ -292,6 +295,7 @@ export class EnterTimeManager {
 
     private buildTimeToSubmit (date, employee, lines): LineToSubmit {
 
+        console.log('buildTimeToSubmit');
         const punchIn = this._timeEntryState.Times.In ? this._timeEntryState.Times.In : moment();
         const punchOut = this._timeEntryState.Times.Out ? this._timeEntryState.Times.Out : moment();
 

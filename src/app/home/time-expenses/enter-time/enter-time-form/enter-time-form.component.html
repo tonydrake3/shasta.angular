@@ -58,7 +58,7 @@
         <div class="row mb-2" *ngIf="isProjectCostEntry && costCodes.length > 0 || !isProjectCostEntry">
             <div class="col-md-12">
                 <md-input-container class="form-field">
-                    <input type="text" mdInput placeholder="Cost Code" formControlName="costCode" [mdAutocomplete]="autoCostCode"
+                    <input type="text" mdInput placeholder="{{costCodePlaceholder}}" formControlName="costCode" [mdAutocomplete]="autoCostCode"
                            (focus)="openCostCodes()" >
                 </md-input-container>
                 <md-autocomplete #autoCostCode="mdAutocomplete" [displayWith]="displayCostCode">
@@ -69,8 +69,7 @@
                 </md-autocomplete>
             </div>
         </div>
-
-        <div class="row">
+        <div class="row" *ngIf="(isProjectCostEntry && enterTimeForm.get('project').value) || enterTimeForm.get('costCode').value">
             <div class="col-md-10">
                 <md-input-container class="form-field selected-employees-field">
                     <input type="text" mdInput placeholder="Employees" formControlName="employee" [mdAutocomplete]="autoEmployee"
@@ -89,7 +88,7 @@
                 <a (click)="clearEmployeeSelection()">None</a>
             </div>
         </div>
-        <div class="row">
+        <div class="row" *ngIf="(isProjectCostEntry && enterTimeForm.get('project').value) || enterTimeForm.get('costCode').value">
             <div class="col-md-12">
                 <div class="enter-time-selected-employees" *ngIf="selectedEmployees.length > 0">
                     <div [ngClass]="getExpandContainer('enter-time-selected-employees-container')">
@@ -135,12 +134,12 @@
                             <input mdInput placeholder="ST" formControlName="standardHours">
                         </md-input-container>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-2" *ngIf="isProjectCostEntry">
                         <md-input-container>
                             <input mdInput placeholder="OT" formControlName="overtimeHours">
                         </md-input-container>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-2" *ngIf="isProjectCostEntry">
                         <md-input-container>
                             <input mdInput placeholder="DT" formControlName="doubleTimeHours">
                         </md-input-container>
