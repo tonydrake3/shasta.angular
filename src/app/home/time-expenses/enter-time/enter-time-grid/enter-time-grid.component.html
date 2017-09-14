@@ -177,17 +177,17 @@
                 </div>
                 <div style="order:11; width:4%" class="table-cell table-time-entry">
                     <md-input-container class="form-field">
-                        <input mdInput placeholder="ST" [(ngModel)]="record.HoursST">
+                        <input mdInput type="number" [(ngModel)]="record.HoursST" maxlength="5" step="0.25" min="0" max="24">
                     </md-input-container>
                 </div>
                 <div style="order:12; width:4%" class="table-cell table-time-entry">
                     <md-input-container class="form-field">
-                        <input mdInput placeholder="OT" [(ngModel)]="record.HoursOT">
+                        <input mdInput type="number" [(ngModel)]="record.HoursOT" maxlength="5" step="0.25" min="0" max="24">
                     </md-input-container>
                 </div>
                 <div style="order:13; width:4%" class="table-cell table-time-entry">
                     <md-input-container class="form-field">
-                        <input mdInput placeholder="DT" [(ngModel)]="record.HoursDT">
+                        <input mdInput type="number" [(ngModel)]="record.HoursDT" maxlength="5" step="0.25" min="0" max="24">
                     </md-input-container>
                 </div>
                 <div style="order:14; width:3%" class="table-cell" >

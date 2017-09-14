@@ -10,6 +10,7 @@ import {CloseDateFlyoutDirective} from './directives/date-flyout.directive';
 import {EChartsDirective} from './directives/echarts.directive';
 import {SlimScrollDirective} from './directives/slim-scroll.directive';
 import {TextHighlightDirective} from './directives/highlight.directive';
+import {TimeInputDirective} from './directives/time-input.directive';
 
 // Services
 import {AuthorizationService} from './services/authorization/authorization.service';
@@ -34,6 +35,8 @@ import {DateToWeekdayPipe} from './pipes/date-to-weekday.pipe';
 import {KeysPipe} from './pipes/keys.pipe';
 import {StatusPipe} from './pipes/status.pipe';
 import {NumericPrecisionPipe} from './pipes/numeric-precision.pipe';
+import {TimeFormatPipe} from './pipes/time-format.pipe';
+import {CanDeactivateGuard} from './guards/deactivate-guard.service';
 
 @NgModule({
     imports: [
@@ -59,6 +62,8 @@ import {NumericPrecisionPipe} from './pipes/numeric-precision.pipe';
         NumericPrecisionPipe,
         CloseDateFlyoutDirective,
         GridTypeaheadComponent,
+        TimeInputDirective,
+        TimeFormatPipe
     ],
     providers: [
         AuthorizationService,
@@ -68,7 +73,9 @@ import {NumericPrecisionPipe} from './pipes/numeric-precision.pipe';
         MapsService,
         ProjectService,
         UserService,
-        WeatherService
+        WeatherService,
+        TimeFormatPipe,
+        CanDeactivateGuard
     ],
     exports: [
         BaseCardComponent,
@@ -85,7 +92,9 @@ import {NumericPrecisionPipe} from './pipes/numeric-precision.pipe';
         CommentsComponent,
         NumericPrecisionPipe,
         CloseDateFlyoutDirective,
-        GridTypeaheadComponent
+        GridTypeaheadComponent,
+        TimeInputDirective,
+        TimeFormatPipe
     ]
 })
 

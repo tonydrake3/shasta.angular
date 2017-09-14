@@ -131,17 +131,18 @@
                 <div class="row hours-entry form-field">
                     <div class="col-md-2">
                         <md-input-container>
-                            <input mdInput placeholder="ST" formControlName="standardHours">
+                            <input mdInput type="number" placeholder="ST" formControlName="standardHours" maxlength="5" step="0.25" min="0" max="24">
                         </md-input-container>
                     </div>
                     <div class="col-md-2" *ngIf="isProjectCostEntry">
                         <md-input-container>
-                            <input mdInput placeholder="OT" formControlName="overtimeHours">
+                            <input mdInput type="number" placeholder="OT" formControlName="overtimeHours" maxlength="5" step="0.25" min="0" max="24">
                         </md-input-container>
                     </div>
                     <div class="col-md-2" *ngIf="isProjectCostEntry">
                         <md-input-container>
-                            <input mdInput placeholder="DT" formControlName="doubleTimeHours">
+                            <input mdInput type="number" placeholder="DT" formControlName="doubleTimeHours"
+                                   maxlength="5" step="0.25" min="0" max="24">
                         </md-input-container>
                     </div>
                 </div>
@@ -150,38 +151,71 @@
             <div class="col-md-12" *ngIf="isTimeIn">
                 <div class="row">
                     <div class="col-md-2">
-                        <span class="label-bold">Time In</span>
-
-                        <div class="row time-entry">
-                            <md-input-container class="form-field">
-                                <input mdInput type="time" formControlName="timeIn">
+                        <div class="time-entry" *ngIf="!isUnsupportedTime">
+                            <md-input-container class="form-field" >
+                                <input mdInput placeholder="Time in" type="time" formControlName="timeIn">
                             </md-input-container>
+                        </div>
+                        <div class="time-entry firefox-time" *ngIf="isUnsupportedTime">
+                            <md-input-container class="form-field" >
+                                <input mdInput placeholder="Time in" type="text" esubTimeInput formControlName="timeIn"
+                                       (timeChange)="onTimeInChange($event)" (timePeriodChange)="onTimeInPeriodChange($event)">
+                            </md-input-container>
+                            <md-select [(ngModel)]="timeInPeriod" [ngModelOptions]="{standalone: true}" [ngClass]="{'ie-offset': isIE }">
+                                <md-option [value]="'AM'">AM</md-option>
+                                <md-option [value]="'PM'">PM</md-option>
+                            </md-select>
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <span class="label-bold">Time Out</span>
-                        <div class="row time-entry">
+                        <div class="time-entry" *ngIf="!isUnsupportedTime">
                             <md-input-container class="form-field">
-                                <input mdInput type="time" formControlName="timeOut">
+                                <input mdInput placeholder="Time out" type="time" formControlName="timeOut">
                             </md-input-container>
+                        </div>
+                        <div class="time-entry firefox-time" *ngIf="isUnsupportedTime">
+                            <md-input-container class="form-field" >
+                                <input mdInput placeholder="Time out" type="text" esubTimeInput formControlName="timeOut"
+                                       (timeChange)="onTimeOutChange($event)" (timePeriodChange)="onTimeOutPeriodChange($event)">
+                            </md-input-container>
+                            <md-select [(ngModel)]="timeOutPeriod" [ngModelOptions]="{standalone: true}" [ngClass]="{'ie-offset': isIE }">
+                                <md-option [value]="'AM'">AM</md-option>
+                                <md-option [value]="'PM'">PM</md-option>
+                            </md-select>
                         </div>
                     </div>
                     <div class="col-md-2 offset-1">
-                        <span class="label-bold">Break Time In</span>
-
-                        <div class="row time-entry">
+                        <div class="time-entry" *ngIf="!isUnsupportedTime">
                             <md-input-container class="form-field">
-                                <input mdInput type="time" formControlName="breakIn">
+                                <input mdInput placeholder="Break in" type="time" formControlName="breakIn">
                             </md-input-container>
+                        </div>
+                        <div class="time-entry firefox-time" *ngIf="isUnsupportedTime">
+                            <md-input-container class="form-field" >
+                                <input mdInput placeholder="Break in" type="text" esubTimeInput formControlName="breakIn"
+                                       (timeChange)="onBreakInChange($event)" (timePeriodChange)="onBreakInPeriodChange($event)">
+                            </md-input-container>
+                            <md-select [(ngModel)]="breakInPeriod" [ngModelOptions]="{standalone: true}" [ngClass]="{'ie-offset': isIE }">
+                                <md-option [value]="'AM'">AM</md-option>
+                                <md-option [value]="'PM'">PM</md-option>
+                            </md-select>
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <span class="label-bold">Break Time Out</span>
-
-                        <div class="row time-entry">
+                        <div class="time-entry" *ngIf="!isUnsupportedTime">
                             <md-input-container class="form-field">
-                                <input mdInput type="time" formControlName="breakOut">
+                                <input mdInput placeholder="Break out" type="time" formControlName="breakOut">
                             </md-input-container>
+                        </div>
+                        <div class="time-entry firefox-time" *ngIf="isUnsupportedTime">
+                            <md-input-container class="form-field" >
+                                <input mdInput placeholder="Break out" type="text" esubTimeInput formControlName="breakOut"
+                                       (timeChange)="onBreakOutChange($event)" (timePeriodChange)="onBreakOutPeriodChange($event)">
+                            </md-input-container>
+                            <md-select [(ngModel)]="breakOutPeriod" [ngModelOptions]="{standalone: true}" [ngClass]="{'ie-offset': isIE }">
+                                <md-option [value]="'AM'">AM</md-option>
+                                <md-option [value]="'PM'">PM</md-option>
+                            </md-select>
                         </div>
                     </div>
                 </div>

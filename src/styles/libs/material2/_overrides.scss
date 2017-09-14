@@ -79,4 +79,9 @@ md-input-container {
     }
 }
 
+// Override width
+.mat-autocomplete-panel.mat-autocomplete-visible {
+    width: 100%;
+    min-width: 300px;
+}
 

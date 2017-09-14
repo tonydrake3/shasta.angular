@@ -295,9 +295,9 @@ export class EnterTimeManager {
 
     private buildTimeToSubmit (date, employee, lines): LineToSubmit {
 
-        console.log('buildTimeToSubmit');
-        const punchIn = this._timeEntryState.Times.In ? this._timeEntryState.Times.In : moment();
-        const punchOut = this._timeEntryState.Times.Out ? this._timeEntryState.Times.Out : moment();
+        console.log('buildTimeToSubmit', lines);
+        const punchIn = lines.timeIn ? moment(lines.timeIn, ['h:mm A']) : moment();
+        const punchOut = lines.timeOut ? moment(lines.timeOut, ['h:mm A']) : moment();
 
         const timeSubmission: LineToSubmit = {
             Date: _.cloneDeep(date),
@@ -323,10 +323,10 @@ export class EnterTimeManager {
 
         let breakIn, breakOut, breakDuration;
 
-        if (this._timeEntryState.Times && this._timeEntryState.Times.BreakIn && this._timeEntryState.Times.BreakOut) {
+        if (lines.breakIn && lines.breakOut) {
 
-            breakIn = this._timeEntryState.Times.BreakIn ? this._timeEntryState.Times.BreakIn : null;
-            breakOut = this._timeEntryState.Times.BreakOut ? this._timeEntryState.Times.BreakOut : null;
+            breakIn = lines.breakIn ? moment(lines.breakIn, ['h:mm A']) : null;
+            breakOut = lines.breakOut ? moment(lines.breakOut, ['h:mm A']) : null;
 
             timeSubmission.BreakIn = breakIn.format('h:mm A');
             timeSubmission.BreakOut = breakOut.format('h:mm A');
@@ -443,7 +443,7 @@ export class EnterTimeManager {
 
     private groupLinesByEmployee (projectLines: Array<LineToSubmit>, indirectLines: Array<IndirectToSubmit>) {
 
-        console.log('groupLinesByEmployee');
+        // console.log('groupLinesByEmployee');
         const projectEmployees = this.getUniqueEmployees(projectLines);
         const indirectEmployees = this.getUniqueEmployees(indirectLines);
 
@@ -486,7 +486,7 @@ export class EnterTimeManager {
 
     private groupLinesByProject (projectLines: Array<LineToSubmit>, indirectLines: Array<IndirectToSubmit>) {
 
-        console.log('groupLinesByProject');
+        // console.log('groupLinesByProject');
         const projects = this.getUniqueProjects(projectLines);
 
         _.forEach(projects, (project) => {

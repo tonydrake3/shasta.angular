@@ -67,7 +67,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
             .subscribe(
                 (card) => {
 
-                    console.log('EnterTimeGridComponent card', card);
+                    // console.log('EnterTimeGridComponent card', card);
                     this.groupedLines.push(card);
                     // this.buildCards(lines);
                     // this.groupedLines = line;
@@ -82,7 +82,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
                         this.progressConfig.value = (this.currentCount / (this.lineCount + (this.lineCount / 10))) * 100;
                     }
                     this.loading = processing;
-                    console.log('ngOnInit', processing);
+                    // console.log('ngOnInit', processing);
             });
 
         setTimeout(() => {

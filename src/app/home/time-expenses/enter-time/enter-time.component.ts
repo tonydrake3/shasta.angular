@@ -19,8 +19,7 @@ import { System } from '../../../models/domain/System';
 import { Phase } from '../../../models/domain/Phase';
 import {Line} from 'tslint/lib/test/lines';
 import {LinesToAdd} from './models/LinesToAdd';
-
-
+import {Observable} from 'rxjs/Observable';
 
 @Component({
     templateUrl: './enter-time.component.html'
@@ -135,6 +134,18 @@ export class EnterTimeComponent extends BaseComponent {
     //         //    see commit associated with https://github.com/vlio20/angular-datepicker/issues/127
     //     }
     // }
+    public canDeactivate (): Observable<boolean> | boolean {
+        console.log('EnterTimeComponent canDeactivate');
+
+        return true;
+        // Allow synchronous navigation (`true`) if no crisis or the crisis is unchanged
+        // if (!this.crisis || this.crisis.name === this.editName) {
+        //     return true;
+        // }
+        // Otherwise ask the user with the dialog service and return its
+        // observable which resolves to true or false when the user decides
+        // return this.dialogService.confirm('Discard changes?');
+    }
 
     public onTimeEntryComplete (event) {
 

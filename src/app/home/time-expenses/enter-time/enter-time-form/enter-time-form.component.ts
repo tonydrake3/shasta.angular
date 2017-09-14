@@ -62,7 +62,8 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
     public isEmployeeSelectionVisible: boolean;
     public isProjectCostEntry: boolean;
     public enterTimeTabIndex: number;
-    public isFirefoxTimeMaskEnabled: boolean;
+    public isUnsupportedTime: boolean;
+    public isIE: boolean;
 
     public filteredProjects: Observable<Project[]>;
     public filteredSystems: Observable<System[]>;
@@ -72,6 +73,10 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
 
     public selectedEmployees: Array<Employee>;
     public costCodePlaceholder: string;
+    public timeInPeriod: string;
+    public timeOutPeriod: string;
+    public breakInPeriod: string;
+    public breakOutPeriod: string;
 
     // Calendar Config
     public dpDatepickerConfig: IDatePickerConfig = {
@@ -102,7 +107,8 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
         //         callback: 'employeeServiceCallback'
         //     }
         // ]);
-
+        this.isUnsupportedTime = false;
+        this.isIE = false;
         this.dateFormat = 'MMM. Do, YYYY';
         this.costCodePlaceholder = 'Cost Code';
         this.isEmployeeSelectionVisible = true;
@@ -170,6 +176,30 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
 
             this._indirectCostsService.getLatest();
         }
+
+        // Browser Detection
+        const navigator = window.navigator;
+        const userAgent = navigator.userAgent;
+        let ieIndex = -1;
+
+        if (navigator.appName === 'Microsoft Internet Explorer') {
+
+            ieIndex = userAgent.toLowerCase().indexOf('msie');
+        } else if (navigator.appName === 'Netscape') {
+
+            ieIndex = userAgent.toLowerCase().indexOf('trident');
+
+            if (ieIndex > -1) {
+                this.isIE = true;
+            }
+        }
+
+        const firefoxIndex = userAgent.toLowerCase().indexOf('firefox');
+
+        if (firefoxIndex > -1 || ieIndex > -1) {
+
+            this.isUnsupportedTime = true;
+        }
     }
 
     ngOnDestroy () {
@@ -181,13 +211,21 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
 
     ngAfterViewInit () {
 
-        // Firefox Detection
-        const userAgent = window.navigator.userAgent;
-        const firefoxIndex = userAgent.toLowerCase().indexOf('firefox');
+        if (this.isUnsupportedTime) {
 
-        if (firefoxIndex > 0) {
+            this.timeInPeriod = moment().format('A').toString();
+            this.timeOutPeriod = moment().format('A').toString();
+            this.breakInPeriod = moment().format('A').toString();
+            this.breakOutPeriod = moment().format('A').toString();
+        } else {
 
-            this.isFirefoxTimeMaskEnabled = true;
+            this.enterTimeForm.patchValue({
+
+                timeIn: moment().format('h:mm A'),
+                timeOut: moment().format('h:mm A'),
+                breakIn: moment().format('h:mm A'),
+                breakOut: moment().format('h:mm A')
+            });
         }
     }
 
@@ -551,10 +589,6 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
             standardHours: '',
             overtimeHours: '',
             doubleTimeHours: '',
-            timeIn: moment().format('HH:mm'),
-            timeOut: moment().format('HH:mm'),
-            breakIn: moment().format('HH:mm'),
-            breakOut: moment().format('HH:mm'),
             notes: ''
         });
         this.systems = [];
@@ -564,12 +598,113 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
         this.selectedDates = [];
         this._enterTimeManager.clearSelectedDates();
         this.costCodes = [];
+
+        if (this.isUnsupportedTime) {
+
+            this.enterTimeForm.patchValue({
+
+                timeIn: moment().format('h:mm'),
+                timeOut: moment().format('h:mm'),
+                breakIn: moment().format('h:mm'),
+                breakOut: moment().format('h:mm')
+            });
+        } else {
+
+            this.enterTimeForm.patchValue({
+
+                timeIn: moment().format('HH:mm').toString(),
+                timeOut: moment().format('HH:mm').toString(),
+                breakIn: moment().format('HH:mm').toString(),
+                breakOut: moment().format('HH:mm').toString()
+            });
+            // console.log('clearForm not FireFox', this.enterTimeForm);
+        }
     }
 
     public createLines (enterTimeForm: FormControl) {
 
+        if (this.isUnsupportedTime) {
+
+            this.updateTime();
+        }
         this.timeEntryComplete.emit(true);
         this._enterTimeManager.setLineData(enterTimeForm, this.time);
+    }
+
+    public removeFromCollection (employee, collection: Array<any>) {
+
+        let keyToDelete: number;
+
+        collection.forEach((emp, idx) => {
+            if (emp === employee) {
+                keyToDelete = idx;
+            }
+        });
+
+        if (keyToDelete != null) {
+            collection.splice(keyToDelete--, 1);
+        }
+    }
+
+    public onTimeInChange (event) {
+
+        console.log('onTimeInPeriodChange', event);
+        this.enterTimeForm.get('timeIn').setValue(event);
+    }
+
+    public onTimeInPeriodChange (event) {
+
+        console.log('onTimeInPeriodChange', event);
+        this.timeInPeriod = event;
+    }
+
+    public onTimeOutChange (event) {
+
+        console.log('onTimeOutChange', event);
+        this.enterTimeForm.get('timeOut').setValue(event);
+    }
+
+    public onTimeOutPeriodChange (event) {
+
+        console.log('onTimeOutPeriodChange', event);
+        this.timeOutPeriod = event;
+    }
+
+    public onBreakInChange (event) {
+
+        console.log('onBreakInChange', event);
+        this.enterTimeForm.get('breakIn').setValue(event);
+    }
+
+    public onBreakInPeriodChange (event) {
+
+        console.log('onBreakInPeriodChange', event);
+        this.breakInPeriod = event;
+    }
+
+    public onBreakOutChange (event) {
+
+        console.log('onBreakOutChange', event);
+        this.enterTimeForm.get('breakOut').setValue(event);
+    }
+
+    public onBreakOutPeriodChange (event) {
+
+        console.log('onBreakOutPeriodChange', event);
+        this.breakOutPeriod = event;
+    }
+
+    canDeactivate(): Observable<boolean> | boolean {
+        console.log('EnterTimeFormComponent canDeactivate');
+
+        return true;
+        // Allow synchronous navigation (`true`) if no crisis or the crisis is unchanged
+        // if (!this.crisis || this.crisis.name === this.editName) {
+        //     return true;
+        // }
+        // Otherwise ask the user with the dialog service and return its
+        // observable which resolves to true or false when the user decides
+        // return this.dialogService.confirm('Discard changes?');
     }
 
     /******************************************************************************************************************
@@ -726,6 +861,8 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
 
     private createForm () {
 
+        const today = moment();
+
         this.enterTimeForm = this._builder.group({
             project: ['', [Validators.required]],
             system: '',
@@ -737,18 +874,11 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
             standardHours: '',
             overtimeHours: '',
             doubleTimeHours: '',
-            timeIn: '',
-            timeOut: '',
-            breakIn: '',
-            breakOut: '',
+            timeIn: today.format('h:mm'),
+            timeOut: today.format('h:mm'),
+            breakIn: today.format('h:mm'),
+            breakOut: today.format('h:mm'),
             notes: ''
-        });
-
-        this.enterTimeForm.patchValue({
-            timeIn: moment().format('HH:mm'),
-            timeOut: moment().format('HH:mm'),
-            breakIn: moment().format('HH:mm'),
-            breakOut: moment().format('HH:mm')
         });
 
         this.projectChange();
@@ -756,22 +886,17 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
         this.phaseChange();
         this.costCodeChange();
         this.employeeChange();
-        this.timeInChange();
     }
 
-    public removeFromCollection (employee, collection: Array<any>) {
+    private updateTime () {
 
-        let keyToDelete: number;
+        this.enterTimeForm.patchValue({
 
-        collection.forEach((emp, idx) => {
-            if (emp === employee) {
-                keyToDelete = idx;
-            }
+            timeIn: moment(this.enterTimeForm.get('timeIn').value + ' ' + this.timeInPeriod, ['h:mm A']).format('HH:mm'),
+            timeOut: moment(this.enterTimeForm.get('timeOut').value + ' ' + this.timeOutPeriod, ['h:mm A']).format('HH:mm'),
+            breakIn: moment(this.enterTimeForm.get('breakIn').value + ' ' + this.breakInPeriod, ['h:mm A']).format('HH:mm'),
+            breakOut: moment(this.enterTimeForm.get('breakOut').value + ' ' + this.breakOutPeriod, ['h:mm A']).format('HH:mm')
         });
-
-        if (keyToDelete != null) {
-            collection.splice(keyToDelete--, 1);
-        }
     }
 
     /******************************************************************************************************************
@@ -841,14 +966,5 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
                 }
             }
         );
-    }
-
-    timeInChange () {
-
-        const timeIn = this.enterTimeForm.get('timeIn');
-        timeIn.valueChanges.subscribe(
-            (time) => {
-                console.log(time);
-            });
     }
 }

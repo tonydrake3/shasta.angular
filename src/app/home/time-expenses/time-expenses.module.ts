@@ -2,7 +2,7 @@
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import {MaterialModule, MdChipsModule} from '@angular/material';
+import {MaterialModule, MdChipsModule, MdSelect, MdSelectModule} from '@angular/material';
 import { DpDatePickerModule } from 'ng2-date-picker';
 
 import { SharedModule } from '../../shared/shared.module';
@@ -31,7 +31,8 @@ import { EnterTimeManager } from './enter-time/enter-time.manager';
       SharedModule,
       SharedHomeModule,
       DpDatePickerModule,
-      MdChipsModule
+      MdChipsModule,
+      MdSelectModule
     ],
     declarations: [
       TimeExpensesComponent,
