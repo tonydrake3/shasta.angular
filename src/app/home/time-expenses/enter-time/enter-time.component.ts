@@ -11,6 +11,7 @@ import {EnterTimeStatusService} from './enter-time-status.service';
 import {ConfirmationDialogComponent} from '../../shared/components/confirmation-dialog.component';
 import {NavigationCancel, Router} from '@angular/router';
 import {ConfirmationDialogService} from '../../shared/services/confirmation-dialog.service';
+import {DialogData} from '../../../models/DialogData';
 
 @Component({
     templateUrl: './enter-time.component.html'
@@ -18,15 +19,11 @@ import {ConfirmationDialogService} from '../../shared/services/confirmation-dial
 export class EnterTimeComponent extends BaseComponent implements OnInit {
 
     private _isNavigationBlocked: boolean;
-
-    private _timeThreshold = 8;
+    private _confirmationService: ConfirmationDialogService;
 
     // working model to add
     public showGrid: boolean;
     public accordionOpen: boolean;
-
-    // the actual lines we want to create
-    private _navCancel: NavigationCancel;
 
     constructor(private _injector: Injector, private _router: Router) {
 
@@ -42,6 +39,8 @@ export class EnterTimeComponent extends BaseComponent implements OnInit {
                 callback: 'confirmationCallback'
             }
         ]);
+
+        this._confirmationService = super.getDynamicServiceRef('ConfirmationDialogService') as ConfirmationDialogService;
 
         this.accordionOpen = true;
         this.showGrid = false;
@@ -60,9 +59,20 @@ export class EnterTimeComponent extends BaseComponent implements OnInit {
 
                     // When routing event to navigate away is triggered, display the warning message.
                     if (val instanceof NavigationCancel) {
-                        this._navCancel = val as NavigationCancel;
-                        console.log('ngOnInit NavigationCancel', this._navCancel.url);
-                        this._openNavigationWarningModal();
+                        const navCancel = val as NavigationCancel;
+                        // console.log('ngOnInit NavigationCancel', this._navCancel.url);
+                        const dialogConfig: DialogData = new DialogData();
+                        dialogConfig.height = '190px';
+                        dialogConfig.width = '300px';
+                        dialogConfig.title = 'You have unsaved changes';
+                        dialogConfig.contentText = 'If you leave before saving, your changes will be lost.';
+                        dialogConfig.navigationUrl = navCancel.url;
+                        dialogConfig.cancelButtonText = 'Cancel';
+                        dialogConfig.proceedButtonText = 'OK';
+
+                        if (this._confirmationService && this._confirmationService.isDialogOpen() === false) {
+                            this._confirmationService.openNavigationWarningModal(dialogConfig);
+                        }
                     }
                 });
     }

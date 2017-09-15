@@ -10,6 +10,7 @@ import {Observable} from 'rxjs/Observable';
 import {Phase} from '../../../../models/domain/Phase';
 import {System} from '../../../../models/domain/System';
 import {LineToSubmit} from '../models/LinesToSubmit';
+import {ConfirmationDialogService} from '../../../shared/services/confirmation-dialog.service';
 
 @Component({
     selector: 'esub-enter-time-grid',
@@ -39,7 +40,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
     private _cardSubscription;
     private _processingSubscription;
 
-    constructor (private _enterTimeManager: EnterTimeManager, private _changeRef: ChangeDetectorRef) {
+    constructor (private _enterTimeManager: EnterTimeManager, private _confirmationService: ConfirmationDialogService) {
 
         this.dateFormat = 'MMM. Do, YYYY';
         this.groupCardsBy = 'Date';
@@ -124,6 +125,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
     public deleteAllLines() {
 
         this._enterTimeManager.clearLines();
+        this._confirmationService.setNeedsConfirmation(false);
         this.displayGrid.emit(false);
     }
 

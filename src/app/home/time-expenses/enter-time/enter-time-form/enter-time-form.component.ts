@@ -580,49 +580,11 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
 
     public clearForm () {
 
-        this.enterTimeForm.reset();
-        this.enterTimeForm.patchValue({
-            project: null,
-            system: '',
-            phase: '',
-            costCode: null,
-            employee: null,
-            employees: [],
-            dates: '',
-            standardHours: '',
-            overtimeHours: '',
-            doubleTimeHours: '',
-            notes: ''
-        });
-        this.systems = [];
-        this.phases = [];
-        this.employees = [];
-        this.selectedEmployees = [];
-        this.selectedDates = [];
-        this._enterTimeManager.clearSelectedDates();
-        this.costCodes = [];
+        this.clearFormData();
 
-        if (this.isUnsupportedTime) {
-
-            this.enterTimeForm.patchValue({
-
-                timeIn: moment().format('h:mm'),
-                timeOut: moment().format('h:mm'),
-                breakIn: moment().format('h:mm'),
-                breakOut: moment().format('h:mm')
-            });
-        } else {
-
-            this.enterTimeForm.patchValue({
-
-                timeIn: moment().format('HH:mm').toString(),
-                timeOut: moment().format('HH:mm').toString(),
-                breakIn: moment().format('HH:mm').toString(),
-                breakOut: moment().format('HH:mm').toString()
-            });
-            // console.log('clearForm not FireFox', this.enterTimeForm);
+        if (this._enterTimeManager.getLineCount() === 0) {
+            this._confirmationService.setNeedsConfirmation(false);
         }
-        this._confirmationService.setNeedsConfirmation(false);
     }
 
     public createLines (enterTimeForm: FormControl) {
@@ -905,6 +867,51 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
             breakIn: moment(this.enterTimeForm.get('breakIn').value + ' ' + this.breakInPeriod, ['h:mm A']).format('HH:mm'),
             breakOut: moment(this.enterTimeForm.get('breakOut').value + ' ' + this.breakOutPeriod, ['h:mm A']).format('HH:mm')
         });
+    }
+
+    private clearFormData () {
+
+        this.enterTimeForm.reset();
+        this.enterTimeForm.patchValue({
+            project: null,
+            system: '',
+            phase: '',
+            costCode: null,
+            employee: null,
+            employees: [],
+            dates: '',
+            standardHours: '',
+            overtimeHours: '',
+            doubleTimeHours: '',
+            notes: ''
+        });
+        this.systems = [];
+        this.phases = [];
+        this.employees = [];
+        this.selectedEmployees = [];
+        this.selectedDates = [];
+        this._enterTimeManager.clearSelectedDates();
+        this.costCodes = [];
+
+        if (this.isUnsupportedTime) {
+
+            this.enterTimeForm.patchValue({
+
+                timeIn: moment().format('h:mm'),
+                timeOut: moment().format('h:mm'),
+                breakIn: moment().format('h:mm'),
+                breakOut: moment().format('h:mm')
+            });
+        } else {
+
+            this.enterTimeForm.patchValue({
+
+                timeIn: moment().format('HH:mm').toString(),
+                timeOut: moment().format('HH:mm').toString(),
+                breakIn: moment().format('HH:mm').toString(),
+                breakOut: moment().format('HH:mm').toString()
+            });
+        }
     }
 
     /******************************************************************************************************************

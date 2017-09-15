@@ -7,10 +7,12 @@ import {ConfirmationDialogComponent} from '../components/confirmation-dialog.com
 export class ConfirmationDialogService {
 
     private _displayConfirmation: Subject<boolean>;
+    private _isDialogOpen: boolean;
 
     constructor (private _dialog: MdDialog) {
 
         this._displayConfirmation = new Subject<boolean>();
+        this._isDialogOpen = false;
     }
 
     public get isConfirmNeeded$ () {
@@ -27,15 +29,27 @@ export class ConfirmationDialogService {
 
     }
 
-    private openNavigationWarningModal(data: any) {
+    public isDialogOpen () {
+
+        return this._isDialogOpen;
+    }
+
+    public openNavigationWarningModal(data: any) {
 
         const warningDialogRef = this._dialog.open(ConfirmationDialogComponent, {
             data: data,
-            height: '300px',
-            width: '200px'
+            height: data.height,
+            width: data.width
         });
+        this._isDialogOpen = true;
         warningDialogRef.afterClosed().subscribe(result => {
             // modal closed
+            this._isDialogOpen = false;
         });
+    }
+
+    public closeNavigationWarningModal () {
+
+        this._dialog.closeAll();
     }
 }

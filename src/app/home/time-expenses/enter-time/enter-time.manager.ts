@@ -128,7 +128,8 @@ export class EnterTimeManager {
     public getLineCount () {
 
         return this._linesToSubmit.length + this._indirectToSubmit.length +
-            (this._timeEntryState.SelectedDates.length * this._enterTimeFormData.employees.length);
+            ((this._timeEntryState.SelectedDates ? this._timeEntryState.SelectedDates.length : 0) *
+            (this._enterTimeFormData ? this._enterTimeFormData.employees.length : 0));
     }
 
     public filterEmployees (projectId: string): Array<Employee> {

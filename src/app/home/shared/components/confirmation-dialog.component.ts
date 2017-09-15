@@ -1,29 +1,37 @@
 import {Component, Inject} from '@angular/core';
 import {MD_DIALOG_DATA, MdDialogRef} from '@angular/material';
 import {Router} from '@angular/router';
+import {DialogData} from '../../../models/DialogData';
+import {ConfirmationDialogService} from '../services/confirmation-dialog.service';
 
 @Component({
     selector: 'esub-confirmation-dialog',
     template: `
-        <h2 md-dialog-title>Unsaved changes</h2>
-        <md-dialog-content>Are you sure you want to navigate away without saving your time entries?</md-dialog-content>
-        <md-dialog-actions>
-            <button md-button class="" md-dialog-close>Stay on this page</button>
-            <!-- Can optionally provide a result for the closing dialog. -->
-            <button md-button (click)="navigate()">Leave</button>
+        <h2 md-dialog-title>{{data.title}}</h2>
+        <md-dialog-content>{{data.contentText}}</md-dialog-content>
+        <md-dialog-actions align="end">
+            <button md-button (click)="close()">{{data.cancelButtonText}}</button>
+            <button md-button (click)="navigate()">{{data.proceedButtonText}}</button>
         </md-dialog-actions>
     `
 })
 export class ConfirmationDialogComponent {
 
-    constructor(public dialogRef: MdDialogRef<ConfirmationDialogComponent>, @Inject(MD_DIALOG_DATA) public data: any,
-                private _router: Router) {
+    constructor(public dialogRef: MdDialogRef<ConfirmationDialogComponent>, @Inject(MD_DIALOG_DATA) public data: DialogData,
+                private _router: Router, private _confirmationService: ConfirmationDialogService) {
 
         console.log('Confirmation Data', data);
     }
 
-    public navigate() {
+    public close () {
 
-        this._router.navigateByUrl(this.data.url);
+        this._confirmationService.closeNavigationWarningModal();
+    }
+
+    public navigate () {
+
+        this._confirmationService.setNeedsConfirmation(false);
+        this._router.navigateByUrl(this.data.navigationUrl);
+        this._confirmationService.closeNavigationWarningModal();
     }
 }
