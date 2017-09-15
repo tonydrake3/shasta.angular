@@ -37,6 +37,8 @@ import {StatusPipe} from './pipes/status.pipe';
 import {NumericPrecisionPipe} from './pipes/numeric-precision.pipe';
 import {TimeFormatPipe} from './pipes/time-format.pipe';
 import {CanDeactivateGuard} from './guards/deactivate-guard.service';
+import {ConfirmationDialogComponent} from './components/confirmation-dialog.component';
+import {ConfirmationDialogService} from './services/confirmation-dialog.service';
 
 @NgModule({
     imports: [
@@ -63,7 +65,8 @@ import {CanDeactivateGuard} from './guards/deactivate-guard.service';
         CloseDateFlyoutDirective,
         GridTypeaheadComponent,
         TimeInputDirective,
-        TimeFormatPipe
+        TimeFormatPipe,
+        ConfirmationDialogComponent
     ],
     providers: [
         AuthorizationService,
@@ -75,7 +78,8 @@ import {CanDeactivateGuard} from './guards/deactivate-guard.service';
         UserService,
         WeatherService,
         TimeFormatPipe,
-        CanDeactivateGuard
+        CanDeactivateGuard,
+        ConfirmationDialogService
     ],
     exports: [
         BaseCardComponent,
@@ -94,7 +98,8 @@ import {CanDeactivateGuard} from './guards/deactivate-guard.service';
         CloseDateFlyoutDirective,
         GridTypeaheadComponent,
         TimeInputDirective,
-        TimeFormatPipe
+        TimeFormatPipe,
+        ConfirmationDialogComponent
     ]
 })
 

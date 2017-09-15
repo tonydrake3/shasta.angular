@@ -131,12 +131,14 @@
                 <div class="row hours-entry form-field">
                     <div class="col-md-2">
                         <md-input-container>
-                            <input mdInput type="number" placeholder="ST" formControlName="standardHours" maxlength="5" step="0.25" min="0" max="24">
+                            <input mdInput type="number" placeholder="ST" formControlName="standardHours"
+                                   maxlength="5" step="0.25" min="0" max="24">
                         </md-input-container>
                     </div>
                     <div class="col-md-2" *ngIf="isProjectCostEntry">
                         <md-input-container>
-                            <input mdInput type="number" placeholder="OT" formControlName="overtimeHours" maxlength="5" step="0.25" min="0" max="24">
+                            <input mdInput type="number" placeholder="OT" formControlName="overtimeHours"
+                                   maxlength="5" step="0.25" min="0" max="24">
                         </md-input-container>
                     </div>
                     <div class="col-md-2" *ngIf="isProjectCostEntry">

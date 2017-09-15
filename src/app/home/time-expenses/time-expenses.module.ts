@@ -20,6 +20,7 @@ import { EnterTimeGridComponent } from './enter-time/enter-time-grid/enter-time-
 // Services
 import { TimeRecordsService } from './time-records.service';
 import { EnterTimeManager } from './enter-time/enter-time.manager';
+import {EnterTimeStatusService} from './enter-time/enter-time-status.service';
 
 @NgModule({
     imports: [
@@ -44,7 +45,8 @@ import { EnterTimeManager } from './enter-time/enter-time.manager';
     ],
     providers: [
       TimeRecordsService,
-      EnterTimeManager
+      EnterTimeManager,
+      EnterTimeStatusService
     ]
 })
 

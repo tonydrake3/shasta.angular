@@ -28,6 +28,8 @@ import {Subscription} from 'rxjs/Subscription';
 import {ProjectService} from '../../../shared/services/project.service';
 import {IndirectCostCodesService} from '../../../shared/services/indirect-cost-codes.service';
 import {EmployeeService} from '../../../shared/services/user/employee.service';
+import {EnterTimeStatusService} from '../enter-time-status.service';
+import {ConfirmationDialogService} from '../../../shared/services/confirmation-dialog.service';
 
 @Component({
     selector: 'esub-enter-time-form',
@@ -91,7 +93,8 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
 
     constructor (private _builder: FormBuilder, private _injector: Injector, private _enterTimeManager: EnterTimeManager,
                  private _dateFlyoutService: DateFlyoutService, private _projectService: ProjectService,
-                 private _indirectCostsService: IndirectCostCodesService, private _employeeService: EmployeeService) {
+                 private _indirectCostsService: IndirectCostCodesService, private _employeeService: EmployeeService,
+                 private _confirmationService: ConfirmationDialogService) {
 
         // super(_injector, [
         //     {
@@ -619,6 +622,7 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
             });
             // console.log('clearForm not FireFox', this.enterTimeForm);
         }
+        this._confirmationService.setNeedsConfirmation(false);
     }
 
     public createLines (enterTimeForm: FormControl) {
@@ -694,10 +698,13 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
         this.breakOutPeriod = event;
     }
 
-    canDeactivate(): Observable<boolean> | boolean {
-        console.log('EnterTimeFormComponent canDeactivate');
+    // TODO: Implement when angular issue 11836 (CanDeactivateChild) is implemented.
+    //       https://github.com/angular/angular/issues/11836
 
-        return true;
+    // canDeactivate(): Observable<boolean> | boolean {
+    //     console.log('EnterTimeFormComponent canDeactivate');
+    //
+    //     return true;
         // Allow synchronous navigation (`true`) if no crisis or the crisis is unchanged
         // if (!this.crisis || this.crisis.name === this.editName) {
         //     return true;
@@ -705,7 +712,7 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
         // Otherwise ask the user with the dialog service and return its
         // observable which resolves to true or false when the user decides
         // return this.dialogService.confirm('Discard changes?');
-    }
+    // }
 
     /******************************************************************************************************************
      * Private Methods
@@ -881,6 +888,7 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
             notes: ''
         });
 
+        this.formChange();
         this.projectChange();
         this.systemChange();
         this.phaseChange();
@@ -902,6 +910,18 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
     /******************************************************************************************************************
      * Form Field Change Tracking
      ******************************************************************************************************************/
+    formChange () {
+
+        this.enterTimeForm.valueChanges
+            .subscribe(
+                (value) => {
+                    if (this.enterTimeForm.dirty) {
+
+                        this._confirmationService.setNeedsConfirmation(true);
+                    }
+                });
+    }
+
     projectChange() {
         const projectSelect = this.enterTimeForm.get('project');
         projectSelect.valueChanges.subscribe(
