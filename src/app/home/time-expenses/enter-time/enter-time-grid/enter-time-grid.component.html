@@ -1,13 +1,4 @@
 <div class="enter-time-grid">
-    <div *ngIf="loading">
-        <md-progress-bar
-            class="enter-time-grid-progress"
-            [color]="progressConfig.color"
-            [mode]="progressConfig.mode"
-            [value]="progressConfig.value">
-        </md-progress-bar>
-    </div>
-    <div class="enter-time-grid-overlay" *ngIf="loading"></div>
 
     <div class="row add-more">
         <div class="col-md-4">
@@ -256,11 +247,12 @@
             </div>
         </div>
     </div>
-</div>
     <div class="row" *ngIf="groupedLines">
         <div class="col-md-12">
             <button md-raised-button class="esub-button secondary" [routerLink]="'/time-expenses/timesheets'" (click)="submitTime()">Submit Time</button>
         </div>
     </div>
+</div>
+
 
 

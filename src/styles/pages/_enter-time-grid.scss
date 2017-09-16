@@ -1,4 +1,6 @@
 .enter-time-grid {
+    margin-right: 30px;
+    margin-left: 30px;
 
     .enter-time-grid-progress {
         height: 8px;
@@ -12,10 +14,16 @@
         width: 100%;
         background-color: $true-black;
         opacity: .25;
-        position: absolute;
+        position: fixed;
         z-index: 949;
-        margin-top: -10px;
-        margin-left: -30px;
+        //margin-top: -10px;
+        //margin-left: -30px;
+    }
+
+    .esub-card {
+        margin-right: 0;
+        margin-left: 0;
+
     }
 
     .enter-time-grid-card-title {

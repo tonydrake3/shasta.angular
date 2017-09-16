@@ -83,11 +83,12 @@ export class EnterTimeManager {
     public setEmployees (employees: Array<Employee>) {
 
         this._employees = employees;
-        // console.log('EnterTimeManager loadEmployees', this._employees);
+        // console.log('EnterTimeManager setEmployees', this._employees);
     }
 
     public getEmployees () {
 
+        // console.log('EnterTimeManager getEmployees', this._employees);
         return this._employees;
     }
 

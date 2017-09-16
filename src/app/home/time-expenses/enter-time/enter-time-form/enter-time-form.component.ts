@@ -7,29 +7,20 @@ import { IDatePickerConfig } from 'ng2-date-picker';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/startWith';
 
-// Components
-import {BaseComponent} from '../../../shared/components/base.component';
-
 // Models
 import { Project } from '../../../../models/domain/Project';
 import { Employee } from '../../../../models/domain/Employee';
 import { CostCode } from '../../../../models/domain/CostCode';
 import { System } from '../../../../models/domain/System';
 import { Phase } from '../../../../models/domain/Phase';
-// import { dependentFieldValidator } from '../../../shared/validators/dependent-field.validator';
-// import {DateFlyoutService} from '../../../shared/components/date-flyout/date-flyout.service';
+
 import {EnterTimeManager} from '../enter-time.manager';
 import {TimeEntry} from '../models/TimeEntry';
 import {TimeEntryMode} from '../models/TimeEntry';
 import {DateFlyoutService} from '../../../shared/components/date-flyout/date-flyout.service';
 import {Observable} from 'rxjs/Observable';
-import {MdAutocomplete, MdAutocompleteTrigger} from '@angular/material';
-import {Subscription} from 'rxjs/Subscription';
-import {ProjectService} from '../../../shared/services/project.service';
-import {IndirectCostCodesService} from '../../../shared/services/indirect-cost-codes.service';
-import {EmployeeService} from '../../../shared/services/user/employee.service';
-import {EnterTimeStatusService} from '../enter-time-status.service';
 import {ConfirmationDialogService} from '../../../shared/services/confirmation-dialog.service';
+import {EnterTimePreloadManager} from '../enter-time-preload.manager';
 
 @Component({
     selector: 'esub-enter-time-form',
@@ -37,16 +28,11 @@ import {ConfirmationDialogService} from '../../../shared/services/confirmation-d
 })
 export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
-    @ViewChild(MdAutocompleteTrigger) trigger: MdAutocompleteTrigger;
-
     @Output() timeEntryComplete: EventEmitter<boolean> = new EventEmitter<boolean>();
+
     // Private
     private _tenantEmployees: Array<Employee>;
     private _indirectCodes: Array<CostCode>;
-
-    private _projectSubscription;
-    private _employeeSubscription;
-    private _indirectCostsSubscription;
 
     // Public
     public enterTimeForm: FormGroup;
@@ -66,6 +52,8 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
     public enterTimeTabIndex: number;
     public isUnsupportedTime: boolean;
     public isIE: boolean;
+    public progressConfig;
+    public loading: boolean;
 
     public filteredProjects: Observable<Project[]>;
     public filteredSystems: Observable<System[]>;
@@ -91,25 +79,15 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
         showSeconds: false
     };
 
-    constructor (private _builder: FormBuilder, private _injector: Injector, private _enterTimeManager: EnterTimeManager,
-                 private _dateFlyoutService: DateFlyoutService, private _projectService: ProjectService,
-                 private _indirectCostsService: IndirectCostCodesService, private _employeeService: EmployeeService,
-                 private _confirmationService: ConfirmationDialogService) {
+    constructor (private _builder: FormBuilder, private _enterTimeManager: EnterTimeManager,
+                 private _dateFlyoutService: DateFlyoutService, private _confirmationService: ConfirmationDialogService,
+                 private _preloadService: EnterTimePreloadManager) {
 
-        // super(_injector, [
-        //     {
-        //         service: 'ProjectService',
-        //         callback: 'projectServiceCallback'
-        //     },
-        //     {
-        //         service: 'IndirectCostCodesService',
-        //         callback: 'indirectCostCodeServiceCallback'
-        //     },
-        //     {
-        //         service: 'EmployeeService',
-        //         callback: 'employeeServiceCallback'
-        //     }
-        // ]);
+        this.progressConfig = {
+            color: 'primary',
+            mode: 'indeterminate',
+            value: 0
+        };
         this.isUnsupportedTime = false;
         this.isIE = false;
         this.dateFormat = 'MMM. Do, YYYY';
@@ -126,8 +104,10 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
         this.systems = [];
         this.phases = [];
         this.employees = [];
+        this._tenantEmployees = [];
         this.selectedEmployees = [];
         this.costCodes = [];
+        this._indirectCodes = [];
         this.createForm();
     }
 
@@ -141,43 +121,21 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
         this._tenantEmployees = this._enterTimeManager.getEmployees();
         this._indirectCodes = this._enterTimeManager.getIndirectCodes();
 
-        this._projectSubscription = this._projectService.projects$
+        this._preloadService.loading$
             .subscribe(
-                (projects) => {
-                    this.projects = projects['Value'] as Array<Project>;
-                    this._enterTimeManager.setProjects(this.projects);
-                }
-            );
+                (loading) => {
 
-        this._indirectCostsSubscription = this._indirectCostsService.indirectCostCodes$
-            .subscribe(
-                (costCodes) => {
-                    this._indirectCodes = this.mapCostCodes(costCodes['Value']) as Array<CostCode>;
-                    this._enterTimeManager.setIndirectCodes(this._indirectCodes);
-                }
-            );
+                    if (loading === false) {
+                        this.projects = this._enterTimeManager.getProjects();
+                        this._tenantEmployees = this._enterTimeManager.getEmployees();
+                        this._indirectCodes = this._enterTimeManager.getIndirectCodes();
+                    }
+                });
 
-        this._employeeSubscription = this._employeeService.employees$
-            .subscribe(
-                (employees) => {
-                    this._tenantEmployees = this.concatName(employees['Value'] as Array<Employee>);
-                    this._enterTimeManager.setEmployees(this._tenantEmployees);
-                }
-            );
+        if (this.projects.length === 0 || this._tenantEmployees.length === 0 || this._indirectCodes.length === 0) {
 
-        if (this.projects.length === 0) {
-
-            this._projectService.getLatest();
-        }
-
-        if (this._tenantEmployees.length === 0) {
-
-            this._employeeService.getLatest();
-        }
-
-        if (this._indirectCodes.length === 0) {
-
-            this._indirectCostsService.getLatest();
+            this.loading = true;
+            this._preloadService.load();
         }
 
         // Browser Detection
@@ -207,9 +165,6 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
 
     ngOnDestroy () {
 
-        this._projectSubscription.unsubscribe();
-        this._indirectCostsSubscription.unsubscribe();
-        this._employeeSubscription.unsubscribe();
     }
 
     ngAfterViewInit () {
@@ -438,6 +393,7 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
 
             } else {
 
+                console.log('openEmployee', this._tenantEmployees);
                 this.filteredEmployees = Observable.of(this._tenantEmployees);
             }
         }
@@ -679,18 +635,6 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
     /******************************************************************************************************************
      * Private Methods
      ******************************************************************************************************************/
-
-    private mapCostCodes (costCodes: Array<any>) {
-
-        return _.map(costCodes, function(code) {
-            return {
-                Id: code.Id,
-                Name: code.Description,
-                Code: code.Description
-            };
-        });
-    }
-
     private checkDefaultSystem (systems: Array<System>) {
 
         this.systems = systems;
@@ -738,13 +682,6 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
                 costCode: ''
             });
         }
-    }
-
-    private concatName (employees: Array<Employee>) {
-
-        return _.map(employees, function(employee) {
-            return _.extend({}, employee, {Name: employee.FirstName + ' ' + employee.LastName});
-        });
     }
 
     private filterEmployeesByProject (projectId: string) {
@@ -971,9 +908,6 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
 
                     this.filteredCostCodes = this.filterIndirectCodes(costCode);
                 }
-                // const projectSelect = this.enterTimeForm.get('project');
-                // projectSelect.clearValidators();
-                // projectSelect.setErrors(null);
             }
         );
     }

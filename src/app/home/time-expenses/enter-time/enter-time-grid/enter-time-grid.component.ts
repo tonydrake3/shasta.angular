@@ -26,8 +26,6 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
     public employees: Array<Employee>;
     public projects: Array<Project>;
     public indirectCosts: Array<CostCode>;
-    public loading: boolean;
-    public progressConfig;
     public lineCount: number;
     public currentCount: number;
 
@@ -44,12 +42,6 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
 
         this.dateFormat = 'MMM. Do, YYYY';
         this.groupCardsBy = 'Date';
-        this.loading = true;
-        this.progressConfig = {
-            color: 'primary',
-            mode: 'determinate',
-            value: 0
-        };
         this.currentCount = 0;
     }
 
@@ -74,17 +66,17 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
                     // this.groupedLines = line;
                 });
 
-        this._processingSubscription = this._enterTimeManager.processing$
-            .subscribe(
-                (processing) => {
-
-                    if (processing) {
-                        this.currentCount++;
-                        this.progressConfig.value = (this.currentCount / (this.lineCount + (this.lineCount / 10))) * 100;
-                    }
-                    this.loading = processing;
-                    // console.log('ngOnInit', processing);
-            });
+        // this._processingSubscription = this._enterTimeManager.processing$
+        //     .subscribe(
+        //         (processing) => {
+        //
+        //             if (processing) {
+        //                 this.currentCount++;
+        //                 this.progressConfig.value = (this.currentCount / (this.lineCount + (this.lineCount / 10))) * 100;
+        //             }
+        //             this.loading = processing;
+        //             // console.log('ngOnInit', processing);
+        //     });
 
         setTimeout(() => {
             // this.lineCount = this._enterTimeManager.getNumLinesToSubmit();
@@ -94,7 +86,6 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy () {
-        this.progressConfig.value = 0;
         this._cardSubscription.unsubscribe();
         this._processingSubscription.unsubscribe();
     }

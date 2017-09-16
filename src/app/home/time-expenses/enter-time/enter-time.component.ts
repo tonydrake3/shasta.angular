@@ -12,6 +12,8 @@ import {ConfirmationDialogComponent} from '../../shared/components/confirmation-
 import {NavigationCancel, Router} from '@angular/router';
 import {ConfirmationDialogService} from '../../shared/services/confirmation-dialog.service';
 import {DialogData} from '../../../models/DialogData';
+import {EnterTimePreloadManager} from './enter-time-preload.manager';
+import {EnterTimeManager} from './enter-time.manager';
 
 @Component({
     templateUrl: './enter-time.component.html'
@@ -24,8 +26,11 @@ export class EnterTimeComponent extends BaseComponent implements OnInit {
     // working model to add
     public showGrid: boolean;
     public accordionOpen: boolean;
+    public progressConfig;
+    public loading: boolean;
 
-    constructor(private _injector: Injector, private _router: Router) {
+    constructor(private _injector: Injector, private _router: Router, private _preloadService: EnterTimePreloadManager,
+                private _enterTimeManager: EnterTimeManager) {
 
         super(_injector, []);
 
@@ -40,6 +45,12 @@ export class EnterTimeComponent extends BaseComponent implements OnInit {
             }
         ]);
 
+        this.progressConfig = {
+            color: 'primary',
+            mode: 'indeterminate',
+            value: 0
+        };
+
         this._confirmationService = super.getDynamicServiceRef('ConfirmationDialogService') as ConfirmationDialogService;
 
         this.accordionOpen = true;
@@ -50,6 +61,23 @@ export class EnterTimeComponent extends BaseComponent implements OnInit {
      * Lifecycle Methods
      ******************************************************************************************************************/
     ngOnInit () {
+
+        this.loading = true;
+
+        this._preloadService.loading$
+            .subscribe(
+                (loading) => {
+
+                    this.loading = loading;
+                });
+
+        this._enterTimeManager.processing$
+            .subscribe(
+                (processing) => {
+
+                    this.loading = processing;
+                    // console.log('ngOnInit', processing);
+                });
 
         // TODO: Remove when angular issue 11836 (CanDeactivateChild) is implemented.
         //       https://github.com/angular/angular/issues/11836
