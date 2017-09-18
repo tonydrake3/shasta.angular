@@ -419,6 +419,8 @@ export class EnterTimeManager {
                     setTimeout(() => {
                         // console.log('groupLinesByDate projectLines', projectLine);
                         line.ST += projectLine.HoursST;
+                        line.OT += projectLine.HoursOT;
+                        line.DT += projectLine.HoursDT;
                         line.ProjectLines.push(projectLine);
                         if (index === projectLines.length - 1) {
                             this._processing$.next(false);
@@ -464,6 +466,8 @@ export class EnterTimeManager {
                     this._processing$.next(true);
                     setTimeout(() => {
                         line.ST += projectLine.HoursST;
+                        line.OT += projectLine.HoursOT;
+                        line.DT += projectLine.HoursDT;
                         line.ProjectLines.push(projectLine);
                         if (index === projectLines.length - 1) {
                             this._processing$.next(false);
@@ -504,6 +508,8 @@ export class EnterTimeManager {
                     this._processing$.next(true);
                     setTimeout(() => {
                         line.ST += projectLine.HoursST;
+                        line.OT += projectLine.HoursOT;
+                        line.DT += projectLine.HoursDT;
                         line.ProjectLines.push(projectLine);
                         if (index === projectLines.length - 1) {
                             this._processing$.next(false);

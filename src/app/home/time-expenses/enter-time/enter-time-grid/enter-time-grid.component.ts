@@ -140,24 +140,32 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
     public copyRow (record, rowIndex: number, cardIndex: number) {
         // console.log(record, rowIndex, cardIndex);
         this.groupedLines[cardIndex].ProjectLines.splice(rowIndex + 1, 0, record);
+        this.groupedLines[cardIndex].ST += record.HoursST;
+        this.groupedLines[cardIndex].OT += record.HoursOT;
+        this.groupedLines[cardIndex].DT += record.HoursDT;
         this._enterTimeManager.insertProjectLine(record);
     }
 
     public deleteRow (record, rowIndex: number, cardIndex: number) {
 
         this.groupedLines[cardIndex].ProjectLines.splice(rowIndex, 1);
+        this.groupedLines[cardIndex].ST -= record.HoursST;
+        this.groupedLines[cardIndex].OT -= record.HoursOT;
+        this.groupedLines[cardIndex].DT -= record.HoursDT;
         this._enterTimeManager.deleteProjectLine(record);
     }
 
     public copyIndirectRow (record, rowIndex: number, cardIndex: number) {
         // console.log(record, rowIndex, cardIndex);
         this.groupedLines[cardIndex].IndirectLines.splice(rowIndex + 1, 0, record);
+        this.groupedLines[cardIndex].ST += record.HoursST;
         this._enterTimeManager.insertProjectLine(record);
     }
 
     public deleteIndirectRow (record, rowIndex: number, cardIndex: number) {
 
         this.groupedLines[cardIndex].IndirectLines.splice(rowIndex, 1);
+        this.groupedLines[cardIndex].ST -= record.HoursST;
         this._enterTimeManager.deleteProjectLine(record);
     }
 

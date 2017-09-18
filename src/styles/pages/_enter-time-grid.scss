@@ -2,24 +2,6 @@
     margin-right: 30px;
     margin-left: 30px;
 
-    .enter-time-grid-progress {
-        height: 8px;
-        z-index: 950;
-        margin-left: -28px;
-        width: 110%;
-    }
-
-    .enter-time-grid-overlay {
-        height: 100%;
-        width: 100%;
-        background-color: $true-black;
-        opacity: .25;
-        position: fixed;
-        z-index: 949;
-        //margin-top: -10px;
-        //margin-left: -30px;
-    }
-
     .esub-card {
         margin-right: 0;
         margin-left: 0;
@@ -28,7 +10,29 @@
 
     .enter-time-grid-card-title {
         label {
-            @extend .title-light
+            @extend .title-light;
+            font-size: 20px !important;
+        }
+    }
+
+    .enter-time-card-totals {
+        display: flex;
+        margin-top: 10px;
+
+        .enter-time-card-hours {
+            border: 1px solid $gray-30;
+            width: 60px;
+
+            .card-total-label {
+                border-bottom: 1px solid $gray-30;
+                font-size: 16px;
+                text-align: center;
+            }
+
+            .card-total-value {
+                font-size: 18px;
+                text-align: center;
+            }
         }
     }
 
@@ -93,6 +97,12 @@
                 label {
                     position: relative;
                     top: 13px;
+                }
+
+                i.grid-date {
+                    padding-left: 2px;
+                    position: relative;
+                    top: 16px;
                 }
                 //input {
                 //    border: 0;
