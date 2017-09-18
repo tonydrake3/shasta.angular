@@ -8,30 +8,48 @@
 
     }
 
-    .enter-time-grid-card-title {
-        label {
-            @extend .title-light;
-            font-size: 20px !important;
-        }
-    }
-
-    .enter-time-card-totals {
+    .enter-time-card-header {
         display: flex;
-        margin-top: 10px;
 
-        .enter-time-card-hours {
-            border: 1px solid $gray-30;
-            width: 60px;
-
-            .card-total-label {
-                border-bottom: 1px solid $gray-30;
-                font-size: 16px;
-                text-align: center;
+        .enter-time-grid-card-title {
+            label {
+                @extend .title-light;
+                font-size: 20px !important;
             }
+        }
 
-            .card-total-value {
-                font-size: 18px;
-                text-align: center;
+        .enter-time-card-totals {
+            display: flex;
+            margin-left: 20px;
+
+            .enter-time-card-hours {
+                border: 1px solid $gray-30;
+                font-size: 16px;
+                width: 60px;
+
+                .card-total-label {
+                    color: $gray-70;
+                    font-weight: bold;
+                    padding-top: 2px;
+                    text-align: center;
+                }
+
+                &.total {
+                    background-color: $gray-10;
+                    font-size: 20px;
+                    font-weight: bold;
+
+                    .card-total-label,
+                    .card-total-value {
+                        color: $gray-90;
+                    }
+                }
+
+                .card-total-value {
+                    color: $gray-70;
+                    padding: 5px;
+                    text-align: center;
+                }
             }
         }
     }

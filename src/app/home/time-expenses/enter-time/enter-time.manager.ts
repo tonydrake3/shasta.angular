@@ -398,9 +398,12 @@ export class EnterTimeManager {
         const projectDates = this.getUniqueDates(projectLines);
         const indirectDates = this.getUniqueDates(indirectLines);
 
-        const dateArray = _.uniqBy(projectDates.concat(indirectDates), (date) => {
+        const dateArray = _.sortBy(_.uniqBy(projectDates.concat(indirectDates), (date) => {
 
             return date.startOf('day').format();
+        }), (uniqueDate) => {
+
+            return uniqueDate.startOf('day').format();
         });
 
         _.forEach(dateArray, (date) => {
@@ -451,7 +454,11 @@ export class EnterTimeManager {
         const projectEmployees = this.getUniqueEmployees(projectLines);
         const indirectEmployees = this.getUniqueEmployees(indirectLines);
 
-        const employeeArray = _.uniq(projectEmployees.concat(indirectEmployees));
+        const employeeArray = _.uniqBy(projectEmployees.concat(indirectEmployees), (line) => {
+            return line.Id;
+        });
+
+        console.log(employeeArray);
 
         _.forEach(employeeArray, (employee) => {
 
@@ -523,6 +530,8 @@ export class EnterTimeManager {
 
             const line: EntryCard = new EntryCard();
             line.Key = this._INDIRECT;
+
+            this._cards$.next(line);
 
             indirectLines.forEach((indirectLine, index) => {
                 this._processing$.next(true);

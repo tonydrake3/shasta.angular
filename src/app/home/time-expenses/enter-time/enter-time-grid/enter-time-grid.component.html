@@ -20,17 +20,12 @@
         <div class="time-card-header">
 
             <div class="row">
-                <div class="col-md-6 enter-time-grid-card-title" [ngSwitch]="groupCardsBy">
-                    <label *ngSwitchCase="'Employee'">{{card.Key}}</label>
-                    <label *ngSwitchCase="'Project'">{{card.Key}}</label>
-                    <label *ngSwitchCase="'Date'">{{card.Key | date:'yMMMd'}}</label>
-                </div>
-                <div class="col-md-6 text-right">
-                    <span (click)="deleteCard(card, cardIndex)">Delete card</span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-6 enter-time-card-header" [ngSwitch]="groupCardsBy">
+                    <div class="enter-time-grid-card-title">
+                        <label *ngSwitchCase="'Employee'">{{card.Key}}</label>
+                        <label *ngSwitchCase="'Project'">{{card.Key}}</label>
+                        <label *ngSwitchCase="'Date'">{{card.Key | date:'yMMMd'}}</label>
+                    </div>
                     <div class="enter-time-card-totals">
                         <div class="enter-time-card-hours total">
                             <div class="card-total-label">Total</div>
@@ -49,6 +44,9 @@
                             <div class="card-total-value">{{card.DT}}</div>
                         </div>
                     </div>
+                </div>
+                <div class="col-md-6 text-right">
+                    <span (click)="deleteCard(card, cardIndex)">Delete card</span>
                 </div>
             </div>
         </div>
@@ -219,27 +217,36 @@
         </div>
         <div class="esub-table" *ngIf="card.IndirectLines?.length > 0">
 
+            <label class="title-light" *ngIf="groupCardsBy !== 'Project'">Indirect Costs</label>
             <div class="table-row">
                 <div style="order:1; width:10%" class="table-cell table-header">Date</div>
                 <div style="order:2; width:25%" class="table-cell table-header">Employee</div>
                 <div style="order:3; width:25%" class="table-cell table-header">CostCode</div>
-                <div style="order:4; width:37%" class="table-cell table-header">Hours</div>
+                <div style="order:4; width:10%" class="table-cell table-header">Hours</div>
                 <div style="order:5; width:03%" class="table-cell table-header"></div>
             </div>
 
             <div class="table-row" *ngFor="let record of card.IndirectLines; let rowIndex = index">
-                <div style="order:1; width:10%" class="table-cell" >{{record.Date.format(dateFormat)}}</div>
+                <div style="order:1; width:10%" class="table-cell" >
+                    <label>{{record.Date.format(dateFormat)}}</label>
+                    <i mdPrefix class="material-icons grid-date" *ngIf="groupCardsBy !== 'Date'">date_range</i>
+                </div>
                 <div style="order:2; width:25%" class="table-cell" >
-                    <md-input-container class="form-field">
-                        <input type="text" mdInput [mdAutocomplete]="autoEmployee"
-                               [(ngModel)]="record.Employee" (ngModelChange)="filteredEmployees = filterAllEmployees(record.Employee)">
-                    </md-input-container>
-                    <md-autocomplete #autoEmployee="mdAutocomplete" [displayWith]="displayFormatted">
-                        <md-option *ngFor="let employee of filteredEmployees | async"
-                                   [value]="employee">
-                            {{employee.Number}} - {{employee.Name}}
-                        </md-option>
-                    </md-autocomplete>
+                    <div *ngIf="groupCardsBy === 'Employee'">
+                        <label mdTooltip="{{record.Employee.Name}}" [mdTooltipPosition]="'below'" class="label-regular">{{record.Employee.Name}}</label>
+                    </div>
+                    <div *ngIf="groupCardsBy !== 'Employee'">
+                        <md-input-container class="form-field">
+                            <input type="text" mdInput [mdAutocomplete]="autoEmployee"
+                                   [(ngModel)]="record.Employee" (ngModelChange)="filteredEmployees = filterAllEmployees(record.Employee)">
+                        </md-input-container>
+                        <md-autocomplete #autoEmployee="mdAutocomplete" [displayWith]="displayFormatted">
+                            <md-option *ngFor="let employee of filteredEmployees | async"
+                                       [value]="employee">
+                                {{employee.Number}} - {{employee.Name}}
+                            </md-option>
+                        </md-autocomplete>
+                    </div>
                 </div>
                 <div style="order:3; width:25%" class="table-cell" >
                     <md-input-container class="form-field">
@@ -253,11 +260,11 @@
                         </md-option>
                     </md-autocomplete>
                 </div>
-                <div style="order:4; width:37%" class="table-cell table-time-entry">
+                <div style="order:4; width:10%" class="table-cell table-time-entry">
                     <div class="row">
                         <div class="col-md-12 no-gutters">
                             <md-input-container>
-                                <input mdInput placeholder="ST" [(ngModel)]="record.HoursST">
+                                <input mdInput [(ngModel)]="record.HoursST">
                             </md-input-container>
                         </div>
                     </div>
