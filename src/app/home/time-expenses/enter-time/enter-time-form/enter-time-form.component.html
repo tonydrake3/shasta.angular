@@ -162,10 +162,10 @@
                         <div class="time-entry firefox-time" *ngIf="isUnsupportedTime">
                             <md-input-container class="form-field" >
                                 <input mdInput placeholder="Time in" type="text" esubTimeInput formControlName="timeIn"
-                                       (timeChange)="onTimeInChange($event)" (timePeriodChange)="onTimeInPeriodChange($event)"
-                                       (blur)="timeInValidation(enterTimeForm.get('timeIn'))">
+                                       (timeChange)="onTimeInChange($event)" (timePeriodChange)="onTimeInPeriodChange($event)">
                             </md-input-container>
-                            <md-select [(ngModel)]="timeInPeriod" [ngModelOptions]="{standalone: true}" [ngClass]="{'ie-offset': isIE }">
+                            <md-select [(ngModel)]="timeInPeriod" [ngModelOptions]="{standalone: true}" [ngClass]="{'ie-offset': isIE }"
+                                       (change)="onTimeInPeriodSelection($event)">
                                 <md-option [value]="'AM'">AM</md-option>
                                 <md-option [value]="'PM'">PM</md-option>
                             </md-select>

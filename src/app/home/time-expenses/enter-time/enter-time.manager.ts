@@ -445,7 +445,7 @@ export class EnterTimeManager {
 
     private groupLinesByEmployee (projectLines: Array<LineToSubmit>, indirectLines: Array<IndirectToSubmit>) {
 
-        // console.log('groupLinesByEmployee');
+        console.log('groupLinesByEmployee');
         const projectEmployees = this.getUniqueEmployees(projectLines);
         const indirectEmployees = this.getUniqueEmployees(indirectLines);
 

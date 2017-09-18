@@ -6,25 +6,25 @@ export class TimeValidationService {
 
     public startBeforeEndTime(start: string, end: string): boolean {
 
-        const startTime = moment(start, ['H:mm']);
-        const endTime = moment(end, ['H:mm']);
+        const startTime = moment(start, ['H:mm A']);
+        const endTime = moment(end, ['H:mm A']);
 
         return (startTime.isSameOrBefore(endTime));
     }
 
     public endAfterStartTime(start: string, end: string): boolean {
 
-        const startTime = moment(start, ['H:mm']);
-        const endTime = moment(end, ['H:mm']);
+        const startTime = moment(start, ['H:mm A']);
+        const endTime = moment(end, ['H:mm A']);
 
         return (endTime.isSameOrAfter(startTime));
     }
 
     public breakInBetweenTimeInOut(timeIn: string, timeOut: string, breakIn: string): boolean {
 
-        const startTime = moment(timeIn, ['H:mm']);
-        const endTime = moment(timeOut, ['H:mm']);
-        const breakStartTime = moment(breakIn, ['H:mm']);
+        const startTime = moment(timeIn, ['H:mm A']);
+        const endTime = moment(timeOut, ['H:mm A']);
+        const breakStartTime = moment(breakIn, ['H:mm A']);
 
         // this.breakAfterTimeIn(startTime, breakStartTime);
         // this.breakBeforeTimeOut(endTime, breakStartTime);
@@ -33,9 +33,9 @@ export class TimeValidationService {
 
     public breakOutBetweenTimeInOut(timeIn: string, timeOut: string, breakOut: string): boolean {
 
-        const startTime = moment(timeIn, ['H:mm']);
-        const endTime = moment(timeOut, ['H:mm']);
-        const breakEndTime = moment(breakOut, ['H:mm']);
+        const startTime = moment(timeIn, ['H:mm A']);
+        const endTime = moment(timeOut, ['H:mm A']);
+        const breakEndTime = moment(breakOut, ['H:mm A']);
 
         // this.breakAfterTimeIn(startTime, breakEndTime);
         // this.breakBeforeTimeOut(endTime, breakEndTime);

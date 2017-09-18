@@ -87,7 +87,6 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
 
     ngOnDestroy () {
         this._cardSubscription.unsubscribe();
-        this._processingSubscription.unsubscribe();
     }
 
     public displayFormatted (value) {
