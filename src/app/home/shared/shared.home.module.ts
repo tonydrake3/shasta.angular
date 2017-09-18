@@ -39,6 +39,7 @@ import {TimeFormatPipe} from './pipes/time-format.pipe';
 import {CanDeactivateGuard} from './guards/deactivate-guard.service';
 import {ConfirmationDialogComponent} from './components/confirmation-dialog.component';
 import {ConfirmationDialogService} from './services/confirmation-dialog.service';
+import {TimeValidationService} from './services/time-validation.service';
 
 @NgModule({
     imports: [
@@ -79,7 +80,8 @@ import {ConfirmationDialogService} from './services/confirmation-dialog.service'
         WeatherService,
         TimeFormatPipe,
         CanDeactivateGuard,
-        ConfirmationDialogService
+        ConfirmationDialogService,
+        TimeValidationService
     ],
     exports: [
         BaseCardComponent,

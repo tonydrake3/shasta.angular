@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, EventEmitter, Injector, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {Form, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import { ITimeSelectConfig } from 'ng2-date-picker/time-select/time-select-config.model';
@@ -21,6 +21,7 @@ import {DateFlyoutService} from '../../../shared/components/date-flyout/date-fly
 import {Observable} from 'rxjs/Observable';
 import {ConfirmationDialogService} from '../../../shared/services/confirmation-dialog.service';
 import {EnterTimePreloadManager} from '../enter-time-preload.manager';
+import {TimeValidationService} from '../../../shared/services/time-validation.service';
 
 @Component({
     selector: 'esub-enter-time-form',
@@ -42,7 +43,6 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
     public employees: Array<Employee>;
     public systems: Array<System>;
     public phases: Array<Phase>;
-    public timeEntryMode: TimeEntryMode;
     public selectedDates: Array<moment.Moment>;
     public time: TimeEntry;
     public timeEntryModeEnum;
@@ -73,15 +73,10 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
         allowMultiSelect: true,
         max: moment()
     };
-    public dpTimeConfig: ITimeSelectConfig = {
-        minutesInterval: 5,
-        showTwentyFourHours: false,
-        showSeconds: false
-    };
 
     constructor (private _builder: FormBuilder, private _enterTimeManager: EnterTimeManager,
                  private _dateFlyoutService: DateFlyoutService, private _confirmationService: ConfirmationDialogService,
-                 private _preloadService: EnterTimePreloadManager) {
+                 private _preloadService: EnterTimePreloadManager, private _timeValidation: TimeValidationService) {
 
         this.progressConfig = {
             color: 'primary',
@@ -570,50 +565,92 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
 
     public onTimeInChange (event) {
 
-        console.log('onTimeInPeriodChange', event);
         this.enterTimeForm.get('timeIn').setValue(event);
     }
 
     public onTimeInPeriodChange (event) {
 
-        console.log('onTimeInPeriodChange', event);
         this.timeInPeriod = event;
     }
 
     public onTimeOutChange (event) {
 
-        console.log('onTimeOutChange', event);
         this.enterTimeForm.get('timeOut').setValue(event);
     }
 
     public onTimeOutPeriodChange (event) {
 
-        console.log('onTimeOutPeriodChange', event);
         this.timeOutPeriod = event;
     }
 
     public onBreakInChange (event) {
 
-        console.log('onBreakInChange', event);
         this.enterTimeForm.get('breakIn').setValue(event);
     }
 
     public onBreakInPeriodChange (event) {
 
-        console.log('onBreakInPeriodChange', event);
         this.breakInPeriod = event;
     }
 
     public onBreakOutChange (event) {
 
-        console.log('onBreakOutChange', event);
         this.enterTimeForm.get('breakOut').setValue(event);
     }
 
     public onBreakOutPeriodChange (event) {
 
-        console.log('onBreakOutPeriodChange', event);
         this.breakOutPeriod = event;
+    }
+
+    public timeInValidation (event) {
+
+        const timeOut = this.enterTimeForm.get('timeOut');
+
+        const standardCondition = this._timeValidation.startBeforeEndTime(event.value, timeOut.value);
+        const fireFoxCondition = this._timeValidation.startBeforeEndTime(event.value + ' ' + this.timeInPeriod,
+            timeOut.value + ' ' + this.timeOutPeriod);
+
+        this.timeValidation(event, standardCondition, fireFoxCondition);
+    }
+
+    public timeOutValidation (event) {
+
+        const timeIn = this.enterTimeForm.get('timeIn');
+
+        const standardCondition = this._timeValidation.endAfterStartTime(timeIn.value, event.value);
+        const fireFoxCondition = this._timeValidation.endAfterStartTime(timeIn.value + ' ' + this.timeInPeriod,
+            event.value + ' ' + this.timeOutPeriod);
+
+        this.timeValidation(event, standardCondition, fireFoxCondition);
+    }
+
+    public breakInValidation (event) {
+
+        const timeIn = this.enterTimeForm.get('timeIn');
+        const timeOut = this.enterTimeForm.get('timeOut');
+        const breakOut = this.enterTimeForm.get('breakOut');
+
+        const standardCondition = this._timeValidation.breakInBetweenTimeInOut(timeIn.value, timeOut.value, event.value) &&
+            this._timeValidation.startBeforeEndTime(event.value, breakOut.value);
+        const fireFoxCondition = this._timeValidation.breakInBetweenTimeInOut(timeIn.value + ' ' + this.timeInPeriod,
+            timeOut.value + ' ' + this.timeOutPeriod, event.value + ' ' + this.breakInPeriod);
+
+        this.timeValidation(event, standardCondition, fireFoxCondition);
+    }
+
+    public breakOutValidation (event) {
+
+        const timeIn = this.enterTimeForm.get('timeIn');
+        const timeOut = this.enterTimeForm.get('timeOut');
+        const breakIn = this.enterTimeForm.get('breakIn');
+
+        const standardCondition = this._timeValidation.breakOutBetweenTimeInOut(timeIn.value, timeOut.value, event.value) &&
+            this._timeValidation.endAfterStartTime(breakIn.value, event.value);
+        const fireFoxCondition = this._timeValidation.breakOutBetweenTimeInOut(timeIn.value + ' ' + this.timeInPeriod,
+            timeOut.value + ' ' + this.timeOutPeriod, event.value + ' ' + this.breakOutPeriod);
+
+        this.timeValidation(event, standardCondition, fireFoxCondition);
     }
 
     // TODO: Implement when angular issue 11836 (CanDeactivateChild) is implemented.
@@ -848,6 +885,29 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
                 breakIn: moment().format('HH:mm').toString(),
                 breakOut: moment().format('HH:mm').toString()
             });
+        }
+    }
+
+    private timeValidation (control: FormControl, standardCondition: boolean, fireFoxCondition: boolean) {
+
+        if (this.isUnsupportedTime) {
+
+            if (fireFoxCondition) {
+
+                control.setErrors(null);
+            } else {
+
+                control.setErrors({'invalid': true});
+            }
+        } else {
+
+            if (standardCondition) {
+
+                control.setErrors(null);
+            } else {
+
+                control.setErrors({'invalid': true});
+            }
         }
     }
 

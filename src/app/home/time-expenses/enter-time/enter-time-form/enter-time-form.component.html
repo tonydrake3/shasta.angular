@@ -155,13 +155,15 @@
                     <div class="col-md-2">
                         <div class="time-entry" *ngIf="!isUnsupportedTime">
                             <md-input-container class="form-field" >
-                                <input mdInput placeholder="Time in" type="time" formControlName="timeIn">
+                                <input mdInput placeholder="Time in" type="time" formControlName="timeIn"
+                                       (blur)="timeInValidation(enterTimeForm.get('timeIn'))">
                             </md-input-container>
                         </div>
                         <div class="time-entry firefox-time" *ngIf="isUnsupportedTime">
                             <md-input-container class="form-field" >
                                 <input mdInput placeholder="Time in" type="text" esubTimeInput formControlName="timeIn"
-                                       (timeChange)="onTimeInChange($event)" (timePeriodChange)="onTimeInPeriodChange($event)">
+                                       (timeChange)="onTimeInChange($event)" (timePeriodChange)="onTimeInPeriodChange($event)"
+                                       (blur)="timeInValidation(enterTimeForm.get('timeIn'))">
                             </md-input-container>
                             <md-select [(ngModel)]="timeInPeriod" [ngModelOptions]="{standalone: true}" [ngClass]="{'ie-offset': isIE }">
                                 <md-option [value]="'AM'">AM</md-option>
@@ -172,13 +174,15 @@
                     <div class="col-md-2">
                         <div class="time-entry" *ngIf="!isUnsupportedTime">
                             <md-input-container class="form-field">
-                                <input mdInput placeholder="Time out" type="time" formControlName="timeOut">
+                                <input mdInput placeholder="Time out" type="time" formControlName="timeOut"
+                                       (blur)="timeOutValidation(enterTimeForm.get('timeOut'))">
                             </md-input-container>
                         </div>
                         <div class="time-entry firefox-time" *ngIf="isUnsupportedTime">
                             <md-input-container class="form-field" >
                                 <input mdInput placeholder="Time out" type="text" esubTimeInput formControlName="timeOut"
-                                       (timeChange)="onTimeOutChange($event)" (timePeriodChange)="onTimeOutPeriodChange($event)">
+                                       (timeChange)="onTimeOutChange($event)" (timePeriodChange)="onTimeOutPeriodChange($event)"
+                                       (blur)="timeOutValidation(enterTimeForm.get('timeOut'))">
                             </md-input-container>
                             <md-select [(ngModel)]="timeOutPeriod" [ngModelOptions]="{standalone: true}" [ngClass]="{'ie-offset': isIE }">
                                 <md-option [value]="'AM'">AM</md-option>
@@ -189,7 +193,8 @@
                     <div class="col-md-2 offset-1">
                         <div class="time-entry" *ngIf="!isUnsupportedTime">
                             <md-input-container class="form-field">
-                                <input mdInput placeholder="Break in" type="time" formControlName="breakIn">
+                                <input mdInput placeholder="Break in" type="time" formControlName="breakIn"
+                                       (blur)="breakInValidation(enterTimeForm.get('breakIn'))">
                             </md-input-container>
                         </div>
                         <div class="time-entry firefox-time" *ngIf="isUnsupportedTime">
@@ -206,7 +211,8 @@
                     <div class="col-md-2">
                         <div class="time-entry" *ngIf="!isUnsupportedTime">
                             <md-input-container class="form-field">
-                                <input mdInput placeholder="Break out" type="time" formControlName="breakOut">
+                                <input mdInput placeholder="Break out" type="time" formControlName="breakOut"
+                                       (blur)="breakOutValidation(enterTimeForm.get('breakOut'))">
                             </md-input-container>
                         </div>
                         <div class="time-entry firefox-time" *ngIf="isUnsupportedTime">
