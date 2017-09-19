@@ -1,0 +1,57 @@
+// color scaffolding
+//
+
+// core colors
+
+$white: #f4f4f4;
+$true-white: #ffffff;
+$black: #333333;
+$true-black: #000000;
+$warm-grey: #4A4A4A;
+
+// theme colors
+
+$orangey-yellow: #FDB913;
+$tomato: #eb4343;
+$butterscotch: #ffc63b;
+$frog-green: #31c40a;
+$dark-sky-blue: #2094de;
+
+// ^^ don't change the above, for new colors use below setup
+
+// gray variants
+$gray: $warm-grey;
+$gray-20: #D8D8D8;
+$gray-40: #F4F4F4;
+$gray-bg: rgba($gray, 0.1);
+$gray-hover: rgba($gray, 0.3);
+
+// black variants
+$black-10: rgba($black, 0.1);
+$black-25: rgba($black, 0.25);
+$black-50: rgba($true-black, 0.5);
+$black-60: rgba($true-black, 0.6);
+
+// yellow variants
+$yellow: $orangey-yellow;
+$yellow-10: #fedc89;
+$yellow-30: $butterscotch;
+$yellow-40: #FBB812;
+$yellow-80: #fdc641;
+
+// red variants
+$red: $tomato;
+
+// green variants
+$green: $frog-green;
+
+// blue variants
+$blue: $dark-sky-blue;
+
+// component specific colors
+//
+
+$nav-link-active: $true-white;
+$sub-nav-link-odd: $gray-20;
+$sub-nav-link-even: $gray-20;
+$nav_link_active_color: $true-white;

@@ -1,0 +1,119 @@
+// Colors for layouts based on color option, including sidebar, header, logo
+
+// .bg-color-dark is the default, there's no need for additional style
+.app-sidebar.bg-color-dark {}
+//
+.app-sidebar.bg-color-light {
+    .nav {
+        // General
+        background-color: $esub-gray; //$brand-esub;
+        color: $light_nav_text_color;
+        a {
+            color: $light_nav_text_color;
+        }
+        .nav-header {
+            color: $text-muted;
+        }
+        li {
+            > a {
+                &:hover,
+                &:focus {
+                    background-color: $light_nav_link_hover_bg;
+                    color: $light_nav_link_hover_color;
+                }
+            }
+            &.active {
+                > a,
+                > a:hover,
+                > a:focus {
+                    background-color: $light_nav_link_active_bg;
+                    color: $light_nav_link_active_color;
+                  & {
+                      box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2), 0px 2px 6px 0px rgba(0, 0, 0, 0.14), 0px 2px 6px 0px rgba(0, 0, 0, 0.12);
+                  }
+                }
+            }
+            &.inactive {
+              > a,
+              > a:hover,
+              > a:focus {
+                background-color: $light_nav_link_hover_bg;
+                color: $light_nav_link_hover_color;
+                box-shadow: 0;
+              }
+            }
+            &.open {
+                > a,
+                > a:hover,
+                > a:focus {
+                    background-color: $light_nav_link_open_bg;
+                    color: $light_nav_link_open_color;
+                }
+                > .icon-has-ul { color: $light_nav_link_active_color; }
+            }
+
+            // overrides Bootstrap
+            > a:focus {
+                background-color: $light_nav_link_active_bg;
+            }
+        }
+
+        // sub menu
+        ul {
+            background-color: $light_nav_sub_nav_bg;
+            li {
+                &.active,
+                &.open {
+                    > a,
+                    > a:hover,
+                    > a:focus {
+                        background-color: $light_nav_link_active_bg; // $light_nav_sub2_nav_bg;
+                        color: $light_nav_sub_link_active_color;
+                      margin-left:10px;
+                      & {
+                        box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, 0.23), 0px 2px 5px -1px rgba(0, 0, 0, 0.23), 0px 2px 5px -1px rgba(0, 0, 0, 0.23);
+                      }
+                    }
+                }
+            }
+        }
+
+        // sub2 menu
+        ul ul {
+            background-color: $light_nav_sub2_nav_bg;
+            > li {
+                &.active,
+                &.open {
+                    > a,
+                    > a:hover,
+                    > a:focus {
+                        background-color: $light_nav_sub3_nav_bg;
+                        color: $light_nav_sub_link_active_color;
+                    }
+                }
+            }
+        }
+
+        // sub3 menu
+        ul ul ul {
+            background-color: $light_nav_sub3_nav_bg;
+        }
+    }
+
+    .sidebar-footer {
+        background-color: $bright;
+    }
+}
+
+
+// toggler
+.app-sidebar {
+    .sidebar-header {
+        &.bg-color-light,
+        &.bg-color-warning {
+            a.collapsednav-toggler {
+                color: rgba(0,0,0,.5);
+            }
+        }
+    }
+}

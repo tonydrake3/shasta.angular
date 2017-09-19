@@ -1,0 +1,56 @@
+
+.project-selection-card {
+    @extend .esub-card;
+
+    padding: 10px;
+
+    h5 {
+        margin-top: 6px;
+    }
+
+    span.highlight {
+        background-color: yellow;
+    }
+
+    .project-location {
+
+        .project-location-street {
+            padding-right: 3px;
+        }
+    }
+
+    .project-status {
+        color: $true-white;
+        font-size: 12px;
+        margin-bottom: 10px;
+
+        span {
+            border-radius: 15px;
+            display: block;
+            width: 86px;
+            padding: 2px 12px;
+            text-align: center;
+
+            &.open {
+                background-color: $dark-sky-blue;
+            }
+
+            &.won,
+            &.complete {
+                background-color: $frog-green;
+            }
+
+            &.bid {
+                background-color: #FF8000;
+            }
+
+            &.lost {
+                background-color: $tomato;
+            }
+        }
+    }
+
+    md-select {
+        width: 100%;
+    }
+}

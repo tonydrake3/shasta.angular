@@ -1,0 +1,26 @@
+<nav class="app-sidebar" esubAutoCloseMobileNav
+     [ngClass]="{'bg-color-light': ['31','32','33','34','35','36'].indexOf(AppConfig.colorOption) >= 0,
+                 'bg-color-dark': ['31','32','33','34','35','36'].indexOf(AppConfig.colorOption) < 0 }">
+
+    <section class="sidebar-header"
+             [ngClass]="{'bg-color-dark': ['11'].indexOf(AppConfig.colorOption) >= 0,
+                         'bg-color-gray': AppConfig.colorOption === '31',
+                         'bg-color-light': AppConfig.colorOption === '21',
+                         'bg-color-primary': ['12','22','32'].indexOf(AppConfig.colorOption) >= 0,
+                         'bg-color-success': ['13','23','33'].indexOf(AppConfig.colorOption) >= 0,
+                         'bg-color-info': ['14','24','34'].indexOf(AppConfig.colorOption) >= 0,
+                         'bg-color-warning': ['15','25','35'].indexOf(AppConfig.colorOption) >= 0,
+                         'bg-color-danger': ['16','26','36'].indexOf(AppConfig.colorOption) >= 0}">
+
+      <!-- <span class="logo-icon material-icons">view_compact</span> -->
+        <a [routerLink]="['/']" class="brand"><img class="logo-img" src="assets/images/brand/esub-logo-top.png" height="30" width="104" alt="{{AppConfig.brand}}"/></a>
+        <a href="javascript:;" class="collapsednav-toggler" (click)="toggleCollapsedNav()">
+            <i class="material-icons" *ngIf="this.AppConfig.navCollapsed">radio_button_unchecked</i>
+            <i class="material-icons" *ngIf="!this.AppConfig.navCollapsed">radio_button_checked</i>
+        </a>
+    </section>
+
+    <section class="sidebar-content">
+        <esub-app-sidenav-menu></esub-app-sidenav-menu>
+    </section>
+</nav>

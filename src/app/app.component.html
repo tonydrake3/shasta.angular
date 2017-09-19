@@ -1,0 +1,18 @@
+
+<div esubPreloader class="preloaderbar hide"><span class="bar"></span></div>
+<div class="full-height"
+     [ngClass]="{'fixed-header'  : AppConfig.fixedHeader,
+                 'nav-collapsed' : AppConfig.navCollapsed,
+                 'nav-behind'    : AppConfig.navBehind,
+                 'home-boxed'  : AppConfig.homeBoxed,
+                 'theme-gray'    : AppConfig.theme == 'gray',
+                 'theme-dark'    : AppConfig.theme == 'dark',
+                 'sidebar-sm'    : AppConfig.sidebarWidth == 'small',
+                 'sidebar-lg'    : AppConfig.sidebarWidth == 'large'}">
+    <router-outlet></router-outlet>
+</div>
+
+<!-- display version, only exists in dev build -->
+<pre *ngIf="gitVersion" style="position:fixed; top:0; left:0; z-index:1000; color:#333; font-size: 8px;" class="well">
+  {{gitVersion}}
+</pre>

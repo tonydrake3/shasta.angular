@@ -1,0 +1,78 @@
+<div class="project-summary">
+    <div class="summary-map">
+        <esub-map></esub-map>
+        <div class="map-overlay row" *ngIf="details">
+            <div class="col-md-8 text-left">
+                <span class="map-overlay-name">{{details.Number}} - {{details.Name}}</span>
+            </div>
+            <div class="col-md-4 text-right">
+                <div class="map-overlay-map-to">
+                    <i class="material-icons">pin_drop</i>
+                    <span>Map to job site</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="summary-body" *ngIf="details">
+        <div class="row summary-project-info">
+            <div class="col-md-2 summary-status">
+                <span [ngClass]="getClass(details.Status.toString())" >{{details.Status.toString() | status | uppercase}}</span>
+            </div>
+            <div class="col-md-3 summary-fields">
+                <span class="label-bold">Market Area&#58;</span>
+                <span>{{details.MarketArea.Name}}</span>
+            </div>
+            <div class="col-md-3 summary-fields">
+                <span class="label-bold">Division&#58;</span>
+                <span>{{details.MarketArea.Division.Name}}</span>
+            </div>
+            <div class="col-md-4 summary-fields">
+                <span class="label-bold">Project Manager&#58;</span>
+                <span *ngIf="details.ProjectManager && details.ProjectManager.Contact">
+                    {{details.ProjectManager.Contact.FirstName}} {{details.ProjectManager.Contact.LastName}}
+                </span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 offset-md-1 col-sm-12">
+                <div class="card summary-card">
+                    <div class="summary-card-title">
+                        <span class="title-regular">Local Places</span>
+                    </div>
+                    <div class="summary-card-row row">
+                        <div class="summary-card-item text-center col-md-3 col-sm-3 places-item" *ngFor="let place of places">
+                            <i class="material-icons">{{place.Value}}</i>
+                            <div class="label-bold">{{place.Description}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="card summary-card">
+                    <div class="summary-card-title weather">
+                        <span class="title-regular">Forecast</span>
+                    </div>
+                    <div class="summary-card-row row weather">
+                        <div class="summary-card-item text-center weather col-md-2 col-sm-2" *ngFor="let day of weather">
+                            <div class="weather-item d-flex">
+                                <div class="weather-icon p-2">
+                                    <i [ngClass]="getWeatherIcon(day)"></i>
+                                </div>
+                                <div class="weather-temperatures p-2">
+                                    <div class="label-bold">{{day.maxtempF}}&deg;</div>
+                                    <div class="label-bold min-temp">{{day.mintempF}}&deg;</div>
+                                </div>
+                            </div>
+                            <span class="label-bold weather-day">{{day.date | weekday}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <span class="title-regular">Milestones</span>
+            </div>
+        </div>
+    </div>
+</div>

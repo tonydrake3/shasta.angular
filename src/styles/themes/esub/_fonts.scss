@@ -1,0 +1,158 @@
+// font builders
+
+@mixin font-stack($size, $weight, $color) {
+	@content;
+	font-size: $size;
+	font-weight: $weight;
+	color: $color;
+}
+
+@mixin roboto-font-stack($size, $weight, $color) {
+	@include font-stack($size, $weight, $color) {
+		font-family: Roboto;
+	}
+}
+
+@mixin SFUIText-font-stack($size, $weight, $color) {
+	@include font-stack($size, $weight, $color) {
+		font-family: SFUIText;
+	}
+}
+
+//
+// base
+//
+
+// heading			|			bold
+// title				|			regular
+// paragraph		|			lite
+// label				|			thin
+
+h1, .h1 {
+	@include roboto-font-stack(36px, 300, $black);
+}
+h2, .h2 {
+	@include roboto-font-stack(30px, 300, $black);
+}
+h3, .h3 {
+	@include roboto-font-stack(26px, 300, $black);
+}
+h4, .h4 {
+	@include roboto-font-stack(22px, 300, $black);
+}
+h5, .h5 {
+	@include roboto-font-stack(20px, 300, $black);
+}
+
+.title-bold {
+	@include roboto-font-stack(16px, bold, $black);
+}
+.title-regular {
+	@include roboto-font-stack(16px, normal, $black);
+}
+.title-light {
+	@include roboto-font-stack(16px, 300, $black);
+}
+.title-disabled {
+	@include roboto-font-stack(16px, normal, $gray);
+}
+
+.paragraph-bold {
+	@include roboto-font-stack(14.5px, bold, $black);
+}
+.paragraph-regular {
+	@include roboto-font-stack(14.5px, normal, $black);
+}
+.paragraph-light {
+	@include roboto-font-stack(14.5px, 300, $black);
+}
+.paragraph-disabled {
+	@include roboto-font-stack(14.5px, normal, $gray);
+}
+
+.label-bold {
+	@include roboto-font-stack(12.5px, bold, $black);
+}
+.label-regular {
+	@include roboto-font-stack(12.5px, normal, $black);
+}
+.label-light {
+	@include roboto-font-stack(12.5px, 300, $black);
+}
+.label-disabled {
+	@include roboto-font-stack(12.5px, normal, $gray);
+}
+
+.accent-bold {
+	@include roboto-font-stack(10px, bold, $black);
+}
+.accent-regular {
+	@include roboto-font-stack(10px, normal, $black);
+}
+.accent-light {
+	@include roboto-font-stack(10px, 300, $black);
+}
+.accent-disabled {
+	@include roboto-font-stack(10px, normal, $gray);
+}
+
+//
+// components
+//
+
+button {
+	@extend .paragraph-regular;
+}
+
+//
+// page specific
+//
+
+// header
+.header-link {
+	@extend .title-bold;
+}
+
+// navigation
+.nav-link {
+	@extend .title-regular;
+}
+
+// cards
+.card-title {
+	@extend .title-light;
+}
+.card-subtitle {
+	@extend .paragraph-regular;
+}
+.card-section {
+	@extend .label-bold;
+}
+.card-subsection {
+	@extend .label-disabled;
+}
+.card-link {
+	@extend .accent-disabled;
+	letter-spacing: 1.2;
+}
+.card-hours {
+	@extend .title-regular;
+}
+.card-hours-disabled {
+	@extend .title-disabled;
+}
+.card-hours-small {
+	@extend .label-regular;
+}
+.card-hours-small-disabled {
+	@extend .label-disabled;
+}
+.card-day {
+	@extend .paragraph-light;
+}
+.card-date {
+	@extend .label-disabled;
+}
+.card-total-hours {
+	@extend .title-light;
+}

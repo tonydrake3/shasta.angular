@@ -1,0 +1,70 @@
+<div class="project-selection-card">
+    <div class="row">
+        <div class="col-md-10" [id]="'project-card-' + project.Id" (click)="selectProject(project)">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><span [esubTextHighlight]="project.Number" [filterText]="filterText"></span> - <span [esubTextHighlight]="project.Name" [filterText]="filterText"></span></h5>
+                </div>
+                <div class="col-md-6 project-location">
+                    <span class="project-location-street">{{project.Address.Address1}} {{project.Address.Address2}} {{project.Address.Address3}}</span>
+                    <span>{{project.Address.City}}&#44; {{project.Address.State}} {{project.Address.Zip}}</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 project-status">
+                    <span [ngClass]="getClass(project.Status)">{{project.Status.toString() | status | uppercase}}</span>
+                </div>
+                <div class="col-md-4" >
+
+                </div>
+                <div class="col-md-6">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <span class="label-bold">Project Manager&#58;</span>
+                </div>
+                <div class="col-md-4">
+                    <span class="span-value" *ngIf="project.ProjectManager && project.ProjectManager.Contact">{{project.ProjectManager.Contact.FirstName}} {{project.ProjectManager.Contact.LastName}}</span>
+                </div>
+                <div class="col-md-6"></div>
+            </div>
+            <div class="row" *ngIf="project.MarketArea">
+                <div class="col-md-2">
+                    <span class="label-bold">Market Area&#58;</span>
+                </div>
+                <div class="col-md-3">
+                    <span class="span-value" [esubTextHighlight]="project.MarketArea.Name" [filterText]="filterText"></span>
+                </div>
+                <div class="col-md-2" *ngIf="project.MarketArea.Division">
+                    <span class="label-bold">Division&#58;</span>
+                </div>
+                <div class="col-md-3" *ngIf="project.MarketArea.Division">
+                    <span class="span-value">{{project.MarketArea.Division.Name}}</span>
+                </div>
+                <div class="col-md-2">
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="row align-items-center">
+                <div class="col-md-12">
+                    <md-select placeholder="Go to" floatPlaceholder="never">
+                        <md-option *ngFor="let link of _links" (click)="goToPage(link.route)" >{{ link.name }}</md-option>
+                    </md-select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--<div class="row" (click)="selectProject(project)">-->
+        <!--<div class="col-md-2">-->
+            <!--<span class="label-bold">Employees&#58;</span>-->
+        <!--</div>-->
+        <!--<div class="col-md-4">-->
+            <!--<span *ngFor="let employee of project.People" class="span-value">{{employee | json}}</span>-->
+        <!--</div>-->
+        <!--<div class="col-md-6"></div>-->
+    <!--</div>-->
+</div>
