@@ -60,29 +60,16 @@
                 <div style="order:4; width:10%" class="table-cell table-header">Phase</div>
                 <div style="order:5; width:10%" class="table-cell table-header">Cost Code</div>
                 <div style="order:6; width:10%" class="table-cell table-header">Employee</div>
-                <div style="order:7; width:6%" class="table-cell table-header">Time</div>
-                <div style="order:8; width:6%" class="table-cell table-header">Break</div>
-                <div style="order:7; width:6%" class="table-cell table-header">Break</div>
-                <div style="order:8; width:6%" class="table-cell table-header">Time</div>
-                <div style="order:9; width:12%" class="table-cell table-header">Hours</div>
-                <div style="order:10; width:3%" class="table-cell table-header"></div>
+                <div style="order:7; width:6%" class="table-cell table-header">Time In</div>
+                <div style="order:8; width:6%" class="table-cell table-header">Break In</div>
+                <div style="order:7; width:6%" class="table-cell table-header">Break Out</div>
+                <div style="order:8; width:6%" class="table-cell table-header">Time Out</div>
+                <div style="order:9; width:4%" class="table-cell table-header">ST</div>
+                <div style="order:10; width:4%" class="table-cell table-header">OT</div>
+                <div style="order:11; width:4%" class="table-cell table-header">DT</div>
+                <div style="order:12; width:3%" class="table-cell table-header"></div>
             </div>
-            <div class="table-row">
-                <div style="order:1; width:10%" class="table-cell table-header no-sub-header"></div>
-                <div style="order:2; width:11%" class="table-cell table-header no-sub-header"></div>
-                <div style="order:3; width:10%" class="table-cell table-header no-sub-header"></div>
-                <div style="order:4; width:10%" class="table-cell table-header no-sub-header"></div>
-                <div style="order:5; width:10%" class="table-cell table-header no-sub-header"></div>
-                <div style="order:6; width:10%" class="table-cell table-header no-sub-header"></div>
-                <div style="order:7; width:6%" class="table-cell table-header sub-header">In</div>
-                <div style="order:8; width:6%" class="table-cell table-header sub-header">In</div>
-                <div style="order:9; width:6%" class="table-cell table-header sub-header">Out</div>
-                <div style="order:10; width:6%" class="table-cell table-header sub-header">Out</div>
-                <div style="order:11; width:4%" class="table-cell table-header sub-header">ST</div>
-                <div style="order:12; width:4%" class="table-cell table-header sub-header">OT</div>
-                <div style="order:13; width:4%" class="table-cell table-header sub-header">DT</div>
-                <div style="order:14; width:3%" class="table-cell table-header no-sub-header"></div>
-            </div>
+
 
             <div class="table-row" *ngFor="let record of card.ProjectLines; let rowIndex = index">
                 <div style="order:1; width:10%" class="table-cell" >
@@ -164,28 +151,28 @@
                 <div style="order:7; width:6%" class="table-cell">
                     <div *ngIf="record.IsPunch">
                         <md-input-container class="form-field">
-                            <input mdInput [(ngModel)]="record.TimeIn">
+                            <input mdInput type="time" [(ngModel)]="record.TimeIn">
                         </md-input-container>
                     </div>
                 </div>
                 <div style="order:8; width:6%" class="table-cell table-time-entry">
                     <div *ngIf="record.IsPunch">
                         <md-input-container class="form-field">
-                            <input mdInput [(ngModel)]="record.BreakIn">
+                            <input mdInput type="time" [(ngModel)]="record.BreakIn">
                         </md-input-container>
                     </div>
                 </div>
                 <div style="order:9; width:6%" class="table-cell table-time-entry">
                     <div *ngIf="record.IsPunch">
                         <md-input-container class="form-field">
-                            <input mdInput [(ngModel)]="record.BreakOut">
+                            <input mdInput type="time" [(ngModel)]="record.BreakOut">
                         </md-input-container>
                     </div>
                 </div>
                 <div style="order:10; width:6%" class="table-cell">
                     <div *ngIf="record.IsPunch">
                         <md-input-container class="form-field">
-                            <input mdInput [(ngModel)]="record.TimeOut">
+                            <input mdInput type="time" [(ngModel)]="record.TimeOut">
                         </md-input-container>
                     </div>
                 </div>
@@ -219,15 +206,15 @@
 
             <label class="title-light" *ngIf="groupCardsBy !== 'Project'">Indirect Costs</label>
             <div class="table-row">
-                <div style="order:1; width:10%" class="table-cell table-header">Date</div>
+                <div style="order:1; width:15%" class="table-cell table-header">Date</div>
                 <div style="order:2; width:25%" class="table-cell table-header">Employee</div>
                 <div style="order:3; width:25%" class="table-cell table-header">CostCode</div>
-                <div style="order:4; width:10%" class="table-cell table-header">Hours</div>
+                <div style="order:4; width:32%" class="table-cell table-header">ST</div>
                 <div style="order:5; width:03%" class="table-cell table-header"></div>
             </div>
 
             <div class="table-row" *ngFor="let record of card.IndirectLines; let rowIndex = index">
-                <div style="order:1; width:10%" class="table-cell" >
+                <div style="order:1; width:15%" class="table-cell" >
                     <label>{{record.Date.format(dateFormat)}}</label>
                     <i mdPrefix class="material-icons grid-date" *ngIf="groupCardsBy !== 'Date'">date_range</i>
                 </div>
@@ -260,7 +247,7 @@
                         </md-option>
                     </md-autocomplete>
                 </div>
-                <div style="order:4; width:10%" class="table-cell table-time-entry">
+                <div style="order:4; width:32%" class="table-cell table-time-entry">
                     <div class="row">
                         <div class="col-md-12 no-gutters">
                             <md-input-container>

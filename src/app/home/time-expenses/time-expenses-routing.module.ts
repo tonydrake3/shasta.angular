@@ -2,7 +2,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { TimeExpensesComponent } from './time-expenses.component';
 import { EnterTimeComponent } from './enter-time/enter-time.component';
-import { CanDeactivateGuard } from '../shared/guards/deactivate-guard.service';
+import { CanDeactivateGuard } from '../shared/services/guards/deactivate-guard.service';
 
 export const TimeExpensesRoutes: Routes = [
   { path: '', redirectTo: '/time-expenses/timesheets', pathMatch: 'full' },

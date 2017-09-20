@@ -266,12 +266,12 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
 
     private buildCards (lines) {
 
-        console.log('EnterTimeGridComponent buildCards enter');
+        // console.log('EnterTimeGridComponent buildCards enter');
         for (let i = 0; i < lines.length; i++) {
-            console.log('EnterTimeGridComponent buildCards', this.groupedLines);
+            // console.log('EnterTimeGridComponent buildCards', this.groupedLines);
             setTimeout(() => {
                 this.groupedLines.push(lines[i]);
-                console.log('EnterTimeGridComponent buildCards', this.groupedLines);
+                // console.log('EnterTimeGridComponent buildCards', this.groupedLines);
             }, 200 * i);
         }
     }

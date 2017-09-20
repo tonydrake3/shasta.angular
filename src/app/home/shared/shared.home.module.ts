@@ -36,7 +36,7 @@ import {KeysPipe} from './pipes/keys.pipe';
 import {StatusPipe} from './pipes/status.pipe';
 import {NumericPrecisionPipe} from './pipes/numeric-precision.pipe';
 import {TimeFormatPipe} from './pipes/time-format.pipe';
-import {CanDeactivateGuard} from './guards/deactivate-guard.service';
+import {CanDeactivateGuard} from './services/guards/deactivate-guard.service';
 import {ConfirmationDialogComponent} from './components/confirmation-dialog.component';
 import {ConfirmationDialogService} from './services/confirmation-dialog.service';
 import {TimeValidationService} from './services/time-validation.service';

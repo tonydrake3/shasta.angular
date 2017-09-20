@@ -18,33 +18,18 @@ export class TimeInputDirective implements OnInit {
     @HostListener('focus', ['$event.target.value'])
     onFocus(value) {
 
-        if (this.el.nativeElement.value === '--:--' || this.el.nativeElement.value === '') {
-
-            this.el.nativeElement.value = '';
-        } else {
-
-            // const today = moment(this.el.nativeElement.value, ['h:mm']).format('h:mm');
-            // this.el.nativeElement.value = today.toString();
-            this.el.nativeElement.setSelectionRange(0, value.length);
-            this._originalValue = value;
-        }
+        this.el.nativeElement.setSelectionRange(0, value.length);
+        this._originalValue = value;
     }
 
     @HostListener('blur', ['$event.target.value'])
     onBlur(value) {
 
-        if (this.el.nativeElement.value === '') {
-
-            this.el.nativeElement.value = '--:--';
-        } else {
-
-            if (this._originalValue !== value) {
-                const transformedTime = this._timeFormatPipe.transform(value);
-                const today = moment(transformedTime, ['HH:mm']);
-                this.timeChange.emit(today.format('h:mm'));
-                this.timePeriodChange.emit(today.format('A').toString());
-                // this.el.nativeElement.value = today.format('h:mm');
-            }
+        if (this._originalValue !== value) {
+            const transformedTime = this._timeFormatPipe.transform(value);
+            const today = moment(transformedTime, ['HH:mm']);
+            this.timeChange.emit(today.format('h:mm'));
+            this.timePeriodChange.emit(today.format('A').toString());
         }
     }
 
@@ -68,9 +53,6 @@ export class TimeInputDirective implements OnInit {
         if (this.el.nativeElement.value && this.el.nativeElement.value !== '') {
 
             this.el.nativeElement.value = this._timeFormatPipe.transform(this.el.nativeElement.value);
-        } else {
-
-            this.el.nativeElement.value = '--:--';
         }
 
     }

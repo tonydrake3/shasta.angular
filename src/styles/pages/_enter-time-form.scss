@@ -210,6 +210,14 @@
         }
     }
 
+    .form-error-container {
+        min-height: 20px;
+
+        .form-error {
+            color: $red;
+        }
+    }
+
     .hours-entry {
         margin-top: 3px;
 

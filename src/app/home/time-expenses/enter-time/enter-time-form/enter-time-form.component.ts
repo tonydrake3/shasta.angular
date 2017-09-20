@@ -22,6 +22,8 @@ import {Observable} from 'rxjs/Observable';
 import {ConfirmationDialogService} from '../../../shared/services/confirmation-dialog.service';
 import {EnterTimePreloadManager} from '../enter-time-preload.manager';
 import {TimeValidationService} from '../../../shared/services/time-validation.service';
+import {validateTime, validateTimeWithPeriod} from '../../../shared/validators/time-entry.validator';
+import {validateTimeBreakOverlap} from '../../../shared/validators/time-break-overlap.validator';
 
 @Component({
     selector: 'esub-enter-time-form',
@@ -103,6 +105,7 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
         this.selectedEmployees = [];
         this.costCodes = [];
         this._indirectCodes = [];
+        this.detectBrowser();
         this.createForm();
     }
 
@@ -129,32 +132,8 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
 
         if (this.projects.length === 0 || this._tenantEmployees.length === 0 || this._indirectCodes.length === 0) {
 
-            this.loading = true;
-            this._preloadService.load();
-        }
-
-        // Browser Detection
-        const navigator = window.navigator;
-        const userAgent = navigator.userAgent;
-        let ieIndex = -1;
-
-        if (navigator.appName === 'Microsoft Internet Explorer') {
-
-            ieIndex = userAgent.toLowerCase().indexOf('msie');
-        } else if (navigator.appName === 'Netscape') {
-
-            ieIndex = userAgent.toLowerCase().indexOf('trident');
-
-            if (ieIndex > -1) {
-                this.isIE = true;
-            }
-        }
-
-        const firefoxIndex = userAgent.toLowerCase().indexOf('firefox');
-
-        if (firefoxIndex > -1 || ieIndex > -1) {
-
-            this.isUnsupportedTime = true;
+            this._preloadService.startLoading();
+            // this._preloadService.load();
         }
     }
 
@@ -164,22 +143,22 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
 
     ngAfterViewInit () {
 
-        if (this.isUnsupportedTime) {
-
-            this.timeInPeriod = moment().format('A').toString();
-            this.timeOutPeriod = moment().format('A').toString();
-            this.breakInPeriod = moment().format('A').toString();
-            this.breakOutPeriod = moment().format('A').toString();
-        } else {
-
-            this.enterTimeForm.patchValue({
-
-                timeIn: moment().format('h:mm A'),
-                timeOut: moment().format('h:mm A'),
-                breakIn: moment().format('h:mm A'),
-                breakOut: moment().format('h:mm A')
-            });
-        }
+        // if (this.isUnsupportedTime) {
+        //
+        //     this.timeInPeriod = moment().format('A').toString();
+        //     this.timeOutPeriod = moment().format('A').toString();
+        //     this.breakInPeriod = moment().format('A').toString();
+        //     this.breakOutPeriod = moment().format('A').toString();
+        // } else {
+        //
+        //     this.enterTimeForm.patchValue({
+        //
+        //         timeIn: moment().format('h:mm A'),
+        //         timeOut: moment().format('h:mm A'),
+        //         breakIn: moment().format('h:mm A'),
+        //         breakOut: moment().format('h:mm A')
+        //     });
+        // }
     }
 
     /******************************************************************************************************************
@@ -388,7 +367,7 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
 
             } else {
 
-                console.log('openEmployee', this._tenantEmployees);
+                // console.log('openEmployee', this._tenantEmployees);
                 this.filteredEmployees = Observable.of(this._tenantEmployees);
             }
         }
@@ -565,107 +544,109 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
 
     public onTimeInChange (event) {
 
-        const timeIn = this.enterTimeForm.get('timeIn') as FormControl;
-
-        timeIn.setValue(event);
-
-        const timeOut = this.enterTimeForm.get('timeOut');
-
-        const condition = this._timeValidation.startBeforeEndTime(timeIn.value + ' ' + this.timeInPeriod,
-            timeOut.value + ' ' + this.timeOutPeriod);
-
-        this.timeValidation(timeIn, condition);
+        this.enterTimeForm.get('timeEntry').get('time').get('inValue').setValue(event);
     }
 
     public onTimeInPeriodChange (event) {
 
-        this.timeInPeriod = event;
+        this.enterTimeForm.get('timeEntry').get('time').get('inPeriod').setValue(event);
     }
 
     public onTimeInPeriodSelection (event) {
 
-        const timeIn = this.enterTimeForm.get('timeIn') as FormControl;
-        const timeOut = this.enterTimeForm.get('timeOut') as FormControl;
-
-        const condition = this._timeValidation.startBeforeEndTime(timeIn.value + ' ' + event.value,
-            timeOut.value + ' ' + this.timeOutPeriod);
-
-        console.log(timeIn.value + ' ' + event.value);
-        console.log(timeOut.value + ' ' + this.timeOutPeriod);
-        this.timeValidation(timeIn, condition);
+        // const timeIn = this.enterTimeForm.get('timeIn') as FormControl;
+        // const timeOut = this.enterTimeForm.get('timeOut') as FormControl;
+        //
+        // const condition = this._timeValidation.startBeforeEndTime(timeIn.value + ' ' + event.value,
+        //     timeOut.value + ' ' + this.timeOutPeriod);
+        //
+        // this.timeValidation(timeIn, condition);
     }
 
     public onTimeOutChange (event) {
 
-        this.enterTimeForm.get('timeOut').setValue(event);
+        this.enterTimeForm.get('timeEntry').get('time').get('outValue').setValue(event);
     }
 
     public onTimeOutPeriodChange (event) {
 
-        this.timeOutPeriod = event;
+        this.enterTimeForm.get('timeEntry').get('time').get('outPeriod').setValue(event);
     }
 
     public onBreakInChange (event) {
 
-        this.enterTimeForm.get('breakIn').setValue(event);
+        this.enterTimeForm.get('timeEntry').get('break').get('inValue').setValue(event);
     }
 
     public onBreakInPeriodChange (event) {
 
-        this.breakInPeriod = event;
+        this.enterTimeForm.get('timeEntry').get('break').get('inPeriod').setValue(event);
     }
 
     public onBreakOutChange (event) {
 
-        this.enterTimeForm.get('breakOut').setValue(event);
+        this.enterTimeForm.get('timeEntry').get('break').get('outValue').setValue(event);
     }
 
     public onBreakOutPeriodChange (event) {
 
-        this.breakOutPeriod = event;
+        this.enterTimeForm.get('timeEntry').get('break').get('outPeriod').setValue(event);
     }
 
-    public timeInValidation (event) {
-
-        const timeOut = this.enterTimeForm.get('timeOut');
-
-        const condition = this._timeValidation.startBeforeEndTime(event.value, timeOut.value);
-
-        this.timeValidation(event, condition);
-    }
-
-    public timeOutValidation (event) {
-
-        const timeIn = this.enterTimeForm.get('timeIn');
-
-        const condition = this._timeValidation.endAfterStartTime(timeIn.value, event.value);
-
-        this.timeValidation(event, condition);
-    }
-
-    public breakInValidation (event) {
-
-        const timeIn = this.enterTimeForm.get('timeIn');
-        const timeOut = this.enterTimeForm.get('timeOut');
-        const breakOut = this.enterTimeForm.get('breakOut');
-
-        const condition = this._timeValidation.breakInBetweenTimeInOut(timeIn.value, timeOut.value, event.value) &&
-            this._timeValidation.startBeforeEndTime(event.value, breakOut.value);
-
-        this.timeValidation(event, condition);
-    }
-
-    public breakOutValidation (event) {
-
-        const timeIn = this.enterTimeForm.get('timeIn');
-        const timeOut = this.enterTimeForm.get('timeOut');
-        const breakIn = this.enterTimeForm.get('breakIn');
-
-        const condition = this._timeValidation.breakOutBetweenTimeInOut(timeIn.value, timeOut.value, event.value) &&
-            this._timeValidation.endAfterStartTime(breakIn.value, event.value);
-
-        this.timeValidation(event, condition);
-    }
+    // public timeInValidation (event) {
+    //
+    //     const timeOut = this.enterTimeForm.get('timeOut');
+    //
+    //     if (event.value && timeOut.value) {
+    //
+    //         console.log('timeInValidation', event.value);
+    //         const condition = this._timeValidation.startBeforeEndTime(event.value, timeOut.value);
+    //
+    //         this.timeValidation(event, condition);
+    //     }
+    // }
+    //
+    // public timeOutValidation (event) {
+    //
+    //     const timeIn = this.enterTimeForm.get('timeIn');
+    //
+    //     if (event.value && timeIn.value) {
+    //
+    //         const condition = this._timeValidation.endAfterStartTime(timeIn.value, event.value);
+    //
+    //         this.timeValidation(event, condition);
+    //     }
+    // }
+    //
+    // public breakInValidation (event) {
+    //
+    //     const timeIn = this.enterTimeForm.get('timeIn');
+    //     const timeOut = this.enterTimeForm.get('timeOut');
+    //     const breakOut = this.enterTimeForm.get('breakOut');
+    //
+    //     if (event.value && breakOut.value) {
+    //
+    //         const condition = this._timeValidation.breakInBetweenTimeInOut(timeIn.value, timeOut.value, event.value) &&
+    //             this._timeValidation.startBeforeEndTime(event.value, breakOut.value);
+    //
+    //         this.timeValidation(event, condition);
+    //     }
+    // }
+    //
+    // public breakOutValidation (event) {
+    //
+    //     const timeIn = this.enterTimeForm.get('timeIn');
+    //     const timeOut = this.enterTimeForm.get('timeOut');
+    //     const breakIn = this.enterTimeForm.get('breakIn');
+    //
+    //     if (event.value && breakIn.value) {
+    //
+    //         const condition = this._timeValidation.breakOutBetweenTimeInOut(timeIn.value, timeOut.value, event.value) &&
+    //             this._timeValidation.endAfterStartTime(breakIn.value, event.value);
+    //
+    //         this.timeValidation(event, condition);
+    //     }
+    // }
 
     // TODO: Implement when angular issue 11836 (CanDeactivateChild) is implemented.
     //       https://github.com/angular/angular/issues/11836
@@ -686,6 +667,32 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
     /******************************************************************************************************************
      * Private Methods
      ******************************************************************************************************************/
+    private detectBrowser () {
+
+        const navigator = window.navigator;
+        const userAgent = navigator.userAgent;
+        let ieIndex = -1;
+
+        if (navigator.appName === 'Microsoft Internet Explorer') {
+
+            ieIndex = userAgent.toLowerCase().indexOf('msie');
+        } else if (navigator.appName === 'Netscape') {
+
+            ieIndex = userAgent.toLowerCase().indexOf('trident');
+
+            if (ieIndex > -1) {
+                this.isIE = true;
+            }
+        }
+
+        const firefoxIndex = userAgent.toLowerCase().indexOf('firefox');
+
+        if (firefoxIndex > -1 || ieIndex > -1) {
+
+            this.isUnsupportedTime = true;
+        }
+    }
+
     private checkDefaultSystem (systems: Array<System>) {
 
         this.systems = systems;
@@ -818,8 +825,6 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
 
     private createForm () {
 
-        const today = moment();
-
         this.enterTimeForm = this._builder.group({
             project: ['', [Validators.required]],
             system: '',
@@ -831,12 +836,12 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
             standardHours: '',
             overtimeHours: '',
             doubleTimeHours: '',
-            timeIn: today.format('h:mm'),
-            timeOut: today.format('h:mm'),
-            breakIn: today.format('h:mm'),
-            breakOut: today.format('h:mm'),
+            timeEntry: this._builder.group(this.buildTimeEntryFormGroup(),
+                {validator: validateTimeBreakOverlap('in', 'out', 'in', 'out')}),
             notes: ''
         });
+
+        console.log(this.enterTimeForm);
 
         this.formChange();
         this.projectChange();
@@ -844,6 +849,46 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
         this.phaseChange();
         this.costCodeChange();
         this.employeeChange();
+    }
+
+    private buildTimeEntryFormGroup () {
+
+        if (this.isUnsupportedTime) {
+
+            return {
+
+                time: this._builder.group(this.buildTimeDetailFormGroup(),
+                    {validator: validateTimeWithPeriod('in', 'out', 'startAfterEnd')}),
+                break: this._builder.group(this.buildTimeDetailFormGroup(),
+                    {validator: validateTimeWithPeriod('in', 'out', 'breakStartAfterEnd')})
+            };
+        }
+        return {
+
+            time: this._builder.group(this.buildTimeDetailFormGroup(),
+                {validator: validateTime('in', 'out', 'startAfterEnd')}),
+            break: this._builder.group(this.buildTimeDetailFormGroup(),
+                {validator: validateTime('in', 'out', 'breakStartAfterEnd')})
+        };
+    }
+
+    private buildTimeDetailFormGroup () {
+
+        if (this.isUnsupportedTime) {
+
+            return {
+
+                inValue: '',
+                inPeriod: '',
+                outValue: '',
+                outPeriod: ''
+            };
+        }
+        return {
+
+            in: '',
+            out: ''
+        };
     }
 
     private updateTime () {
@@ -871,6 +916,8 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
             standardHours: '',
             overtimeHours: '',
             doubleTimeHours: '',
+            timeEntry: this._builder.group(this.buildTimeEntryFormGroup(),
+                {validator: validateTimeBreakOverlap('in', 'out', 'in', 'out')}),
             notes: ''
         });
         this.systems = [];
@@ -881,25 +928,25 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
         this._enterTimeManager.clearSelectedDates();
         this.costCodes = [];
 
-        if (this.isUnsupportedTime) {
-
-            this.enterTimeForm.patchValue({
-
-                timeIn: moment().format('h:mm'),
-                timeOut: moment().format('h:mm'),
-                breakIn: moment().format('h:mm'),
-                breakOut: moment().format('h:mm')
-            });
-        } else {
-
-            this.enterTimeForm.patchValue({
-
-                timeIn: moment().format('HH:mm').toString(),
-                timeOut: moment().format('HH:mm').toString(),
-                breakIn: moment().format('HH:mm').toString(),
-                breakOut: moment().format('HH:mm').toString()
-            });
-        }
+        // if (this.isUnsupportedTime) {
+        //
+        //     this.enterTimeForm.patchValue({
+        //
+        //         timeIn: moment().format('h:mm'),
+        //         timeOut: moment().format('h:mm'),
+        //         breakIn: moment().format('h:mm'),
+        //         breakOut: moment().format('h:mm')
+        //     });
+        // } else {
+        //
+        //     this.enterTimeForm.patchValue({
+        //
+        //         timeIn: moment().format('HH:mm').toString(),
+        //         timeOut: moment().format('HH:mm').toString(),
+        //         breakIn: moment().format('HH:mm').toString(),
+        //         breakOut: moment().format('HH:mm').toString()
+        //     });
+        // }
     }
 
     private timeValidation (control: FormControl, condition: boolean) {

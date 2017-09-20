@@ -297,9 +297,9 @@ export class EnterTimeManager {
 
     private buildTimeToSubmit (date, employee, lines): LineToSubmit {
 
-        console.log('buildTimeToSubmit', lines);
-        const punchIn = lines.timeIn ? moment(lines.timeIn, ['h:mm A']) : moment();
-        const punchOut = lines.timeOut ? moment(lines.timeOut, ['h:mm A']) : moment();
+        //
+        // const punchIn = lines.timeIn ? moment(lines.timeIn, ['h:mm A']) : null;
+        // const punchOut = lines.timeOut ? moment(lines.timeOut, ['h:mm A']) : null;
 
         const timeSubmission: LineToSubmit = {
             Date: _.cloneDeep(date),
@@ -312,44 +312,56 @@ export class EnterTimeManager {
             HoursST: 0,
             HoursOT: 0,
             HoursDT: 0,
-            TimeIn: punchIn.format('h:mm A'),
-            TimeOut: punchOut.format('h:mm A'),
+            TimeIn: null,
+            TimeOut: null,
             BreakIn: null,
             BreakOut: null,
             Note: lines.notes
         };
 
+        let timeDuration, breakIn, breakOut, breakDuration;
 
-        let timeDuration = moment.duration(punchOut.diff(punchIn));
-        // console.log(timeDuration.hours());
+        if (lines.timeEntry.time.in && lines.timeEntry.time.out) {
 
-        let breakIn, breakOut, breakDuration;
+            const punchIn = moment(lines.timeEntry.time.in, ['hh:mm']);
+            const punchOut = moment(lines.timeEntry.time.out, ['hh:mm']);
 
-        if (lines.breakIn && lines.breakOut) {
+            timeSubmission.TimeIn = punchIn.format('HH:mm');
+            timeSubmission.TimeOut = punchOut.format('HH:mm');
 
-            breakIn = lines.breakIn ? moment(lines.breakIn, ['h:mm A']) : null;
-            breakOut = lines.breakOut ? moment(lines.breakOut, ['h:mm A']) : null;
+            if (punchIn && punchOut) {
 
-            timeSubmission.BreakIn = breakIn.format('h:mm A');
-            timeSubmission.BreakOut = breakOut.format('h:mm A');
+                timeDuration = moment.duration(punchOut.diff(punchIn));
+            }
+        }
+
+        if (lines.timeEntry.break.in && lines.timeEntry.break.out) {
+
+            breakIn = moment(lines.timeEntry.break.in, ['hh:mm']);
+            breakOut = moment(lines.timeEntry.break.out, ['hh:mm']);
+
+            timeSubmission.BreakIn = breakIn.format('HH:mm');
+            timeSubmission.BreakOut = breakOut.format('HH:mm');
 
             if (breakIn && breakOut) {
+
                 breakDuration = moment.duration(breakOut.diff(breakIn));
                 timeDuration = timeDuration.subtract(breakDuration);
             }
         }
 
-        if (timeDuration.hours() > this._timeThreshold) {
+        if (timeDuration && (timeDuration.hours() > this._timeThreshold)) {
 
             timeSubmission.HoursST = this._timeThreshold;
             timeSubmission.HoursOT = (timeDuration.hours() + (timeDuration.minutes() / 60)) - this._timeThreshold;
             timeSubmission.HoursDT = 0;
-        } else {
+        } else if (timeDuration) {
 
             timeSubmission.HoursST = (timeDuration.hours() + (timeDuration.minutes() / 60));
             timeSubmission.HoursOT = 0;
             timeSubmission.HoursDT = 0;
         }
+        console.log(timeSubmission);
 
         return timeSubmission;
     }
@@ -450,15 +462,13 @@ export class EnterTimeManager {
 
     private groupLinesByEmployee (projectLines: Array<LineToSubmit>, indirectLines: Array<IndirectToSubmit>) {
 
-        console.log('groupLinesByEmployee');
+        // console.log('groupLinesByEmployee');
         const projectEmployees = this.getUniqueEmployees(projectLines);
         const indirectEmployees = this.getUniqueEmployees(indirectLines);
 
         const employeeArray = _.uniqBy(projectEmployees.concat(indirectEmployees), (line) => {
             return line.Id;
         });
-
-        console.log(employeeArray);
 
         _.forEach(employeeArray, (employee) => {
 

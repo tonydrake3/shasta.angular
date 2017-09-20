@@ -68,6 +68,12 @@ export class EnterTimePreloadManager {
         return this._loading.asObservable();
     }
 
+    public startLoading () {
+
+        this._loading.next(true);
+        this.load();
+    }
+
     public load () {
 
         this._projectService.getLatest();

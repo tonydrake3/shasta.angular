@@ -1,4 +1,4 @@
-import {Component, Injector, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, Injector, OnDestroy, OnInit} from '@angular/core';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 
@@ -18,10 +18,13 @@ import {EnterTimeManager} from './enter-time.manager';
 @Component({
     templateUrl: './enter-time.component.html'
 })
-export class EnterTimeComponent extends BaseComponent implements OnInit {
+export class EnterTimeComponent extends BaseComponent implements OnInit, OnDestroy {
 
     private _isNavigationBlocked: boolean;
     private _confirmationService: ConfirmationDialogService;
+    private _preloadSubscription;
+    private _enterTimeManagerSubscription;
+    private _routerSubscription;
 
     // working model to add
     public showGrid: boolean;
@@ -30,7 +33,7 @@ export class EnterTimeComponent extends BaseComponent implements OnInit {
     public loading: boolean;
 
     constructor(private _injector: Injector, private _router: Router, private _preloadService: EnterTimePreloadManager,
-                private _enterTimeManager: EnterTimeManager) {
+                private _enterTimeManager: EnterTimeManager, private _cdr: ChangeDetectorRef) {
 
         super(_injector, []);
 
@@ -62,26 +65,30 @@ export class EnterTimeComponent extends BaseComponent implements OnInit {
      ******************************************************************************************************************/
     ngOnInit () {
 
-        this.loading = true;
-
-        this._preloadService.loading$
+        this._preloadSubscription = this._preloadService.loading$
             .subscribe(
                 (loading) => {
 
                     this.loading = loading;
+                    // TODO: Test when built and run under PROD setting.
+                    // https://github.com/angular/angular/issues/17572
+                    this._cdr.detectChanges();
                 });
 
-        this._enterTimeManager.processing$
+        this._enterTimeManagerSubscription = this._enterTimeManager.processing$
             .subscribe(
                 (processing) => {
 
                     this.loading = processing;
+                    // TODO: Test when built and run under PROD setting.
+                    // https://github.com/angular/angular/issues/17572
+                    this._cdr.detectChanges();
                     // console.log('ngOnInit', processing);
                 });
 
         // TODO: Remove when angular issue 11836 (CanDeactivateChild) is implemented.
         //       https://github.com/angular/angular/issues/11836
-        this._router.events
+        this._routerSubscription = this._router.events
             .subscribe(
                 (val) => {
 
@@ -103,6 +110,13 @@ export class EnterTimeComponent extends BaseComponent implements OnInit {
                         }
                     }
                 });
+    }
+
+    ngOnDestroy () {
+
+        this._preloadSubscription.unsubscribe();
+        this._enterTimeManagerSubscription.unsubscribe();
+        this._routerSubscription.unsubscribe();
     }
 
     /******************************************************************************************************************

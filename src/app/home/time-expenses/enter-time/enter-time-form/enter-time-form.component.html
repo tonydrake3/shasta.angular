@@ -150,81 +150,86 @@
                 </div>
 
             </div>
-            <div class="col-md-12" *ngIf="isTimeIn">
+            <div class="col-md-12" *ngIf="isTimeIn" formGroupName="timeEntry">
                 <div class="row">
-                    <div class="col-md-2">
+                    <div class="col-md-2" formGroupName="time">
                         <div class="time-entry" *ngIf="!isUnsupportedTime">
                             <md-input-container class="form-field" >
-                                <input mdInput placeholder="Time in" type="time" formControlName="timeIn"
-                                       (blur)="timeInValidation(enterTimeForm.get('timeIn'))">
+                                <input mdInput placeholder="Time in" type="time" formControlName="in">
                             </md-input-container>
                         </div>
                         <div class="time-entry firefox-time" *ngIf="isUnsupportedTime">
                             <md-input-container class="form-field" >
-                                <input mdInput placeholder="Time in" type="text" esubTimeInput formControlName="timeIn"
+                                <input mdInput placeholder="Time in" type="text" esubTimeInput formControlName="inValue"
                                        (timeChange)="onTimeInChange($event)" (timePeriodChange)="onTimeInPeriodChange($event)">
                             </md-input-container>
-                            <md-select [(ngModel)]="timeInPeriod" [ngModelOptions]="{standalone: true}" [ngClass]="{'ie-offset': isIE }"
+                            <md-select [ngClass]="{'ie-offset': isIE }" formControlName="inPeriod"
                                        (change)="onTimeInPeriodSelection($event)">
                                 <md-option [value]="'AM'">AM</md-option>
                                 <md-option [value]="'PM'">PM</md-option>
                             </md-select>
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-2" formGroupName="time">
                         <div class="time-entry" *ngIf="!isUnsupportedTime">
                             <md-input-container class="form-field">
-                                <input mdInput placeholder="Time out" type="time" formControlName="timeOut"
-                                       (blur)="timeOutValidation(enterTimeForm.get('timeOut'))">
+                                <input mdInput placeholder="Time out" type="time" formControlName="out">
                             </md-input-container>
                         </div>
                         <div class="time-entry firefox-time" *ngIf="isUnsupportedTime">
                             <md-input-container class="form-field" >
-                                <input mdInput placeholder="Time out" type="text" esubTimeInput formControlName="timeOut"
-                                       (timeChange)="onTimeOutChange($event)" (timePeriodChange)="onTimeOutPeriodChange($event)"
-                                       (blur)="timeOutValidation(enterTimeForm.get('timeOut'))">
+                                <input mdInput placeholder="Time out" type="text" esubTimeInput formControlName="outValue"
+                                       (timeChange)="onTimeOutChange($event)" (timePeriodChange)="onTimeOutPeriodChange($event)">
                             </md-input-container>
-                            <md-select [(ngModel)]="timeOutPeriod" [ngModelOptions]="{standalone: true}" [ngClass]="{'ie-offset': isIE }">
+                            <md-select [ngClass]="{'ie-offset': isIE }" formControlName="outPeriod">
                                 <md-option [value]="'AM'">AM</md-option>
                                 <md-option [value]="'PM'">PM</md-option>
                             </md-select>
                         </div>
                     </div>
-                    <div class="col-md-2 offset-1">
+                    <div class="col-md-2 offset-1" formGroupName="break">
                         <div class="time-entry" *ngIf="!isUnsupportedTime">
                             <md-input-container class="form-field">
-                                <input mdInput placeholder="Break in" type="time" formControlName="breakIn"
-                                       (blur)="breakInValidation(enterTimeForm.get('breakIn'))">
+                                <input mdInput placeholder="Break in" type="time" formControlName="in">
                             </md-input-container>
                         </div>
                         <div class="time-entry firefox-time" *ngIf="isUnsupportedTime">
                             <md-input-container class="form-field" >
-                                <input mdInput placeholder="Break in" type="text" esubTimeInput formControlName="breakIn"
+                                <input mdInput placeholder="Break in" type="text" esubTimeInput formControlName="inValue"
                                        (timeChange)="onBreakInChange($event)" (timePeriodChange)="onBreakInPeriodChange($event)">
                             </md-input-container>
-                            <md-select [(ngModel)]="breakInPeriod" [ngModelOptions]="{standalone: true}" [ngClass]="{'ie-offset': isIE }">
+                            <md-select [ngClass]="{'ie-offset': isIE }" formControlName="inPeriod">
                                 <md-option [value]="'AM'">AM</md-option>
                                 <md-option [value]="'PM'">PM</md-option>
                             </md-select>
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-2" formGroupName="break">
                         <div class="time-entry" *ngIf="!isUnsupportedTime">
                             <md-input-container class="form-field">
-                                <input mdInput placeholder="Break out" type="time" formControlName="breakOut"
-                                       (blur)="breakOutValidation(enterTimeForm.get('breakOut'))">
+                                <input mdInput placeholder="Break out" type="time" formControlName="out">
                             </md-input-container>
                         </div>
                         <div class="time-entry firefox-time" *ngIf="isUnsupportedTime">
                             <md-input-container class="form-field" >
-                                <input mdInput placeholder="Break out" type="text" esubTimeInput formControlName="breakOut"
+                                <input mdInput placeholder="Break out" type="text" esubTimeInput formControlName="outValue"
                                        (timeChange)="onBreakOutChange($event)" (timePeriodChange)="onBreakOutPeriodChange($event)">
                             </md-input-container>
-                            <md-select [(ngModel)]="breakOutPeriod" [ngModelOptions]="{standalone: true}" [ngClass]="{'ie-offset': isIE }">
+                            <md-select [ngClass]="{'ie-offset': isIE }" formControlName="outPeriod">
                                 <md-option [value]="'AM'">AM</md-option>
                                 <md-option [value]="'PM'">PM</md-option>
                             </md-select>
                         </div>
+                    </div>
+                </div>
+                <div class="row form-error-container">
+                    <div class="col-md-4">
+                        <span class="form-error" *ngIf="enterTimeForm.get('timeEntry').get('time').hasError('startAfterEnd')">Time in cannot occur after time out.</span>
+                    </div>
+                    <div class="col-md-4 offset-1">
+                        <span class="form-error" *ngIf="enterTimeForm.get('timeEntry').get('break').hasError('breakStartAfterEnd')">Break in cannot occur after break out.</span>
+                        <span class="form-error" *ngIf="enterTimeForm.get('timeEntry').hasError('breakOutsideOfTime') &&
+                            !enterTimeForm.get('timeEntry').get('break').hasError('breakStartAfterEnd')">Break cannot occur outside of time in/out.</span>
                     </div>
                 </div>
             </div>

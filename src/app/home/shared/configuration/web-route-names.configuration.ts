@@ -3,4 +3,5 @@ export const routeName = {
     'dashboard': 'dashboard',
     'company': 'company',
     'project': 'project',
+    'enterTime': 'time-expenses/enter'
 };
