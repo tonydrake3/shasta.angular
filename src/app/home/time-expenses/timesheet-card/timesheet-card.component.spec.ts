@@ -13,12 +13,13 @@ import { TimesheetCardManager } from './timesheet-card.manager';
 import { BaseCardComponent } from '../../shared/components/base.card.component';
 import { BadgedHourComponent } from './badged-hour.component';
 
-import { UserService } from '../../shared/services/user/user.service';
+import {CurrentEmployeeService} from '../../shared/services/user/current-employee.service';
 
 import { KeysPipe } from '../../shared/pipes/keys.pipe';
 
 import * as moment from 'moment';
 import 'hammerjs';
+
 
 xdescribe('TimesheetCard Component', () => {
 
@@ -37,7 +38,7 @@ xdescribe('TimesheetCard Component', () => {
         HttpModule
       ],
       providers: [
-        UserService,
+        CurrentEmployeeService,
         TimesheetCardManager,
         { provide: XHRBackend, useClass: MockBackend }
       ],

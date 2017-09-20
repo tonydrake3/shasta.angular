@@ -1,8 +1,7 @@
-import {AfterViewInit, Component, EventEmitter, Injector, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
-import {Form, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {AfterViewInit, Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import * as moment from 'moment';
 import * as _ from 'lodash';
-import { ITimeSelectConfig } from 'ng2-date-picker/time-select/time-select-config.model';
 import { IDatePickerConfig } from 'ng2-date-picker';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/startWith';
@@ -21,7 +20,6 @@ import {DateFlyoutService} from '../../../shared/components/date-flyout/date-fly
 import {Observable} from 'rxjs/Observable';
 import {ConfirmationDialogService} from '../../../shared/services/confirmation-dialog.service';
 import {EnterTimePreloadManager} from '../enter-time-preload.manager';
-import {TimeValidationService} from '../../../shared/services/time-validation.service';
 import {validateTime, validateTimeWithPeriod} from '../../../shared/validators/time-entry.validator';
 import {validateTimeBreakOverlap} from '../../../shared/validators/time-break-overlap.validator';
 
@@ -78,7 +76,7 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
 
     constructor (private _builder: FormBuilder, private _enterTimeManager: EnterTimeManager,
                  private _dateFlyoutService: DateFlyoutService, private _confirmationService: ConfirmationDialogService,
-                 private _preloadService: EnterTimePreloadManager, private _timeValidation: TimeValidationService) {
+                 private _preloadService: EnterTimePreloadManager) {
 
         this.progressConfig = {
             color: 'primary',

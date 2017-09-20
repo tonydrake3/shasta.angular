@@ -10,6 +10,7 @@ import {IndirectToSubmit, LineToSubmit} from './models/LinesToSubmit';
 import { TimeRecord } from '../../../models/domain/TimeRecord';
 import {EntryCard, EntryGridLine, TimeEntry, TimeEntryMode} from './models/TimeEntry';
 import { TimeEntryState } from './models/TimeEntry';
+import {settings} from 'cluster';
 
 @Injectable()
 export class EnterTimeManager {
@@ -30,6 +31,7 @@ export class EnterTimeManager {
     private _timeThreshold = 8;
     private _enterTimeFormData;
     private _groupedLines;
+    private _settings;
 
     // Private Consts
     private _INDIRECT = 'Indirect Costs';
@@ -83,6 +85,17 @@ export class EnterTimeManager {
     public setEmployees (employees: Array<Employee>) {
 
         this._employees = employees;
+        // console.log('EnterTimeManager setEmployees', this._employees);
+    }
+
+    public getSettings () {
+
+        return this._settings;
+    }
+
+    public setSettings (settings) {
+
+        this._settings = settings;
         // console.log('EnterTimeManager setEmployees', this._employees);
     }
 

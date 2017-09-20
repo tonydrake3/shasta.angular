@@ -17,6 +17,7 @@ import { MapsService } from '../services/maps.service';
 import { WeatherService } from '../services/weather.service';
 import { EmployeeService } from '../../shared/services/user/employee.service';
 import { IndirectCostCodesService } from '../../shared/services/indirect-cost-codes.service'
+import { TimeSettingsService } from '../services/time-settings.service';
 
 @Component({ })
 export class BaseComponent implements OnDestroy {
@@ -41,6 +42,7 @@ export class BaseComponent implements OnDestroy {
             { key: 'IndirectCostCodesService', serviceObject: IndirectCostCodesService, subject: 'indirectCostCodes$',
                 initializer: 'getLatest' },
             { key: 'MapsService', serviceObject: MapsService, subject: 'location$', initializer: 'getLatest'},
+            { key: 'TimeSettingsService', serviceObject: TimeSettingsService, subject: 'timeSettings$', initializer: 'getLatest' },
             { key: 'WeatherService', serviceObject: WeatherService, subject: 'weather$', initializer: 'getLatest'}
         ];
 

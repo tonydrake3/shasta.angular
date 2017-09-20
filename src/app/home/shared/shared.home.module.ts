@@ -14,9 +14,11 @@ import {TimeInputDirective} from './directives/time-input.directive';
 
 // Services
 import {AuthorizationService} from './services/authorization/authorization.service';
+import {CurrentEmployeeService} from './services/user/current-employee.service';
 import {EmployeeService} from './services/user/employee.service';
 import {IndirectCostCodesService} from './services/indirect-cost-codes.service';
 import {MapsService} from './services/maps.service';
+import {TimeSettingsService} from './services/time-settings.service';
 import {UserService} from './services/user/user.service';
 import {WeatherService} from './services/weather.service';
 import {ProjectService} from './services/project.service';
@@ -39,7 +41,6 @@ import {TimeFormatPipe} from './pipes/time-format.pipe';
 import {CanDeactivateGuard} from './services/guards/deactivate-guard.service';
 import {ConfirmationDialogComponent} from './components/confirmation-dialog.component';
 import {ConfirmationDialogService} from './services/confirmation-dialog.service';
-import {TimeValidationService} from './services/time-validation.service';
 
 @NgModule({
     imports: [
@@ -76,12 +77,14 @@ import {TimeValidationService} from './services/time-validation.service';
         IndirectCostCodesService,
         MapsService,
         ProjectService,
+        CurrentEmployeeService,
+        MapsService,
+        TimeSettingsService,
         UserService,
         WeatherService,
         TimeFormatPipe,
         CanDeactivateGuard,
-        ConfirmationDialogService,
-        TimeValidationService
+        ConfirmationDialogService
     ],
     exports: [
         BaseCardComponent,

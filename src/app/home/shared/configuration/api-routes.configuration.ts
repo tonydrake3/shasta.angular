@@ -2,12 +2,14 @@
 export const apiRoutes = {
     'authentication': 'Identity/Token',
     'authorization': 'Identity/Authorization',
-    'employees': 'Shared/Employees',
+    'companyTenants': 'Identity/Authorization/Tenants',
+    'currentEmployee': 'Shared/Employees/Current',
     'currentUser': 'Identity/Users/Current',
-    'companyTenants': '/Identity/Authorization/Tenants',
+    'employees': 'Shared/Employees',
+    'indirectCostCodes': 'Shared/IndirectCosts',
     'projects': 'Shared/Projects',
     'timeRecords': 'Time/TimeRecords/Full',
-    'indirectCostCodes': '/Shared/IndirectCosts',
+    'timeSettings': 'Time/Settings'
 };
 
 export const externalApiRoutes = {

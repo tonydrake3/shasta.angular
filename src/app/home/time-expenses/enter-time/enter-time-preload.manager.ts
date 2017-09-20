@@ -9,6 +9,7 @@ import {Project} from '../../../models/domain/Project';
 import {CostCode} from '../../../models/domain/CostCode';
 import {EnterTimeManager} from './enter-time.manager';
 import {Employee} from '../../../models/domain/Employee';
+import {TimeSettingsService} from '../../shared/services/time-settings.service';
 
 
 @Injectable()
@@ -18,12 +19,15 @@ export class EnterTimePreloadManager {
     private _isProjectLoadingComplete: boolean;
     private _isEmployeeLoadingComplete: boolean;
     private _isIndirectCodeLoadingComplete: boolean;
+    private _isTimeSettingsLoadingComplete: boolean;
 
     constructor (private _projectService: ProjectService, private _indirectCostsService: IndirectCostCodesService,
-                 private _employeeService: EmployeeService, private _enterTimeManager: EnterTimeManager) {
+                 private _employeeService: EmployeeService, private _enterTimeManager: EnterTimeManager,
+                 private _timeSettingsService: TimeSettingsService) {
 
         this._isProjectLoadingComplete = false;
         this._isEmployeeLoadingComplete = false;
+        this._isTimeSettingsLoadingComplete = false;
         this._isIndirectCodeLoadingComplete = false;
 
         this._loading = new Subject<boolean>();
@@ -61,6 +65,17 @@ export class EnterTimePreloadManager {
                     this.trackLoadingState();
                 }
             );
+
+        this._timeSettingsService.timeSettings$
+            .subscribe(
+                (result) => {
+                    const timeSettings = this.concatName(result['Value'] as Array<Employee>);
+                    // console.log('EnterTimePreloadManager employees$', employees);
+                    this._enterTimeManager.setSettings(timeSettings);
+                    this._isTimeSettingsLoadingComplete = true;
+                    this.trackLoadingState();
+                }
+            );
     }
 
     get loading$ () {
@@ -83,7 +98,8 @@ export class EnterTimePreloadManager {
 
     private trackLoadingState () {
 
-        if (this._isProjectLoadingComplete && this._isEmployeeLoadingComplete && this._isIndirectCodeLoadingComplete) {
+        if (this._isProjectLoadingComplete && this._isEmployeeLoadingComplete && this._isIndirectCodeLoadingComplete &&
+            this._isTimeSettingsLoadingComplete) {
 
             // console.log('trackLoadingState');
             this._loading.next(false);

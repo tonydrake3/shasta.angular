@@ -42,7 +42,7 @@ export class TimesheetCardComponent extends BaseComponent {
 
   constructor(protected injector: Injector, public dialog: MdDialog, public timesheetCardManager: TimesheetCardManager) {
     super(injector, [
-      { service: 'UserService', callback: 'userServiceCallback'}
+      { service: 'CurrentEmployeeService', callback: 'currentEmployeeCallback'}
     ]);
 
     this.timecards = [];
@@ -70,6 +70,7 @@ export class TimesheetCardComponent extends BaseComponent {
 
     // filter results to active user only
     if (showFilter === 'mine') {
+
       timerecords = _.filter(timerecords, timerecord => {
         return timerecord.Employee.Id === this.userId;
       });
@@ -226,10 +227,10 @@ export class TimesheetCardComponent extends BaseComponent {
     });
   }
 
-  userServiceCallback(user) {
-    this.userId = user.Id;
-  }
+  currentEmployeeCallback (employee) {
 
+      this.userId = employee[0].Id;
+  }
 
   // used on route change to update default view settings for timecards
   updateViewSettings() {
