@@ -552,17 +552,6 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
         this.enterTimeForm.get('timeEntry').get('time').get('inPeriod').setValue(event);
     }
 
-    public onTimeInPeriodSelection (event) {
-
-        // const timeIn = this.enterTimeForm.get('timeIn') as FormControl;
-        // const timeOut = this.enterTimeForm.get('timeOut') as FormControl;
-        //
-        // const condition = this._timeValidation.startBeforeEndTime(timeIn.value + ' ' + event.value,
-        //     timeOut.value + ' ' + this.timeOutPeriod);
-        //
-        // this.timeValidation(timeIn, condition);
-    }
-
     public onTimeOutChange (event) {
 
         this.enterTimeForm.get('timeEntry').get('time').get('outValue').setValue(event);

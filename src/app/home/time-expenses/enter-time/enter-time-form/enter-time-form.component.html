@@ -163,8 +163,7 @@
                                 <input mdInput placeholder="Time in" type="text" esubTimeInput formControlName="inValue"
                                        (timeChange)="onTimeInChange($event)" (timePeriodChange)="onTimeInPeriodChange($event)">
                             </md-input-container>
-                            <md-select [ngClass]="{'ie-offset': isIE }" formControlName="inPeriod"
-                                       (change)="onTimeInPeriodSelection($event)">
+                            <md-select [ngClass]="{'ie-offset': isIE }" formControlName="inPeriod">
                                 <md-option [value]="'AM'">AM</md-option>
                                 <md-option [value]="'PM'">PM</md-option>
                             </md-select>
