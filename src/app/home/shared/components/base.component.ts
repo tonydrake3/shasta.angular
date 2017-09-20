@@ -15,6 +15,7 @@ import {ProjectSummaryService} from '../../projects/project-summary/project-summ
 import {MapsService} from '../services/maps.service';
 import {WeatherService} from '../services/weather.service';
 import {CurrentEmployeeService} from '../services/user/current-employee.service';
+import {TimeSettingsService} from '../services/time-settings.service';
 
 @Component({ })
 export class BaseComponent implements OnDestroy {
@@ -35,6 +36,7 @@ export class BaseComponent implements OnDestroy {
       { key: 'CurrentEmployeeService', serviceObject: CurrentEmployeeService, subject: 'currentEmployee$', initializer: 'getLatest' },
       { key: 'UserService', serviceObject: UserService, subject: 'currentUserInfo$', initializer: 'getLatest' },
       { key: 'ProjectSummaryService', serviceObject: ProjectSummaryService, subject: 'projectDetail$', initializer: 'getLatest' },
+      { key: 'TimeSettingsService', serviceObject: TimeSettingsService, subject: 'timeSettings$', initializer: 'getLatest' },
       { key: 'MapsService', serviceObject: MapsService, subject: 'location$', initializer: 'getLatest'},
       { key: 'WeatherService', serviceObject: WeatherService, subject: 'weather$', initializer: 'getLatest'}
     ];

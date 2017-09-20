@@ -6,7 +6,8 @@ export const apiRoutes = {
     'currentUser': 'Identity/Users/Current',
     'companyTenants': '/Identity/Authorization/Tenants',
     'projects': 'Shared/Projects',
-    'timeRecords': 'Time/TimeRecords/Full'
+    'timeRecords': 'Time/TimeRecords/Full',
+    'timeSettings': '/Time/Settings'
 };
 
 export const externalApiRoutes = {
