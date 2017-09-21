@@ -1,8 +1,8 @@
 
 export const environment = {
   production: true,
-  envName: "prod",
-  gitVersion: "",
+  envName: 'prod',
+  gitVersion: '',
   apiUrl: 'http://api.shasta.esubonline.com/',
   mapsUrl: 'https://maps.googleapis.com/maps/api/',
   mapsApiKey: 'AIzaSyDlNxrtp5Tfn5Oi3zx0-4Rlmcu7enBv4Lc',
