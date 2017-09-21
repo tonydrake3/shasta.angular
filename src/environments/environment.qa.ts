@@ -2,7 +2,7 @@ import * as versions from './versions';
 
 export const environment = {
   production: false,
-  envName: "qa",
+  envName: 'qa',
   gitVersion: versions.GITVERSION,
   apiUrl: 'http://api.qa.shasta.esubonline.com/',
   mapsUrl: 'https://maps.googleapis.com/maps/api/',
