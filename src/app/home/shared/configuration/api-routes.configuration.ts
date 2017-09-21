@@ -8,6 +8,7 @@ export const apiRoutes = {
     'employees': 'Shared/Employees',
     'indirectCostCodes': 'Shared/IndirectCosts',
     'projects': 'Shared/Projects',
+    'enterTimeBatch': 'Time/TimeRecords/Batch',
     'timeRecords': 'Time/TimeRecords/Full',
     'timeSettings': 'Time/Settings'
 };
