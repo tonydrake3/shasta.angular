@@ -7,7 +7,8 @@ import * as versions from './versions';
 
 export const environment = {
   production: false,
-  gitVersion: getGitVersion(),
+  envName: 'dev',
+  gitVersion: versions.GITVERSION,
   apiUrl: 'http://api.develop.shasta.esubonline.com/',
   mapsUrl: 'https://maps.googleapis.com/maps/api/',
   mapsApiKey: 'AIzaSyDlNxrtp5Tfn5Oi3zx0-4Rlmcu7enBv4Lc',
@@ -15,7 +16,3 @@ export const environment = {
   weatherApiKey: '6d82e6d111f04b569c443219172604',
   webUrl: ''
 };
-
-function getGitVersion (): string {
-  return versions.versions.version + ' ' + versions.versions.commit + ' ' + versions.versions.branch;
-}
