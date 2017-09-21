@@ -8,9 +8,8 @@ import { Project } from '../../../models/domain/Project';
 import { Employee } from '../../../models/domain/Employee';
 import {IndirectToSubmit, LineToSubmit} from './models/LinesToSubmit';
 import { TimeRecord } from '../../../models/domain/TimeRecord';
-import {EntryCard, EntryGridLine, TimeEntry, TimeEntryMode} from './models/TimeEntry';
+import {EntryCard, TimeEntry, TimeEntryMode} from './models/TimeEntry';
 import { TimeEntryState } from './models/TimeEntry';
-import {settings} from 'cluster';
 
 @Injectable()
 export class EnterTimeManager {
