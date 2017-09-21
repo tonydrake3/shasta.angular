@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { MaterialModule } from '@angular/material';
+import { MaterialModule, MdExpansionModule} from '@angular/material';
 
 import { SharedModule } from '../../shared/shared.module';
 
@@ -21,10 +21,11 @@ import {TimeSettingsService} from './settings/time-settings.service';
     imports: [
       CommonModule,
       FormsModule,
-      MaterialModule,
       TimeExpensesRoutingModule,
       SharedModule,
-      SharedHomeModule
+      SharedHomeModule,
+      MaterialModule,
+      MdExpansionModule
     ],
     declarations: [
       TimeExpensesComponent,
