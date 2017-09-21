@@ -60,10 +60,10 @@
                 <div style="order:4; width:10%" class="table-cell table-header">Phase</div>
                 <div style="order:5; width:10%" class="table-cell table-header">Cost Code</div>
                 <div style="order:6; width:10%" class="table-cell table-header">Employee</div>
-                <div style="order:7; width:6%" class="table-cell table-header">Time In</div>
-                <div style="order:8; width:6%" class="table-cell table-header">Break In</div>
-                <div style="order:7; width:6%" class="table-cell table-header">Break Out</div>
-                <div style="order:8; width:6%" class="table-cell table-header">Time Out</div>
+                <div style="order:7; width:6%" class="table-cell table-header" *ngIf="timeSettings.Overridable.IsPunchInPunchOutEnabled">Time In</div>
+                <div style="order:8; width:6%" class="table-cell table-header" *ngIf="timeSettings.Overridable.IsPunchInPunchOutEnabled">Break In</div>
+                <div style="order:7; width:6%" class="table-cell table-header" *ngIf="timeSettings.Overridable.IsPunchInPunchOutEnabled">Break Out</div>
+                <div style="order:8; width:6%" class="table-cell table-header" *ngIf="timeSettings.Overridable.IsPunchInPunchOutEnabled">Time Out</div>
                 <div style="order:9; width:4%; max-width: 5%;" class="table-cell table-header">ST</div>
                 <div style="order:10; width:4%; max-width: 5%;" class="table-cell table-header">OT</div>
                 <div style="order:11; width:4%; max-width: 5%;" class="table-cell table-header">DT</div>
@@ -72,7 +72,7 @@
 
 
             <div class="table-row" *ngFor="let record of card.ProjectLines; let rowIndex = index">
-                <div style="order:1; width:10%" class="table-cell" >
+                <div style="order:1; width:10%; max-width: 10%;" class="table-cell" >
                     <label>{{record.Date.format(dateFormat)}}</label>
                     <i mdPrefix class="material-icons grid-date" *ngIf="groupCardsBy !== 'Date'">date_range</i>
                 </div>
@@ -148,28 +148,28 @@
                         </md-autocomplete>
                     </div>
                 </div>
-                <div style="order:7; width:6%" class="table-cell">
+                <div style="order:7; width:6%" class="table-cell" *ngIf="timeSettings.Overridable.IsPunchInPunchOutEnabled">
                     <div *ngIf="record.IsPunch">
                         <md-input-container class="form-field">
                             <input mdInput type="time" [(ngModel)]="record.TimeIn">
                         </md-input-container>
                     </div>
                 </div>
-                <div style="order:8; width:6%" class="table-cell table-time-entry">
+                <div style="order:8; width:6%" class="table-cell table-time-entry" *ngIf="timeSettings.Overridable.IsPunchInPunchOutEnabled">
                     <div *ngIf="record.IsPunch">
                         <md-input-container class="form-field">
                             <input mdInput type="time" [(ngModel)]="record.BreakIn">
                         </md-input-container>
                     </div>
                 </div>
-                <div style="order:9; width:6%" class="table-cell table-time-entry">
+                <div style="order:9; width:6%" class="table-cell table-time-entry" *ngIf="timeSettings.Overridable.IsPunchInPunchOutEnabled">
                     <div *ngIf="record.IsPunch">
                         <md-input-container class="form-field">
                             <input mdInput type="time" [(ngModel)]="record.BreakOut">
                         </md-input-container>
                     </div>
                 </div>
-                <div style="order:10; width:6%" class="table-cell">
+                <div style="order:10; width:6%" class="table-cell" *ngIf="timeSettings.Overridable.IsPunchInPunchOutEnabled">
                     <div *ngIf="record.IsPunch">
                         <md-input-container class="form-field">
                             <input mdInput type="time" [(ngModel)]="record.TimeOut">
@@ -177,22 +177,22 @@
                     </div>
                 </div>
 
-                <div style="order:11; width:4%" class="table-cell table-time-entry">
+                <div style="order:11; width:4%; max-width: 5%;" class="table-cell table-time-entry">
                     <md-input-container class="form-field">
                         <input mdInput type="number" [(ngModel)]="record.HoursST" maxlength="5" step="0.25" min="0" max="24">
                     </md-input-container>
                 </div>
-                <div style="order:12; width:4%" class="table-cell table-time-entry">
+                <div style="order:12; width:4%; max-width: 5%;" class="table-cell table-time-entry">
                     <md-input-container class="form-field">
                         <input mdInput type="number" [(ngModel)]="record.HoursOT" maxlength="5" step="0.25" min="0" max="24">
                     </md-input-container>
                 </div>
-                <div style="order:13; width:4%" class="table-cell table-time-entry">
+                <div style="order:13; width:4%; max-width: 5%;" class="table-cell table-time-entry">
                     <md-input-container class="form-field">
                         <input mdInput type="number" [(ngModel)]="record.HoursDT" maxlength="5" step="0.25" min="0" max="24">
                     </md-input-container>
                 </div>
-                <div style="order:14; width:3%" class="table-cell" >
+                <div style="order:14; width:3%; max-width: 3%;" class="table-cell" >
                     <i class="material-icons" mdTooltip="Copy" (click)="copyRow(record, rowIndex, cardIndex)"
                        [mdTooltipPosition]="'after'">content_copy</i>
                     <i class="material-icons" mdTooltip="Note"

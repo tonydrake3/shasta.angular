@@ -10,6 +10,7 @@ import {CostCode} from '../../../models/domain/CostCode';
 import {EnterTimeManager} from './enter-time.manager';
 import {Employee} from '../../../models/domain/Employee';
 import {TimeSettingsService} from '../../shared/services/time-settings.service';
+import {TimeSettings} from '../../../models/domain/TimeSettings';
 
 
 @Injectable()
@@ -69,8 +70,8 @@ export class EnterTimePreloadManager {
         this._timeSettingsService.timeSettings$
             .subscribe(
                 (result) => {
-                    const timeSettings = this.concatName(result['Value'] as Array<Employee>);
-                    // console.log('EnterTimePreloadManager employees$', employees);
+                    const timeSettings = result as TimeSettings;
+                    // console.log('EnterTimePreloadManager timeSettings$', timeSettings);
                     this._enterTimeManager.setSettings(timeSettings);
                     this._isTimeSettingsLoadingComplete = true;
                     this.trackLoadingState();
@@ -94,6 +95,7 @@ export class EnterTimePreloadManager {
         this._projectService.getLatest();
         this._employeeService.getLatest();
         this._indirectCostsService.getLatest();
+        this._timeSettingsService.getLatest();
     }
 
     private trackLoadingState () {

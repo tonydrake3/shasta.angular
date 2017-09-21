@@ -1,10 +1,6 @@
-<div class="enter-time-form-tabs">
-    <md-tab-group [selectedIndex]="enterTimeTabIndex" (selectedIndexChange)="tabIndexChange($event)">
-        <md-tab label="Enter Hours">
-        </md-tab>
-        <md-tab label="Enter Time In/Time Out">
-        </md-tab>
-        <md-tab label="Enter Indirect Costs">
+<div class="enter-time-form-tabs" [ngClass]="{'time-in-tab' : tabs?.length > 2}">
+    <md-tab-group [selectedIndex]="enterTimeTabIndex" (selectChange)="selectTab($event)">
+        <md-tab *ngFor="let tab of tabs" label="{{tab.Title}}">
         </md-tab>
     </md-tab-group>
 </div>
