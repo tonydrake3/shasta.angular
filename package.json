@@ -5,6 +5,8 @@
     "ng": "ng",
     "start": "npm run serve",
     "build": "npm run pre-build.DEV && ng build",
+    "buildQA": "npm run pre-build.DEV && ng build --env=qa",
+    "buildStage": "npm run pre-build.DEV && ng build --env=stage",
     "serve": "npm run pre-build.DEV && ng serve",
     "test": "snyk test && ng test",
     "lint": "ng lint",
