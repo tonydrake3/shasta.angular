@@ -10,7 +10,7 @@ import {IndirectToSubmit, LineToSubmit} from './models/LinesToSubmit';
 import { TimeRecord } from '../../../models/domain/TimeRecord';
 import {EntryCard, EntryGridLine, TimeEntry, TimeEntryMode} from './models/TimeEntry';
 import { TimeEntryState } from './models/TimeEntry';
-import {settings} from 'cluster';
+import {TimeSettings} from '../../../models/domain/TimeSettings';
 
 @Injectable()
 export class EnterTimeManager {
@@ -20,6 +20,7 @@ export class EnterTimeManager {
     public _processing$ = new Subject<boolean>();
 
     // Private
+    private _settings: TimeSettings;
     private _timeRecords: Array<TimeRecord>;
     private _indirectCodes: Array<CostCode>;
     private _projects: Array<Project>;
@@ -31,7 +32,6 @@ export class EnterTimeManager {
     private _timeThreshold = 8;
     private _enterTimeFormData;
     private _groupedLines;
-    private _settings;
 
     // Private Consts
     private _INDIRECT = 'Indirect Costs';
@@ -88,12 +88,12 @@ export class EnterTimeManager {
         // console.log('EnterTimeManager setEmployees', this._employees);
     }
 
-    public getSettings () {
+    public getSettings (): TimeSettings {
 
         return this._settings;
     }
 
-    public setSettings (settings) {
+    public setSettings (settings: TimeSettings) {
 
         this._settings = settings;
         // console.log('EnterTimeManager setEmployees', this._employees);

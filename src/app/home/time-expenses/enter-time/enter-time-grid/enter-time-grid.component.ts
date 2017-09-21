@@ -11,6 +11,7 @@ import {Phase} from '../../../../models/domain/Phase';
 import {System} from '../../../../models/domain/System';
 import {LineToSubmit} from '../models/LinesToSubmit';
 import {ConfirmationDialogService} from '../../../shared/services/confirmation-dialog.service';
+import {TimeSettings} from '../../../../models/domain/TimeSettings';
 
 @Component({
     selector: 'esub-enter-time-grid',
@@ -28,6 +29,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
     public indirectCosts: Array<CostCode>;
     public lineCount: number;
     public currentCount: number;
+    public timeSettings: TimeSettings;
 
     public filteredProjects: Observable<Project[]>;
     public filteredSystems: Observable<System[]>;
@@ -52,6 +54,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
         this.indirectCosts = this._enterTimeManager.getIndirectCodes();
         this.groupCardsBy = this._enterTimeManager.getGroupBy();
         this.lineCount = this._enterTimeManager.getLineCount();
+        this.timeSettings = this._enterTimeManager.getSettings();
 
         this.groupedLines = [];
 

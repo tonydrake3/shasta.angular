@@ -1,8 +1,14 @@
 .enter-time-form-tabs {
     margin: -45px -29px 30px -29px;
 
+    &.time-in-tab {
+        .mat-tab-label {
+            width: 33%;
+        }
+    }
+
     .mat-tab-label {
-        width: 33%;
+        width: 50%;
     }
 }
 

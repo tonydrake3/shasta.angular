@@ -22,6 +22,8 @@ import {ConfirmationDialogService} from '../../../shared/services/confirmation-d
 import {EnterTimePreloadManager} from '../enter-time-preload.manager';
 import {validateTime, validateTimeWithPeriod} from '../../../shared/validators/time-entry.validator';
 import {validateTimeBreakOverlap} from '../../../shared/validators/time-break-overlap.validator';
+import {TimeSettings} from '../../../../models/domain/TimeSettings';
+import {EnterTimeFormTab, enterTimeTabs} from '../models/EnterTimeMenu';
 
 @Component({
     selector: 'esub-enter-time-form',
@@ -53,7 +55,8 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
     public isUnsupportedTime: boolean;
     public isIE: boolean;
     public progressConfig;
-    public loading: boolean;
+    public timeSettings: TimeSettings;
+    public tabs: Array<EnterTimeFormTab>;
 
     public filteredProjects: Observable<Project[]>;
     public filteredSystems: Observable<System[]>;
@@ -103,6 +106,7 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
         this.selectedEmployees = [];
         this.costCodes = [];
         this._indirectCodes = [];
+        this.timeSettings = null;
         this.detectBrowser();
         this.createForm();
     }
@@ -116,6 +120,7 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
         this.projects = this._enterTimeManager.getProjects();
         this._tenantEmployees = this._enterTimeManager.getEmployees();
         this._indirectCodes = this._enterTimeManager.getIndirectCodes();
+        this.timeSettings = this._enterTimeManager.getSettings();
 
         this._preloadService.loading$
             .subscribe(
@@ -125,13 +130,19 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
                         this.projects = this._enterTimeManager.getProjects();
                         this._tenantEmployees = this._enterTimeManager.getEmployees();
                         this._indirectCodes = this._enterTimeManager.getIndirectCodes();
+                        this.timeSettings = this._enterTimeManager.getSettings();
+                        this.tabs = this.getTabs();
                     }
                 });
 
-        if (this.projects.length === 0 || this._tenantEmployees.length === 0 || this._indirectCodes.length === 0) {
+        if (this.projects.length === 0 || this._tenantEmployees.length === 0 || this._indirectCodes.length === 0 ||
+            _.isNull(this.timeSettings)) {
 
             this._preloadService.startLoading();
             // this._preloadService.load();
+        } else {
+
+            this.tabs = this.getTabs();
         }
     }
 
@@ -141,69 +152,45 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
 
     ngAfterViewInit () {
 
-        // if (this.isUnsupportedTime) {
-        //
-        //     this.timeInPeriod = moment().format('A').toString();
-        //     this.timeOutPeriod = moment().format('A').toString();
-        //     this.breakInPeriod = moment().format('A').toString();
-        //     this.breakOutPeriod = moment().format('A').toString();
-        // } else {
-        //
-        //     this.enterTimeForm.patchValue({
-        //
-        //         timeIn: moment().format('h:mm A'),
-        //         timeOut: moment().format('h:mm A'),
-        //         breakIn: moment().format('h:mm A'),
-        //         breakOut: moment().format('h:mm A')
-        //     });
-        // }
     }
 
     /******************************************************************************************************************
      * Callback Handler
      ******************************************************************************************************************/
-    // projectServiceCallback (projects) {
-    //
-    //     this.projects = projects['Value'] as Array<Project>;
-    //     this._enterTimeManager.setProjects(this.projects);
-    //     // this.projectChange();
-    //     // console.log(projects['Value']);
-    // }
-    //
-    // employeeServiceCallback (employees) {
-    //
-    //     this._tenantEmployees = this.concatName(employees['Value'] as Array<Employee>);
-    //     this._enterTimeManager.setEmployees(this._tenantEmployees);
-    // }
-    //
-    // indirectCostCodeServiceCallback (costCodes) {
-    //
-    //     // console.log(costCodes);
-    //     this._indirectCodes = this.mapCostCodes(costCodes['Value']) as Array<CostCode>;
-    //     this._enterTimeManager.setIndirectCodes(this._indirectCodes);
-    // }
+
 
     /******************************************************************************************************************
      * Public Methods
      ******************************************************************************************************************/
-    public tabIndexChange (event) {
+    public getTabs() {
 
-        switch (event) {
-            case 0:
+        if (this.timeSettings.Overridable.IsPunchInPunchOutEnabled) {
+            return enterTimeTabs;
+        }
+
+        return _.filter(enterTimeTabs, (tab) => {
+           return tab.Index !== 1;
+        });
+    }
+
+    public selectTab(event) {
+
+        switch (event.tab.textLabel) {
+            case 'Enter Hours':
                 this.isProjectCostEntry = true;
                 this.isTimeIn = false;
                 this.costCodePlaceholder = 'Cost Code';
                 this._enterTimeManager.setTimeEntryMode(TimeEntryMode.Hours);
                 this.clearForm();
                 break;
-            case 1:
+            case 'Enter Time In/Time Out':
                 this.isProjectCostEntry = true;
                 this.isTimeIn = true;
                 this.costCodePlaceholder = 'Cost Code';
                 this._enterTimeManager.setTimeEntryMode(TimeEntryMode.TimeInTimeOut);
                 this.clearForm();
                 break;
-            case 2:
+            case 'Enter Indirect Costs':
                 this.isProjectCostEntry = false;
                 this.isTimeIn = false;
                 this.costCodePlaceholder = 'Indirect Cost';
@@ -580,61 +567,6 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
         this.enterTimeForm.get('timeEntry').get('break').get('outPeriod').setValue(event);
     }
 
-    // public timeInValidation (event) {
-    //
-    //     const timeOut = this.enterTimeForm.get('timeOut');
-    //
-    //     if (event.value && timeOut.value) {
-    //
-    //         console.log('timeInValidation', event.value);
-    //         const condition = this._timeValidation.startBeforeEndTime(event.value, timeOut.value);
-    //
-    //         this.timeValidation(event, condition);
-    //     }
-    // }
-    //
-    // public timeOutValidation (event) {
-    //
-    //     const timeIn = this.enterTimeForm.get('timeIn');
-    //
-    //     if (event.value && timeIn.value) {
-    //
-    //         const condition = this._timeValidation.endAfterStartTime(timeIn.value, event.value);
-    //
-    //         this.timeValidation(event, condition);
-    //     }
-    // }
-    //
-    // public breakInValidation (event) {
-    //
-    //     const timeIn = this.enterTimeForm.get('timeIn');
-    //     const timeOut = this.enterTimeForm.get('timeOut');
-    //     const breakOut = this.enterTimeForm.get('breakOut');
-    //
-    //     if (event.value && breakOut.value) {
-    //
-    //         const condition = this._timeValidation.breakInBetweenTimeInOut(timeIn.value, timeOut.value, event.value) &&
-    //             this._timeValidation.startBeforeEndTime(event.value, breakOut.value);
-    //
-    //         this.timeValidation(event, condition);
-    //     }
-    // }
-    //
-    // public breakOutValidation (event) {
-    //
-    //     const timeIn = this.enterTimeForm.get('timeIn');
-    //     const timeOut = this.enterTimeForm.get('timeOut');
-    //     const breakIn = this.enterTimeForm.get('breakIn');
-    //
-    //     if (event.value && breakIn.value) {
-    //
-    //         const condition = this._timeValidation.breakOutBetweenTimeInOut(timeIn.value, timeOut.value, event.value) &&
-    //             this._timeValidation.endAfterStartTime(breakIn.value, event.value);
-    //
-    //         this.timeValidation(event, condition);
-    //     }
-    // }
-
     // TODO: Implement when angular issue 11836 (CanDeactivateChild) is implemented.
     //       https://github.com/angular/angular/issues/11836
 
@@ -828,8 +760,6 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
             notes: ''
         });
 
-        console.log(this.enterTimeForm);
-
         this.formChange();
         this.projectChange();
         this.systemChange();
@@ -914,61 +844,7 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
         this.selectedDates = [];
         this._enterTimeManager.clearSelectedDates();
         this.costCodes = [];
-
-        // if (this.isUnsupportedTime) {
-        //
-        //     this.enterTimeForm.patchValue({
-        //
-        //         timeIn: moment().format('h:mm'),
-        //         timeOut: moment().format('h:mm'),
-        //         breakIn: moment().format('h:mm'),
-        //         breakOut: moment().format('h:mm')
-        //     });
-        // } else {
-        //
-        //     this.enterTimeForm.patchValue({
-        //
-        //         timeIn: moment().format('HH:mm').toString(),
-        //         timeOut: moment().format('HH:mm').toString(),
-        //         breakIn: moment().format('HH:mm').toString(),
-        //         breakOut: moment().format('HH:mm').toString()
-        //     });
-        // }
     }
-
-    private timeValidation (control: FormControl, condition: boolean) {
-
-        if (condition) {
-
-            control.setErrors(null);
-        } else {
-
-            control.setErrors({'invalid': true});
-        }
-    }
-
-    // private timeValidation (control: FormControl, standardCondition: boolean, fireFoxCondition: boolean) {
-    //
-    //     if (this.isUnsupportedTime) {
-    //
-    //         if (fireFoxCondition) {
-    //
-    //             control.setErrors(null);
-    //         } else {
-    //
-    //             control.setErrors({'invalid': true});
-    //         }
-    //     } else {
-    //
-    //         if (standardCondition) {
-    //
-    //             control.setErrors(null);
-    //         } else {
-    //
-    //             control.setErrors({'invalid': true});
-    //         }
-    //     }
-    // }
 
     /******************************************************************************************************************
      * Form Field Change Tracking
