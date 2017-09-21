@@ -2,7 +2,7 @@
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import {MaterialModule, MdChipsModule, MdSelect, MdSelectModule} from '@angular/material';
+import {MaterialModule, MdChipsModule, MdSelectModule} from '@angular/material';
 import { DpDatePickerModule } from 'ng2-date-picker';
 
 import { SharedModule } from '../../shared/shared.module';
