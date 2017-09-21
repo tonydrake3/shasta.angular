@@ -19,6 +19,38 @@ import { EmployeeService } from '../../shared/services/user/employee.service';
 import { IndirectCostCodesService } from '../../shared/services/indirect-cost-codes.service'
 import { TimeSettingsService } from '../services/time-settings.service';
 
+// child component passes in array of these to super(), BaseComponent facilitates DI of them and provides references
+class AutomaticInjectionRequest {
+    service: string;
+    callback: string;
+}
+
+// internal class for BaseComponent to manage what it wants to automatically injected
+class AutomaticInjectionProvider {
+    key: string;
+    serviceObject: Object;
+    subject: string;
+    initializer: string;
+    serviceRef?: any;
+}
+
+// child component passes in array of these to inject(), BaseComponent automatically subscribes to them
+class DynamicInjectionRequest {
+    toInject: Object;
+    subject: string;
+    initializer: string;
+    callback: string;
+}
+
+// internal class for BaseComponent to manage what it wants to dynamically injected
+class DynamicInjectionProvider {
+    key: string;
+    serviceObject: Object;
+    subject: string;
+    initializer: string;
+    serviceRef?: any;
+}
+
 @Component({ })
 export class BaseComponent implements OnDestroy {
     private autoInjections: Array<AutomaticInjectionProvider>;
@@ -64,8 +96,10 @@ export class BaseComponent implements OnDestroy {
 
             // if requested
             if (requested && requestedCallback) {
-                auto.serviceRef = injector.get(auto.serviceObject);   // get reference to service
-                const sub = auto.serviceRef[auto.subject].subscribe(data => { this[requestedCallback](data) });  // subscribe to Observable
+                // get reference to service
+                auto.serviceRef = injector.get(auto.serviceObject);
+                // subscribe to Observable
+                const sub = auto.serviceRef[auto.subject].subscribe(data => { this[requestedCallback](data) });
                 this.subscriptionList.push(sub);  // save subscription, to later unsubscribe from
                 auto.serviceRef[auto.initializer]();  // call initalizer
             }
@@ -80,8 +114,10 @@ export class BaseComponent implements OnDestroy {
 
             const provider = this.convertDynamicInjectionRequest(injection);
 
-            provider.serviceRef = this.injector.get(injection.toInject);   // get reference to service
-            const sub = provider.serviceRef[injection.subject].subscribe(data => { this[injection.callback](data) });  // subscribe to Observable
+            // get reference to service
+            provider.serviceRef = this.injector.get(injection.toInject);
+            // subscribe to Observable
+            const sub = provider.serviceRef[injection.subject].subscribe(data => { this[injection.callback](data) });
             this.subscriptionList.push(sub);  // save subscription, to later unsubscribe from
             provider.serviceRef[provider.initializer]();  // call initalizer
             this.dynamicInjections.push(provider);
@@ -152,36 +188,4 @@ export class BaseComponent implements OnDestroy {
             sub.unsubscribe();
         })
     }
-}
-
-// child component passes in array of these to super(), BaseComponent facilitates DI of them and provides references
-class AutomaticInjectionRequest {
-    service: string;
-    callback: string;
-}
-
-// internal class for BaseComponent to manage what it wants to automatically injected
-class AutomaticInjectionProvider {
-    key: string;
-    serviceObject: Object;
-    subject: string;
-    initializer: string;
-    serviceRef?: any;
-}
-
-// child component passes in array of these to inject(), BaseComponent automatically subscribes to them
-class DynamicInjectionRequest {
-    toInject: Object;
-    subject: string;
-    initializer: string;
-    callback: string;
-}
-
-// internal class for BaseComponent to manage what it wants to dynamically injected
-class DynamicInjectionProvider {
-    key: string;
-    serviceObject: Object;
-    subject: string;
-    initializer: string;
-    serviceRef?: any;
 }
