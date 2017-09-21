@@ -35,7 +35,7 @@ npm-debug.log
 debug.log
 testem.log
 /typings
-/src/environments/versions.ts
+/src/environments/version-git.ts
 
 # e2e
 /e2e/*.js
