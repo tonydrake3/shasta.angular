@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, fakeAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-import { MaterialModule, MdNativeDateModule } from '@angular/material';
+import { MdDatepickerModule, MdNativeDateModule, MdProgressSpinnerModule } from '@angular/material';
 
 import { WeekSelectorComponent } from './week-selector.component';
 
@@ -17,7 +17,7 @@ describe('WeekSelector Component', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ MaterialModule, MdNativeDateModule ],
+      imports: [ MdDatepickerModule, MdNativeDateModule, MdProgressSpinnerModule ],
       declarations: [ WeekSelectorComponent ], // declare the test component
     });
 
