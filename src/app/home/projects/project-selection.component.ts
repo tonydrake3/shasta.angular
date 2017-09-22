@@ -19,8 +19,8 @@ import { routeName } from '../shared/configuration/web-route-names.configuration
 export class ProjectSelectionComponent extends BaseComponent implements OnInit, OnDestroy {
 
     // Private
-    private _statuses;
-    private _sortColumns: Array<SortColumn>;
+    public _statuses;
+    public _sortColumns: Array<SortColumn>;
     private _filterSubscription;
     private _filterField;
 
