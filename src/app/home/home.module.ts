@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MaterialModule } from '@angular/material';
 import { HomeRoutingModule } from './home-routing.module';
 import { SharedHomeModule } from './shared/shared.home.module';
 
@@ -31,7 +30,6 @@ import {AutoExpandAccordionNavDirective} from './sidenav/sidenav-menu/auto-expan
     imports: [
         HomeRoutingModule,
         CommonModule,
-        MaterialModule,
         SharedHomeModule
     ],
     declarations: [

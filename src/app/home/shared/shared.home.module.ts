@@ -2,7 +2,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MaterialModule, MdDatepickerModule, MdNativeDateModule } from '@angular/material';
+import {MdDatepickerModule, MdNativeDateModule, MdProgressSpinnerModule} from '@angular/material';
 
 // Directives
 import {EChartsDirective} from './directives/echarts.directive';
@@ -31,11 +31,11 @@ import {StatusPipe} from './pipes/status.pipe';
 
 @NgModule({
     imports: [
-        MaterialModule,
         MdDatepickerModule,
         MdNativeDateModule,
+        MdProgressSpinnerModule,
         CommonModule,
-        FormsModule
+        FormsModule,
 
     ],
     declarations: [

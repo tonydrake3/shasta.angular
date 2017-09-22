@@ -5,9 +5,8 @@ import { CommonModule } from '@angular/common';
 // import {ProjectGuard} from '../../shared/services/guards/project-guard.service';
 import {ProjectRoutingModule, routedProjectComponents} from './project-routing.module';
 import {ProjectService} from './project.service';
-import {SHARED_FORM_DIRECTIVES} from '@angular/forms/src/directives';
 import {SharedModule} from '../../shared/shared.module';
-import {MaterialModule} from '@angular/material';
+import {MdButtonToggleModule, MdSelectModule} from '@angular/material';
 import {ProjectSelectionManager} from './project-selection.manager';
 import {ProjectSummaryService} from './project-summary/project-summary.service';
 import {SharedHomeModule} from '../shared/shared.home.module';
@@ -16,7 +15,8 @@ import {SharedHomeModule} from '../shared/shared.home.module';
     imports: [
         CommonModule,
         FormsModule,
-        MaterialModule,
+        MdButtonToggleModule,
+        MdSelectModule,
         ProjectRoutingModule,
         ReactiveFormsModule,
         SharedModule,
