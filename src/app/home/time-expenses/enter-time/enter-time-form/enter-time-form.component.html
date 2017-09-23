@@ -6,12 +6,12 @@
 </div>
 <div class="enter-time-form">
     <form [formGroup]="enterTimeForm" (ngSubmit)="createLines(enterTimeForm)" novalidate>
-        <div class="row mb-2" *ngIf="isProjectCostEntry">
+        <div class="row" *ngIf="isProjectCostEntry">
             <div class="col-md-12">
-                <md-input-container class="form-field">
+                <md-form-field class="form-field">
                     <input type="text" mdInput placeholder="Project" formControlName="project" [mdAutocomplete]="autoProject"
                             (focus)="openProjects()" >
-                </md-input-container>
+                </md-form-field>
                 <md-autocomplete #autoProject="mdAutocomplete" [displayWith]="displayFormatted">
                     <md-option *ngFor="let project of filteredProjects | async" (onSelectionChange)="projectSelected($event)"
                                [value]="project">
@@ -21,12 +21,12 @@
             </div>
         </div>
 
-        <div class="row mb-2" *ngIf="systems.length > 1">
+        <div class="row" *ngIf="systems.length > 1">
             <div class="col-md-12">
-                <md-input-container class="form-field">
+                <md-form-field class="form-field">
                     <input type="text" mdInput placeholder="System" formControlName="system" [mdAutocomplete]="autoSystem"
                            (focus)="openSystems()" >
-                </md-input-container>
+                </md-form-field>
                 <md-autocomplete #autoSystem="mdAutocomplete" [displayWith]="displayFormatted">
                     <md-option *ngFor="let system of filteredSystems | async" (onSelectionChange)="systemSelected($event)"
                                [value]="system">
@@ -36,12 +36,12 @@
             </div>
         </div>
 
-        <div class="row mb-2" *ngIf="phases.length > 1">
+        <div class="row" *ngIf="phases.length > 1">
             <div class="col-md-12">
-                <md-input-container class="form-field">
+                <md-form-field class="form-field">
                     <input type="text" mdInput placeholder="Phase" formControlName="phase" [mdAutocomplete]="autoPhase"
                            (focus)="openPhases()" >
-                </md-input-container>
+                </md-form-field>
                 <md-autocomplete #autoPhase="mdAutocomplete" [displayWith]="displayFormatted">
                     <md-option *ngFor="let phase of filteredPhases | async" (onSelectionChange)="phaseSelected($event)"
                                [value]="phase">
@@ -51,12 +51,12 @@
             </div>
         </div>
 
-        <div class="row mb-2" *ngIf="isProjectCostEntry && costCodes.length > 0 || !isProjectCostEntry">
+        <div class="row" *ngIf="isProjectCostEntry && costCodes.length > 0 || !isProjectCostEntry">
             <div class="col-md-12">
-                <md-input-container class="form-field">
+                <md-form-field class="form-field">
                     <input type="text" mdInput placeholder="{{costCodePlaceholder}}" formControlName="costCode" [mdAutocomplete]="autoCostCode"
                            (focus)="openCostCodes()" >
-                </md-input-container>
+                </md-form-field>
                 <md-autocomplete #autoCostCode="mdAutocomplete" [displayWith]="displayCostCode">
                     <md-option *ngFor="let costCode of filteredCostCodes | async" (onSelectionChange)="costCodeSelected($event)"
                                [value]="costCode">
@@ -67,10 +67,10 @@
         </div>
         <div class="row" *ngIf="(isProjectCostEntry && enterTimeForm.get('project').value) || enterTimeForm.get('costCode').value">
             <div class="col-md-10">
-                <md-input-container class="form-field selected-employees-field">
+                <md-form-field class="form-field selected-employees-field">
                     <input type="text" mdInput placeholder="Employees" formControlName="employee" [mdAutocomplete]="autoEmployee"
                            (focus)="openEmployee()">
-                </md-input-container>
+                </md-form-field>
                 <md-autocomplete #autoEmployee="mdAutocomplete" [displayWith]="displayFormatted">
                     <md-option *ngFor="let employee of filteredEmployees | async" (onSelectionChange)="employeeSelected($event)"
                                [value]="employee">
@@ -108,40 +108,40 @@
         <div class="row mb-3">
             <div class="col-md-12" >
                 <div esubCloseDateFlyout>
-                    <md-input-container class="form-field dates">
+                    <md-form-field class="form-field dates">
                         <md-placeholder>
                             <span class="enter-time-date-placeholder">Dates</span> <i class="material-icons">date_range</i>
                         </md-placeholder>
                         <input mdInput id="txtDates" formControlName="dates" (focus)="onFocus()" (keydown)="clearKeystroke($event)">
-                    </md-input-container>
+                    </md-form-field>
                     <esub-daypicker-flyout [daypickerConfig]="dpDatepickerConfig" [selectedDates]="selectedDates"
                                            (selectedDatesChange)="onDatesChanged($event)" ></esub-daypicker-flyout>
                 </div>
             </div>
         </div>
 
-        <div class="row mb-2" class="time-entry-method">
+        <div class="row" class="time-entry-method">
             <div class="col-md-12" *ngIf="!isTimeIn">
                 <span class="label-bold">Hours Worked</span>
 
-                <div class="row hours-entry form-field">
+                <div class="row hours-entry">
                     <div class="col-md-2">
-                        <md-input-container>
+                        <md-form-field>
                             <input mdInput type="number" placeholder="ST" formControlName="standardHours"
                                    maxlength="5" step="0.25" min="0" max="24">
-                        </md-input-container>
+                        </md-form-field>
                     </div>
                     <div class="col-md-2" *ngIf="isProjectCostEntry">
-                        <md-input-container>
+                        <md-form-field>
                             <input mdInput type="number" placeholder="OT" formControlName="overtimeHours"
                                    maxlength="5" step="0.25" min="0" max="24">
-                        </md-input-container>
+                        </md-form-field>
                     </div>
                     <div class="col-md-2" *ngIf="isProjectCostEntry">
-                        <md-input-container>
+                        <md-form-field>
                             <input mdInput type="number" placeholder="DT" formControlName="doubleTimeHours"
                                    maxlength="5" step="0.25" min="0" max="24">
-                        </md-input-container>
+                        </md-form-field>
                     </div>
                 </div>
 
@@ -150,15 +150,15 @@
                 <div class="row">
                     <div class="col-md-2" formGroupName="time">
                         <div class="time-entry" *ngIf="!isUnsupportedTime">
-                            <md-input-container class="form-field" >
+                            <md-form-field class="form-field" >
                                 <input mdInput placeholder="Time in" type="time" formControlName="in">
-                            </md-input-container>
+                            </md-form-field>
                         </div>
                         <div class="time-entry firefox-time" *ngIf="isUnsupportedTime">
-                            <md-input-container class="form-field" >
+                            <md-form-field class="form-field" >
                                 <input mdInput placeholder="Time in" type="text" esubTimeInput formControlName="inValue"
                                        (timeChange)="onTimeInChange($event)" (timePeriodChange)="onTimeInPeriodChange($event)">
-                            </md-input-container>
+                            </md-form-field>
                             <md-select [ngClass]="{'ie-offset': isIE }" formControlName="inPeriod">
                                 <md-option [value]="'AM'">AM</md-option>
                                 <md-option [value]="'PM'">PM</md-option>
@@ -167,15 +167,15 @@
                     </div>
                     <div class="col-md-2" formGroupName="time">
                         <div class="time-entry" *ngIf="!isUnsupportedTime">
-                            <md-input-container class="form-field">
+                            <md-form-field class="form-field">
                                 <input mdInput placeholder="Time out" type="time" formControlName="out">
-                            </md-input-container>
+                            </md-form-field>
                         </div>
                         <div class="time-entry firefox-time" *ngIf="isUnsupportedTime">
-                            <md-input-container class="form-field" >
+                            <md-form-field class="form-field" >
                                 <input mdInput placeholder="Time out" type="text" esubTimeInput formControlName="outValue"
                                        (timeChange)="onTimeOutChange($event)" (timePeriodChange)="onTimeOutPeriodChange($event)">
-                            </md-input-container>
+                            </md-form-field>
                             <md-select [ngClass]="{'ie-offset': isIE }" formControlName="outPeriod">
                                 <md-option [value]="'AM'">AM</md-option>
                                 <md-option [value]="'PM'">PM</md-option>
@@ -184,15 +184,15 @@
                     </div>
                     <div class="col-md-2 offset-1" formGroupName="break">
                         <div class="time-entry" *ngIf="!isUnsupportedTime">
-                            <md-input-container class="form-field">
+                            <md-form-field class="form-field">
                                 <input mdInput placeholder="Break in" type="time" formControlName="in">
-                            </md-input-container>
+                            </md-form-field>
                         </div>
                         <div class="time-entry firefox-time" *ngIf="isUnsupportedTime">
-                            <md-input-container class="form-field" >
+                            <md-form-field class="form-field" >
                                 <input mdInput placeholder="Break in" type="text" esubTimeInput formControlName="inValue"
                                        (timeChange)="onBreakInChange($event)" (timePeriodChange)="onBreakInPeriodChange($event)">
-                            </md-input-container>
+                            </md-form-field>
                             <md-select [ngClass]="{'ie-offset': isIE }" formControlName="inPeriod">
                                 <md-option [value]="'AM'">AM</md-option>
                                 <md-option [value]="'PM'">PM</md-option>
@@ -201,15 +201,15 @@
                     </div>
                     <div class="col-md-2" formGroupName="break">
                         <div class="time-entry" *ngIf="!isUnsupportedTime">
-                            <md-input-container class="form-field">
+                            <md-form-field class="form-field">
                                 <input mdInput placeholder="Break out" type="time" formControlName="out">
-                            </md-input-container>
+                            </md-form-field>
                         </div>
                         <div class="time-entry firefox-time" *ngIf="isUnsupportedTime">
-                            <md-input-container class="form-field" >
+                            <md-form-field class="form-field" >
                                 <input mdInput placeholder="Break out" type="text" esubTimeInput formControlName="outValue"
                                        (timeChange)="onBreakOutChange($event)" (timePeriodChange)="onBreakOutPeriodChange($event)">
-                            </md-input-container>
+                            </md-form-field>
                             <md-select [ngClass]="{'ie-offset': isIE }" formControlName="outPeriod">
                                 <md-option [value]="'AM'">AM</md-option>
                                 <md-option [value]="'PM'">PM</md-option>
@@ -230,11 +230,11 @@
             </div>
         </div>
 
-        <div class="row mt-1 mb-3">
+        <div class="row mb-3">
             <div class="col-md-12">
-                <md-input-container class="notes form-field">
+                <md-form-field class="notes form-field">
                     <input mdInput placeholder="Notes" formControlName="notes">
-                </md-input-container>
+                </md-form-field>
             </div>
         </div>
 

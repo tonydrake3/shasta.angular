@@ -25,11 +25,11 @@ export class ProjectSelectionComponent extends BaseComponent implements OnInit, 
     private _projects;
 
     // Public
-    statuses;
-    sortColumns: Array<SortColumn>;
-    filterForm: FormGroup;
-    filteredProjects: Project[];
-    filterText = '';
+    public statuses;
+    public sortColumns: Array<SortColumn>;
+    public filterForm: FormGroup;
+    public filteredProjects: Project[];
+    public filterText = '';
 
     constructor (protected injector: Injector, private _builder: FormBuilder, private _router: Router,
                  private _projectSelection: ProjectSelectionManager) {

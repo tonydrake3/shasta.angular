@@ -2,8 +2,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MaterialModule, MdDatepickerModule, MdNativeDateModule } from '@angular/material';
-import {DpDatePickerModule} from 'ng2-date-picker';
+import {
+    MdButtonModule, MdDatepickerModule, MdDialogModule, MdNativeDateModule,
+    MdProgressSpinnerModule
+} from '@angular/material';
+import { DpDatePickerModule } from 'ng2-date-picker';
 
 // Directives
 import {CloseDateFlyoutDirective} from './directives/date-flyout.directive';
@@ -44,12 +47,14 @@ import {ConfirmationDialogService} from './services/confirmation-dialog.service'
 
 @NgModule({
     imports: [
-        MaterialModule,
         MdDatepickerModule,
         MdNativeDateModule,
+        MdProgressSpinnerModule,
+        MdDialogModule,
+        MdButtonModule,
         CommonModule,
         FormsModule,
-        DpDatePickerModule,
+        DpDatePickerModule
     ],
     declarations: [
         BaseCardComponent,

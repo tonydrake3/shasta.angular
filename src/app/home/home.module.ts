@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MaterialModule } from '@angular/material';
 import { HomeRoutingModule } from './home-routing.module';
 import { SharedHomeModule } from './shared/shared.home.module';
 
@@ -25,14 +24,15 @@ import { SearchOverlayDirective } from './search-overlay/search-overlay.directiv
 import { OpenSearchOverlaylDirective } from './search-overlay/open-search-overlay.directive';
 
 import {AutoExpandAccordionNavDirective} from './sidenav/sidenav-menu/auto-expand-accordion-nav.directive';
+import {MdButtonModule} from '@angular/material';
 
 
 @NgModule({
     imports: [
         HomeRoutingModule,
         CommonModule,
-        MaterialModule,
-        SharedHomeModule
+        SharedHomeModule,
+        MdButtonModule
     ],
     declarations: [
       // Home

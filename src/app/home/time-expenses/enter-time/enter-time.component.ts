@@ -97,13 +97,14 @@ export class EnterTimeComponent extends BaseComponent implements OnInit, OnDestr
                         const navCancel = val as NavigationCancel;
                         // console.log('ngOnInit NavigationCancel', this._navCancel.url);
                         const dialogConfig: DialogData = new DialogData();
-                        dialogConfig.height = '190px';
-                        dialogConfig.width = '300px';
+                        dialogConfig.height = '200px';
+                        dialogConfig.width = '350px';
                         dialogConfig.title = 'You have unsaved changes';
                         dialogConfig.contentText = 'If you leave before saving, your changes will be lost.';
                         dialogConfig.navigationUrl = navCancel.url;
                         dialogConfig.cancelButtonText = 'Cancel';
                         dialogConfig.proceedButtonText = 'OK';
+                        dialogConfig.component = ConfirmationDialogComponent;
 
                         if (this._confirmationService && this._confirmationService.isDialogOpen() === false) {
                             this._confirmationService.openNavigationWarningModal(dialogConfig);

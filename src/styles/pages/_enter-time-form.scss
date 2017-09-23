@@ -19,7 +19,7 @@
     }
 
     .form-field {
-        padding: 15px 0;
+        padding: 5px 0;
         width: 100%;
 
         &.notes,
@@ -187,9 +187,14 @@
     }
 
     .time-entry {
-        width: 135px;
+
         input {
             padding-left: 2px;
+            width: 100px;
+        }
+
+        .mat-form-field {
+            width: 100px;
         }
 
         &.firefox-time {
@@ -226,6 +231,11 @@
 
     .hours-entry {
         margin-top: 3px;
+        margin-bottom: 12px;
+
+        .mat-form-field {
+            width: 80px;
+        }
 
         label.mat-input-placeholder {
             color: $gray-70;

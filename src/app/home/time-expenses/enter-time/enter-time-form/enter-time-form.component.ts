@@ -668,7 +668,7 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
         });
     }
 
-    private filterCollection (match, collection): Observable<Array<any>> {
+    private filterCollection (match, collection: Array<any>): Observable<Array<any>> {
 
         let filtered = [];
 
@@ -732,7 +732,7 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
 
         if (typeof match === 'string') {
 
-            filtered = _.filter(projectSelect.value.CostCodes, (code) => {
+            filtered = _.filter((<Project>projectSelect.value).CostCodes, (code) => {
                 return code.Name.toLowerCase().includes(match.toLowerCase()) ||
                     code.Code.toLowerCase().includes(match.toLowerCase()) ||
                     (code.Code.toLowerCase() + ' - ' + code.Name.toLowerCase()).includes(match.toLowerCase());

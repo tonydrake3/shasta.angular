@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {IDatePickerConfig} from 'ng2-date-picker';
 import {DateFlyoutService} from './date-flyout.service';
 

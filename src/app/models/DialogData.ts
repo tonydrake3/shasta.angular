@@ -7,4 +7,5 @@ export class DialogData {
     proceedButtonText: string;
     height: string;
     width: string;
+    component: any;
 }

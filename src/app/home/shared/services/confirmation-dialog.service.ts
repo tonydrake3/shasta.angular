@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs/Subject';
 import { MdDialog } from '@angular/material';
-import {ConfirmationDialogComponent} from '../components/confirmation-dialog.component';
+import {DialogData} from '../../../models/DialogData';
 
 @Injectable()
 export class ConfirmationDialogService {
@@ -34,9 +34,9 @@ export class ConfirmationDialogService {
         return this._isDialogOpen;
     }
 
-    public openNavigationWarningModal(data: any) {
+    public openNavigationWarningModal(data: DialogData) {
 
-        const warningDialogRef = this._dialog.open(ConfirmationDialogComponent, {
+        const warningDialogRef = this._dialog.open(data.component, {
             data: data,
             height: data.height,
             width: data.width

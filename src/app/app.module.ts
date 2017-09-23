@@ -2,8 +2,8 @@ import { NgModule, ApplicationRef } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MaterialModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MdInputModule, MdProgressSpinnerModule } from '@angular/material';
 import 'hammerjs';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -27,7 +27,7 @@ import {LookupDataService} from './home/shared/services/lookup-data.service';
 
 // entry components
 import { CommentsComponent } from './home/shared/components/comments.component';
-import {ConfirmationDialogComponent} from './home/shared/components/confirmation-dialog.component';
+import { ConfirmationDialogComponent } from './home/shared/components/confirmation-dialog.component';
 
 @NgModule({
     imports: [
@@ -35,13 +35,14 @@ import {ConfirmationDialogComponent} from './home/shared/components/confirmation
         HttpModule,
         FormsModule,
         ReactiveFormsModule,
-        MaterialModule,
         BrowserAnimationsModule,
         AppRoutingModule,
 
         // Sub modules
         HomeModule,
         SharedModule,
+        MdInputModule,
+        MdProgressSpinnerModule,
 
         CompanyModule,
         // ProjectModule

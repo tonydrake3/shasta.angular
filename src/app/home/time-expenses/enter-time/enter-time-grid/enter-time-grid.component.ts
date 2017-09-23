@@ -185,7 +185,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
         record.Phase = '';
     }
 
-    public filterCollection (match, collection): Observable<Array<any>> {
+    public filterCollection (match, collection: Array<any>): Observable<Array<any>> {
 
         let filtered = [];
 

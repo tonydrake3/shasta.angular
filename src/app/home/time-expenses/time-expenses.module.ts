@@ -2,7 +2,10 @@
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import {MaterialModule, MdChipsModule, MdSelectModule} from '@angular/material';
+import {
+    MdChipsModule, MdSelectModule, MdCheckboxModule, MdProgressBarModule,
+    MdAutocompleteModule, MdTabsModule, MdTooltipModule, MdInputModule, MdButtonModule
+} from '@angular/material';
 import { DpDatePickerModule } from 'ng2-date-picker';
 
 import { SharedModule } from '../../shared/shared.module';
@@ -29,13 +32,19 @@ import {EnterTimeBatchService} from './enter-time/enter-time-batch.service';
       CommonModule,
       FormsModule,
       ReactiveFormsModule,
-      MaterialModule,
+      MdCheckboxModule,
+      MdProgressBarModule,
       TimeExpensesRoutingModule,
       SharedModule,
       SharedHomeModule,
       DpDatePickerModule,
+      MdButtonModule,
       MdChipsModule,
-      MdSelectModule
+      MdSelectModule,
+      MdInputModule,
+      MdAutocompleteModule,
+      MdTabsModule,
+      MdTooltipModule
     ],
     declarations: [
       TimeExpensesComponent,
