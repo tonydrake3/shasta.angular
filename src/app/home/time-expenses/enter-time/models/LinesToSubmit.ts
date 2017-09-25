@@ -1,6 +1,7 @@
 import * as moment from 'moment';
 
 export class LineToSubmit {
+    Id: string;
     Date: moment.Moment;
     Employee: any;
     Project: any;

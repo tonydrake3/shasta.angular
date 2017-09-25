@@ -26,6 +26,7 @@ import { EnterTimeManager } from './enter-time/enter-time.manager';
 import {EnterTimeStatusService} from './enter-time/enter-time-status.service';
 import {EnterTimePreloadManager} from './enter-time/enter-time-preload.manager';
 import {EnterTimeBatchService} from './enter-time/enter-time-batch.service';
+import {EnterTimeAutocompleteService} from './enter-time/enter-time-autocomplete.service';
 
 @NgModule({
     imports: [
@@ -56,8 +57,9 @@ import {EnterTimeBatchService} from './enter-time/enter-time-batch.service';
     ],
     providers: [
       TimeRecordsService,
-      EnterTimeManager,
+      EnterTimeAutocompleteService,
       EnterTimeBatchService,
+      EnterTimeManager,
       EnterTimeStatusService,
       EnterTimePreloadManager
     ]

@@ -173,24 +173,26 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
         });
     }
 
+    // TODO: Refactor to include settings as properties in tab object
     public selectTab(event) {
 
-        switch (event.tab.textLabel) {
-            case 'Enter Hours':
+        console.log(event);
+        switch (event.tab.textLabel.toLowerCase()) {
+            case 'enter hours':
                 this.isProjectCostEntry = true;
                 this.isTimeIn = false;
                 this.costCodePlaceholder = 'Cost Code';
                 this._enterTimeManager.setTimeEntryMode(TimeEntryMode.Hours);
                 this.clearForm();
                 break;
-            case 'Enter Time In/Time Out':
+            case 'enter time in/time out':
                 this.isProjectCostEntry = true;
                 this.isTimeIn = true;
                 this.costCodePlaceholder = 'Cost Code';
                 this._enterTimeManager.setTimeEntryMode(TimeEntryMode.TimeInTimeOut);
                 this.clearForm();
                 break;
-            case 'Enter Indirect Costs':
+            case 'enter indirect costs':
                 this.isProjectCostEntry = false;
                 this.isTimeIn = false;
                 this.costCodePlaceholder = 'Indirect Cost';

@@ -60,9 +60,11 @@ export class BaseStore extends BaseHttpService {
 
     protected addEntity(entity: any): Promise<any> {
 
+        const url = environment.apiUrl + (this._route ? this._route : '');
+
         return new Promise((resolve, reject) => {
 
-            this.post(this._route, entity)
+            this.post(url, entity)
 
                 .subscribe(
 
@@ -78,9 +80,11 @@ export class BaseStore extends BaseHttpService {
 
     protected updateEntity(entity: any): Promise<any> {
 
+        const url = environment.apiUrl + (this._route ? this._route : '');
+
         return new Promise((resolve, reject) => {
 
-            this.put(this._route + '/' + entity.id, entity)
+            this.put(url + '/' + entity.id, entity)
 
                 .subscribe(
                     data => {
@@ -95,9 +99,11 @@ export class BaseStore extends BaseHttpService {
 
     protected deleteEntity(entity: any): Promise<any> {
 
+        const url = environment.apiUrl + (this._route ? this._route : '');
+
         return new Promise((resolve, reject) => {
 
-            this.delete(this._route + '/' + entity.id)
+            this.delete(url + '/' + entity.id)
 
                 .subscribe(
 

@@ -17,6 +17,7 @@ export class TimeRecord {
     PhaseId?: string;
     ProjectId?: string;
     CostCodeId?: string;
+    IndirectCostId?: string;
     EmployeeId?: string;
     Hours?: Hours;
     Punch?: Punch;
