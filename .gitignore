@@ -4,6 +4,7 @@
 /dist
 /tmp
 /out-tsc
+/webShastaAutomation/Screenshots
 
 # dependencies
 /node_modules
