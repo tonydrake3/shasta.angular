@@ -17,11 +17,11 @@
     <div class="row">
         <div class="col-md-5 col-xs-12">
             <form novalidate [formGroup]="filterForm">
-                <md-input-container class="project-selection-search" floatPlaceholder="never">
+                <md-form-field class="project-selection-search" floatPlaceholder="never">
                     <md-icon mdPrefix>search</md-icon>
                     <md-placeholder> Search projects</md-placeholder>
                     <input mdInput type="search" formControlName="filter" (keyup)="filterProjects()">
-                </md-input-container>
+                </md-form-field>
             </form>
         </div>
         <div class="col-md-7">

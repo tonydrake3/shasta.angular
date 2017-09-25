@@ -279,6 +279,10 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
         }
     }
 
+    public submitTime () {
+
+    }
+
     private filterEmployeesByProject (projectId: string) {
 
         return _.filter(this.employees, function (employee) {

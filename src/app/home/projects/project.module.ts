@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { MdButtonToggleModule, MdSelectModule } from '@angular/material';
+import {MdButtonToggleModule, MdIconModule, MdInputModule, MdSelectModule} from '@angular/material';
 
 // import {ProjectGuard} from '../../shared/services/guards/project-guard.service';
 import { ProjectRoutingModule, routedProjectComponents } from './project-routing.module';
@@ -15,6 +15,8 @@ import { SharedHomeModule } from '../shared/shared.home.module';
         CommonModule,
         FormsModule,
         MdButtonToggleModule,
+        MdIconModule,
+        MdInputModule,
         MdSelectModule,
         ProjectRoutingModule,
         ReactiveFormsModule,

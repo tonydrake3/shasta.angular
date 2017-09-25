@@ -21,20 +21,22 @@
         margin-top: 30px;
         width: 100%;
 
-        md-icon {
-            color: $warm-grey;
+        .mat-icon {
+            color: $gray-50;
+            position: relative;
+            top: 7px;
         }
 
         .mat-input-infix {
             top: 2px;
 
             input {
-                margin-left: 10px;
+                margin-left: 6px;
             }
         }
 
         .mat-input-placeholder {
-            margin-left: 10px;
+            margin-left: 8px;
         }
     }
 
