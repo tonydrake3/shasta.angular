@@ -1,0 +1,66 @@
+*** Settings ***
+Documentation     A test suite for Multiplpe tenacy behavior
+Library    Selenium2Library
+
+
+## 8.29.17.  Select Company and Sign out will have different navigation settings upon the next build.  Ignore for now
+*** Test Cases ***
+Invalid Login    Invalid Login
+Valid Login    Valid Login
+
+*** Keywords ***
+Invalid Login
+    [Tags]    Smoke    Dev
+    Open Browser    http://web.develop.shasta.esubonline.com/   Chrome
+    Wait Until Page Contains    eSUB
+    Input Text    id=txtUsername    supportr@esub.com
+    Sleep    2s
+    Input Text    id=txtPassword     Test1234567
+    Click Button    id=btnLogin
+    Sleep    3s
+    Close Browser
+
+
+Valid Login
+    [Tags]    Smoke    Dev
+    Open Browser    http://web.develop.shasta.esubonline.com/   Chrome
+    Wait Until Page Contains    eSUB
+    Input Text    id=txtUsername    support@esubinc.com
+    Sleep    2s
+    Input Text    id=txtPassword     Evere$t16
+    Click Button    id=btnLogin
+    Sleep    3s
+    Capture Page Screenshot    filename=first-screenshot.png
+    Close Browser
+
+#Select Company Navigate to Trackpoint
+    [Tags]    Smoke    Dev
+    Open Browser    http://web.develop.shasta.esubonline.com/#/login    Firefox
+    Wait Until Page Contains    eSUB
+    Sleep     3s
+    Input Text    id=txtUsername     support@esubinc.com
+    Sleep    3s
+    Input Text    id=txtPassword    Evere$t16
+    Sleep    2s
+    Click Button    id=btnLogin
+    Wait Until Page Contains    eSUB
+    Sleep    3s
+    Click Button    id=companyCard1
+    Sleep    3s
+    Capture Page Screenshot    Filename=MultipleTenacyLogin.png
+    Sleep    2s
+    Close Browser
+
+#Sign Out
+    [Tags]    Smoke    Dev
+    Open Browser    http://web.develop.shasta.esubonline.com/#/login    Firefox
+    Wait Until Page Contains    eSUB
+    Sleep     3s
+    Input Text    id=txtUsername     support@esubinc.com
+    Sleep    3s
+    Input Text    id=txtPassword    Evere$t16
+    Sleep    2s
+    Click Button    id=btnLogin
+    Wait Until Page Contains    eSUB
+    Sleep    3s
+    Click Button    id=.profile-icon > button:nth-child(1)

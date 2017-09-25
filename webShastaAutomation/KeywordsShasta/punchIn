@@ -1,0 +1,18 @@
+*** Settings ***
+Library    Selenium2Library
+
+*** Test Cases ***
+
+Punch In ####ToBeDetermined####
+   Click Element    id=PUNCH IN
+   Wait Until Page Contains Element    00:00:09    timeout=60
+   Wait Until Page Contains Element    id=PUNCH OUT    timeout=60
+   Wait Until Page Contains Element    id=COMMENT    timeout=60
+
+
+Punch Out #TBD
+   Wait Until Page Contains Element    punchOutButton    timeout=60
+   Click Element    punchOutButton
+
+*** keywords ***
+Punch In

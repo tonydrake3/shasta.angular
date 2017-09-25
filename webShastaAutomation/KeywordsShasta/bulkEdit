@@ -1,0 +1,13 @@
+*** Settings ***
+
+*** Keywords ***
+
+Edit Inkine (Project System, Phase, CostCode, Hours/Time)
+
+Display Totals
+
+Support Simple grouping by Employee or Project or Date
+
+Validate / Save
+
+Save on Blur / Edit Now / One Save Button

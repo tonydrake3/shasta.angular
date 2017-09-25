@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generated="20170913 10:28:13.766" generator="Robot 3.0.2 (Python 2.7.13 on darwin)">
+<suite source="/Users/tonydrake/gitrepos/shasta.angular/ShastaAutomation/KeywordsShasta/w3schools.robot" id="s1" name="W3Schools">
+<test id="s1-t1" name="Div Based DnD Example">
+<kw name="Open Browser" library="Selenium2Library">
+<doc>Opens a new browser instance to given URL.</doc>
+<arguments>
+<arg>http://www.elated.com/res/File/articles/development/javascript/jquery/drag-and-drop-with-jquery-your-essential-guide/droppable.html</arg>
+<arg>${BROWSER}</arg>
+</arguments>
+<msg timestamp="20170913 10:28:13.886" level="INFO">Opening browser 'Chrome' to base url 'http://www.elated.com/res/File/articles/development/javascript/jquery/drag-and-drop-with-jquery-your-essential-guide/droppable.html'</msg>
+<status status="PASS" endtime="20170913 10:28:17.078" starttime="20170913 10:28:13.886"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>.2</arg>
+</arguments>
+<msg timestamp="20170913 10:28:17.280" level="INFO">Slept 200 milliseconds</msg>
+<status status="PASS" endtime="20170913 10:28:17.280" starttime="20170913 10:28:17.079"></status>
+</kw>
+<kw name="Drag And Drop" library="Selenium2Library">
+<doc>Drags element identified with `source` which is a locator.</doc>
+<arguments>
+<arg>id=makeMeDraggable</arg>
+<arg>id=makeMeDroppable</arg>
+</arguments>
+<status status="PASS" endtime="20170913 10:28:17.382" starttime="20170913 10:28:17.280"></status>
+</kw>
+<kw name="Close All Browsers" library="Selenium2Library">
+<doc>Closes all open browsers and resets the browser cache.</doc>
+<status status="PASS" endtime="20170913 10:28:17.453" starttime="20170913 10:28:17.383"></status>
+</kw>
+<tags>
+<tag>elated</tag>
+</tags>
+<status status="PASS" endtime="20170913 10:28:17.453" critical="yes" starttime="20170913 10:28:13.885"></status>
+</test>
+<test id="s1-t2" name="W3S Image Drag Check">
+<kw name="Open Browser" library="Selenium2Library">
+<doc>Opens a new browser instance to given URL.</doc>
+<arguments>
+<arg>http://www.w3schools.com/html/html5_draganddrop.asp</arg>
+<arg>${BROWSER}</arg>
+</arguments>
+<msg timestamp="20170913 10:28:17.455" level="INFO">Opening browser 'Chrome' to base url 'http://www.w3schools.com/html/html5_draganddrop.asp'</msg>
+<status status="PASS" endtime="20170913 10:28:21.830" starttime="20170913 10:28:17.455"></status>
+</kw>
+<kw name="Wait Until Page Contains Element" library="Selenium2Library">
+<doc>Waits until element specified with `locator` appears on current page.</doc>
+<arguments>
+<arg>id=div2</arg>
+</arguments>
+<status status="PASS" endtime="20170913 10:28:21.856" starttime="20170913 10:28:21.831"></status>
+</kw>
+<kw name="Drag And Drop" library="Selenium2Library">
+<doc>Drags element identified with `source` which is a locator.</doc>
+<arguments>
+<arg>id=drag1</arg>
+<arg>id=div2</arg>
+</arguments>
+<status status="PASS" endtime="20170913 10:28:21.948" starttime="20170913 10:28:21.856"></status>
+</kw>
+<kw name="Comment" library="BuiltIn">
+<doc>Displays the given messages in the log file as keyword arguments.</doc>
+<arguments>
+<arg>We really don't get the image dropped, although we may see it grabbed by mouse</arg>
+</arguments>
+<status status="PASS" endtime="20170913 10:28:21.949" starttime="20170913 10:28:21.949"></status>
+</kw>
+<kw name="Comment" library="BuiltIn">
+<doc>Displays the given messages in the log file as keyword arguments.</doc>
+<arguments>
+<arg>Let's cheat. The mouse pointer has grabbed the image, try to drop it</arg>
+</arguments>
+<status status="PASS" endtime="20170913 10:28:21.950" starttime="20170913 10:28:21.949"></status>
+</kw>
+<kw name="Mouse Up" library="Selenium2Library">
+<doc>Simulates releasing the left mouse button on the element specified by `locator`.</doc>
+<arguments>
+<arg>id=div2</arg>
+</arguments>
+<msg timestamp="20170913 10:28:21.950" level="INFO">Simulating Mouse Up on element 'id=div2'</msg>
+<status status="PASS" endtime="20170913 10:28:21.980" starttime="20170913 10:28:21.950"></status>
+</kw>
+<kw name="Click Element" library="Selenium2Library">
+<doc>Click element identified by `locator`.</doc>
+<arguments>
+<arg>id=div2</arg>
+</arguments>
+<msg timestamp="20170913 10:28:21.980" level="INFO">Clicking element 'id=div2'.</msg>
+<status status="PASS" endtime="20170913 10:28:22.044" starttime="20170913 10:28:21.980"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>.2</arg>
+</arguments>
+<msg timestamp="20170913 10:28:22.246" level="INFO">Slept 200 milliseconds</msg>
+<status status="PASS" endtime="20170913 10:28:22.246" starttime="20170913 10:28:22.045"></status>
+</kw>
+<kw name="Capture Page Screenshot" library="Selenium2Library">
+<doc>Takes a screenshot of the current page and embeds it into the log.</doc>
+<msg timestamp="20170913 10:28:22.540" html="yes" level="INFO">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-1.png"&gt;&lt;img src="selenium-screenshot-1.png" width="800px"&gt;&lt;/a&gt;</msg>
+<status status="PASS" endtime="20170913 10:28:22.540" starttime="20170913 10:28:22.246"></status>
+</kw>
+<kw name="Comment" library="BuiltIn">
+<doc>Displays the given messages in the log file as keyword arguments.</doc>
+<arguments>
+<arg>Let's try different code</arg>
+</arguments>
+<status status="PASS" endtime="20170913 10:28:22.541" starttime="20170913 10:28:22.541"></status>
+</kw>
+<kw name="Click Link" library="Selenium2Library">
+<doc>Clicks a link identified by locator.</doc>
+<arguments>
+<arg>Try it Yourself</arg>
+</arguments>
+<msg timestamp="20170913 10:28:22.541" level="INFO">Clicking link 'Try it Yourself'.</msg>
+<kw name="Capture Page Screenshot" library="Selenium2Library">
+<doc>Takes a screenshot of the current page and embeds it into the log.</doc>
+<msg timestamp="20170913 10:28:22.837" html="yes" level="INFO">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-2.png"&gt;&lt;img src="selenium-screenshot-2.png" width="800px"&gt;&lt;/a&gt;</msg>
+<status status="PASS" endtime="20170913 10:28:22.837" starttime="20170913 10:28:22.570"></status>
+</kw>
+<msg timestamp="20170913 10:28:22.837" level="FAIL">ValueError: Element locator 'Try it Yourself' did not match any elements.</msg>
+<status status="FAIL" endtime="20170913 10:28:22.838" starttime="20170913 10:28:22.541"></status>
+</kw>
+<tags>
+<tag>w3s</tag>
+</tags>
+<status status="FAIL" endtime="20170913 10:28:22.838" critical="yes" starttime="20170913 10:28:17.454">ValueError: Element locator 'Try it Yourself' did not match any elements.</status>
+</test>
+<status status="FAIL" endtime="20170913 10:28:22.839" starttime="20170913 10:28:13.774"></status>
+</suite>
+<statistics>
+<total>
+<stat fail="1" pass="1">Critical Tests</stat>
+<stat fail="1" pass="1">All Tests</stat>
+</total>
+<tag>
+<stat fail="0" pass="1">elated</stat>
+<stat fail="1" pass="0">w3s</stat>
+</tag>
+<suite>
+<stat fail="1" id="s1" name="W3Schools" pass="1">W3Schools</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
