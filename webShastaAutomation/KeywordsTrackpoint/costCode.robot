@@ -2,6 +2,7 @@
 Documentation    Cost Codes for Shasta Time
 Library    Selenium2Library
 
+
 *** Keywords ***
 Create New Cost Code
     Open Browser    https://www.esubonline.com/TRACKpoint/   Chrome
@@ -34,7 +35,7 @@ Create New Cost Code
     Sleep    3s
     input text    id=Text2     619
     Sleep    3s
-    input text    id=Aname     Dirt Scooping
+    input text    id=Aname     Electrical Wiring
     Sleep    2s
     mouse over    id=Select1
     Sleep    2s
@@ -44,7 +45,7 @@ Create New Cost Code
     Sleep    2s
     Click element    id=Radio2
     Sleep    3s
-    input text    id=quickBooksServiceItemName    StudFinder
+    input text    id=quickBooksServiceItemName    Roof Repair and Water Damage Control
     sleep    3s
     click button    id=Submit
     Sleep    3s
@@ -55,20 +56,19 @@ Create New Cost Code
     click element    Xpath=//*[@id="Table1"]/tbody/tr[10]/td[1]/a/img
     wait until page contains    eSUB
     Sleep    3s
-    input text    id=Desc   Dirt and Mud Scooping
+    input text    id=Desc   Registered Drywall Repair & Director, Head of CEEMA (Central and Eastern Europe, Middle East & Africa) and Latin America Equity Focus, Institutional Client Group - Fundamental Equity, Corporate & Institutional Banking - Global Markets
     Sleep    3s
     click element    Xpath=//*[@id="Table1"]/tbody/tr[1]/td[2]/a
-    capture page screenshot    Filename=hideallbutone.png
+    #capture page screenshot    Filename=hideallbutone.png
     Sleep    3s
-    go back
-    wait until page contains    eSUB
-    Sleep    3s
-    go to    https://www.esubonline.com/TRACKpoint/versions/v61/dailyreport/editactivity.asp?Session=922201740007PM511&UI=&Site=&ActID=13&Type=#
+    #go back
+    #wait until page contains    eSUB
+    #Sleep    3s
+    #go to    https://www.esubonline.com/TRACKpoint/versions/v61/dailyreport/editactivity.asp?Session=922201740007PM511&UI=&Site=&ActID=13&Type=#
 
 
 
-
-Configure Project and Navigate to Shasta Time
+#Configure Project and Navigate to Shasta Time - (this is TBD until Shasta Time is Implemented)
     Open Browser    https://www.esubonline.com/TRACKpoint/   Chrome
     #Set Window Size    ${1600}    ${900}
     Sleep     3s
@@ -126,17 +126,7 @@ Configure Project and Navigate to Shasta Time
     click element    Xpath=//*[@id="Table1"]/tbody/tr[7]/td[3]/input
 
 
-    #wait until page contains    eSUB
-    #Sleep    3s
-    #mouse over
-    #Sleep    2s
-    #
-
-
-
-
-
-Edit Current Labor Activity
+Change Status of Labor Activity
     Open Browser    https://www.esubonline.com/TRACKpoint/   Chrome
     Sleep     3s
     Input Text    id=loginName    TrialDiaz
@@ -164,7 +154,56 @@ Edit Current Labor Activity
     sleep    3s
     click element    Xpath=//*[@id="Table1"]/tbody/tr[10]/td[2]/a
     wait until page contains    eSUB
-    Sleep    3swq
+    Sleep    3s
+    click element    Xpath=//*[@id="Table1"]/tbody/tr[10]/td[1]/a/img
+    wait until page contains    eSUB
+    click element    id=newProjectsDisplay   #Switching over to Display from Hide
+    Sleep    3s
+    input text    id=quickBooksServiceItemName    Submitted Receipts after purchase of a water hose and Saw and a Sander and a Buffer for the deck and more studfinders and less amount of Nails than last time
+    Sleep    3s
+    clear element text    id=quickBooksServiceItemName
+    Sleep    5s
+    input text    id=quickBooksServiceItemName    Submitted Receipts after purchase of a water hose and Saw and a Sander and
+    click element    id=Submit
+    Sleep    3s
+    click element      Xpath=//*[@id="Table1"]/tbody/tr[14]/td[5]/a  #for inactive status
+    Sleep    3s
+    mouse over    id=Select1
+    Sleep    2s
+    click element    Xpath=//*[@id="Select1"]/option[3]
+    Sleep    2s
+    click element    id=Submit2
+
+
+Search by Inactive Labor Status
+    Open Browser    https://www.esubonline.com/TRACKpoint/   Chrome
+    Sleep     3s
+    Input Text    id=loginName    TrialDiaz
+    Sleep    1s
+    Click Button    id=Image1
+    Capture Page Screenshot    Filename=SubscriberValid.png
+    wait until page contains    eSUB
+    Sleep    2s
+    Input Text    name=username    support@esubinc.com
+    Sleep    2s
+    Input Text    id=Password1    Tr@pointe$ub
+    Sleep    1s
+    Click Button    id=Image1
+    wait until page contains    eSUB
+    Sleep    3s
+    click element    Xpath=/html/body/font/div[1]/a[2]
+    Sleep    3s
+    mouse over    Xpath=//*[@id="optionNav"]/a[2]
+    Sleep    1s
+    click element    Xpath=//*[@id="optionNav"]/a[2]
+    wait until page contains    eSUB
+    SLEEP    3s
+    click element    Xpath=//*[@id="Table3"]/tbody/tr/td/a
+    wait until page contains    eSUB
+    sleep    3s
+    click element    Xpath=//*[@id="Table1"]/tbody/tr[10]/td[2]/a
+    wait until page contains    eSUB
+    Sleep    3s
     click element    Xpath=//*[@id="Table1"]/tbody/tr[10]/td[1]/a/img
     wait until page contains    eSUB
     # Editing /Assigning Lab Activity
@@ -174,10 +213,114 @@ Edit Current Labor Activity
     Sleep    3s
     input text    id=quickBooksServiceItemName    Submitted Receipts after purchase of a water hose and Saw and a Sander and a Buffer for the deck and more studfinders and less amount of Nails than last time
     Sleep    3s
-    clear element text
+    clear element text    id=quickBooksServiceItemName
     Sleep    5s
     input text    id=quickBooksServiceItemName    Submitted Receipts after purchase of a water hose and Saw and a Sander and
     click element    id=Submit
+    Sleep    3s
+    click element      Xpath=//*[@id="Table1"]/tbody/tr[9]/td[5]/a  #for inactive status
+    Sleep    3s
+    MOUSE OVER    Xpath=(//*[@id="Select1"])[2]/option[2]
+    Sleep    1s
+    CLICK ELEMENT    Xpath=(//*[@id="Select1"])[2]/option[2]
+    Sleep    3s
+    Click Element    Xpath=(//*[@id="Select1"])[2]/option[2]
+
+
+Hide New Projects
+    Open Browser    https://www.esubonline.com/TRACKpoint/   Chrome
+    Sleep     3s
+    Input Text    id=loginName    TrialDiaz
+    Sleep    1s
+    Click Button    id=Image1
+    Capture Page Screenshot    Filename=SubscriberValid.png
+    wait until page contains    eSUB
+    Sleep    2s
+    Input Text    name=username    support@esubinc.com
+    Sleep    2s
+    Input Text    id=Password1    Tr@pointe$ub
+    Sleep    1s
+    Click Button    id=Image1
+    wait until page contains    eSUB
+    Sleep    3s
+    click element    Xpath=/html/body/font/div[1]/a[2]
+    Sleep    3s
+    mouse over    Xpath=//*[@id="optionNav"]/a[2]
+    Sleep    1s
+    click element    Xpath=//*[@id="optionNav"]/a[2]
+    wait until page contains    eSUB
+    SLEEP    3s
+    click element    Xpath=//*[@id="Table3"]/tbody/tr/td/a
+    wait until page contains    eSUB
+    sleep    3s
+    click element    Xpath=//*[@id="Table1"]/tbody/tr[10]/td[2]/a
+    wait until page contains    eSUB
+    Sleep    3s
+    click element    id=Radio1
+    wait until page contains    eSUB
+    Sleep    3s
+    click element    Xpath=//*[@id="Table1"]/tbody/tr[9]/td[1]/a/img
+    wait until page contains    eSUB
+    Sleep    3s
+    click element   Xpath=//*[@id="Table1"]/tbody/tr[32]/td[3]/input
+    Sleep    2s
+    click element    id=Submit
+
+Click to Collapse / Expand
+    Open Browser    https://www.esubonline.com/TRACKpoint/   Chrome
+    Sleep     3s
+    Input Text    id=loginName    TrialDiaz
+    Sleep    1s
+    Click Button    id=Image1
+    Capture Page Screenshot    Filename=SubscriberValid.png
+    wait until page contains    eSUB
+    Sleep    2s
+    Input Text    name=username    support@esubinc.com
+    Sleep    2s
+    Input Text    id=Password1    Tr@pointe$ub
+    Sleep    1s
+    Click Button    id=Image1
+    wait until page contains    eSUB
+    Sleep    3s
+    click element    Xpath=/html/body/font/div[1]/a[2]
+    Sleep    3s
+    mouse over    Xpath=//*[@id="optionNav"]/a[2]
+    Sleep    1s
+    click element    Xpath=//*[@id="optionNav"]/a[2]
+    wait until page contains    eSUB
+    SLEEP    3s
+    click element    Xpath=//*[@id="Table3"]/tbody/tr/td/a
+    wait until page contains    eSUB
+    sleep    3s
+    click element    Xpath=//*[@id="Table1"]/tbody/tr[10]/td[2]/a
+    wait until page contains    eSUB
+    Sleep    3s
+    click element    Xpath=//*[@id="Table2"]/tbody/tr[8]/td/div/div[1]/div/a
+    Sleep     4s
+    click element    Xpath=//*[@id="Table2"]/tbody/tr[8]/td/div/div[1]/div/a
+    Sleep     2s
+    mouse over    Xpath=//*[@id="rightMenu"]/a
+    Sleep    2s
+    click element    Xpath=//*[@id="rightMenu"]/a
+    Sleep    2s
+    click element    Xpath=//*[@id="userMenu"]/a[1]
+    wait until page contains    eSUB
+    go back
+    wait until page contains    eSUB
+    click element    Xpath=//*[@id="Table2"]/tbody/tr[8]/td/div/div[1]/div/a
+    Sleep    2s
+    Click Element    Xpath=//*[@id="Table2"]/tbody/tr[8]/td/div/div[1]/div/a
+    #capture page screenshot    Filename=Expand.collapse
+    Sleep    2s
+    click element    Xpath=//*[@id="Table1"]/tbody/tr[17]/td[1]/a/img
+    Sleep    3s
+    wait until page contains    eSUB
+    Sleep    3s
+    click element    Xpath=//*[@id="Table1"]/tbody/tr[1]/td[2]/a
+    Sleep    3s
+    close window
+    Sleep    3s
+    close browser
 
 
 
@@ -185,8 +328,14 @@ Edit Current Labor Activity
 
 
 
-*** Test Cases ***
-Edit Current Labor Activity    Edit Current Labor Activity
+
+
+
+
+
+
+
+
 
 
 
