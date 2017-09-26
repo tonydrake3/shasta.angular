@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 import * as moment from 'moment';
+import * as uuidv4 from 'uuid/v4';
 import { Subject } from 'rxjs/Subject';
 
 import { CostCode } from '../../../models/domain/CostCode';
@@ -29,7 +30,7 @@ export class EnterTimeManager {
     private _linesToSubmit: Array<LineToSubmit>;
     private _indirectToSubmit: Array<IndirectToSubmit>;
     private _groupBy = 'Date';
-    private _timeThreshold = 8;
+    private _timeThreshold:number;
     private _enterTimeFormData;
     private _groupedLines;
 
@@ -96,7 +97,7 @@ export class EnterTimeManager {
     public setSettings (settings: TimeSettings) {
 
         this._settings = settings;
-        // console.log('EnterTimeManager setEmployees', this._employees);
+        this._timeThreshold = settings.Overridable.OvertimeThresholdDaily;
     }
 
     public getEmployees () {
@@ -173,17 +174,7 @@ export class EnterTimeManager {
 
     public insertProjectLine (record: LineToSubmit) {
 
-        let keyToAdd: number;
-
-        this._linesToSubmit.forEach((line, idx) => {
-            if (line === record) {
-                keyToAdd = idx;
-            }
-        });
-
-        if (keyToAdd != null) {
-            this._linesToSubmit.splice(keyToAdd + 1, 0, record);
-        }
+        this._linesToSubmit.push(record);
     }
 
     public deleteProjectLine (record: LineToSubmit) {
@@ -198,6 +189,26 @@ export class EnterTimeManager {
 
         if (keyToDelete != null) {
             this._linesToSubmit.splice(keyToDelete--, 1);
+        }
+    }
+
+    public insertIndirectLine (record: IndirectToSubmit) {
+
+        this._indirectToSubmit.push(record);
+    }
+
+    public deleteIndirectLine (record: IndirectToSubmit) {
+
+        let keyToDelete: number;
+
+        this._indirectToSubmit.forEach((line, idx) => {
+            if (line === record) {
+                keyToDelete = idx;
+            }
+        });
+
+        if (keyToDelete != null) {
+            this._indirectToSubmit.splice(keyToDelete--, 1);
         }
     }
 
@@ -275,6 +286,7 @@ export class EnterTimeManager {
     private buildHoursToSubmit (date, employee, lines): LineToSubmit {
 
         return {
+            Id: uuidv4(),
             Date: _.cloneDeep(date),
             Employee: _.cloneDeep(employee),
             Project: _.cloneDeep(lines.project),
@@ -285,10 +297,10 @@ export class EnterTimeManager {
             HoursST: Number(lines.standardHours),
             HoursOT: Number(lines.overtimeHours),
             HoursDT: Number(lines.doubleTimeHours),
-            TimeIn: moment().startOf('day').format('h:mm A'),
-            TimeOut: moment().startOf('day').format('h:mm A'),
-            BreakIn: moment().startOf('day').format('h:mm A'),
-            BreakOut: moment().startOf('day').format('h:mm A'),
+            TimeIn: null,
+            TimeOut: null,
+            BreakIn: null,
+            BreakOut: null,
             Note: lines.notes,
         };
     }
@@ -296,6 +308,7 @@ export class EnterTimeManager {
     private buildIndirectHoursToSubmit (date, employee, lines): IndirectToSubmit {
 
         return {
+            Id: uuidv4(),
             Date: _.cloneDeep(date),
             Employee: _.cloneDeep(employee),
             EmployeeId: '',
@@ -315,6 +328,7 @@ export class EnterTimeManager {
         // const punchOut = lines.timeOut ? moment(lines.timeOut, ['h:mm A']) : null;
 
         const timeSubmission: LineToSubmit = {
+            Id: uuidv4(),
             Date: _.cloneDeep(date),
             Employee: _.cloneDeep(employee),
             Project: _.cloneDeep(lines.project),
@@ -374,7 +388,7 @@ export class EnterTimeManager {
             timeSubmission.HoursOT = 0;
             timeSubmission.HoursDT = 0;
         }
-        console.log(timeSubmission);
+        // console.log(timeSubmission);
 
         return timeSubmission;
     }

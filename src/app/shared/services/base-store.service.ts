@@ -6,7 +6,8 @@ import 'rxjs/add/operator/map';
 
 export class BaseStore extends BaseHttpService {
 
-    _route: string;
+    private _route: string;
+    private _isLoadDisabled: boolean;
 
     _entity$ = new Subject();
 
@@ -19,9 +20,10 @@ export class BaseStore extends BaseHttpService {
      * Protected Methods
      ******************************************************************************************************************/
 
-    protected init (url?: string) {
+    protected init (url?: string, disableLoad?: boolean) {
 
         this._route = url;
+        this._isLoadDisabled = disableLoad;
     }
 
     protected load (): Promise<any> {
@@ -69,7 +71,10 @@ export class BaseStore extends BaseHttpService {
                 .subscribe(
 
                     data => {
-                        this.load();
+                        if (!this._isLoadDisabled) {
+
+                            this.load();
+                        }
                         resolve(data);
                     },
                     err => {
@@ -88,7 +93,10 @@ export class BaseStore extends BaseHttpService {
 
                 .subscribe(
                     data => {
-                        this.load();
+                        if (!this._isLoadDisabled) {
+
+                            this.load();
+                        }
                         resolve(data);
                     },
                     err => {
@@ -108,7 +116,10 @@ export class BaseStore extends BaseHttpService {
                 .subscribe(
 
                     data => {
-                        this.load();
+                        if (!this._isLoadDisabled) {
+
+                            this.load();
+                        }
                         resolve(data);
                     },
                     err => {

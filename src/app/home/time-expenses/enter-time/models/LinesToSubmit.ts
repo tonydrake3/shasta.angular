@@ -20,6 +20,7 @@ export class LineToSubmit {
 }
 
 export class IndirectToSubmit {
+    Id: string;
     Date: moment.Moment;
     Employee: any;
     EmployeeId: string;

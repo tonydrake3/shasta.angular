@@ -41,6 +41,7 @@
     "ng2-date-picker": "2.4.0",
     "reflect-metadata": "0.1.10",
     "rxjs": "5.4.3",
+    "uuid": "^3.1.0",
     "webfontloader": "1.6.28",
     "zone.js": "0.8.17"
   },
@@ -106,8 +107,8 @@
     "yargs": "7.1.0"
   },
   "peerDependencies": {
-      "popper.js": "1.11.0",
-      "webpack": "2.2.0"
+    "popper.js": "1.11.0",
+    "webpack": "2.2.0"
   },
   "engines": {
     "node": ">=6.9.0",

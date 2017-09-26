@@ -2,7 +2,7 @@ import {Hours} from './Hours';
 import {Punch} from './Punch';
 
 export class TimeRecordPost {
-    Id: number;
+    Id: string;
     PhaseId?: string;
     ProjectId?: string;
     CostCodeId?: string;
@@ -13,7 +13,7 @@ export class TimeRecordPost {
 }
 
 export class TimeRecord {
-    Id: number;
+    Id: string;
     PhaseId?: string;
     ProjectId?: string;
     CostCodeId?: string;

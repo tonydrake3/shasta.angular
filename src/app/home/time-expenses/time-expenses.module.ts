@@ -23,10 +23,12 @@ import { EnterTimeGridComponent } from './enter-time/enter-time-grid/enter-time-
 // Services
 import { TimeRecordsService } from './time-records.service';
 import { EnterTimeManager } from './enter-time/enter-time.manager';
-import {EnterTimeStatusService} from './enter-time/enter-time-status.service';
-import {EnterTimePreloadManager} from './enter-time/enter-time-preload.manager';
-import {EnterTimeBatchService} from './enter-time/enter-time-batch.service';
-import {EnterTimeAutocompleteService} from './enter-time/enter-time-autocomplete.service';
+import { EnterTimeStatusService } from './enter-time/enter-time-status.service';
+import { EnterTimePreloadManager } from './enter-time/enter-time-preload.manager';
+import { EnterTimeBatchService } from './enter-time/enter-time-batch.service';
+import { EnterTimeAutocompleteService } from './enter-time/enter-time-autocomplete.service';
+import { EnterTimeTransformService } from './enter-time/enter-time-transform.service';
+import {EnterTimeGridBuilderService} from './enter-time/enter-time-grid-builder.service';
 
 @NgModule({
     imports: [
@@ -59,9 +61,11 @@ import {EnterTimeAutocompleteService} from './enter-time/enter-time-autocomplete
       TimeRecordsService,
       EnterTimeAutocompleteService,
       EnterTimeBatchService,
+      EnterTimeGridBuilderService,
       EnterTimeManager,
       EnterTimeStatusService,
-      EnterTimePreloadManager
+      EnterTimePreloadManager,
+      EnterTimeTransformService
     ]
 })
 

@@ -386,6 +386,7 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
         this.checkDefaultSystem(project.Systems);
         this.checkDefaultCostCode(project.CostCodes);
         this.filterEmployeesByProject(project.Id);
+        this.selectedEmployees = [];
 
         const costCodeSelect = this.enterTimeForm.get('costCode');
         costCodeSelect.clearValidators();
@@ -731,8 +732,9 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
         // console.log('filterProjectCodes', match);
         let filtered = [];
         const projectSelect = this.enterTimeForm.get('project');
+        console.log('filterProjectCodes', projectSelect.value);
 
-        if (typeof match === 'string') {
+        if (projectSelect.value && typeof match === 'string') {
 
             filtered = _.filter((<Project>projectSelect.value).CostCodes, (code) => {
                 return code.Name.toLowerCase().includes(match.toLowerCase()) ||

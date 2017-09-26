@@ -1,7 +1,14 @@
 import {Injectable} from '@angular/core';
+import * as _ from 'lodash';
+import * as moment from 'moment';
+
 import {LineToSubmit} from './models/LinesToSubmit';
 import {TimeRecord} from '../../../models/domain/TimeRecord';
 import {Hours} from '../../../models/domain/Hours';
+import {Punch} from '../../../models/domain/Punch';
+import {CommentType} from '../../../models/domain/CommentType';
+import {Break} from '../../../models/domain/Break';
+import {Comment} from '../../../models/domain/Comment';
 
 @Injectable()
 export class EnterTimeTransformService {
@@ -9,9 +16,18 @@ export class EnterTimeTransformService {
 
     constructor () {}
 
-    public transformLinesToSubmitToTimeRecords (lines: Array<LinesToSubmit>): Array<TimeRecord> {
+    public transformLinesToSubmitToTimeRecords (lines: Array<LineToSubmit>): Array<TimeRecord> {
 
+        const timeRecords = [];
+        // console.log('transformLinesToSubmitToTimeRecords lines', lines);
+        _.forEach(lines, (line) => {
 
+            // console.log('transformLinesToSubmitToTimeRecords line', line);
+            timeRecords.push(this.lineToRecord(line));
+        });
+
+        // console.log('transformLinesToSubmitToTimeRecords timeRecords', timeRecords);
+        return timeRecords;
     }
 
     // public transformTimeRecordsToLinesToSubmit (records: Array<TimeRecord>): Array<LineToSubmit> {
@@ -19,7 +35,7 @@ export class EnterTimeTransformService {
     //
     // }
 
-    private lineToRecord (line: LineToSubmit, isIndirect: boolean): TimeRecord {
+    private lineToRecord (line: LineToSubmit, isIndirect?: boolean): TimeRecord {
 
         const record: TimeRecord = new TimeRecord();
 
@@ -28,6 +44,12 @@ export class EnterTimeTransformService {
             record.Id = line.Id;
             record.IndirectCostId = line.CostCode.Id;
             record.EmployeeId = line.Employee.Id;
+            record.Hours = new Hours(line.HoursST, 0, 0, line.Date.toISOString());
+            if (line.Note && line.Note !== '') {
+
+                record.Comments = [];
+                record.Comments.push(new Comment(line.Note, CommentType.BackOffice));
+            }
         } else {
 
             record.Id = line.Id;
@@ -35,12 +57,22 @@ export class EnterTimeTransformService {
             record.ProjectId = line.Project.Id;
             record.CostCodeId = line.CostCode.Id;
             record.EmployeeId = line.Employee.Id;
-            // record.Hours = line.
-            //     Punch: Punch;
-            // Comments?: Array<any>;
-            // ManualHours?: boolean;
-            // Breaks?: Array<any>;
-            // BreaksVerified: boolean;
+            record.Hours = new Hours(line.HoursST, line.HoursOT, line.HoursDT, line.Date.toISOString());
+            if (line.IsPunch) {
+
+                record.Punch = this.buildPunch(line.Date, line.TimeIn, line.TimeOut);
+            }
+            if (line.BreakIn) {
+
+                record.Breaks = [];
+                record.Breaks.push(this.buildBreak(line.Date, line.BreakIn, line.BreakOut));
+                record.BreaksVerified = false;
+            }
+            if (line.Note && line.Note !== '') {
+
+                record.Comments = [];
+                record.Comments.push(new Comment(line.Note, CommentType.BackOffice));
+            }
         }
 
         return record;
@@ -67,9 +99,22 @@ export class EnterTimeTransformService {
     //     }
     // }
 
-    private buildHoursFromLine (line: LineToSubmit): Hours {
+    // Helpers
+    private buildPunch(date: moment.Moment, timeIn: string, timeOut: string): Punch {
 
-        
+        const punchIn = moment(date.format('YYYY-MM-DD') + ' ' + timeIn);
+        const punchOut = moment(date.format('YYYY-MM-DD') + ' ' + timeOut);
+
+        return new Punch(punchIn.toISOString(), punchOut.toISOString());
     }
+
+    private buildBreak(date: moment.Moment, brIn: string, brOut: string): Break {
+
+        const breakIn = moment(date.format('YYYY-MM-DD') + ' ' + brIn);
+        const breakOut = moment(date.format('YYYY-MM-DD') + ' ' + brOut);
+
+        return new Break(breakIn.toISOString(), breakOut.toISOString());
+    }
+
 }
 

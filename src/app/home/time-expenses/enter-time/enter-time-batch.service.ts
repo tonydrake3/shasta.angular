@@ -9,11 +9,11 @@ export class EnterTimeBatchService extends BaseStore {
 
     constructor(protected _httpPassthrough: Http) {
         super(_httpPassthrough);
-        this.init(apiRoutes.enterTimeBatch);
+        this.init(apiRoutes.enterTimeBatch, true);
     }
 
-    public submitBatchTime (timesheets: Array<TimeRecord>) {
+    public submitBatchTime (records: Array<TimeRecord>) {
 
-        super.addEntity(timesheets);
+        return super.addEntity({'TimeRecords': records});
     }
 }

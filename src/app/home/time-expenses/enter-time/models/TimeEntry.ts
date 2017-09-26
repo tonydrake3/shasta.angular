@@ -28,8 +28,8 @@ export class EntryCard {
     IndirectLines?: Array<IndirectToSubmit> = [];
 }
 
-export class EntryGridLine {
-    Key: string;
-    ProjectLine?: LineToSubmit;
-    IndirectLine?: IndirectToSubmit;
-}
+// export class EntryGridLine {
+//     Key: string;
+//     ProjectLine?: LineToSubmit;
+//     IndirectLine?: IndirectToSubmit;
+// }
