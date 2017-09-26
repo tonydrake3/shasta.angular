@@ -35,8 +35,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
     public employees: Array<Employee>;
     public projects: Array<Project>;
     public indirectCosts: Array<CostCode>;
-    public lineCount: number;
-    public currentCount: number;
+    public currentCardIndex: number;
     public timeSettings: TimeSettings;
     public enterTimeGrid: FormGroup;
 
@@ -47,6 +46,8 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
     public filteredEmployees: Observable<Employee[]>;
 
     private _cardSubscription;
+    private _projectLineSubscription;
+    private _indirectLineSubscription;
 
     constructor (private _enterTimeManager: EnterTimeManager, private _confirmationService: ConfirmationDialogService,
                  private _transforService: EnterTimeTransformService, private _batchService: EnterTimeBatchService,
@@ -54,7 +55,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
 
         this.dateFormat = 'MMM. Do, YYYY';
         this.groupCardsBy = 'Date';
-        this.currentCount = 0;
+        this.currentCardIndex = 0;
         this.enterTimeGrid = this.createForm();
         console.log(this.enterTimeGrid);
     }
@@ -65,7 +66,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
         this.projects = this._enterTimeManager.getProjects();
         this.indirectCosts = this._enterTimeManager.getIndirectCodes();
         this.groupCardsBy = this._enterTimeManager.getGroupBy();
-        this.lineCount = this._enterTimeManager.getLineCount();
+        // this.lineCount = this._enterTimeManager.getLineCount();
         this.timeSettings = this._enterTimeManager.getSettings();
 
         this.groupedLines = [];
@@ -75,12 +76,28 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
             .subscribe(
                 (card) => {
 
+                    console.log('EnterTimeGridComponent currentCardIndex', this.currentCardIndex);
                     // console.log('EnterTimeGridComponent card', card);
+                    this.currentCardIndex++;
                     this.groupedLines.push(card);
                     this.addCard();
-                    console.log('EnterTimeGridComponent', this.enterTimeGrid);
+                    console.log('EnterTimeGridComponent Form', this.enterTimeGrid);
                     // this.buildCards(lines);
                     // this.groupedLines = line;
+                });
+
+        this._projectLineSubscription = this._enterTimeManager.projectRow$
+            .subscribe(
+                (row) => {
+
+                    console.log('EnterTimeGridComponent projectRow$', row);
+                });
+
+        this._indirectLineSubscription = this._enterTimeManager.indirectRow$
+            .subscribe(
+                (row) => {
+
+                    console.log('EnterTimeGridComponent indirectRow$', row);
                 });
 
         // this._processingSubscription = this._enterTimeManager.processing$
@@ -105,6 +122,8 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
 
     ngOnDestroy () {
         this._cardSubscription.unsubscribe();
+        this._projectLineSubscription.unsubscribe();
+        this._indirectLineSubscription.unsubscribe();
     }
 
     public displayFormatted (value) {
@@ -336,6 +355,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
     private createCardGroup (): FormGroup {
 
         return this._builder.group({
+            cardRows: this._builder.array([]),
             cardRows: this._builder.array([])
         });
     }

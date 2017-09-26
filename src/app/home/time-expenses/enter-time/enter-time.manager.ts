@@ -17,7 +17,8 @@ import { TimeSettings } from '../../../models/domain/TimeSettings';
 export class EnterTimeManager {
 
     public _cards$ = new Subject<EntryCard>();
-    // public _gridLines$ = new Subject();
+    public _projectRow$ = new Subject();
+    public _indirectRow$ = new Subject();
     public _processing$ = new Subject<boolean>();
 
     // Private
@@ -51,6 +52,16 @@ export class EnterTimeManager {
     get processing$ () {
 
         return this._processing$.asObservable();
+    }
+
+    get projectRow$ () {
+
+        return this._projectRow$.asObservable();
+    }
+
+    get indirectRow$ () {
+
+        return this._indirectRow$.asObservable();
     }
 
     get cards$ () {
@@ -302,6 +313,7 @@ export class EnterTimeManager {
             BreakIn: null,
             BreakOut: null,
             Note: lines.notes,
+            CardIndex: -1
         };
     }
 
@@ -317,7 +329,8 @@ export class EnterTimeManager {
             HoursST: Number(lines.standardHours),
             HoursOT: Number(lines.overtimeHours),
             HoursDT: Number(lines.doubleTimeHours),
-            Note: lines.notes
+            Note: lines.notes,
+            CardIndex: -1
         };
     }
 
@@ -343,7 +356,8 @@ export class EnterTimeManager {
             TimeOut: null,
             BreakIn: null,
             BreakOut: null,
-            Note: lines.notes
+            Note: lines.notes,
+            CardIndex: -1
         };
 
         let timeDuration, breakIn, breakOut, breakDuration;
@@ -445,7 +459,7 @@ export class EnterTimeManager {
             return uniqueDate.startOf('day').format();
         });
 
-        _.forEach(dateArray, (date) => {
+        dateArray.forEach((date, cardIndex) => {
 
             const dateIndex = date.format();
 
@@ -458,33 +472,42 @@ export class EnterTimeManager {
             projectLines.forEach((projectLine, index) => {
                 if (projectLine.Date.startOf('day').isSame(date, 'day')) {
                     this._processing$.next(true);
-                    setTimeout(() => {
-                        // console.log('groupLinesByDate projectLines', projectLine);
-                        line.ST += projectLine.HoursST;
-                        line.OT += projectLine.HoursOT;
-                        line.DT += projectLine.HoursDT;
-                        line.ProjectLines.push(projectLine);
-                        if (index === projectLines.length - 1) {
-                            this._processing$.next(false);
-                        }
-                    }, 20 * index);
+                    projectLine.CardIndex = cardIndex;
+                    this._projectRow$.next(projectLine);
+                    line.ST += projectLine.HoursST;
+                    line.OT += projectLine.HoursOT;
+                    line.DT += projectLine.HoursDT;
+                    // setTimeout(() => {
+                    //     // console.log('groupLinesByDate projectLines', projectLine);
+                    //     line.ST += projectLine.HoursST;
+                    //     line.OT += projectLine.HoursOT;
+                    //     line.DT += projectLine.HoursDT;
+                    //     line.ProjectLines.push(projectLine);
+                    //     if (index === projectLines.length - 1) {
+                    //         this._processing$.next(false);
+                    //     }
+                    // }, 20 * index);
                 }
             });
             indirectLines.forEach((indirectLine, index) => {
                 if (indirectLine.Date.startOf('day').isSame(date, 'day')) {
                     this._processing$.next(true);
-                    setTimeout(() => {
-                        // console.log('groupLinesByDate indirectLines', index);
-                        line.ST += indirectLine.HoursST;
-                        line.IndirectLines.push(indirectLine);
-                        if (index === indirectLines.length - 1) {
-                            this._processing$.next(false);
-                        }
-                    }, 20 * index);
+                    indirectLine.CardIndex = cardIndex;
+                    this._indirectRow$.next(indirectLine);
+                    line.ST += indirectLine.HoursST;
+                    // setTimeout(() => {
+                    //     // console.log('groupLinesByDate indirectLines', index);
+                    //     line.ST += indirectLine.HoursST;
+                    //     line.IndirectLines.push(indirectLine);
+                    //     if (index === indirectLines.length - 1) {
+                    //         this._processing$.next(false);
+                    //     }
+                    // }, 20 * index);
                 }
             });
-
         });
+
+        this._processing$.next(false);
     }
 
     private groupLinesByEmployee (projectLines: Array<LineToSubmit>, indirectLines: Array<IndirectToSubmit>) {

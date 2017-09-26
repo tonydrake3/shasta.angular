@@ -17,6 +17,7 @@ export class LineToSubmit {
     BreakIn: any;
     BreakOut: any;
     Note: string;
+    CardIndex: number;
 }
 
 export class IndirectToSubmit {
@@ -30,4 +31,5 @@ export class IndirectToSubmit {
     HoursOT: number;
     HoursDT: number;
     Note: string;
+    CardIndex: number;
 }
