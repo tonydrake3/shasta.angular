@@ -24,6 +24,7 @@ import {validateTime, validateTimeWithPeriod} from '../../../shared/validators/t
 import {validateTimeBreakOverlap} from '../../../shared/validators/time-break-overlap.validator';
 import {TimeSettings} from '../../../../models/domain/TimeSettings';
 import {EnterTimeFormTab, enterTimeTabs} from '../models/EnterTimeMenu';
+import {EnterTimeFilterService} from '../enter-time-filter.service';
 
 @Component({
     selector: 'esub-enter-time-form',
@@ -79,7 +80,7 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
 
     constructor (private _builder: FormBuilder, private _enterTimeManager: EnterTimeManager,
                  private _dateFlyoutService: DateFlyoutService, private _confirmationService: ConfirmationDialogService,
-                 private _preloadService: EnterTimePreloadManager) {
+                 private _preloadService: EnterTimePreloadManager, private _filterService: EnterTimeFilterService) {
 
         this.progressConfig = {
             color: 'primary',
@@ -176,7 +177,7 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
     // TODO: Refactor to include settings as properties in tab object
     public selectTab(event) {
 
-        console.log(event);
+        // console.log(event);
         switch (event.tab.textLabel.toLowerCase()) {
             case 'enter hours':
                 this.isProjectCostEntry = true;
@@ -268,7 +269,7 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
 
         if (projectSelect.value) {
 
-            this.filteredProjects = this.filterCollection(projectSelect.value, this.projects);
+            this.filteredProjects = this._filterService.filterCollection(projectSelect.value, this.projects);
         } else {
 
             this.filteredProjects = Observable.of(this.projects);
@@ -281,7 +282,7 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
 
         if (this.systems) {
 
-            this.filteredSystems = this.filterCollection(systemSelect.value, this.systems);
+            this.filteredSystems = this._filterService.filterCollection(systemSelect.value, this.systems);
         } else {
 
             this.filteredSystems = Observable.of(this.systems);
@@ -295,7 +296,7 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
 
         if (phaseSelect.value) {
 
-            this.filteredPhases = this.filterCollection(phaseSelect.value, this.phases);
+            this.filteredPhases = this._filterService.filterCollection(phaseSelect.value, this.phases);
         } else {
 
             this.filteredPhases = Observable.of(this.phases);
@@ -305,12 +306,13 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
     public openCostCodes () {
 
         const costCodeSelect = this.enterTimeForm.get('costCode');
+        const projectSelect = this.enterTimeForm.get('project');
 
         if (this.costCodes.length > 0) {
 
             if (costCodeSelect.value) {
 
-                this.filteredCostCodes = this.filterProjectCodes(costCodeSelect.value);
+                this.filteredCostCodes = this._filterService.filterProjectCodes(costCodeSelect.value, projectSelect.value);
             } else {
 
                 this.filteredCostCodes = Observable.of(this.costCodes);
@@ -319,7 +321,7 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
 
             if (costCodeSelect.value) {
 
-                this.filteredCostCodes = this.filterIndirectCodes(costCodeSelect.value);
+                this.filteredCostCodes = this._filterService.filterIndirectCodes(costCodeSelect.value, this._indirectCodes);
             } else {
 
                 this.filteredCostCodes = Observable.of(this._indirectCodes);
@@ -335,10 +337,12 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
 
             if (this.employees.length > 0) {
 
-                this.filteredEmployees = this.filterEmployees(employeeSelect.value, this.employees);
+                this.filteredEmployees = this._filterService.filterEmployees(employeeSelect.value, this.employees,
+                    this.selectedEmployees);
             } else {
 
-                this.filteredEmployees = this.filterEmployees(employeeSelect.value, this._tenantEmployees);
+                this.filteredEmployees = this._filterService.filterEmployees(employeeSelect.value, this._tenantEmployees,
+                    this.selectedEmployees);
             }
         } else {
 
@@ -346,7 +350,7 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
 
                 if (this.selectedEmployees.length > 0) {
 
-                    this.filteredEmployees = this.filterEmployees('', this.employees);
+                    this.filteredEmployees = this._filterService.filterEmployees('', this.employees, this.selectedEmployees);
                 } else {
 
                     this.filteredEmployees = Observable.of(this.employees);
@@ -517,17 +521,18 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
 
     public removeFromCollection (employee, collection: Array<any>) {
 
-        let keyToDelete: number;
-
-        collection.forEach((emp, idx) => {
-            if (emp === employee) {
-                keyToDelete = idx;
-            }
-        });
-
-        if (keyToDelete != null) {
-            collection.splice(keyToDelete--, 1);
-        }
+        // let keyToDelete: number;
+        //
+        // collection.forEach((emp, idx) => {
+        //     if (emp === employee) {
+        //         keyToDelete = idx;
+        //     }
+        // });
+        //
+        // if (keyToDelete != null) {
+        //     collection.splice(keyToDelete--, 1);
+        // }
+        this._filterService.removeFromCollection(employee, collection);
     }
 
     public onTimeInChange (event) {
@@ -671,80 +676,80 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
         });
     }
 
-    private filterCollection (match, collection: Array<any>): Observable<Array<any>> {
-
-        let filtered = [];
-
-        if (typeof match === 'string') {
-
-            filtered = _.filter(collection, (item) => {
-                return item.Name.toLowerCase().includes(match.toLowerCase()) ||
-                    item.Number.toLowerCase().includes(match.toLowerCase()) ||
-                    (item.Number.toLowerCase() + ' - ' + item.Name.toLowerCase()).includes(match.toLowerCase());
-            });
-        }
-
-        return Observable.of(filtered);
-    }
-
-    private filterEmployees (match, employeeList: Array<Employee>): Observable<Array<any>> {
-
-        let filtered = [];
-
-        if (typeof match === 'string') {
-
-            filtered = _.filter(employeeList, (employee) => {
-                return employee.Name.toLowerCase().includes(match.toLowerCase()) ||
-                    employee.Number.toLowerCase().includes(match.toLowerCase()) ||
-                    (employee.Number.toLowerCase() + ' - ' + employee.Name.toLowerCase()).includes(match.toLowerCase());
-            });
-
-            if (this.selectedEmployees.length > 0) {
-
-                _.forEach(this.selectedEmployees, (employee) => {
-                    this.removeFromCollection(employee, filtered);
-                });
-            }
-        }
-
-        return Observable.of(filtered);
-    }
-
-    private filterIndirectCodes (match): Observable<CostCode[]> {
-
-        // console.log('filterIndirectCodes', match, this._indirectCodes);
-        let filtered = [];
-
-        if (typeof match === 'string') {
-
-            filtered = _.filter(this._indirectCodes, (code) => {
-                return code.Name.toLowerCase().includes(match.toLowerCase()) ||
-                    code.Code.toLowerCase().includes(match.toLowerCase()) ||
-                    (code.Code.toLowerCase() + ' - ' + code.Name.toLowerCase()).includes(match.toLowerCase());
-            });
-        }
-
-        return Observable.of(filtered);
-    }
-
-    private filterProjectCodes (match): Observable<CostCode[]> {
-
-        // console.log('filterProjectCodes', match);
-        let filtered = [];
-        const projectSelect = this.enterTimeForm.get('project');
-        console.log('filterProjectCodes', projectSelect.value);
-
-        if (projectSelect.value && typeof match === 'string') {
-
-            filtered = _.filter((<Project>projectSelect.value).CostCodes, (code) => {
-                return code.Name.toLowerCase().includes(match.toLowerCase()) ||
-                    code.Code.toLowerCase().includes(match.toLowerCase()) ||
-                    (code.Code.toLowerCase() + ' - ' + code.Name.toLowerCase()).includes(match.toLowerCase());
-            });
-        }
-
-        return Observable.of(filtered);
-    }
+    // private filterCollection (match, collection: Array<any>): Observable<Array<any>> {
+    //
+    //     let filtered = [];
+    //
+    //     if (typeof match === 'string') {
+    //
+    //         filtered = _.filter(collection, (item) => {
+    //             return item.Name.toLowerCase().includes(match.toLowerCase()) ||
+    //                 item.Number.toLowerCase().includes(match.toLowerCase()) ||
+    //                 (item.Number.toLowerCase() + ' - ' + item.Name.toLowerCase()).includes(match.toLowerCase());
+    //         });
+    //     }
+    //
+    //     return Observable.of(filtered);
+    // }
+    //
+    // private filterEmployees (match, employeeList: Array<Employee>): Observable<Array<any>> {
+    //
+    //     let filtered = [];
+    //
+    //     if (typeof match === 'string') {
+    //
+    //         filtered = _.filter(employeeList, (employee) => {
+    //             return employee.Name.toLowerCase().includes(match.toLowerCase()) ||
+    //                 employee.Number.toLowerCase().includes(match.toLowerCase()) ||
+    //                 (employee.Number.toLowerCase() + ' - ' + employee.Name.toLowerCase()).includes(match.toLowerCase());
+    //         });
+    //
+    //         if (this.selectedEmployees.length > 0) {
+    //
+    //             _.forEach(this.selectedEmployees, (employee) => {
+    //                 this.removeFromCollection(employee, filtered);
+    //             });
+    //         }
+    //     }
+    //
+    //     return Observable.of(filtered);
+    // }
+    //
+    // private filterIndirectCodes (match): Observable<CostCode[]> {
+    //
+    //     // console.log('filterIndirectCodes', match, this._indirectCodes);
+    //     let filtered = [];
+    //
+    //     if (typeof match === 'string') {
+    //
+    //         filtered = _.filter(this._indirectCodes, (code) => {
+    //             return code.Name.toLowerCase().includes(match.toLowerCase()) ||
+    //                 code.Code.toLowerCase().includes(match.toLowerCase()) ||
+    //                 (code.Code.toLowerCase() + ' - ' + code.Name.toLowerCase()).includes(match.toLowerCase());
+    //         });
+    //     }
+    //
+    //     return Observable.of(filtered);
+    // }
+    //
+    // private filterProjectCodes (match): Observable<CostCode[]> {
+    //
+    //     // console.log('filterProjectCodes', match);
+    //     let filtered = [];
+    //     const projectSelect = this.enterTimeForm.get('project');
+    //     console.log('filterProjectCodes', projectSelect.value);
+    //
+    //     if (projectSelect.value && typeof match === 'string') {
+    //
+    //         filtered = _.filter((<Project>projectSelect.value).CostCodes, (code) => {
+    //             return code.Name.toLowerCase().includes(match.toLowerCase()) ||
+    //                 code.Code.toLowerCase().includes(match.toLowerCase()) ||
+    //                 (code.Code.toLowerCase() + ' - ' + code.Name.toLowerCase()).includes(match.toLowerCase());
+    //         });
+    //     }
+    //
+    //     return Observable.of(filtered);
+    // }
 
     private createForm () {
 
@@ -870,7 +875,7 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
         projectSelect.valueChanges.subscribe(
             (project) => {
                 // console.log(project);
-                this.filteredProjects = this.filterCollection(project, this.projects);
+                this.filteredProjects = this._filterService.filterCollection(project, this.projects);
             }
         );
     }
@@ -880,7 +885,7 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
         systemSelect.valueChanges.subscribe(
             (system: System) => {
                 // console.log(system);
-                this.filteredSystems = this.filterCollection(system, this.systems);
+                this.filteredSystems = this._filterService.filterCollection(system, this.systems);
             }
         );
     }
@@ -890,7 +895,7 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
         phaseSelect.valueChanges.subscribe(
             (phase: Phase) => {
                 // console.log(system);
-                this.filteredPhases = this.filterCollection(phase, this.phases);
+                this.filteredPhases = this._filterService.filterCollection(phase, this.phases);
             }
         );
     }
@@ -902,10 +907,11 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
 
                 if (this.costCodes.length > 0) {
 
-                    this.filteredCostCodes = this.filterProjectCodes(costCode);
+                    const projectSelect = this.enterTimeForm.get('project');
+                    this.filteredCostCodes = this._filterService.filterProjectCodes(costCode, projectSelect.value);
                 } else {
 
-                    this.filteredCostCodes = this.filterIndirectCodes(costCode);
+                    this.filteredCostCodes = this._filterService.filterIndirectCodes(costCode, this._indirectCodes);
                 }
             }
         );
@@ -919,10 +925,12 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
 
                 if (this.employees.length > 0) {
 
-                    this.filteredEmployees = this.filterEmployees(employee, this.employees);
+                    this.filteredEmployees = this._filterService.filterEmployees(employee, this.employees,
+                        this.selectedEmployees);
                 } else {
 
-                    this.filteredEmployees = this.filterEmployees(employee, this._tenantEmployees);
+                    this.filteredEmployees = this._filterService.filterEmployees(employee, this._tenantEmployees,
+                        this.selectedEmployees);
                 }
             }
         );

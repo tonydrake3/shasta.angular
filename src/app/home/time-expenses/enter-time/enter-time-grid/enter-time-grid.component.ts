@@ -17,9 +17,9 @@ import {TimeSettings} from '../../../../models/domain/TimeSettings';
 import {EnterTimeTransformService} from '../enter-time-transform.service';
 import {EnterTimeBatchService} from '../enter-time-batch.service';
 import {TimeRecord} from '../../../../models/domain/TimeRecord';
-import {EnterTimeGridBuilderService} from '../enter-time-grid-builder.service';
 import {validateTimeBreakOverlap} from '../../../shared/validators/time-break-overlap.validator';
 import {validateTime, validateTimeWithPeriod} from '../../../shared/validators/time-entry.validator';
+import {EnterTimeFilterService} from '../enter-time-filter.service';
 
 @Component({
     selector: 'esub-enter-time-grid',
@@ -50,14 +50,14 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
     private _indirectLineSubscription;
 
     constructor (private _enterTimeManager: EnterTimeManager, private _confirmationService: ConfirmationDialogService,
-                 private _transforService: EnterTimeTransformService, private _batchService: EnterTimeBatchService,
-                 private _builder: FormBuilder) {
+                 private _transformService: EnterTimeTransformService, private _batchService: EnterTimeBatchService,
+                 private _builder: FormBuilder, private _filterService: EnterTimeFilterService) {
 
         this.dateFormat = 'MMM. Do, YYYY';
         this.groupCardsBy = 'Date';
         this.currentCardIndex = 0;
-        this.enterTimeGrid = this.createForm();
-        console.log(this.enterTimeGrid);
+        this.createForm();
+        // console.log(this.enterTimeGrid);
     }
 
     ngOnInit () {
@@ -76,24 +76,28 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
             .subscribe(
                 (card) => {
 
-                    console.log('EnterTimeGridComponent currentCardIndex', this.currentCardIndex);
+                    // console.log('EnterTimeGridComponent currentCardIndex', this.currentCardIndex);
                     // console.log('EnterTimeGridComponent card', card);
                     this.currentCardIndex++;
-                    this.groupedLines.push(card);
-                    this.addCard();
-                    console.log('EnterTimeGridComponent Form', this.enterTimeGrid);
+                    // this.groupedLines.push(card);
+                    this.addCard(card);
+                    // console.log('EnterTimeGridComponent Form', this.enterTimeGrid);
                     // this.buildCards(lines);
                     // this.groupedLines = line;
                 });
 
         this._projectLineSubscription = this._enterTimeManager.projectRow$
+            .map(r => r as LineToSubmit)
             .subscribe(
                 (row) => {
 
-                    console.log('EnterTimeGridComponent projectRow$', row);
+                    this.addRow('projectRows', row.CardIndex, row);
+                    // console.log('EnterTimeGridComponent projectRow$', row);
+                    // console.log('EnterTimeGridComponent Form', this.enterTimeGrid);
                 });
 
         this._indirectLineSubscription = this._enterTimeManager.indirectRow$
+            .map(r => r as LineToSubmit)
             .subscribe(
                 (row) => {
 
@@ -159,39 +163,63 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
     public updateGrouping (groupBy: string) {
 
         this.groupCardsBy = groupBy;
-        this.groupedLines = [];
+        this.createForm();
         this._enterTimeManager.setGroupBy(groupBy);
     }
 
     public deleteCard (card, cardIndex: number) {
 
-        this.groupedLines.splice(cardIndex, 1);
-        this._enterTimeManager.deleteCardGroup(card);
+        const cards = this.enterTimeGrid.controls['cards']['controls'];
+        cards.splice(cardIndex, 1);
 
-        if (this.groupedLines.length === 0) {
+        this._enterTimeManager.deleteCardGroup(<Array<FormGroup>> card.get('projectRows')['controls'],
+            <Array<FormGroup>> card.get('indirectRows')['controls']);
 
+        if (cards.length === 0) {
+
+            this._confirmationService.setNeedsConfirmation(false);
             this.displayGrid.emit(false);
         }
     }
 
-    public copyRow (record, rowIndex: number, cardIndex: number) {
-        // console.log(record, rowIndex, cardIndex);
+    public copyRow (record, card) {
+
+        const projectRows: FormArray = card.get('projectRows')['controls'];
         const cloneRecord =  _.cloneDeep(record);
-        cloneRecord.Id = uuidv4();
-        this.groupedLines[cardIndex].ProjectLines.splice(rowIndex + 1, 0, cloneRecord);
-        this.groupedLines[cardIndex].ST += record.HoursST;
-        this.groupedLines[cardIndex].OT += record.HoursOT;
-        this.groupedLines[cardIndex].DT += record.HoursDT;
-        this._enterTimeManager.insertProjectLine(cloneRecord);
+        cloneRecord.get('id').setValue(uuidv4());
+
+        projectRows.push(cloneRecord);
+
+        card.get('ST').setValue(card.get('ST').value + cloneRecord.get('standardHours').value);
+        card.get('OT').setValue(card.get('OT').value + cloneRecord.get('overtimeHours').value);
+        card.get('DT').setValue(card.get('DT').value + cloneRecord.get('doubleTimeHours').value);
+
+        this._enterTimeManager.insertProjectLine(this._transformService.transformFormGroupToLineToSubmit(cloneRecord));
     }
 
-    public deleteRow (record, rowIndex: number, cardIndex: number) {
+    public deleteRow (record, rowIndex: number, card, cardIndex: number) {
 
-        this.groupedLines[cardIndex].ProjectLines.splice(rowIndex, 1);
-        this.groupedLines[cardIndex].ST -= record.HoursST;
-        this.groupedLines[cardIndex].OT -= record.HoursOT;
-        this.groupedLines[cardIndex].DT -= record.HoursDT;
-        this._enterTimeManager.deleteProjectLine(record);
+        const projectRows: Array<FormGroup> = card.get('projectRows')['controls'];
+
+        projectRows.splice(rowIndex, 1);
+
+        card.get('ST').setValue(card.get('ST').value - record.get('standardHours').value);
+        card.get('OT').setValue(card.get('OT').value - record.get('overtimeHours').value);
+        card.get('DT').setValue(card.get('DT').value - record.get('doubleTimeHours').value);
+
+        this._enterTimeManager.deleteProjectById(record.get('id').value);
+
+        if (projectRows.length === 0) {
+
+            const cards = this.enterTimeGrid.controls['cards']['controls'];
+            cards.splice(cardIndex, 1);
+
+            if (cards.length === 0) {
+
+                this._confirmationService.setNeedsConfirmation(false);
+                this.displayGrid.emit(false);
+            }
+        }
     }
 
     public copyIndirectRow (record, rowIndex: number, cardIndex: number) {
@@ -210,100 +238,85 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
         this._enterTimeManager.deleteIndirectLine(record);
     }
 
-    public onProjectSelected (record: LineToSubmit) {
+    public openProjects () {
 
-        record.Phase = '';
-        record.System = '';
-        record.CostCode = '';
-        record.Employee = '';
+        this.filteredProjects = Observable.of(this.projects);
     }
 
-    public onSystemSelected (record: LineToSubmit) {
+    public changeProject (value) {
 
-        record.Phase = '';
-    }
+        if (value) {
 
-    public filterCollection (match, collection: Array<any>): Observable<Array<any>> {
+            this.filteredProjects = this._filterService.filterCollection(value, this.projects);
+        } else {
 
-        let filtered = [];
-
-        if (typeof match === 'string') {
-
-            filtered = _.filter(collection, (item) => {
-                return item.Name.toLowerCase().includes(match.toLowerCase()) ||
-                    item.Number.toLowerCase().includes(match.toLowerCase()) ||
-                    (item.Number.toLowerCase() + ' - ' + item.Name.toLowerCase()).includes(match.toLowerCase());
-            });
+            this.filteredProjects = Observable.of(this.projects);
         }
-
-        return Observable.of(filtered);
+        // console.log('changeProject', value);
     }
 
-    public filterEmployees (match, projectId: string): Observable<Array<any>> {
+    public projectSelected (event, record) {
 
-        let filtered = [];
+        // console.log('EnterTimeFormComponent projectSelected', event, record.get('project').value);
+        const project = event.option.value;
 
-        if (typeof match === 'string') {
-
-            filtered = _.filter(this.filterEmployeesByProject(projectId), (employee) => {
-                return employee.Name.toLowerCase().includes(match.toLowerCase()) ||
-                    employee.Number.toLowerCase().includes(match.toLowerCase()) ||
-                    (employee.Number.toLowerCase() + ' - ' + employee.Name.toLowerCase()).includes(match.toLowerCase());
-            });
-        }
-
-        return Observable.of(filtered);
+        this.checkDefaultSystem(project.Systems, record);
+        this.checkDefaultCostCode(project.CostCodes, record);
+        record.patchValue({
+           employee: ''
+        });
     }
 
-    public filterAllEmployees (match): Observable<Array<any>> {
+    public openSystems (record) {
 
-        let filtered = [];
-
-        if (typeof match === 'string') {
-
-            filtered = _.filter(this.employees, (employee) => {
-                return employee.Name.toLowerCase().includes(match.toLowerCase()) ||
-                    employee.Number.toLowerCase().includes(match.toLowerCase()) ||
-                    (employee.Number.toLowerCase() + ' - ' + employee.Name.toLowerCase()).includes(match.toLowerCase());
-            });
-        }
-
-        return Observable.of(filtered);
+        this.filteredSystems = Observable.of((<Project>record.get('project').value).Systems);
     }
 
-    public filterIndirectCodes (match): Observable<CostCode[]> {
+    public systemSelected (event, record) {
 
-        // console.log('filterIndirectCodes', match, this._indirectCodes);
-        let filtered = [];
-
-        if (typeof match === 'string') {
-
-            filtered = _.filter(this.indirectCosts, (code) => {
-                return code.Name.toLowerCase().includes(match.toLowerCase()) ||
-                    code.Code.toLowerCase().includes(match.toLowerCase()) ||
-                    (code.Code.toLowerCase() + ' - ' + code.Name.toLowerCase()).includes(match.toLowerCase());
-            });
-        }
-
-        return Observable.of(filtered);
+        const system = event.option.value;
+        // console.log('EnterTimeFormComponent systemSelected', system.Phases);
+        this.checkDefaultPhase(system.Phases, record);
     }
 
-    public filterProjectCodes (match, project: Project): Observable<CostCode[]> {
+    public openPhases (record) {
 
-        // console.log('filterProjectCodes', match);
-        let filtered = [];
-
-        if (typeof match === 'string') {
-
-            filtered = _.filter(project.CostCodes, (code) => {
-                return code.Name.toLowerCase().includes(match.toLowerCase()) ||
-                    code.Code.toLowerCase().includes(match.toLowerCase()) ||
-                    (code.Code.toLowerCase() + ' - ' + code.Name.toLowerCase()).includes(match.toLowerCase());
-            });
-        }
-
-        return Observable.of(filtered);
+        this.filteredPhases = Observable.of((<System>record.get('system').value).Phases);
     }
+
+    // public phaseSelected (event, record) {
+    //
+    //     // console.log('EnterTimeFormComponent phaseSelected', event.source.value);
+    //     const phase = event.source.value;
+    // }
+
+    public openEmployees(record) {
+
+        const project = record.get('project').value as Project;
+
+        this.filteredEmployees = Observable.of(this.filterEmployeesByProject(project.Id, this.employees));
+    }
+
+    // public employeeSelected (event, record) {
+    //
+    //     // console.log('EnterTimeFormComponent employeeSelected', event.source.value);
+    //     const employee = event.source.value;
+    //
+    //     // this.enterTimeForm.patchValue({
+    //     //     employees: this.selectedEmployees
+    //     // });
+    // }
+
+    public openCostCodes(record) {
+
+        this.filteredCostCodes = Observable.of((<Project>record.get('project').value).CostCodes);
+    }
+
+    // public costCodeSelected (event) {
+    //
+    //     const costCode = event.source.value;
+    //
+    // }
 
     public submitTime () {
 
@@ -312,7 +325,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
 
         _.forEach(this.groupedLines, (group, key) => {
 
-            records = this._transforService.transformLinesToSubmitToTimeRecords(group.ProjectLines);
+            records = this._transformService.transformLinesToSubmitToTimeRecords(group.ProjectLines);
 
             if (key === 0) {
 
@@ -337,38 +350,75 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
             });
     }
 
-    private createForm (): FormGroup {
+    private createForm () {
 
-        return this._builder.group({
+        this.enterTimeGrid = this._builder.group({
             cards: this._builder.array([])
         });
     }
 
-    private addCard() {
+    private addCard(card: EntryCard) {
 
         const cards = <FormArray>this.enterTimeGrid.controls['cards'];
-        const newCard = this.createCardGroup();
+        const newCard = this.createCardGroup(card);
 
         cards.push(newCard);
     }
 
-    private createCardGroup (): FormGroup {
+    private createCardGroup (card: EntryCard): FormGroup {
 
         return this._builder.group({
-            cardRows: this._builder.array([]),
-            cardRows: this._builder.array([])
+            key: card.Key,
+            ST: 0,
+            OT: 0,
+            DT: 0,
+            projectRows: this._builder.array([]),
+            indirectRows: this._builder.array([])
         });
     }
 
-    private addRow() {
+    private addRow(rowGroup: string, cardIndex: number, rowData: LineToSubmit) {
 
-        const gridCards = <FormArray>this.enterTimeGrid.controls['cardRows'];
-        const newCardRow = this.initRow();
+        setTimeout(() => {
+            const cards = <FormArray>this.enterTimeGrid.controls['cards'];
+            const ST = <FormArray>cards.controls[cardIndex]['controls']['ST'];
+            const OT = <FormArray>cards.controls[cardIndex]['controls']['OT'];
+            const DT = <FormArray>cards.controls[cardIndex]['controls']['DT'];
 
-        gridCards.push(newCardRow);
+            const gridCards = <FormArray>cards.controls[cardIndex]['controls'][rowGroup];
+
+            ST.setValue(ST.value + rowData.HoursST);
+            OT.setValue(OT.value + rowData.HoursOT);
+            DT.setValue(DT.value + rowData.HoursDT);
+
+            const newCardRow = this.initProjectRow(rowData);
+            // console.log('addRow', cards.controls[cardIndex]);
+
+            gridCards.push(newCardRow);
+        }, 20 * cardIndex);
     }
 
-    private initRow() {
+    private initProjectRow(rowData: LineToSubmit) {
+
+        return this._builder.group({
+            id: rowData.Id,
+            date: [rowData.Date, [Validators.required]],
+            project: [rowData.Project, [Validators.required]],
+            system: rowData.System,
+            phase: rowData.Phase,
+            costCode: [rowData.CostCode, [Validators.required]],
+            employee: [rowData.Employee, [Validators.required]],
+            standardHours: [rowData.HoursST, [Validators.required]],
+            overtimeHours: rowData.HoursOT,
+            doubleTimeHours: rowData.HoursDT,
+            isPunch: rowData.IsPunch,
+            timeEntry: this._builder.group(this.buildTimeEntryFormGroup(rowData),
+                {validator: validateTimeBreakOverlap('in', 'out', 'in', 'out')}),
+            notes: ''
+        });
+    }
+
+    private initIndirectRow(rowData: LineToSubmit) {
 
         return this._builder.group({
             date: ['', [Validators.required]],
@@ -378,15 +428,11 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
             costCode: ['', [Validators.required]],
             employee: ['', [Validators.required]],
             standardHours: ['', [Validators.required]],
-            overtimeHours: '',
-            doubleTimeHours: '',
-            timeEntry: this._builder.group(this.buildTimeEntryFormGroup(),
-                {validator: validateTimeBreakOverlap('in', 'out', 'in', 'out')}),
             notes: ''
         });
     }
 
-    private buildTimeEntryFormGroup () {
+    private buildTimeEntryFormGroup (rowData: LineToSubmit) {
 
         // if (this._isNotHtml5Time) {
         //
@@ -400,14 +446,14 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
         // }
         return {
 
-            time: this._builder.group(this.buildTimeDetailFormGroup(),
+            time: this._builder.group(this.buildTimeDetailFormGroup(rowData.TimeIn, rowData.TimeOut),
                 {validator: validateTime('in', 'out', 'startAfterEnd')}),
-            break: this._builder.group(this.buildTimeDetailFormGroup(),
+            break: this._builder.group(this.buildTimeDetailFormGroup(rowData.BreakIn, rowData.BreakOut),
                 {validator: validateTime('in', 'out', 'breakStartAfterEnd')})
         };
     }
 
-    private buildTimeDetailFormGroup () {
+    private buildTimeDetailFormGroup (inData: string, outData: string) {
 
         // if (this._isNotHtml5Time) {
         //
@@ -421,14 +467,63 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
         // }
         return {
 
-            in: '',
-            out: ''
+            in: inData,
+            out: outData
         };
     }
 
-    private filterEmployeesByProject (projectId: string) {
+    private checkDefaultSystem (systems: Array<System>, record) {
 
-        return _.filter(this.employees, function (employee) {
+        console.log('checkDefaultSystem', systems.length);
+        if (systems.length === 1) {
+
+            record.patchValue({
+                system: systems[0]
+            });
+            this.checkDefaultPhase(systems[0].Phases, record);
+        } else {
+            record.patchValue({
+                system: '',
+                phase: ''
+            });
+        }
+    }
+
+    private checkDefaultPhase (phases: Array<Phase>, record) {
+
+        console.log('checkDefaultPhase', phases.length);
+        if (phases.length === 1) {
+
+            record.patchValue({
+                phase: phases[0]
+            });
+        } else {
+
+            record.patchValue({
+                phase: ''
+            });
+        }
+    }
+
+    private checkDefaultCostCode (costCodes: Array<CostCode>, record) {
+
+        console.log('checkDefaultCostCode', costCodes.length);
+        if (costCodes.length === 1) {
+
+            record.patchValue({
+                costCode: costCodes[0]
+            });
+        } else {
+
+            record.patchValue({
+                costCode: ''
+            });
+        }
+    }
+
+    private filterEmployeesByProject (projectId: string, employees: Array<Employee>) {
+
+        return _.filter(employees, function (employee) {
             return employee.ProjectIds.includes(projectId);
         });
     }

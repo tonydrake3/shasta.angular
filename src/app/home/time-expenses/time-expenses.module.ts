@@ -26,7 +26,7 @@ import { EnterTimeManager } from './enter-time/enter-time.manager';
 import { EnterTimeStatusService } from './enter-time/enter-time-status.service';
 import { EnterTimePreloadManager } from './enter-time/enter-time-preload.manager';
 import { EnterTimeBatchService } from './enter-time/enter-time-batch.service';
-import { EnterTimeAutocompleteService } from './enter-time/enter-time-autocomplete.service';
+import { EnterTimeFilterService } from './enter-time/enter-time-filter.service';
 import { EnterTimeTransformService } from './enter-time/enter-time-transform.service';
 import {EnterTimeGridBuilderService} from './enter-time/enter-time-grid-builder.service';
 
@@ -59,8 +59,8 @@ import {EnterTimeGridBuilderService} from './enter-time/enter-time-grid-builder.
     ],
     providers: [
       TimeRecordsService,
-      EnterTimeAutocompleteService,
       EnterTimeBatchService,
+      EnterTimeFilterService,
       EnterTimeGridBuilderService,
       EnterTimeManager,
       EnterTimeStatusService,

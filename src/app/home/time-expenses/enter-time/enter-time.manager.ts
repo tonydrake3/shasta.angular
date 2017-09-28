@@ -7,11 +7,12 @@ import { Subject } from 'rxjs/Subject';
 import { CostCode } from '../../../models/domain/CostCode';
 import { Project } from '../../../models/domain/Project';
 import { Employee } from '../../../models/domain/Employee';
-import {IndirectToSubmit, LineToSubmit} from './models/LinesToSubmit';
+import {LineToSubmit} from './models/LinesToSubmit';
 import { TimeRecord } from '../../../models/domain/TimeRecord';
 import {EntryCard, TimeEntry, TimeEntryMode} from './models/TimeEntry';
 import { TimeEntryState } from './models/TimeEntry';
 import { TimeSettings } from '../../../models/domain/TimeSettings';
+import {FormGroup} from '@angular/forms';
 
 @Injectable()
 export class EnterTimeManager {
@@ -29,7 +30,7 @@ export class EnterTimeManager {
     private _employees: Array<Employee>;
     private _timeEntryState: TimeEntryState;
     private _linesToSubmit: Array<LineToSubmit>;
-    private _indirectToSubmit: Array<IndirectToSubmit>;
+    private _indirectToSubmit: Array<LineToSubmit>;
     private _groupBy = 'Date';
     private _timeThreshold:number;
     private _enterTimeFormData;
@@ -186,6 +187,18 @@ export class EnterTimeManager {
     public insertProjectLine (record: LineToSubmit) {
 
         this._linesToSubmit.push(record);
+
+        this._linesToSubmit = _.sortBy(this._linesToSubmit, (line) => {
+           return line.Date;
+        });
+    }
+
+    public deleteProjectById (id: string) {
+
+        this._linesToSubmit = _.remove(this._linesToSubmit, (line) => {
+
+            return id !== line.Id;
+        });
     }
 
     public deleteProjectLine (record: LineToSubmit) {
@@ -198,17 +211,23 @@ export class EnterTimeManager {
             }
         });
 
+        console.log('deleteProjectLine', keyToDelete);
+
         if (keyToDelete != null) {
             this._linesToSubmit.splice(keyToDelete--, 1);
         }
     }
 
-    public insertIndirectLine (record: IndirectToSubmit) {
+    public insertIndirectLine (record: LineToSubmit) {
 
         this._indirectToSubmit.push(record);
+
+        this._indirectToSubmit = _.sortBy(this._indirectToSubmit, (line) => {
+            return line.Date;
+        });
     }
 
-    public deleteIndirectLine (record: IndirectToSubmit) {
+    public deleteIndirectLine (record: LineToSubmit) {
 
         let keyToDelete: number;
 
@@ -223,11 +242,35 @@ export class EnterTimeManager {
         }
     }
 
-    public deleteCardGroup (card: EntryCard) {
+    public deleteCardGroup (rowsToDelete: Array<FormGroup>, indirectRowsToDelete: Array<FormGroup>) {
 
-        card.ProjectLines.forEach(record => {
-            this.deleteProjectLine(record);
-        });
+        if (rowsToDelete.length > 0) {
+
+            _.forEach(rowsToDelete, (formGroup) => {
+
+                _.forEach(this._linesToSubmit, (line) => {
+
+                    if (line && _.isEqual(line.Id, formGroup.get('id').value)) {
+
+                        this.deleteProjectLine(line);
+                    }
+                });
+            });
+        }
+
+        if (indirectRowsToDelete.length > 0) {
+
+            _.forEach(indirectRowsToDelete, (formGroup) => {
+
+                _.forEach(this._indirectToSubmit, (line) => {
+
+                    if (line && _.isEqual(line.Id, formGroup.get('id').value)) {
+
+                        this.deleteIndirectLine(line);
+                    }
+                });
+            });
+        }
     }
 
     public clearLines () {
@@ -285,7 +328,7 @@ export class EnterTimeManager {
 
             _.forEach(lines.employees, (employee) => {
 
-                let model: IndirectToSubmit;
+                let model: LineToSubmit;
 
                 model = this.buildIndirectHoursToSubmit(date, employee, lines);
 
@@ -299,7 +342,7 @@ export class EnterTimeManager {
         return {
             Id: uuidv4(),
             Date: _.cloneDeep(date),
-            Employee: _.cloneDeep(employee),
+            Employee: employee,
             Project: _.cloneDeep(lines.project),
             CostCode: _.cloneDeep(lines.costCode),
             System: _.cloneDeep(lines.system),
@@ -317,14 +360,14 @@ export class EnterTimeManager {
         };
     }
 
-    private buildIndirectHoursToSubmit (date, employee, lines): IndirectToSubmit {
+    private buildIndirectHoursToSubmit (date, employee, lines): LineToSubmit {
 
         return {
             Id: uuidv4(),
             Date: _.cloneDeep(date),
-            Employee: _.cloneDeep(employee),
+            Employee: employee,
             EmployeeId: '',
-            IndirectCostId: '',
+            IndirectCostId: lines.CostCode.Id,
             CostCode: _.cloneDeep(lines.costCode),
             HoursST: Number(lines.standardHours),
             HoursOT: Number(lines.overtimeHours),
@@ -343,7 +386,7 @@ export class EnterTimeManager {
         const timeSubmission: LineToSubmit = {
             Id: uuidv4(),
             Date: _.cloneDeep(date),
-            Employee: _.cloneDeep(employee),
+            Employee: employee,
             Project: _.cloneDeep(lines.project),
             CostCode: _.cloneDeep(lines.costCode),
             System: _.cloneDeep(lines.system),
@@ -391,6 +434,7 @@ export class EnterTimeManager {
             }
         }
 
+        console.log(timeDuration.hours(), this._timeThreshold);
         if (timeDuration && (timeDuration.hours() > this._timeThreshold)) {
 
             timeSubmission.HoursST = this._timeThreshold;
@@ -418,7 +462,7 @@ export class EnterTimeManager {
     // }
 
     // // take the TimeRecords that are ready to submit, and group them and turn them into display friendly cards
-    private groupLinesToSubmit (projectLines: Array<LineToSubmit>, indirectLines: Array<IndirectToSubmit>) {
+    private groupLinesToSubmit (projectLines: Array<LineToSubmit>, indirectLines: Array<LineToSubmit>) {
 
         if (this._groupBy === 'Date') {
 
@@ -445,7 +489,7 @@ export class EnterTimeManager {
     //     });
     // }
 
-    private groupLinesByDate (projectLines: Array<LineToSubmit>, indirectLines: Array<IndirectToSubmit>) {
+    private groupLinesByDate (projectLines: Array<LineToSubmit>, indirectLines: Array<LineToSubmit>) {
 
         // console.log('groupLinesByDate');
         const projectDates = this.getUniqueDates(projectLines);
@@ -471,12 +515,13 @@ export class EnterTimeManager {
             // console.log('EnterTimeManager groupedLines', this._groupedLines);
             projectLines.forEach((projectLine, index) => {
                 if (projectLine.Date.startOf('day').isSame(date, 'day')) {
-                    this._processing$.next(true);
+
                     projectLine.CardIndex = cardIndex;
                     this._projectRow$.next(projectLine);
-                    line.ST += projectLine.HoursST;
-                    line.OT += projectLine.HoursOT;
-                    line.DT += projectLine.HoursDT;
+                    // this._processing$.next(true);
+                    // line.ST += projectLine.HoursST;
+                    // line.OT += projectLine.HoursOT;
+                    // line.DT += projectLine.HoursDT;
                     // setTimeout(() => {
                     //     // console.log('groupLinesByDate projectLines', projectLine);
                     //     line.ST += projectLine.HoursST;
@@ -491,10 +536,11 @@ export class EnterTimeManager {
             });
             indirectLines.forEach((indirectLine, index) => {
                 if (indirectLine.Date.startOf('day').isSame(date, 'day')) {
-                    this._processing$.next(true);
+
                     indirectLine.CardIndex = cardIndex;
                     this._indirectRow$.next(indirectLine);
-                    line.ST += indirectLine.HoursST;
+                    // this._processing$.next(true);
+                    // line.ST += indirectLine.HoursST;
                     // setTimeout(() => {
                     //     // console.log('groupLinesByDate indirectLines', index);
                     //     line.ST += indirectLine.HoursST;
@@ -510,7 +556,7 @@ export class EnterTimeManager {
         this._processing$.next(false);
     }
 
-    private groupLinesByEmployee (projectLines: Array<LineToSubmit>, indirectLines: Array<IndirectToSubmit>) {
+    private groupLinesByEmployee (projectLines: Array<LineToSubmit>, indirectLines: Array<LineToSubmit>) {
 
         // console.log('groupLinesByEmployee');
         const projectEmployees = this.getUniqueEmployees(projectLines);
@@ -520,7 +566,7 @@ export class EnterTimeManager {
             return line.Id;
         });
 
-        _.forEach(employeeArray, (employee) => {
+        employeeArray.forEach((employee, cardIndex) => {
 
             const line: EntryCard = new EntryCard();
             line.Key = employee.Name;
@@ -530,39 +576,47 @@ export class EnterTimeManager {
             // console.log('EnterTimeManager groupedLines', this._groupedLines);
             projectLines.forEach((projectLine, index) => {
                 if (_.isEqual(projectLine.Employee.Id, employee.Id)) {
-                    this._processing$.next(true);
-                    setTimeout(() => {
-                        line.ST += projectLine.HoursST;
-                        line.OT += projectLine.HoursOT;
-                        line.DT += projectLine.HoursDT;
-                        line.ProjectLines.push(projectLine);
-                        if (index === projectLines.length - 1) {
-                            this._processing$.next(false);
-                        }
-                    }, 20 * index);
+
+                    projectLine.CardIndex = cardIndex;
+                    this._projectRow$.next(projectLine);
+                    // this._processing$.next(true);
+                    // setTimeout(() => {
+                    //     line.ST += projectLine.HoursST;
+                    //     line.OT += projectLine.HoursOT;
+                    //     line.DT += projectLine.HoursDT;
+                    //     line.ProjectLines.push(projectLine);
+                    //     if (index === projectLines.length - 1) {
+                    //         this._processing$.next(false);
+                    //     }
+                    // }, 20 * index);
                 }
             });
             indirectLines.forEach((indirectLine, index) => {
                 if (_.isEqual(indirectLine.Employee.Id, employee.Id)) {
-                    this._processing$.next(true);
-                    setTimeout(() => {
-                        line.ST += indirectLine.HoursST;
-                        line.IndirectLines.push(indirectLine);
-                        if (index === indirectLines.length - 1) {
-                            this._processing$.next(false);
-                        }
-                    }, 20 * index);
+
+                    indirectLine.CardIndex = cardIndex;
+                    this._indirectRow$.next(indirectLine);
+                    // this._processing$.next(true);
+                    // setTimeout(() => {
+                    //     line.ST += indirectLine.HoursST;
+                    //     line.IndirectLines.push(indirectLine);
+                    //     if (index === indirectLines.length - 1) {
+                    //         this._processing$.next(false);
+                    //     }
+                    // }, 20 * index);
                 }
             });
         });
     }
 
-    private groupLinesByProject (projectLines: Array<LineToSubmit>, indirectLines: Array<IndirectToSubmit>) {
+    private groupLinesByProject (projectLines: Array<LineToSubmit>, indirectLines: Array<LineToSubmit>) {
 
         // console.log('groupLinesByProject');
         const projects = this.getUniqueProjects(projectLines);
 
-        _.forEach(projects, (project) => {
+        let currentCardIndex = 0;
+
+        projects.forEach((project, cardIndex) => {
 
             const line: EntryCard = new EntryCard();
             line.Key = project.Name;
@@ -572,18 +626,23 @@ export class EnterTimeManager {
             // console.log('EnterTimeManager groupedLines', this._groupedLines);
             projectLines.forEach((projectLine, index) => {
                 if (_.isEqual(projectLine.Project.Id, project.Id)) {
-                    this._processing$.next(true);
-                    setTimeout(() => {
-                        line.ST += projectLine.HoursST;
-                        line.OT += projectLine.HoursOT;
-                        line.DT += projectLine.HoursDT;
-                        line.ProjectLines.push(projectLine);
-                        if (index === projectLines.length - 1) {
-                            this._processing$.next(false);
-                        }
-                    }, 20 * index);
+
+                    projectLine.CardIndex = cardIndex;
+                    this._projectRow$.next(projectLine);
+                    // this._processing$.next(true);
+                    // setTimeout(() => {
+                    //     line.ST += projectLine.HoursST;
+                    //     line.OT += projectLine.HoursOT;
+                    //     line.DT += projectLine.HoursDT;
+                    //     line.ProjectLines.push(projectLine);
+                    //     if (index === projectLines.length - 1) {
+                    //         this._processing$.next(false);
+                    //     }
+                    // }, 20 * index);
                 }
             });
+
+            currentCardIndex = cardIndex;
         });
 
         if (indirectLines.length > 0) {
@@ -594,14 +653,16 @@ export class EnterTimeManager {
             this._cards$.next(line);
 
             indirectLines.forEach((indirectLine, index) => {
-                this._processing$.next(true);
-                setTimeout(() => {
-                    line.ST += indirectLine.HoursST;
-                    line.IndirectLines.push(indirectLine);
-                    if (index === indirectLines.length - 1) {
-                        this._processing$.next(false);
-                    }
-                }, 20 * index);
+                indirectLine.CardIndex = currentCardIndex + 1;
+                this._indirectRow$.next(indirectLine);
+                // this._processing$.next(true);
+                // setTimeout(() => {
+                //     line.ST += indirectLine.HoursST;
+                //     line.IndirectLines.push(indirectLine);
+                //     if (index === indirectLines.length - 1) {
+                //         this._processing$.next(false);
+                //     }
+                // }, 20 * index);
             });
         }
     }

@@ -5,7 +5,6 @@
     .esub-card {
         margin-right: 0;
         margin-left: 0;
-
     }
 
     .enter-time-card-header {
@@ -92,13 +91,18 @@
                 color: $gray-70;
             }
 
-            &.sub-header {
-                font-size: 12px;
-                height: 24px;
-            }
+            .time-entry-header-row {
+                height: 100%;
 
-            &.no-sub-header {
-                border-top: 0;
+                .time-entry-header-cell {
+                    border-right: solid 2px $gray-10;
+                    padding: 4px;
+
+                    &-end {
+                        border-right: 0;
+                        padding: 4px;
+                    }
+                }
             }
         }
 
@@ -121,6 +125,22 @@
                     position: relative;
                     top: 16px;
                 }
+
+                .time-entry-row {
+                    height: 100%;
+
+                    .time-entry-cell {
+                        border-right: solid 2px $gray-10;
+                        padding: 0 4px;
+
+                        &-end {
+                            border-right: 0;
+                            padding: 0 4px;
+                        }
+                    }
+                }
+
+
                 //input {
                 //    border: 0;
                 //    background: transparent;

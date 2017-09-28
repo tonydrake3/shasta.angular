@@ -14,7 +14,7 @@
             &.full-width{
                 width: 100%;
             }
-        } 
+        }
     }
 }
 
@@ -65,9 +65,9 @@
 @media only screen and (min-width: $l_screen_md_min) {
     .app-page-container {
         .app-content-wrapper {
-            .app-content {
-                padding-left: $l_sidebar_width;
-            } 
+            //.app-content {
+            //    padding-left: $l_sidebar_width;
+            //}
             .app-footer{
                 left: $l_sidebar_width;
             }

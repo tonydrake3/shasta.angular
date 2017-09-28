@@ -9,12 +9,66 @@ import {Punch} from '../../../models/domain/Punch';
 import {CommentType} from '../../../models/domain/CommentType';
 import {Break} from '../../../models/domain/Break';
 import {Comment} from '../../../models/domain/Comment';
+import {FormGroup} from '@angular/forms';
 
 @Injectable()
 export class EnterTimeTransformService {
 
 
     constructor () {}
+
+    public transformFormGroupRowsToLinesToSubmit (formGroups: Array<FormGroup>): Array<LineToSubmit> {
+
+        const lines = [];
+
+        _.forEach(formGroups, (formGroup) => {
+
+            lines.push(this.transformFormGroupToLineToSubmit(formGroup));
+        });
+
+        return lines;
+    }
+
+    public transformFormGroupToLineToSubmit (form: FormGroup): LineToSubmit {
+
+        const timeEntry: FormGroup = form.controls['timeEntry'] as FormGroup;
+
+        const timeGroup = timeEntry.controls['time'] as FormGroup;
+        const breakGroup = timeEntry.controls['break'] as FormGroup;
+
+        // console.log('formGroupToLine', timeGroup.controls['in'].value, breakGroup.controls['in'].value);
+
+        const line: LineToSubmit = {
+            Id: form.get('id').value,
+            Date: form.get('date').value,
+            Employee: form.get('employee').value,
+            Project: form.get('project').value,
+            CostCode: form.get('costCode').value,
+            System: form.get('system').value,
+            Phase: form.get('phase').value,
+            IsPunch: form.get('isPunch').value,
+            HoursST: form.get('standardHours').value,
+            HoursOT: form.get('overtimeHours').value,
+            HoursDT: form.get('doubleTimeHours').value
+        };
+
+        if (form.get('isPunch').value) {
+
+            line.TimeIn = timeGroup.controls['in'].value;
+            line.TimeOut = timeGroup.controls['out'].value;
+            line.BreakIn = breakGroup.controls['in'].value;
+            line.BreakOut = breakGroup.controls['out'].value;
+        }
+
+        if (form.get('notes').value) {
+
+            line.Note = form.get('notes').value;
+        }
+
+        console.log('transformFormGroupToLineToSubmit', line);
+
+        return line;
+    }
 
     public transformLinesToSubmitToTimeRecords (lines: Array<LineToSubmit>): Array<TimeRecord> {
 
@@ -77,6 +131,8 @@ export class EnterTimeTransformService {
 
         return record;
     }
+
+
 
     // private recordToLine (record: TimeRecord): LineToSubmit {
     //

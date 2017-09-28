@@ -1,10 +1,11 @@
-import {FormGroup} from '@angular/forms';
+import {FormControl, FormGroup} from '@angular/forms';
 import * as moment from 'moment';
 
 export function validateTimeBreakOverlap(timeInKey: string, timeOutKey: string, breakInKey: string, breakOutKey: string) {
     return (group: FormGroup): {[key: string]: any} => {
 
-        let timeIn, timeOut, breakIn, breakOut, startTime, endTime, breakStartTime, breakEndTime;
+        let timeIn, timeOut, breakIn, breakOut,
+            startTime, endTime, breakStartTime, breakEndTime;
 
         const timeGroup = group.controls['time'] as FormGroup;
         const breakGroup = group.controls['break'] as FormGroup;
@@ -43,38 +44,46 @@ export function validateTimeBreakOverlap(timeInKey: string, timeOutKey: string, 
 
         if (breakStartTime.isAfter(endTime) && breakEndTime.isAfter(endTime)) {
 
+            breakIn.markAsTouched();
             breakIn.setErrors({ invalid: true });
+            breakOut.markAsTouched();
             breakOut.setErrors({ invalid: true });
             return {
                 breakOutsideOfTime: true
             };
         } else if (breakStartTime.isAfter(endTime)) {
 
+            breakOut.markAsTouched();
             breakOut.setErrors({ invalid: true });
             return {
                 breakOutsideOfTime: true
             };
         } else if (breakEndTime.isAfter(endTime)) {
 
+            breakOut.markAsTouched();
             breakOut.setErrors({ invalid: true });
             return {
                 breakOutsideOfTime: true
             };
         } else if (breakStartTime.isBefore(startTime) && breakEndTime.isBefore(startTime)) {
 
+            breakIn.markAsTouched();
             breakIn.setErrors({ invalid: true });
+            breakOut.markAsTouched();
             breakOut.setErrors({ invalid: true });
             return {
                 breakOutsideOfTime: true
             };
         } else if (breakStartTime.isBefore(startTime)) {
 
+            breakIn.markAsTouched();
             breakIn.setErrors({ invalid: true });
             return {
                 breakOutsideOfTime: true
             };
         } else if (breakEndTime.isBefore(startTime)) {
 
+            breakOut.markAsTouched();
             breakOut.setErrors({ invalid: true });
             return {
                 breakOutsideOfTime: true

@@ -1,5 +1,5 @@
 import * as moment from 'moment';
-import {IndirectToSubmit, LineToSubmit} from './LinesToSubmit';
+import {LineToSubmit} from './LinesToSubmit';
 
 export class TimeEntry {
     public In: moment.Moment = moment();
@@ -25,7 +25,7 @@ export class EntryCard {
     OT = 0;
     DT = 0;
     ProjectLines?: Array<LineToSubmit> = [];
-    IndirectLines?: Array<IndirectToSubmit> = [];
+    IndirectLines?: Array<LineToSubmit> = [];
 }
 
 // export class EntryGridLine {
