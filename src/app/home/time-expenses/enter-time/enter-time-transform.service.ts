@@ -70,6 +70,29 @@ export class EnterTimeTransformService {
         return line;
     }
 
+    public transformIndirectFormGroupToLineToSubmit (form: FormGroup): LineToSubmit {
+
+        const line: LineToSubmit = {
+            Id: form.get('id').value,
+            Date: form.get('date').value,
+            Employee: form.get('employee').value,
+            CostCode: form.get('costCode').value,
+            IndirectCostId: form.get('costCode').value.Id,
+            HoursST: form.get('standardHours').value,
+            HoursOT: 0,
+            HoursDT: 0
+        };
+
+        if (form.get('notes').value) {
+
+            line.Note = form.get('notes').value;
+        }
+
+        console.log('transformFormGroupToLineToSubmit', line);
+
+        return line;
+    }
+
     public transformLinesToSubmitToTimeRecords (lines: Array<LineToSubmit>): Array<TimeRecord> {
 
         const timeRecords = [];

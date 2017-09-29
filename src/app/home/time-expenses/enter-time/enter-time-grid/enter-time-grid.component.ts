@@ -1,5 +1,5 @@
 import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
-import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {Form, FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import * as _ from 'lodash';
 import * as uuidv4 from 'uuid/v4';
 
@@ -38,6 +38,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
     public currentCardIndex: number;
     public timeSettings: TimeSettings;
     public enterTimeGrid: FormGroup;
+    public currentHours: number;
 
     public filteredProjects: Observable<Project[]>;
     public filteredSystems: Observable<System[]>;
@@ -102,6 +103,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
                 (row) => {
 
                     console.log('EnterTimeGridComponent indirectRow$', row);
+                    this.addRow('indirectRows', row.CardIndex, row);
                 });
 
         // this._processingSubscription = this._enterTimeManager.processing$
@@ -222,20 +224,40 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
         }
     }
 
-    public copyIndirectRow (record, rowIndex: number, cardIndex: number) {
-        // console.log(record, rowIndex, cardIndex);
+    public copyIndirectRow (record, card) {
+
+        const indirectRows: FormArray = card.get('indirectRows')['controls'];
         const cloneRecord =  _.cloneDeep(record);
-        cloneRecord.Id = uuidv4();
-        this.groupedLines[cardIndex].IndirectLines.splice(rowIndex + 1, 0, cloneRecord);
-        this.groupedLines[cardIndex].ST += record.HoursST;
-        this._enterTimeManager.insertIndirectLine(cloneRecord);
+        cloneRecord.get('id').setValue(uuidv4());
+
+        indirectRows.push(cloneRecord);
+
+        card.get('ST').setValue(card.get('ST').value + cloneRecord.get('standardHours').value);
+
+        this._enterTimeManager.insertIndirectLine(this._transformService.transformIndirectFormGroupToLineToSubmit(cloneRecord));
     }
 
-    public deleteIndirectRow (record, rowIndex: number, cardIndex: number) {
+    public deleteIndirectRow (record, rowIndex: number, card, cardIndex: number) {
 
-        this.groupedLines[cardIndex].IndirectLines.splice(rowIndex, 1);
-        this.groupedLines[cardIndex].ST -= record.HoursST;
-        this._enterTimeManager.deleteIndirectLine(record);
+        const indirectRows: Array<FormGroup> = card.get('indirectRows')['controls'];
+
+        indirectRows.splice(rowIndex, 1);
+
+        card.get('ST').setValue(card.get('ST').value - record.get('standardHours').value);
+
+        this._enterTimeManager.deleteIndirectById(record.get('id').value);
+
+        if (indirectRows.length === 0) {
+
+            const cards = this.enterTimeGrid.controls['cards']['controls'];
+            cards.splice(cardIndex, 1);
+
+            if (cards.length === 0) {
+
+                this._confirmationService.setNeedsConfirmation(false);
+                this.displayGrid.emit(false);
+            }
+        }
     }
 
     public openProjects () {
@@ -272,6 +294,17 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
         this.filteredSystems = Observable.of((<Project>record.get('project').value).Systems);
     }
 
+    public changeSystem (value, record) {
+
+        if (value) {
+
+            this.filteredSystems = this._filterService.filterCollection(value, (<Project>record.get('project').value).Systems);
+        } else {
+
+            this.filteredSystems = Observable.of((<Project>record.get('project').value).Systems);
+        }
+    }
+
     public systemSelected (event, record) {
 
         const system = event.option.value;
@@ -284,39 +317,149 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
         this.filteredPhases = Observable.of((<System>record.get('system').value).Phases);
     }
 
-    // public phaseSelected (event, record) {
-    //
-    //     // console.log('EnterTimeFormComponent phaseSelected', event.source.value);
-    //     const phase = event.source.value;
-    // }
+    public changePhase (value, record) {
 
-    public openEmployees(record) {
+        if (value) {
+
+            this.filteredSystems = this._filterService.filterCollection(value, (<System>record.get('system').value).Phases);
+        } else {
+
+            this.filteredSystems = Observable.of((<System>record.get('system').value).Phases);
+        }
+    }
+
+    public openEmployees (record) {
 
         const project = record.get('project').value as Project;
 
         this.filteredEmployees = Observable.of(this.filterEmployeesByProject(project.Id, this.employees));
     }
 
-    // public employeeSelected (event, record) {
-    //
-    //     // console.log('EnterTimeFormComponent employeeSelected', event.source.value);
-    //     const employee = event.source.value;
-    //
-    //     // this.enterTimeForm.patchValue({
-    //     //     employees: this.selectedEmployees
-    //     // });
-    // }
+    public changeEmployee (value, record) {
 
-    public openCostCodes(record) {
+        const project = record.get('project').value as Project;
+
+        if (value) {
+
+            this.filteredEmployees = this._filterService.filterCollection(value, this.filterEmployeesByProject(project.Id, this.employees));
+        } else {
+
+            this.filteredEmployees = Observable.of(this.filterEmployeesByProject(project.Id, this.employees));
+        }
+    }
+
+    public openIndirectEmployees () {
+
+        this.filteredEmployees = Observable.of(this.employees);
+    }
+
+    public changeIndirectEmployee (value) {
+
+        if (value) {
+
+            this.filteredEmployees = this._filterService.filterCollection(value, this.employees);
+        } else {
+
+            this.filteredEmployees = Observable.of(this.employees);
+        }
+    }
+
+    public openCostCodes (record) {
 
         this.filteredCostCodes = Observable.of((<Project>record.get('project').value).CostCodes);
     }
 
-    // public costCodeSelected (event) {
-    //
-    //     const costCode = event.source.value;
-    //
-    // }
+    public changeCostCodes (value, record) {
+
+        if (value) {
+
+            this.filteredCostCodes = this._filterService.filterCollection(value, (<Project>record.get('project').value).CostCodes);
+        } else {
+
+            this.filteredCostCodes = Observable.of((<Project>record.get('project').value).CostCodes);
+        }
+    }
+
+    public openIndirectCostCodes () {
+
+        this.filteredCostCodes = Observable.of(this.indirectCosts);
+    }
+
+    public changeIndirectCostCodes (value) {
+
+        if (value) {
+
+            this.filteredCostCodes = this._filterService.filterCollection(value, this.indirectCosts);
+        } else {
+
+            this.filteredCostCodes = Observable.of(this.indirectCosts);
+        }
+    }
+
+    public storeCurrentHours (value) {
+
+        this.currentHours = Number(value);
+    }
+
+    public changeStandardHours (value, card, record) {
+
+        const newHours = Number(value);
+
+        if (newHours === 0) {
+
+            record.get('standardHours').setErrors({ 'invalid': true });
+        } else if (value) {
+
+            console.log('changeStandardHours', value);
+            card.get('ST').setValue(card.get('ST').value - this.currentHours);
+            card.get('ST').setValue(card.get('ST').value + newHours);
+            this.currentHours = newHours;
+            record.get('standardHours').setErrors(null);
+        }
+    }
+
+    public changeOvertimeHours (value, card) {
+
+        const newHours = Number(value);
+
+        if (value) {
+
+            console.log('changeOvertimeHours', value);
+            card.get('OT').setValue(card.get('OT').value - this.currentHours);
+            card.get('OT').setValue(card.get('OT').value + newHours);
+            this.currentHours = newHours;
+        }
+    }
+
+    public changeDoubleTimeHours (value, card) {
+
+        const newHours = Number(value);
+
+        if (value) {
+
+            console.log('changeDoubleTimeHours', value);
+            card.get('DT').setValue(card.get('DT').value - this.currentHours);
+            card.get('DT').setValue(card.get('DT').value + newHours);
+            this.currentHours = newHours;
+        }
+    }
+
+    public changeIndirectHours (value, card, record) {
+
+        const newHours = Number(value);
+
+        if (newHours === 0) {
+
+            record.get('standardHours').setErrors({ 'invalid': true });
+        } else if (value) {
+
+            console.log('changeIndirectHours', value);
+            card.get('ST').setValue(card.get('ST').value - this.currentHours);
+            card.get('ST').setValue(card.get('ST').value + newHours);
+            this.currentHours = newHours;
+            record.get('standardHours').setErrors(null);
+        }
+    }
 
     public submitTime () {
 
@@ -379,6 +522,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
 
     private addRow(rowGroup: string, cardIndex: number, rowData: LineToSubmit) {
 
+        // console.log('addRow', cardIndex);
         setTimeout(() => {
             const cards = <FormArray>this.enterTimeGrid.controls['cards'];
             const ST = <FormArray>cards.controls[cardIndex]['controls']['ST'];
@@ -391,7 +535,16 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
             OT.setValue(OT.value + rowData.HoursOT);
             DT.setValue(DT.value + rowData.HoursDT);
 
-            const newCardRow = this.initProjectRow(rowData);
+            let newCardRow;
+
+            if (rowGroup === 'projectRows') {
+
+                newCardRow = this.initProjectRow(rowData);
+                this.timeChanges(newCardRow);
+            } else {
+
+                newCardRow = this.initIndirectRow(rowData);
+            }
             // console.log('addRow', cards.controls[cardIndex]);
 
             gridCards.push(newCardRow);
@@ -421,13 +574,11 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
     private initIndirectRow(rowData: LineToSubmit) {
 
         return this._builder.group({
-            date: ['', [Validators.required]],
-            project: ['', [Validators.required]],
-            system: '',
-            phase: '',
-            costCode: ['', [Validators.required]],
-            employee: ['', [Validators.required]],
-            standardHours: ['', [Validators.required]],
+            id: rowData.Id,
+            date: [rowData.Date, [Validators.required]],
+            costCode: [rowData.CostCode, [Validators.required]],
+            employee: [rowData.Employee, [Validators.required]],
+            standardHours: [rowData.HoursST, [Validators.required]],
             notes: ''
         });
     }
@@ -474,7 +625,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
 
     private checkDefaultSystem (systems: Array<System>, record) {
 
-        console.log('checkDefaultSystem', systems.length);
+        // console.log('checkDefaultSystem', systems.length);
         if (systems.length === 1) {
 
             record.patchValue({
@@ -491,7 +642,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
 
     private checkDefaultPhase (phases: Array<Phase>, record) {
 
-        console.log('checkDefaultPhase', phases.length);
+        // console.log('checkDefaultPhase', phases.length);
         if (phases.length === 1) {
 
             record.patchValue({
@@ -507,7 +658,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
 
     private checkDefaultCostCode (costCodes: Array<CostCode>, record) {
 
-        console.log('checkDefaultCostCode', costCodes.length);
+        // console.log('checkDefaultCostCode', costCodes.length);
         if (costCodes.length === 1) {
 
             record.patchValue({
@@ -533,4 +684,52 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
     //     record.EmployeeId = event.source.value.Id;
     //     console.log(record);
     // }
+
+    /******************************************************************************************************************
+     * Form Field Change Tracking
+     ******************************************************************************************************************/
+
+    private timeChanges (row: FormGroup) {
+
+        const timeEntry = row.controls.timeEntry;
+        const stdHrs = row.get('standardHours');
+        const otHrs = row.get('overtimeHours');
+
+        console.log(timeEntry);
+
+        const timeGroup = timeEntry['controls']['time'];
+        const breakGroup = timeEntry['controls']['break'];
+
+        const timeIn = timeGroup.get('in');
+        timeIn.valueChanges.subscribe(
+
+            (value) => {
+                console.log('timeIn', value, breakIn.value, breakOut.value, timeOut.value);
+            }
+        );
+
+        const timeOut = timeGroup.get('out')
+        timeOut.valueChanges.subscribe(
+
+            (value) => {
+                console.log('timeOut', timeIn.value, breakIn.value, breakOut.value, value);
+            }
+        );
+
+        const breakIn = breakGroup.get('in');
+        breakIn.valueChanges.subscribe(
+
+            (value) => {
+                console.log('breakIn', timeIn.value, value, breakOut.value, timeOut.value);
+            }
+        );
+
+        const breakOut = breakGroup.get('out');
+        breakOut.valueChanges.subscribe(
+
+            (value) => {
+                console.log('breakOut', timeIn.value, breakIn.value, value, timeOut.value);
+            }
+        );
+    }
 }

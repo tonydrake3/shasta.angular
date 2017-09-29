@@ -117,7 +117,7 @@
                             <div style="order:3;" class="table-cell width-9" >
                                 <md-input-container class="form-field">
                                     <input type="text" mdInput [mdAutocomplete]="autoSystem" formControlName="system"
-                                           (focus)="openSystems(record)">
+                                           (focus)="openSystems(record)" (input)="changeSystem($event.target.value, record)">
                                 </md-input-container>
                                 <md-autocomplete #autoSystem="mdAutocomplete" [displayWith]="displayFormatted"
                                                  (optionSelected)="systemSelected($event, record)">
@@ -130,7 +130,7 @@
                             <div style="order:4;" class="table-cell width-9" >
                                 <md-input-container class="form-field">
                                     <input type="text" mdInput [mdAutocomplete]="autoPhase" formControlName="phase"
-                                           (focus)="openPhases(record)">
+                                           (focus)="openPhases(record)" (input)="changePhase($event.target.value, record)">
                                 </md-input-container>
                                 <md-autocomplete #autoPhase="mdAutocomplete" [displayWith]="displayFormatted">
                                     <md-option *ngFor="let phase of filteredPhases | async"
@@ -143,7 +143,7 @@
                             <div style="order:5;" class="table-cell width-9" >
                                 <md-input-container class="form-field">
                                     <input type="text" mdInput [mdAutocomplete]="autoCostCode" formControlName="costCode"
-                                           (focus)="openCostCodes(record)">
+                                           (focus)="openCostCodes(record)" (input)="changeCostCodes($event.target.value, record)">
                                 </md-input-container>
                                 <md-autocomplete #autoCostCode="mdAutocomplete" [displayWith]="displayCode">
                                     <md-option *ngFor="let costCode of filteredCostCodes | async"
@@ -161,7 +161,7 @@
                                 <div *ngIf="groupCardsBy !== 'Employee'">
                                     <md-input-container class="form-field">
                                         <input type="text" mdInput [mdAutocomplete]="autoEmployee" formControlName="employee"
-                                               (focus)="openEmployees(record)">
+                                               (focus)="openEmployees(record)" (input)="changeEmployee($event.target.value, record)">
                                     </md-input-container>
                                     <md-autocomplete #autoEmployee="mdAutocomplete" [displayWith]="displayFormatted">
                                         <md-option *ngFor="let employee of filteredEmployees | async"
@@ -218,17 +218,20 @@
                             </div>
                             <div style="order:8;" class="table-cell table-time-entry max-width-4">
                                 <md-input-container class="form-field">
-                                    <input mdInput type="number" formControlName="standardHours" maxlength="5" step="0.25" min="0" max="24">
+                                    <input mdInput type="number" formControlName="standardHours" maxlength="5" step="0.25" min="0" max="24"
+                                           (focus)="storeCurrentHours($event.target.value)" (input)="changeStandardHours($event.target.value, card, record)">
                                 </md-input-container>
                             </div>
                             <div style="order:9;" class="table-cell table-time-entry max-width-4">
                                 <md-input-container class="form-field">
-                                    <input mdInput type="number" formControlName="overtimeHours" maxlength="5" step="0.25" min="0" max="24">
+                                    <input mdInput type="number" formControlName="overtimeHours" maxlength="5" step="0.25" min="0" max="24"
+                                           (focus)="storeCurrentHours($event.target.value)" (input)="changeOvertimeHours($event.target.value, card, record)">
                                 </md-input-container>
                             </div>
                             <div style="order:10;" class="table-cell table-time-entry max-width-4">
                                 <md-input-container class="form-field">
-                                    <input mdInput type="number" formControlName="doubleTimeHours" maxlength="5" step="0.25" min="0" max="24">
+                                    <input mdInput type="number" formControlName="doubleTimeHours" maxlength="5" step="0.25" min="0" max="24"
+                                           (focus)="storeCurrentHours($event.target.value)" (input)="changeDoubleTimeHours($event.target.value, card, record)">
                                 </md-input-container>
                             </div>
 
@@ -243,6 +246,81 @@
                         </div>
                     </div>
 
+                </div>
+
+                <div class="esub-table" *ngIf="card.get('indirectRows')['controls'].length > 0">
+
+                    <div formArrayName="indirectRows">
+                        <label class="title-light" *ngIf="groupCardsBy !== 'Project'">Indirect Costs</label>
+                        <div class="table-row">
+                            <div style="order:1; width:15%" class="table-cell table-header">Date</div>
+                            <div style="order:2; width:25%" class="table-cell table-header">Employee</div>
+                            <div style="order:3; width:25%" class="table-cell table-header">CostCode</div>
+                            <div style="order:4; width:32%" class="table-cell table-header">ST</div>
+                            <div style="order:5; width:03%" class="table-cell table-header"></div>
+                        </div>
+
+                        <div class="table-row" *ngFor="let record of card.get('indirectRows')['controls']; let rowIndex = index" [formGroupName]="rowIndex">
+                            <div style="order:1; width:15%" class="table-cell" >
+                                <label>{{record.get('date').value.format(dateFormat)}}</label>
+                                <i mdPrefix class="material-icons grid-date" *ngIf="groupCardsBy !== 'Date'">date_range</i>
+                            </div>
+                            <div style="order:2; width:25%" class="table-cell" >
+                                <div *ngIf="groupCardsBy === 'Employee'">
+                                    <label mdTooltip="{{record.get('employee').value.Name}}" [mdTooltipPosition]="'below'" class="label-regular">
+                                        {{record.get('employee').value.Name}}</label>
+                                </div>
+                                <div *ngIf="groupCardsBy !== 'Employee'">
+                                    <div *ngIf="groupCardsBy === 'Employee'">
+                                        <label mdTooltip="{{record.get('employee').value.Name}}" [mdTooltipPosition]="'below'" class="label-regular">
+                                            {{record.get('employee').value.Name}}</label>
+                                    </div>
+                                    <div *ngIf="groupCardsBy !== 'Employee'">
+                                        <md-input-container class="form-field">
+                                            <input type="text" mdInput [mdAutocomplete]="autoEmployee" formControlName="employee"
+                                                   (focus)="openIndirectEmployees()" (input)="changeIndirectEmployee($event.target.value)">
+                                        </md-input-container>
+                                        <md-autocomplete #autoEmployee="mdAutocomplete" [displayWith]="displayFormatted">
+                                            <md-option *ngFor="let employee of filteredEmployees | async"
+                                                       [value]="employee">
+                                                {{employee.Number}} - {{employee.Name}}
+                                            </md-option>
+                                        </md-autocomplete>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="order:3; width:25%" class="table-cell" >
+                                <md-input-container class="form-field">
+                                    <input type="text" mdInput [mdAutocomplete]="autoCostCode" formControlName="costCode"
+                                           (focus)="openIndirectCostCodes(record)" (input)="changeIndirectCostCodes($event.target.value)">
+                                </md-input-container>
+                                <md-autocomplete #autoCostCode="mdAutocomplete" [displayWith]="displayCode">
+                                    <md-option *ngFor="let costCode of filteredCostCodes | async"
+                                               [value]="costCode">
+                                        {{costCode.Code}} - {{costCode.Name}}
+                                    </md-option>
+                                </md-autocomplete>
+                            </div>
+                            <div style="order:4; width:32%" class="table-cell table-time-entry">
+                                <div class="row">
+                                    <div class="col-md-12 no-gutters">
+                                        <md-input-container class="form-field">
+                                            <input mdInput type="number" formControlName="standardHours" maxlength="5" step="0.25" min="0" max="24"
+                                                   (focus)="storeCurrentHours($event.target.value)" (input)="changeIndirectHours($event.target.value, card, record)">
+                                        </md-input-container>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="order:5; width:03%" class="table-cell" >
+                                <i class="material-icons" mdTooltip="Copy" (click)="copyIndirectRow(record, card)"
+                                   [mdTooltipPosition]="'after'">content_copy</i>
+                                <i class="material-icons" mdTooltip="Note"
+                                   [mdTooltipPosition]="'after'">description</i>
+                                <i class="material-icons" mdTooltip="Delete" (click)="deleteIndirectRow(record, rowIndex, card, cardIndex)"
+                                   [mdTooltipPosition]="'after'">delete</i>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -227,6 +227,14 @@ export class EnterTimeManager {
         });
     }
 
+    public deleteIndirectById (id: string) {
+
+        this._indirectToSubmit = _.remove(this._indirectToSubmit, (line) => {
+
+            return id !== line.Id;
+        });
+    }
+
     public deleteIndirectLine (record: LineToSubmit) {
 
         let keyToDelete: number;
@@ -319,6 +327,10 @@ export class EnterTimeManager {
                 this._linesToSubmit.push(model);
             });
         });
+
+        this._linesToSubmit = _.sortBy(this._linesToSubmit, (line) => {
+            return line.Date;
+        });
     }
 
     private processIndirectLines (lines) {
@@ -334,6 +346,10 @@ export class EnterTimeManager {
 
                 this._indirectToSubmit.push(model);
             });
+        });
+
+        this._indirectToSubmit = _.sortBy(this._indirectToSubmit, (line) => {
+            return line.Date;
         });
     }
 
@@ -367,7 +383,7 @@ export class EnterTimeManager {
             Date: _.cloneDeep(date),
             Employee: employee,
             EmployeeId: '',
-            IndirectCostId: lines.CostCode.Id,
+            IndirectCostId: lines.costCode.Id,
             CostCode: _.cloneDeep(lines.costCode),
             HoursST: Number(lines.standardHours),
             HoursOT: Number(lines.overtimeHours),
@@ -434,7 +450,7 @@ export class EnterTimeManager {
             }
         }
 
-        console.log(timeDuration.hours(), this._timeThreshold);
+        // console.log(timeDuration.hours(), this._timeThreshold);
         if (timeDuration && (timeDuration.hours() > this._timeThreshold)) {
 
             timeSubmission.HoursST = this._timeThreshold;
@@ -642,7 +658,7 @@ export class EnterTimeManager {
                 }
             });
 
-            currentCardIndex = cardIndex;
+            currentCardIndex++;
         });
 
         if (indirectLines.length > 0) {
@@ -653,7 +669,7 @@ export class EnterTimeManager {
             this._cards$.next(line);
 
             indirectLines.forEach((indirectLine, index) => {
-                indirectLine.CardIndex = currentCardIndex + 1;
+                indirectLine.CardIndex = currentCardIndex;
                 this._indirectRow$.next(indirectLine);
                 // this._processing$.next(true);
                 // setTimeout(() => {
