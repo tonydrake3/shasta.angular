@@ -46,6 +46,13 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
     public filteredCostCodes: Observable<CostCode[]>;
     public filteredEmployees: Observable<Employee[]>;
 
+    public autoProject;
+    public autoSystem;
+    public autoPhase;
+    public autoCostCode;
+    public autoCostCodes;
+    public autoEmployee;
+
     private _cardSubscription;
     private _projectLineSubscription;
     private _indirectLineSubscription;
@@ -688,7 +695,6 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
     /******************************************************************************************************************
      * Form Field Change Tracking
      ******************************************************************************************************************/
-
     private timeChanges (row: FormGroup) {
 
         const timeEntry = row.controls.timeEntry;
@@ -701,6 +707,10 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
         const breakGroup = timeEntry['controls']['break'];
 
         const timeIn = timeGroup.get('in');
+        const timeOut = timeGroup.get('out');
+        const breakIn = breakGroup.get('in');
+        const breakOut = breakGroup.get('out');
+
         timeIn.valueChanges.subscribe(
 
             (value) => {
@@ -708,7 +718,6 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
             }
         );
 
-        const timeOut = timeGroup.get('out')
         timeOut.valueChanges.subscribe(
 
             (value) => {
@@ -716,7 +725,6 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
             }
         );
 
-        const breakIn = breakGroup.get('in');
         breakIn.valueChanges.subscribe(
 
             (value) => {
@@ -724,7 +732,6 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
             }
         );
 
-        const breakOut = breakGroup.get('out');
         breakOut.valueChanges.subscribe(
 
             (value) => {

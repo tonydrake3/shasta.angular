@@ -72,6 +72,12 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
     public breakInPeriod: string;
     public breakOutPeriod: string;
 
+    public autoProject;
+    public autoSystem;
+    public autoPhase;
+    public autoCostCode;
+    public autoEmployee;
+
     // Calendar Config
     public dpDatepickerConfig: IDatePickerConfig = {
         allowMultiSelect: true,

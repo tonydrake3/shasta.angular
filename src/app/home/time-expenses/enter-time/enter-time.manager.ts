@@ -32,7 +32,7 @@ export class EnterTimeManager {
     private _linesToSubmit: Array<LineToSubmit>;
     private _indirectToSubmit: Array<LineToSubmit>;
     private _groupBy = 'Date';
-    private _timeThreshold:number;
+    private _timeThreshold: number;
     private _enterTimeFormData;
     private _groupedLines;
 
