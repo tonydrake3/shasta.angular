@@ -133,7 +133,74 @@ Enhancements
     input text    id=SuggestedEnhancement    Please add more blocks
 
 
+Request Assistance
+    Open Browser    https://staging.esubonline.com/TRACKpoint/   Chrome
+    #Set Window Size    ${1600}    ${900}
+    Sleep     3s
+    Input Text    id=loginName    TrialDiaz
+    Sleep    1s
+    Click Button    id=Image1
+    Capture Page Screenshot    Filename=SubscriberValid.png
+    wait until page contains    eSUB
+    Sleep    2s
+    Input Text    name=username    support@esubinc.com
+    Sleep    2s
+    Input Text    id=Password1    Tr@pointe$ub
+    Sleep    1s
+    Click Button    id=Image1
+    wait until page contains    eSUB
+    Sleep    3s
+    #wait until page contains    eSUB
+    Sleep    2s
+    Click element    id=eSUBTopLogo
+    wait until page contains    eSUB
+    Sleep    2s
+    mouse over      Xpath=//*[@id="rightMenu"]/a
+    Sleep    2s
+    click element    Xpath=//*[@id="userMenu"]/a[3]
+    select window    name=assistance
+    wait until page contains    eSUB
+    Sleep    2s
+    input text    id=Text1    Tony's Electrical Company
+    Sleep    2s
+    input text    id=Text2    tonyd@esub.com
+    Sleep    2s
+    input text    id=Description    Help me please, my contractor needs more wiring
+    Sleep    2s
+    close browser
+
+
+Request Assistance without credentials
+    Open Browser    https://staging.esubonline.com/TRACKpoint/   Chrome
+    #Set Window Size    ${1600}    ${900}
+    Sleep     3s
+    Input Text    id=loginName    TrialDiaz
+    Sleep    1s
+    Click Button    id=Image1
+    Capture Page Screenshot    Filename=SubscriberValid.png
+    wait until page contains    eSUB
+    Sleep    2s
+    Input Text    name=username    support@esubinc.com
+    Sleep    2s
+    Input Text    id=Password1    Tr@pointe$ub
+    Sleep    1s
+    Click Button    id=Image1
+    wait until page contains    eSUB
+    Sleep    2s
+    Click element    id=eSUBTopLogo
+    wait until page contains    eSUB
+    Sleep    2s
+    mouse over      Xpath=//*[@id="rightMenu"]/a
+    Sleep    2s
+    click element    Xpath=//*[@id="userMenu"]/a[3]
+    select window    name=assistance
+    wait until page contains    eSUB
+    Sleep    3s
+    click element    id=Submit1
+    close browser
+
 *** Test Cases ***
-enhancements    enhancements
+Login and Logout    Login and Logout
+
 
 
