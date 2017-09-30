@@ -9,7 +9,7 @@ import { Project } from '../../../models/domain/Project';
 import { Employee } from '../../../models/domain/Employee';
 import {LineToSubmit} from './models/LinesToSubmit';
 import { TimeRecord } from '../../../models/domain/TimeRecord';
-import {EntryCard, TimeEntry, TimeEntryMode} from './models/TimeEntry';
+import {BrowserMode, EntryCard, TimeEntry, TimeEntryMode} from './models/TimeEntry';
 import { TimeEntryState } from './models/TimeEntry';
 import { TimeSettings } from '../../../models/domain/TimeSettings';
 import {FormGroup} from '@angular/forms';
@@ -17,6 +17,7 @@ import {FormGroup} from '@angular/forms';
 @Injectable()
 export class EnterTimeManager {
 
+    // Public Observables
     public _cards$ = new Subject<EntryCard>();
     public _projectRow$ = new Subject();
     public _indirectRow$ = new Subject();
@@ -35,6 +36,8 @@ export class EnterTimeManager {
     private _timeThreshold: number;
     private _enterTimeFormData;
     private _groupedLines;
+    private _browserMode: BrowserMode;
+
 
     // Private Consts
     private _INDIRECT = 'Indirect Costs';
@@ -73,6 +76,16 @@ export class EnterTimeManager {
     /******************************************************************************************************************
      * Public Methods
      ******************************************************************************************************************/
+    public setBrowserMode (mode: BrowserMode) {
+
+        this._browserMode = mode;
+    }
+
+    public getBrowserMode () {
+
+        return this._browserMode;
+    }
+
     public setIndirectCodes (codes: Array<CostCode>) {
 
         this._indirectCodes = _.cloneDeep(codes);
@@ -159,20 +172,13 @@ export class EnterTimeManager {
             (this._enterTimeFormData ? this._enterTimeFormData.employees.length : 0));
     }
 
-    public filterEmployees (projectId: string): Array<Employee> {
-
-        return _.filter(this._employees, function (employee) {
-            return employee.ProjectIds.includes(projectId);
-        });
-    }
-
     public setLineData (formData, times: TimeEntry) {
 
         // this._processing$.next(true);
         this._enterTimeFormData = _.cloneDeep(formData.value);
         this._timeEntryState.Times = _.cloneDeep(times);
 
-        // console.log('EnterTimeManager setLineData', this._enterTimeFormData, this._timeEntryState);
+        console.log('EnterTimeManager setLineData', this._enterTimeFormData, this._timeEntryState);
         // TODO: Clear Private Property values?
         this.resetManager();
     }
@@ -180,7 +186,6 @@ export class EnterTimeManager {
     public getGroupedLines () {
 
         // console.log('EnterTimeManager getGroupedLines');
-        // return this.generateNewLines(this._enterTimeFormData);
         this.generateNewLines(this._enterTimeFormData);
     }
 
@@ -233,14 +238,14 @@ export class EnterTimeManager {
 
     public updateIndirectLine (lineId: string, propertyName: string, newValue: any) {
 
-        console.log('updateIndirectLine propertyName', propertyName);
-        console.log('updateIndirectLine newValue', newValue);
+        // console.log('updateIndirectLine propertyName', propertyName);
+        // console.log('updateIndirectLine newValue', newValue);
         const record = _.filter(this._indirectToSubmit, (line) => {
             return line.Id === lineId;
         });
 
         record[0][propertyName] = newValue;
-        console.log('updateIndirectLine Linerecord[0]', record[0]);
+        // console.log('updateIndirectLine Linerecord[0]', record[0]);
     }
 
     public insertIndirectLine (record: LineToSubmit) {
@@ -420,10 +425,6 @@ export class EnterTimeManager {
 
     private buildTimeToSubmit (date, employee, lines): LineToSubmit {
 
-        //
-        // const punchIn = lines.timeIn ? moment(lines.timeIn, ['h:mm A']) : null;
-        // const punchOut = lines.timeOut ? moment(lines.timeOut, ['h:mm A']) : null;
-
         const timeSubmission: LineToSubmit = {
             Id: uuidv4(),
             Date: _.cloneDeep(date),
@@ -492,16 +493,6 @@ export class EnterTimeManager {
         return timeSubmission;
     }
 
-    // private calculateTotalTimeFromPunch (timeIn, timeOut) {
-    //
-    //     const punchIn = timeIn ? timeIn : moment();
-    //     const punchOut = timeOut ? timeOut : moment();
-    //
-    //     const duration = moment.duration(punchOut.diff(punchIn));
-    //
-    //     return (duration.hours() + (duration.minutes() / 60));
-    // }
-
     // // take the TimeRecords that are ready to submit, and group them and turn them into display friendly cards
     private groupLinesToSubmit (projectLines: Array<LineToSubmit>, indirectLines: Array<LineToSubmit>) {
 
@@ -516,19 +507,6 @@ export class EnterTimeManager {
             this.groupLinesByProject(projectLines, indirectLines);
         }
     }
-
-    // private publishLines () {
-    //
-    //     groupedLines.forEach((groupedLine, index) => {
-    //
-    //         // console.log('EnterTimeManager groupLinesToSubmit', groupedLine);
-    //         setTimeout(() => {
-    //
-    //             // console.log('EnterTimeManager groupLinesToSubmit', index);
-    //             this._gridLines$.next(groupedLine);
-    //         }, index * 20);
-    //     });
-    // }
 
     private groupLinesByDate (projectLines: Array<LineToSubmit>, indirectLines: Array<LineToSubmit>) {
 
@@ -559,20 +537,7 @@ export class EnterTimeManager {
 
                     projectLine.CardIndex = cardIndex;
                     this._projectRow$.next(projectLine);
-                    // this._processing$.next(true);
-                    // line.ST += projectLine.HoursST;
-                    // line.OT += projectLine.HoursOT;
-                    // line.DT += projectLine.HoursDT;
-                    // setTimeout(() => {
-                        console.log('groupLinesByDate projectLines', projectLine);
-                    //     line.ST += projectLine.HoursST;
-                    //     line.OT += projectLine.HoursOT;
-                    //     line.DT += projectLine.HoursDT;
-                    //     line.ProjectLines.push(projectLine);
-                    //     if (index === projectLines.length - 1) {
-                    //         this._processing$.next(false);
-                    //     }
-                    // }, 20 * index);
+                    // console.log('groupLinesByDate projectLines', projectLine);
                 }
             });
             indirectLines.forEach((indirectLine, index) => {
@@ -580,16 +545,6 @@ export class EnterTimeManager {
 
                     indirectLine.CardIndex = cardIndex;
                     this._indirectRow$.next(indirectLine);
-                    // this._processing$.next(true);
-                    // line.ST += indirectLine.HoursST;
-                    // setTimeout(() => {
-                    //     // console.log('groupLinesByDate indirectLines', index);
-                    //     line.ST += indirectLine.HoursST;
-                    //     line.IndirectLines.push(indirectLine);
-                    //     if (index === indirectLines.length - 1) {
-                    //         this._processing$.next(false);
-                    //     }
-                    // }, 20 * index);
                 }
             });
         });
@@ -620,16 +575,6 @@ export class EnterTimeManager {
 
                     projectLine.CardIndex = cardIndex;
                     this._projectRow$.next(projectLine);
-                    // this._processing$.next(true);
-                    // setTimeout(() => {
-                    //     line.ST += projectLine.HoursST;
-                    //     line.OT += projectLine.HoursOT;
-                    //     line.DT += projectLine.HoursDT;
-                    //     line.ProjectLines.push(projectLine);
-                    //     if (index === projectLines.length - 1) {
-                    //         this._processing$.next(false);
-                    //     }
-                    // }, 20 * index);
                 }
             });
             indirectLines.forEach((indirectLine, index) => {
@@ -637,14 +582,6 @@ export class EnterTimeManager {
 
                     indirectLine.CardIndex = cardIndex;
                     this._indirectRow$.next(indirectLine);
-                    // this._processing$.next(true);
-                    // setTimeout(() => {
-                    //     line.ST += indirectLine.HoursST;
-                    //     line.IndirectLines.push(indirectLine);
-                    //     if (index === indirectLines.length - 1) {
-                    //         this._processing$.next(false);
-                    //     }
-                    // }, 20 * index);
                 }
             });
         });
@@ -664,22 +601,11 @@ export class EnterTimeManager {
 
             this._cards$.next(line);
 
-            // console.log('EnterTimeManager groupedLines', this._groupedLines);
-            projectLines.forEach((projectLine, index) => {
+            projectLines.forEach((projectLine) => {
                 if (_.isEqual(projectLine.Project.Id, project.Id)) {
 
                     projectLine.CardIndex = cardIndex;
                     this._projectRow$.next(projectLine);
-                    // this._processing$.next(true);
-                    // setTimeout(() => {
-                    //     line.ST += projectLine.HoursST;
-                    //     line.OT += projectLine.HoursOT;
-                    //     line.DT += projectLine.HoursDT;
-                    //     line.ProjectLines.push(projectLine);
-                    //     if (index === projectLines.length - 1) {
-                    //         this._processing$.next(false);
-                    //     }
-                    // }, 20 * index);
                 }
             });
 
@@ -693,17 +619,9 @@ export class EnterTimeManager {
 
             this._cards$.next(line);
 
-            indirectLines.forEach((indirectLine, index) => {
+            indirectLines.forEach((indirectLine) => {
                 indirectLine.CardIndex = currentCardIndex;
                 this._indirectRow$.next(indirectLine);
-                // this._processing$.next(true);
-                // setTimeout(() => {
-                //     line.ST += indirectLine.HoursST;
-                //     line.IndirectLines.push(indirectLine);
-                //     if (index === indirectLines.length - 1) {
-                //         this._processing$.next(false);
-                //     }
-                // }, 20 * index);
             });
         }
     }

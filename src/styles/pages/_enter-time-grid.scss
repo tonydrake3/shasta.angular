@@ -133,9 +133,32 @@
                         border-right: solid 2px $gray-10;
                         padding: 0 4px;
 
-                        &-end {
+                        &.row-end {
                             border-right: 0;
                             padding: 0 4px;
+                        }
+
+                        .firefox-time {
+
+                            .form-field {
+                                //padding-top: 20px;
+                                width: 40px;
+                            }
+
+                            md-select {
+                                position: relative;
+                                top: -6px;
+                                width: 40px;
+
+                                &.ie-offset {
+                                    top: 8px;
+                                }
+
+                                div.mat-select-trigger {
+                                    font-size: 10px;
+                                    min-width: 35px;
+                                }
+                            }
                         }
                     }
                 }

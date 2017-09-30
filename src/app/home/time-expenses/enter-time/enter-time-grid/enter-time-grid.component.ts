@@ -8,7 +8,7 @@ import {EnterTimeManager} from '../enter-time.manager';
 import {Employee} from '../../../../models/domain/Employee';
 import {Project} from '../../../../models/domain/Project';
 import {CostCode} from '../../../../models/domain/CostCode';
-import {EntryCard} from '../models/TimeEntry';
+import {BrowserMode, EntryCard} from '../models/TimeEntry';
 import {Observable} from 'rxjs/Observable';
 import {Phase} from '../../../../models/domain/Phase';
 import {System} from '../../../../models/domain/System';
@@ -40,7 +40,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
     public currentCardIndex: number;
     public timeSettings: TimeSettings;
     public enterTimeGrid: FormGroup;
-    public currentHours: number;
+    public browserMode: BrowserMode;
 
     public filteredProjects: Observable<Project[]>;
     public filteredSystems: Observable<System[]>;
@@ -68,6 +68,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
         this.dateFormat = 'MMM. Do, YYYY';
         this.groupCardsBy = 'Date';
         this.currentCardIndex = 0;
+        this.browserMode = this._enterTimeManager.getBrowserMode();
         this.createForm();
         // console.log(this.enterTimeGrid);
     }
@@ -78,7 +79,6 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
         this.projects = this._enterTimeManager.getProjects();
         this.indirectCosts = this._enterTimeManager.getIndirectCodes();
         this.groupCardsBy = this._enterTimeManager.getGroupBy();
-        // this.lineCount = this._enterTimeManager.getLineCount();
         this.timeSettings = this._enterTimeManager.getSettings();
 
         this.groupedLines = [];
@@ -117,19 +117,6 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
                     this.addRow('indirectRows', row.CardIndex, row);
                 });
 
-        // this._processingSubscription = this._enterTimeManager.processing$
-        //     .subscribe(
-        //         (processing) => {
-        //
-        //             if (!processing) {
-        //                 console.log(this.groupedLines);
-        //                 // this.currentCount++;
-        //                 // this.progressConfig.value = (this.currentCount / (this.lineCount + (this.lineCount / 10))) * 100;
-        //             }
-        //             // this.loading = processing;
-        //             // console.log('ngOnInit', processing);
-        //     });
-
         setTimeout(() => {
             // this.lineCount = this._enterTimeManager.getNumLinesToSubmit();
             // console.log(this.lineCount);
@@ -138,6 +125,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy () {
+
         this._cardSubscription.unsubscribe();
         this._projectLineSubscription.unsubscribe();
         this._indirectLineSubscription.unsubscribe();
@@ -454,6 +442,16 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
         this._enterTimeManager.updateIndirectLine(record.get('id').value, 'IndirectCostId', indirectCost.Id);
     }
 
+    public onTimeChange (event, record, type: string, prefix: string) {
+
+        record.controls.timeEntry['controls'][type].get(prefix + 'Value').setValue(event);
+    }
+
+    public onTimePeriodChange (event, record, type: string, prefix: string) {
+
+        record.controls.timeEntry['controls'][type].get(prefix + 'Period').setValue(event);
+    }
+
     public submitTime () {
 
         let batchPayload: Array<TimeRecord>;
@@ -533,7 +531,15 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
             if (rowGroup === 'projectRows') {
 
                 newCardRow = this.initProjectRow(rowData);
-                this.timeChanges(newCardRow);
+
+                if (this.browserMode.IsUnsupportedBrowser) {
+
+                    this.unsupportedTimeChanges(newCardRow);
+                } else {
+
+                    this.timeChanges(newCardRow);
+                }
+
                 this.standardHourChanges(newCardRow, ST);
                 this.overtimeHourChanges(newCardRow, OT);
                 this.doubleTimeHourChanges(newCardRow, DT);
@@ -585,16 +591,18 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
 
     private buildTimeEntryFormGroup (rowData: LineToSubmit) {
 
-        // if (this._isNotHtml5Time) {
-        //
-        //     return {
-        //
-        //         time: this._builder.group(this.buildTimeDetailFormGroup(),
-        //             {validator: validateTimeWithPeriod('in', 'out', 'startAfterEnd')}),
-        //         break: this._builder.group(this.buildTimeDetailFormGroup(),
-        //             {validator: validateTimeWithPeriod('in', 'out', 'breakStartAfterEnd')})
-        //     };
-        // }
+        if (this.browserMode.IsUnsupportedBrowser) {
+
+            console.log('buildTimeEntryFormGroup', rowData);
+
+            return {
+
+                time: this._builder.group(this.buildTimeDetailFormGroup(rowData.TimeIn, rowData.TimeOut),
+                    {validator: validateTimeWithPeriod('in', 'out', 'startAfterEnd')}),
+                break: this._builder.group(this.buildTimeDetailFormGroup(rowData.BreakIn, rowData.BreakOut),
+                    {validator: validateTimeWithPeriod('in', 'out', 'breakStartAfterEnd')})
+            };
+        }
         return {
 
             time: this._builder.group(this.buildTimeDetailFormGroup(rowData.TimeIn, rowData.TimeOut),
@@ -606,16 +614,19 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
 
     private buildTimeDetailFormGroup (inData: string, outData: string) {
 
-        // if (this._isNotHtml5Time) {
-        //
-        //     return {
-        //
-        //         inValue: '',
-        //         inPeriod: '',
-        //         outValue: '',
-        //         outPeriod: ''
-        //     };
-        // }
+        if (this.browserMode.IsUnsupportedBrowser) {
+
+            const inMoment = moment(inData, ['hh:mm']);
+            const outMoment = moment(outData, ['hh:mm']);
+
+            return {
+
+                inValue: inMoment.format('h:mm'),
+                inPeriod: inMoment.format('A'),
+                outValue: outMoment.format('h:mm'),
+                outPeriod: outMoment.format('A')
+            };
+        }
         return {
 
             in: inData,
@@ -693,8 +704,9 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
             timeDuration = timeDuration.subtract(breakDuration);
         }
 
-        // console.log(timeDuration.hours(), this._timeThreshold);
-        if (timeDuration.asMilliseconds() > 0 && (timeDuration.hours() > this.timeSettings.Overridable.OvertimeThresholdDaily)) {
+        // console.log('calculateHours', timeDuration.hours(), this.timeSettings.Overridable.OvertimeThresholdDaily);
+        if (timeDuration.asMilliseconds() > 0 &&
+            ((timeDuration.hours() + (timeDuration.minutes() / 60)) > this.timeSettings.Overridable.OvertimeThresholdDaily)) {
 
             hours.RegularTime = this.timeSettings.Overridable.OvertimeThresholdDaily;
             hours.Overtime = (timeDuration.hours() + (timeDuration.minutes() / 60)) -
@@ -712,8 +724,8 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
 
         if (inValue && outValue) {
 
-            const momentIn = moment(inValue, ['hh:mm']);
-            const momentOut = moment(outValue, ['hh:mm']);
+            const momentIn = moment(inValue, ['HH:mm']);
+            const momentOut = moment(outValue, ['HH:mm']);
 
             if (momentIn.isValid() && momentOut.isValid() && momentIn.isBefore(momentOut)) {
 
@@ -767,10 +779,17 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
         }
     }
 
+    private convertToTime (valuePart: string, periodPart: string): string {
+
+        return moment(valuePart + ' ' + periodPart, ['h:mm A']).format('HH:mm');
+    }
+
     /******************************************************************************************************************
      * Form Field Change Tracking
      ******************************************************************************************************************/
     private timeChanges (row: FormGroup) {
+
+        console.log('timeChanges', row);
 
         const timeEntry = row.controls.timeEntry;
         const stdHrs = row.get('standardHours');
@@ -838,6 +857,163 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
                 }
                 stdHrs.setValue(hours.RegularTime.toFixed(2));
                 otHrs.setValue(hours.Overtime.toFixed(2));
+            }
+        );
+    }
+
+    private unsupportedTimeChanges (row: FormGroup) {
+
+        // console.log('unsupportedTimeChanges', row);
+        const timeEntry = row.controls.timeEntry;
+        const stdHrs = row.get('standardHours');
+        const otHrs = row.get('overtimeHours');
+        const id = row.get('id').value;
+
+        const timeGroup = timeEntry['controls']['time'];
+        const breakGroup = timeEntry['controls']['break'];
+
+        const timeInValue = timeGroup.get('inValue');
+        const timeInPeriod = timeGroup.get('inPeriod');
+        const timeOutValue = timeGroup.get('outValue');
+        const timeOutPeriod = timeGroup.get('outPeriod');
+        const breakInValue = breakGroup.get('inValue');
+        const breakInPeriod = breakGroup.get('inPeriod');
+        const breakOutValue = breakGroup.get('outValue');
+        const breakOutPeriod = breakGroup.get('outPeriod');
+
+        timeInValue.valueChanges.subscribe(
+
+            (value) => {
+
+                // console.log('timeInValue.valueChanges', value);
+                if (moment(this.convertToTime(value, timeInPeriod.value), ['HH:mm']).isValid()) {
+                    const hours = this.calculateHours(this.convertToTime(value, timeInPeriod.value),
+                        this.convertToTime(breakInValue.value, breakInPeriod.value),
+                        this.convertToTime(breakOutValue.value, breakOutPeriod.value),
+                        this.convertToTime(timeOutValue.value, timeOutPeriod.value));
+                    this._enterTimeManager.updateProjectLine(id, 'TimeIn', this.convertToTime(value, timeInPeriod.value));
+                    stdHrs.setValue(hours.RegularTime.toFixed(2));
+                    otHrs.setValue(hours.Overtime.toFixed(2));
+                }
+            }
+        );
+
+        timeInPeriod.valueChanges.subscribe(
+
+            (value) => {
+
+                // console.log('timeInPeriod.valueChanges', value);
+                if (moment(this.convertToTime(timeInValue.value, value), ['HH:mm']).isValid()) {
+                    const hours = this.calculateHours(this.convertToTime(timeInValue.value, value),
+                        this.convertToTime(breakInValue.value, breakInPeriod.value),
+                        this.convertToTime(breakOutValue.value, breakOutPeriod.value),
+                        this.convertToTime(timeOutValue.value, timeOutPeriod.value));
+                    this._enterTimeManager.updateProjectLine(id, 'TimeIn', this.convertToTime(timeInValue.value, value));
+                    stdHrs.setValue(hours.RegularTime.toFixed(2));
+                    otHrs.setValue(hours.Overtime.toFixed(2));
+                }
+            }
+        );
+
+        timeOutValue.valueChanges.subscribe(
+
+            (value) => {
+
+                // console.log('timeInValue.valueChanges', value);
+                if (moment(this.convertToTime(value, timeOutPeriod.value), ['HH:mm']).isValid()) {
+                    const hours = this.calculateHours(this.convertToTime(timeInValue.value, timeInPeriod.value),
+                        this.convertToTime(breakInValue.value, breakInPeriod.value),
+                        this.convertToTime(breakOutValue.value, breakOutPeriod.value),
+                        this.convertToTime(value, timeOutPeriod.value));
+                    this._enterTimeManager.updateProjectLine(id, 'TimeOut', this.convertToTime(value, timeOutPeriod.value));
+                    stdHrs.setValue(hours.RegularTime.toFixed(2));
+                    otHrs.setValue(hours.Overtime.toFixed(2));
+                }
+            }
+        );
+
+        timeOutPeriod.valueChanges.subscribe(
+
+            (value) => {
+
+                // console.log('timeInPeriod.valueChanges', value);
+                if (moment(this.convertToTime(timeOutValue.value, value), ['HH:mm']).isValid()) {
+                    const hours = this.calculateHours(this.convertToTime(timeInValue.value, timeInPeriod.value),
+                        this.convertToTime(breakInValue.value, breakInPeriod.value),
+                        this.convertToTime(breakOutValue.value, breakOutPeriod.value),
+                        this.convertToTime(timeOutValue.value, value));
+                    this._enterTimeManager.updateProjectLine(id, 'TimeOut', this.convertToTime(timeOutValue.value, value));
+                    stdHrs.setValue(hours.RegularTime.toFixed(2));
+                    otHrs.setValue(hours.Overtime.toFixed(2));
+                }
+            }
+        );
+
+        breakInValue.valueChanges.subscribe(
+
+            (value) => {
+
+                // console.log('timeInValue.valueChanges', value);
+                if (moment(this.convertToTime(value, breakInPeriod.value), ['HH:mm']).isValid()) {
+                    const hours = this.calculateHours(this.convertToTime(timeInValue.value, timeInPeriod.value),
+                        this.convertToTime(value, breakInPeriod.value),
+                        this.convertToTime(breakOutValue.value, breakOutPeriod.value),
+                        this.convertToTime(timeOutValue.value, timeOutPeriod.value));
+                    this._enterTimeManager.updateProjectLine(id, 'BreakIn', this.convertToTime(value, breakInPeriod.value));
+                    stdHrs.setValue(hours.RegularTime.toFixed(2));
+                    otHrs.setValue(hours.Overtime.toFixed(2));
+                }
+            }
+        );
+
+        breakInPeriod.valueChanges.subscribe(
+
+            (value) => {
+
+                // console.log('timeInPeriod.valueChanges', value);
+                if (moment(this.convertToTime(breakInValue.value, value), ['HH:mm']).isValid()) {
+                    const hours = this.calculateHours(this.convertToTime(timeInValue.value, timeInPeriod.value),
+                        this.convertToTime(breakInValue.value, value),
+                        this.convertToTime(breakOutValue.value, breakOutPeriod.value),
+                        this.convertToTime(timeOutValue.value, timeOutPeriod.value));
+                    this._enterTimeManager.updateProjectLine(id, 'BreakIn', this.convertToTime(breakInValue.value, value));
+                    stdHrs.setValue(hours.RegularTime.toFixed(2));
+                    otHrs.setValue(hours.Overtime.toFixed(2));
+                }
+            }
+        );
+
+        breakOutValue.valueChanges.subscribe(
+
+            (value) => {
+
+                // console.log('timeInValue.valueChanges', value);
+                if (moment(this.convertToTime(value, breakOutPeriod.value), ['HH:mm']).isValid()) {
+                    const hours = this.calculateHours(this.convertToTime(timeInValue.value, timeInPeriod.value),
+                        this.convertToTime(breakInValue.value, breakInPeriod.value),
+                        this.convertToTime(value, breakOutPeriod.value),
+                        this.convertToTime(timeOutValue.value, timeOutPeriod.value));
+                    this._enterTimeManager.updateProjectLine(id, 'BreakOut', this.convertToTime(value, breakOutPeriod.value));
+                    stdHrs.setValue(hours.RegularTime.toFixed(2));
+                    otHrs.setValue(hours.Overtime.toFixed(2));
+                }
+            }
+        );
+
+        breakOutPeriod.valueChanges.subscribe(
+
+            (value) => {
+
+                // console.log('timeInPeriod.valueChanges', value);
+                if (moment(this.convertToTime(breakOutValue.value, value), ['HH:mm']).isValid()) {
+                    const hours = this.calculateHours(this.convertToTime(timeInValue.value, timeInPeriod.value),
+                        this.convertToTime(breakInValue.value, breakInPeriod.value),
+                        this.convertToTime(breakOutValue.value, value),
+                        this.convertToTime(timeOutValue.value, timeOutPeriod.value));
+                    this._enterTimeManager.updateProjectLine(id, 'BreakOut', this.convertToTime(breakOutValue.value, value));
+                    stdHrs.setValue(hours.RegularTime.toFixed(2));
+                    otHrs.setValue(hours.Overtime.toFixed(2));
+                }
             }
         );
     }

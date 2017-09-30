@@ -14,7 +14,7 @@ import { System } from '../../../../models/domain/System';
 import { Phase } from '../../../../models/domain/Phase';
 
 import {EnterTimeManager} from '../enter-time.manager';
-import {TimeEntry} from '../models/TimeEntry';
+import {BrowserMode, TimeEntry} from '../models/TimeEntry';
 import {TimeEntryMode} from '../models/TimeEntry';
 import {DateFlyoutService} from '../../../shared/components/date-flyout/date-flyout.service';
 import {Observable} from 'rxjs/Observable';
@@ -67,10 +67,6 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
 
     public selectedEmployees: Array<Employee>;
     public costCodePlaceholder: string;
-    public timeInPeriod: string;
-    public timeOutPeriod: string;
-    public breakInPeriod: string;
-    public breakOutPeriod: string;
 
     public autoProject;
     public autoSystem;
@@ -527,17 +523,6 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
 
     public removeFromCollection (employee, collection: Array<any>) {
 
-        // let keyToDelete: number;
-        //
-        // collection.forEach((emp, idx) => {
-        //     if (emp === employee) {
-        //         keyToDelete = idx;
-        //     }
-        // });
-        //
-        // if (keyToDelete != null) {
-        //     collection.splice(keyToDelete--, 1);
-        // }
         this._filterService.removeFromCollection(employee, collection);
     }
 
@@ -624,6 +609,8 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
 
             this.isUnsupportedTime = true;
         }
+
+        this._enterTimeManager.setBrowserMode(new BrowserMode(this.isUnsupportedTime, this.isIE));
     }
 
     private checkDefaultSystem (systems: Array<System>) {
@@ -682,81 +669,6 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
         });
     }
 
-    // private filterCollection (match, collection: Array<any>): Observable<Array<any>> {
-    //
-    //     let filtered = [];
-    //
-    //     if (typeof match === 'string') {
-    //
-    //         filtered = _.filter(collection, (item) => {
-    //             return item.Name.toLowerCase().includes(match.toLowerCase()) ||
-    //                 item.Number.toLowerCase().includes(match.toLowerCase()) ||
-    //                 (item.Number.toLowerCase() + ' - ' + item.Name.toLowerCase()).includes(match.toLowerCase());
-    //         });
-    //     }
-    //
-    //     return Observable.of(filtered);
-    // }
-    //
-    // private filterEmployees (match, employeeList: Array<Employee>): Observable<Array<any>> {
-    //
-    //     let filtered = [];
-    //
-    //     if (typeof match === 'string') {
-    //
-    //         filtered = _.filter(employeeList, (employee) => {
-    //             return employee.Name.toLowerCase().includes(match.toLowerCase()) ||
-    //                 employee.Number.toLowerCase().includes(match.toLowerCase()) ||
-    //                 (employee.Number.toLowerCase() + ' - ' + employee.Name.toLowerCase()).includes(match.toLowerCase());
-    //         });
-    //
-    //         if (this.selectedEmployees.length > 0) {
-    //
-    //             _.forEach(this.selectedEmployees, (employee) => {
-    //                 this.removeFromCollection(employee, filtered);
-    //             });
-    //         }
-    //     }
-    //
-    //     return Observable.of(filtered);
-    // }
-    //
-    // private filterIndirectCodes (match): Observable<CostCode[]> {
-    //
-    //     // console.log('filterIndirectCodes', match, this._indirectCodes);
-    //     let filtered = [];
-    //
-    //     if (typeof match === 'string') {
-    //
-    //         filtered = _.filter(this._indirectCodes, (code) => {
-    //             return code.Name.toLowerCase().includes(match.toLowerCase()) ||
-    //                 code.Code.toLowerCase().includes(match.toLowerCase()) ||
-    //                 (code.Code.toLowerCase() + ' - ' + code.Name.toLowerCase()).includes(match.toLowerCase());
-    //         });
-    //     }
-    //
-    //     return Observable.of(filtered);
-    // }
-    //
-    // private filterProjectCodes (match): Observable<CostCode[]> {
-    //
-    //     // console.log('filterProjectCodes', match);
-    //     let filtered = [];
-    //     const projectSelect = this.enterTimeForm.get('project');
-    //     console.log('filterProjectCodes', projectSelect.value);
-    //
-    //     if (projectSelect.value && typeof match === 'string') {
-    //
-    //         filtered = _.filter((<Project>projectSelect.value).CostCodes, (code) => {
-    //             return code.Name.toLowerCase().includes(match.toLowerCase()) ||
-    //                 code.Code.toLowerCase().includes(match.toLowerCase()) ||
-    //                 (code.Code.toLowerCase() + ' - ' + code.Name.toLowerCase()).includes(match.toLowerCase());
-    //         });
-    //     }
-    //
-    //     return Observable.of(filtered);
-    // }
-
     private createForm () {
 
         this.enterTimeForm = this._builder.group({
@@ -812,8 +724,10 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
 
                 inValue: '',
                 inPeriod: '',
+                in: '',
                 outValue: '',
-                outPeriod: ''
+                outPeriod: '',
+                out: ''
             };
         }
         return {
@@ -825,13 +739,18 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
 
     private updateTime () {
 
-        this.enterTimeForm.patchValue({
+        const timeCtrl = this.enterTimeForm.get('timeEntry').get('time');
+        const breakCtrl = this.enterTimeForm.get('timeEntry').get('break');
 
-            timeIn: moment(this.enterTimeForm.get('timeIn').value + ' ' + this.timeInPeriod, ['h:mm A']).format('HH:mm'),
-            timeOut: moment(this.enterTimeForm.get('timeOut').value + ' ' + this.timeOutPeriod, ['h:mm A']).format('HH:mm'),
-            breakIn: moment(this.enterTimeForm.get('breakIn').value + ' ' + this.breakInPeriod, ['h:mm A']).format('HH:mm'),
-            breakOut: moment(this.enterTimeForm.get('breakOut').value + ' ' + this.breakOutPeriod, ['h:mm A']).format('HH:mm')
-        });
+        timeCtrl.get('in').setValue(moment(timeCtrl.get('inValue').value + ' ' + timeCtrl.get('inPeriod').value, ['h:mm A'])
+            .format('HH:mm'));
+        timeCtrl.get('out').setValue(moment(timeCtrl.get('outValue').value + ' ' + timeCtrl.get('outPeriod').value, ['h:mm A'])
+            .format('HH:mm'));
+
+        breakCtrl.get('in').setValue(moment(breakCtrl.get('inValue').value + ' ' + breakCtrl.get('inPeriod').value, ['h:mm A'])
+            .format('HH:mm'));
+        breakCtrl.get('out').setValue(moment(breakCtrl.get('outValue').value + ' ' + breakCtrl.get('outPeriod').value, ['h:mm A'])
+            .format('HH:mm'));
     }
 
     private clearFormData () {

@@ -179,43 +179,76 @@
                                  formGroupName="timeEntry">
                                 <div class="row no-gutters time-entry-row">
                                     <div class="col-md-3 time-entry-cell" formGroupName="time">
-                                        <!--<div class="time-entry" *ngIf="!isUnsupportedTime">-->
-                                        <div class="time-entry" *ngIf="record.get('isPunch').value">
+                                        <div class="time-entry" *ngIf="record.get('isPunch').value && !browserMode.IsUnsupportedBrowser">
                                             <md-form-field class="form-field" >
                                                 <input mdInput type="time" formControlName="in">
                                             </md-form-field>
                                         </div>
+                                        <div class="time-entry firefox-time" *ngIf="record.get('isPunch').value && browserMode.IsUnsupportedBrowser">
+                                            <md-form-field class="form-field" >
+                                                <input mdInput type="text" esubTimeInput formControlName="inValue"
+                                                       (timeChange)="onTimeChange($event, record, 'time', 'in')"
+                                                       (timePeriodChange)="onTimePeriodChange($event, record, 'time', 'in')">
+                                            </md-form-field>
+                                            <md-select [ngClass]="{'ie-offset': browserMode.IsIE }" formControlName="inPeriod">
+                                                <md-option [value]="'AM'">AM</md-option>
+                                                <md-option [value]="'PM'">PM</md-option>
+                                            </md-select>
+                                        </div>
                                     </div>
                                     <div class="col-md-3 time-entry-cell" formGroupName="break">
-                                        <div class="time-entry" *ngIf="record.get('isPunch').value">
+                                        <div class="time-entry" *ngIf="record.get('isPunch').value && !browserMode.IsUnsupportedBrowser">
                                             <md-form-field class="form-field" >
                                                 <input mdInput type="time" formControlName="in">
                                             </md-form-field>
                                         </div>
+                                        <div class="time-entry firefox-time" *ngIf="record.get('isPunch').value && browserMode.IsUnsupportedBrowser">
+                                            <md-form-field class="form-field" >
+                                                <input mdInput type="text" esubTimeInput formControlName="inValue"
+                                                       (timeChange)="onTimeChange($event, record, 'break', 'in')"
+                                                       (timePeriodChange)="onTimePeriodChange($event, record, 'break', 'in')">
+                                            </md-form-field>
+                                            <md-select [ngClass]="{'ie-offset': browserMode.IsIE }" formControlName="inPeriod">
+                                                <md-option [value]="'AM'">AM</md-option>
+                                                <md-option [value]="'PM'">PM</md-option>
+                                            </md-select>
+                                        </div>
                                     </div>
                                     <div class="col-md-3 time-entry-cell" formGroupName="break">
-                                        <div class="time-entry" *ngIf="record.get('isPunch').value">
+                                        <div class="time-entry" *ngIf="record.get('isPunch').value && !browserMode.IsUnsupportedBrowser">
                                             <md-form-field class="form-field" >
                                                 <input mdInput type="time" formControlName="out">
                                             </md-form-field>
+                                        </div>
+                                        <div class="time-entry firefox-time" *ngIf="record.get('isPunch').value && browserMode.IsUnsupportedBrowser">
+                                            <md-form-field class="form-field" >
+                                                <input mdInput type="text" esubTimeInput formControlName="outValue"
+                                                       (timeChange)="onTimeChange($event, record, 'break', 'out')"
+                                                       (timePeriodChange)="onTimePeriodChange($event, record, 'break', 'out')">
+                                            </md-form-field>
+                                            <md-select [ngClass]="{'ie-offset': browserMode.IsIE }" formControlName="outPeriod">
+                                                <md-option [value]="'AM'">AM</md-option>
+                                                <md-option [value]="'PM'">PM</md-option>
+                                            </md-select>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 time-entry-cell-end" formGroupName="time">
-                                        <div class="time-entry" *ngIf="record.get('isPunch').value">
+                                    <div class="col-md-3 time-entry-cell row-end" formGroupName="time">
+                                        <div class="time-entry" *ngIf="record.get('isPunch').value && !browserMode.IsUnsupportedBrowser">
                                             <md-form-field class="form-field" >
                                                 <input mdInput type="time" formControlName="out">
                                             </md-form-field>
                                         </div>
-                                        <!--<div class="time-entry firefox-time" *ngIf="isUnsupportedTime">-->
-                                        <!--<md-form-field class="form-field" >-->
-                                        <!--<input mdInput placeholder="Time in" type="text" esubTimeInput formControlName="inValue"-->
-                                        <!--(timeChange)="onTimeInChange($event)" (timePeriodChange)="onTimeInPeriodChange($event)">-->
-                                        <!--</md-form-field>-->
-                                        <!--<md-select [ngClass]="{'ie-offset': isIE }" formControlName="inPeriod">-->
-                                        <!--<md-option [value]="'AM'">AM</md-option>-->
-                                        <!--<md-option [value]="'PM'">PM</md-option>-->
-                                        <!--</md-select>-->
-                                        <!--</div>-->
+                                        <div class="time-entry firefox-time" *ngIf="record.get('isPunch').value && browserMode.IsUnsupportedBrowser">
+                                            <md-form-field class="form-field" >
+                                                <input mdInput type="text" esubTimeInput formControlName="outValue"
+                                                       (timeChange)="onTimeChange($event, record, 'time', 'out')"
+                                                       (timePeriodChange)="onTimePeriodChange($event, record, 'time', 'out')">
+                                            </md-form-field>
+                                            <md-select [ngClass]="{'ie-offset': browserMode.IsIE }" formControlName="outPeriod">
+                                                <md-option [value]="'AM'">AM</md-option>
+                                                <md-option [value]="'PM'">PM</md-option>
+                                            </md-select>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

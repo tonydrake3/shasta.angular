@@ -28,6 +28,17 @@ export class EntryCard {
     IndirectLines?: Array<LineToSubmit> = [];
 }
 
+export class BrowserMode {
+    public IsUnsupportedBrowser: boolean;
+    public IsIE: boolean;
+
+    constructor (isUnsupportedBrowser?: boolean, isIE?: boolean) {
+
+        this.IsUnsupportedBrowser = isUnsupportedBrowser;
+        this.IsIE = isIE;
+    }
+}
+
 // export class EntryGridLine {
 //     Key: string;
 //     ProjectLine?: LineToSubmit;
