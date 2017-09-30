@@ -387,7 +387,7 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
     public projectSelected (event) {
 
         // console.log('EnterTimeFormComponent projectSelected', event.source.value);
-        const project = event.source.value;
+        const project = event.option.value;
 
         this.checkDefaultSystem(project.Systems);
         this.checkDefaultCostCode(project.CostCodes);
@@ -401,7 +401,7 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
 
     public systemSelected (event) {
 
-        const system = event.source.value;
+        const system = event.option.value;
         // console.log('EnterTimeFormComponent systemSelected', system.Phases);
         this.checkDefaultPhase(system.Phases);
     }
@@ -409,13 +409,13 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
     public phaseSelected (event) {
 
         // console.log('EnterTimeFormComponent phaseSelected', event.source.value);
-        const phase = event.source.value;
+        const phase = event.option.value;
     }
 
     public employeeSelected (event) {
 
         // console.log('EnterTimeFormComponent employeeSelected', event.source.value);
-        const employee = event.source.value;
+        const employee = event.option.value;
 
         this.selectedEmployees.push(employee);
         this.enterTimeForm.patchValue({
@@ -427,7 +427,7 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
 
     public costCodeSelected (event) {
 
-        const costCode = event.source.value;
+        const costCode = event.option.value;
 
         if (this.costCodes.length === 0) {
 

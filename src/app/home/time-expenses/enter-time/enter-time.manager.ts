@@ -189,16 +189,9 @@ export class EnterTimeManager {
         this.generateNewLines(this._enterTimeFormData);
     }
 
-    public updateProjectLine (lineId: string, propertyName: string, newValue: any) {
+    public getProjectLines (): Array<LineToSubmit> {
 
-        // console.log('updateProjectLine propertyName', propertyName);
-        // console.log('updateProjectLine newValue', newValue);
-        const record = _.filter(this._linesToSubmit, (line) => {
-            return line.Id === lineId;
-        });
-
-        record[0][propertyName] = newValue;
-        // console.log('updateProject Linerecord[0]', record[0]);
+        return this._linesToSubmit;
     }
 
     public insertProjectLine (record: LineToSubmit) {
@@ -209,6 +202,18 @@ export class EnterTimeManager {
         this._linesToSubmit = _.sortBy(this._linesToSubmit, (line) => {
            return line.Date;
         });
+    }
+
+    public updateProjectLine (lineId: string, propertyName: string, newValue: any) {
+
+        // console.log('updateProjectLine propertyName', propertyName);
+        // console.log('updateProjectLine newValue', newValue);
+        const record = _.filter(this._linesToSubmit, (line) => {
+            return line.Id === lineId;
+        });
+
+        record[0][propertyName] = newValue;
+        // console.log('updateProject Linerecord[0]', record[0]);
     }
 
     public deleteProjectById (id: string) {
@@ -229,11 +234,23 @@ export class EnterTimeManager {
             }
         });
 
-        console.log('deleteProjectLine', keyToDelete);
-
         if (keyToDelete != null) {
             this._linesToSubmit.splice(keyToDelete--, 1);
         }
+    }
+
+    public getIndirectLines (): Array<LineToSubmit> {
+
+        return this._indirectToSubmit;
+    }
+
+    public insertIndirectLine (record: LineToSubmit) {
+
+        this._indirectToSubmit.push(record);
+
+        this._indirectToSubmit = _.sortBy(this._indirectToSubmit, (line) => {
+            return line.Date;
+        });
     }
 
     public updateIndirectLine (lineId: string, propertyName: string, newValue: any) {
@@ -246,15 +263,6 @@ export class EnterTimeManager {
 
         record[0][propertyName] = newValue;
         // console.log('updateIndirectLine Linerecord[0]', record[0]);
-    }
-
-    public insertIndirectLine (record: LineToSubmit) {
-
-        this._indirectToSubmit.push(record);
-
-        this._indirectToSubmit = _.sortBy(this._indirectToSubmit, (line) => {
-            return line.Date;
-        });
     }
 
     public deleteIndirectById (id: string) {

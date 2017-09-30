@@ -12,9 +12,9 @@
                     <input type="text" mdInput placeholder="Project" formControlName="project" [mdAutocomplete]="autoProject"
                             (focus)="openProjects()" >
                 </md-form-field>
-                <md-autocomplete #autoProject="mdAutocomplete" [displayWith]="displayFormatted">
-                    <md-option *ngFor="let project of filteredProjects | async" (onSelectionChange)="projectSelected($event)"
-                               [value]="project">
+                <md-autocomplete #autoProject="mdAutocomplete" [displayWith]="displayFormatted"
+                                 (optionSelected)="projectSelected($event)">
+                    <md-option *ngFor="let project of filteredProjects | async" [value]="project">
                         {{project.Number}} - {{project.Name}}
                     </md-option>
                 </md-autocomplete>
@@ -27,9 +27,9 @@
                     <input type="text" mdInput placeholder="System" formControlName="system" [mdAutocomplete]="autoSystem"
                            (focus)="openSystems()" >
                 </md-form-field>
-                <md-autocomplete #autoSystem="mdAutocomplete" [displayWith]="displayFormatted">
-                    <md-option *ngFor="let system of filteredSystems | async" (onSelectionChange)="systemSelected($event)"
-                               [value]="system">
+                <md-autocomplete #autoSystem="mdAutocomplete" [displayWith]="displayFormatted"
+                                 (optionSelected)="systemSelected($event)">
+                    <md-option *ngFor="let system of filteredSystems | async" [value]="system">
                         {{system.Number}} - {{system.Name}}
                     </md-option>
                 </md-autocomplete>
@@ -42,9 +42,9 @@
                     <input type="text" mdInput placeholder="Phase" formControlName="phase" [mdAutocomplete]="autoPhase"
                            (focus)="openPhases()" >
                 </md-form-field>
-                <md-autocomplete #autoPhase="mdAutocomplete" [displayWith]="displayFormatted">
-                    <md-option *ngFor="let phase of filteredPhases | async" (onSelectionChange)="phaseSelected($event)"
-                               [value]="phase">
+                <md-autocomplete #autoPhase="mdAutocomplete" [displayWith]="displayFormatted"
+                                 (optionSelected)="phaseSelected($event)">
+                    <md-option *ngFor="let phase of filteredPhases | async" [value]="phase">
                         {{phase.Number}} - {{phase.Name}}
                     </md-option>
                 </md-autocomplete>
@@ -57,9 +57,9 @@
                     <input type="text" mdInput placeholder="{{costCodePlaceholder}}" formControlName="costCode" [mdAutocomplete]="autoCostCode"
                            (focus)="openCostCodes()" >
                 </md-form-field>
-                <md-autocomplete #autoCostCode="mdAutocomplete" [displayWith]="displayCostCode">
-                    <md-option *ngFor="let costCode of filteredCostCodes | async" (onSelectionChange)="costCodeSelected($event)"
-                               [value]="costCode">
+                <md-autocomplete #autoCostCode="mdAutocomplete" [displayWith]="displayCostCode"
+                                 (optionSelected)="costCodeSelected($event)">
+                    <md-option *ngFor="let costCode of filteredCostCodes | async" [value]="costCode">
                         {{costCode.Code}} - {{costCode.Name}}
                     </md-option>
                 </md-autocomplete>
@@ -71,9 +71,9 @@
                     <input type="text" mdInput placeholder="Employees" formControlName="employee" [mdAutocomplete]="autoEmployee"
                            (focus)="openEmployee()">
                 </md-form-field>
-                <md-autocomplete #autoEmployee="mdAutocomplete" [displayWith]="displayFormatted">
-                    <md-option *ngFor="let employee of filteredEmployees | async" (onSelectionChange)="employeeSelected($event)"
-                               [value]="employee">
+                <md-autocomplete #autoEmployee="mdAutocomplete" [displayWith]="displayFormatted"
+                                 (optionSelected)="employeeSelected($event)">
+                    <md-option *ngFor="let employee of filteredEmployees | async" [value]="employee">
                         {{employee.Number}} - {{employee.Name}}
                     </md-option>
                 </md-autocomplete>

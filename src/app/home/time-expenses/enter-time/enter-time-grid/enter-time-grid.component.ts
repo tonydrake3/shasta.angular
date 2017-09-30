@@ -454,27 +454,40 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
 
     public submitTime () {
 
-        let batchPayload: Array<TimeRecord>;
-        let records: Array<TimeRecord>;
+        const projectLines = this._enterTimeManager.getProjectLines();
+        const indirectLines = this._enterTimeManager.getIndirectLines();
 
-        _.forEach(this.groupedLines, (group, key) => {
+        let batchPayload: Array<TimeRecord> = [];
+        // let records: Array<TimeRecord>;
 
-            records = this._transformService.transformLinesToSubmitToTimeRecords(group.ProjectLines);
+        if (projectLines.length > 0) {
 
-            if (key === 0) {
+            batchPayload = _.concat(batchPayload, this._transformService.transformLinesToSubmitToTimeRecords(projectLines));
+        }
 
-                batchPayload = records;
-            } else {
+        if (indirectLines.length > 0) {
 
-                batchPayload = _.concat(batchPayload, records);
-            }
-        });
+            batchPayload = _.concat(batchPayload, this._transformService.transformIndirectLinesToSubmitToTimeRecords(indirectLines))
+        }
 
+        // _.forEach(this.groupedLines, (group, key) => {
+        //
+        //     records = this._transformService.transformLinesToSubmitToTimeRecords(group.ProjectLines);
+        //
+        //     if (key === 0) {
+        //
+        //         batchPayload = records;
+        //     } else {
+        //
+        //         batchPayload = _.concat(batchPayload, records);
+        //     }
+        // });
         // console.log('submitTime', batchPayload);
 
         this._batchService.submitBatchTime(batchPayload)
             .then((response) => {
 
+                console.log('submitBatchTime', response);
                 this._confirmationService.setNeedsConfirmation(false);
                 this._enterTimeManager.clearLines();
             })

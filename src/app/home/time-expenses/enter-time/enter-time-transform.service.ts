@@ -107,6 +107,20 @@ export class EnterTimeTransformService {
         return timeRecords;
     }
 
+    public transformIndirectLinesToSubmitToTimeRecords (lines: Array<LineToSubmit>): Array<TimeRecord> {
+
+        const timeRecords = [];
+        // console.log('transformLinesToSubmitToTimeRecords lines', lines);
+        _.forEach(lines, (line) => {
+
+            // console.log('transformLinesToSubmitToTimeRecords line', line);
+            timeRecords.push(this.lineToRecord(line, true));
+        });
+
+        // console.log('transformLinesToSubmitToTimeRecords timeRecords', timeRecords);
+        return timeRecords;
+    }
+
     // public transformTimeRecordsToLinesToSubmit (records: Array<TimeRecord>): Array<LineToSubmit> {
     //
     //
