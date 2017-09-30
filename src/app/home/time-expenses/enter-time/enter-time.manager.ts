@@ -168,7 +168,7 @@ export class EnterTimeManager {
 
     public setLineData (formData, times: TimeEntry) {
 
-        this._processing$.next(true);
+        // this._processing$.next(true);
         this._enterTimeFormData = _.cloneDeep(formData.value);
         this._timeEntryState.Times = _.cloneDeep(times);
 
@@ -184,8 +184,21 @@ export class EnterTimeManager {
         this.generateNewLines(this._enterTimeFormData);
     }
 
+    public updateProjectLine (lineId: string, propertyName: string, newValue: any) {
+
+        // console.log('updateProjectLine propertyName', propertyName);
+        // console.log('updateProjectLine newValue', newValue);
+        const record = _.filter(this._linesToSubmit, (line) => {
+            return line.Id === lineId;
+        });
+
+        record[0][propertyName] = newValue;
+        // console.log('updateProject Linerecord[0]', record[0]);
+    }
+
     public insertProjectLine (record: LineToSubmit) {
 
+        // console.log('insertProjectLine', record);
         this._linesToSubmit.push(record);
 
         this._linesToSubmit = _.sortBy(this._linesToSubmit, (line) => {
@@ -216,6 +229,18 @@ export class EnterTimeManager {
         if (keyToDelete != null) {
             this._linesToSubmit.splice(keyToDelete--, 1);
         }
+    }
+
+    public updateIndirectLine (lineId: string, propertyName: string, newValue: any) {
+
+        console.log('updateIndirectLine propertyName', propertyName);
+        console.log('updateIndirectLine newValue', newValue);
+        const record = _.filter(this._indirectToSubmit, (line) => {
+            return line.Id === lineId;
+        });
+
+        record[0][propertyName] = newValue;
+        console.log('updateIndirectLine Linerecord[0]', record[0]);
     }
 
     public insertIndirectLine (record: LineToSubmit) {
@@ -539,7 +564,7 @@ export class EnterTimeManager {
                     // line.OT += projectLine.HoursOT;
                     // line.DT += projectLine.HoursDT;
                     // setTimeout(() => {
-                    //     // console.log('groupLinesByDate projectLines', projectLine);
+                        console.log('groupLinesByDate projectLines', projectLine);
                     //     line.ST += projectLine.HoursST;
                     //     line.OT += projectLine.HoursOT;
                     //     line.DT += projectLine.HoursDT;
@@ -569,7 +594,7 @@ export class EnterTimeManager {
             });
         });
 
-        this._processing$.next(false);
+        // this._processing$.next(false);
     }
 
     private groupLinesByEmployee (projectLines: Array<LineToSubmit>, indirectLines: Array<LineToSubmit>) {

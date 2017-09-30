@@ -47,9 +47,9 @@ export class EnterTimeTransformService {
             System: form.get('system').value,
             Phase: form.get('phase').value,
             IsPunch: form.get('isPunch').value,
-            HoursST: form.get('standardHours').value,
-            HoursOT: form.get('overtimeHours').value,
-            HoursDT: form.get('doubleTimeHours').value
+            HoursST: Number(form.get('standardHours').value),
+            HoursOT: Number(form.get('overtimeHours').value),
+            HoursDT: Number(form.get('doubleTimeHours').value)
         };
 
         if (form.get('isPunch').value) {
@@ -78,7 +78,7 @@ export class EnterTimeTransformService {
             Employee: form.get('employee').value,
             CostCode: form.get('costCode').value,
             IndirectCostId: form.get('costCode').value.Id,
-            HoursST: form.get('standardHours').value,
+            HoursST: Number(form.get('standardHours').value),
             HoursOT: 0,
             HoursDT: 0
         };

@@ -9,11 +9,7 @@ import {Project} from '../../../models/domain/Project';
 @Injectable()
 export class EnterTimeFilterService {
 
-
-    constructor () {
-
-
-    }
+    constructor () {}
 
     public removeFromCollection (employee, collection: Array<any>) {
 
@@ -37,9 +33,10 @@ export class EnterTimeFilterService {
         if (typeof match === 'string') {
 
             filtered = _.filter(collection, (item) => {
-                return item.Name.toLowerCase().includes(match.toLowerCase()) ||
+                return item.Name && item.Number &&
+                    (item.Name.toLowerCase().includes(match.toLowerCase()) ||
                     item.Number.toLowerCase().includes(match.toLowerCase()) ||
-                    (item.Number.toLowerCase() + ' - ' + item.Name.toLowerCase()).includes(match.toLowerCase());
+                    (item.Number.toLowerCase() + ' - ' + item.Name.toLowerCase()).includes(match.toLowerCase()));
             });
         }
 
