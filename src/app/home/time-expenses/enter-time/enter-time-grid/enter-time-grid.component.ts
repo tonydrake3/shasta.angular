@@ -38,6 +38,8 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
     private _cardSubscription;
     private _projectLineSubscription;
     private _indirectLineSubscription;
+    private _lineCount: number;
+    private _currentLine: number;
 
     public dateFormat: string;
     public groupCardsBy: string;
@@ -81,6 +83,8 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
         this.maxDate = moment().toISOString();
         this.groupCardsBy = 'Date';
         this.currentCardIndex = 0;
+        this._lineCount = 0;
+        this._currentLine = 0;
         this.browserMode = this._enterTimeManager.getBrowserMode();
         this.createForm();
         // console.log(this.enterTimeGrid);
@@ -103,7 +107,8 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
 
                     // console.log('EnterTimeGridComponent currentCardIndex', this.currentCardIndex);
                     // console.log('EnterTimeGridComponent card', card);
-                    this.currentCardIndex++;
+                    this._lineCount = this._enterTimeManager.getTotalLines();
+                    // console.log('ngOnInit cards$', this._lineCount);
                     // this.groupedLines.push(card);
                     this.addCard(card);
                     // console.log('EnterTimeGridComponent Form', this.enterTimeGrid);
@@ -126,7 +131,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
             .subscribe(
                 (row) => {
 
-                    console.log('EnterTimeGridComponent indirectRow$', row);
+                    // console.log('EnterTimeGridComponent indirectRow$', row);
                     this.addRow('indirectRows', row.CardIndex, row);
                 });
 
@@ -165,10 +170,12 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
     public addMoreLines () {
 
         this.displayGrid.emit(false);
+        this._currentLine = 0;
     }
 
     public deleteAllLines() {
 
+        this._currentLine = 0;
         this._enterTimeManager.clearLines();
         this._confirmationService.setNeedsConfirmation(false);
         this.displayGrid.emit(false);
@@ -177,6 +184,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
     public updateGrouping (groupBy: string) {
 
         this.groupCardsBy = groupBy;
+        this._currentLine = 0;
         this.createForm();
         this._enterTimeManager.setGroupBy(groupBy);
     }
@@ -573,6 +581,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
             }
 
             gridCards.push(newCardRow);
+            this.trackProcessing();
         }, 20 * cardIndex);
     }
 
@@ -805,6 +814,16 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
     private convertToTime (valuePart: string, periodPart: string): string {
 
         return moment(valuePart + ' ' + periodPart, ['h:mm A']).format('HH:mm');
+    }
+
+    private trackProcessing () {
+
+        this._currentLine++;
+        // console.log('trackProcessing', this._currentLine);
+        if (this._currentLine === this._lineCount) {
+            // console.log('trackProcessing', this._currentLine);
+            this._enterTimeManager.setProcessing(false);
+        }
     }
 
     /******************************************************************************************************************

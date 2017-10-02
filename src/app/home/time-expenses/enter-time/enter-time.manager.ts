@@ -76,6 +76,11 @@ export class EnterTimeManager {
     /******************************************************************************************************************
      * Public Methods
      ******************************************************************************************************************/
+    public setProcessing (processing: boolean) {
+
+        this._processing$.next(processing);
+    }
+
     public setBrowserMode (mode: BrowserMode) {
 
         this._browserMode = mode;
@@ -170,6 +175,11 @@ export class EnterTimeManager {
         return this._linesToSubmit.length + this._indirectToSubmit.length +
             ((this._timeEntryState.SelectedDates ? this._timeEntryState.SelectedDates.length : 0) *
             (this._enterTimeFormData ? this._enterTimeFormData.employees.length : 0));
+    }
+
+    public getTotalLines () {
+
+        return this._linesToSubmit.length + this._indirectToSubmit.length;
     }
 
     public setLineData (formData, times: TimeEntry) {
@@ -504,6 +514,7 @@ export class EnterTimeManager {
     // // take the TimeRecords that are ready to submit, and group them and turn them into display friendly cards
     private groupLinesToSubmit (projectLines: Array<LineToSubmit>, indirectLines: Array<LineToSubmit>) {
 
+        this._processing$.next(true);
         if (this._groupBy === 'Date') {
 
             this.groupLinesByDate(projectLines, indirectLines);
