@@ -19,7 +19,7 @@
     </div>
 
     <div class="col-md-3 text-right">
-        <button md-raised-button class="esub-button secondary" [routerLink]="'/time-expenses/enter'">Enter Time</button>
+        <button md-raised-button [id]="'btnEnterTime'" class="esub-button secondary" (click)="enterTime()">Enter Time</button>
     </div>
 
   </div>
@@ -27,9 +27,6 @@
   <div class="button-row" [ngSwitch]="view">
 
     <div *ngSwitchCase="'timesheets'" class="esub-button-group">
-      <button md-raised-button (click)="newTimesheet()" class="primary">New Timesheet</button>
-      <button md-raised-button (click)="copyLastWeekTimesheet()" class="primary">Copy Last Week's Time</button>
-      <button md-raised-button (click)="copyYesterdayTimesheet()" class="primary">Copy Last Day's Time</button>
     </div>
 
     <div *ngSwitchCase="'approve-time'" class="esub-button-group">
