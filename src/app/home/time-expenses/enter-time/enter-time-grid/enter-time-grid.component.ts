@@ -29,6 +29,8 @@ import {DatePickerComponent, IDatePickerConfig} from 'ng2-date-picker';
 import {DateFlyoutService} from '../../../shared/components/date-flyout/date-flyout.service';
 import {routeName} from '../../../shared/configuration/web-route-names.configuration';
 import {Router} from '@angular/router';
+import {MdDialog} from '@angular/material';
+import {EnterTimeNoteDialogComponent} from '../enter-time-note-dialog/enter-time-note-dialog.component';
 
 @Component({
     selector: 'esub-enter-time-grid',
@@ -80,7 +82,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
     constructor (private _enterTimeManager: EnterTimeManager, private _confirmationService: ConfirmationDialogService,
                  private _transformService: EnterTimeTransformService, private _batchService: EnterTimeBatchService,
                  private _builder: FormBuilder, private _filterService: EnterTimeFilterService,
-                 private _router: Router) {
+                 private _router: Router, private _dialog: MdDialog) {
 
         this.dateFormat = 'MMM. Do, YYYY';
         this.maxDate = moment().toISOString();
@@ -93,6 +95,9 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
         // console.log(this.enterTimeGrid);
     }
 
+    /******************************************************************************************************************
+     * Lifecycle Methods
+     ******************************************************************************************************************/
     ngOnInit () {
 
         this.employees = this._enterTimeManager.getEmployees();
@@ -152,6 +157,9 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
         this._indirectLineSubscription.unsubscribe();
     }
 
+    /******************************************************************************************************************
+     * Public Methods
+     ******************************************************************************************************************/
     public displayFormatted (value) {
 
         if (value) {
@@ -264,6 +272,18 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
                 this.displayGrid.emit(false);
             }
         }
+    }
+
+    public openNotesModal (record) {
+
+        const notesDialogRef = this._dialog.open(EnterTimeNoteDialogComponent, {
+            data: record.get('notes'),
+            height: '220px',
+            width: '280px'
+        });
+        notesDialogRef.afterClosed().subscribe(result => {
+            // modal closed
+        });
     }
 
     public copyIndirectRow (record, card) {
@@ -519,6 +539,9 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
             });
     }
 
+    /******************************************************************************************************************
+     * Private Methods
+     ******************************************************************************************************************/
     private createForm () {
 
         this.enterTimeGrid = this._builder.group({
@@ -575,12 +598,14 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
                     this.timeChanges(newCardRow);
                 }
 
+                this.projectNoteChanges(newCardRow);
                 this.standardHourChanges(newCardRow, ST);
                 this.overtimeHourChanges(newCardRow, OT);
                 this.doubleTimeHourChanges(newCardRow, DT);
             } else {
 
                 newCardRow = this.initIndirectRow(rowData);
+                this.indirectNoteChanges(newCardRow);
                 this.indirectStandardHourChanges(newCardRow, ST);
             }
 
@@ -608,7 +633,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
             isPunch: rowData.IsPunch,
             timeEntry: this._builder.group(this.buildTimeEntryFormGroup(rowData),
                 {validator: validateTimeBreakOverlap('in', 'out', 'in', 'out')}),
-            notes: ''
+            notes: rowData.Note
         });
     }
 
@@ -621,7 +646,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
             employee: [rowData.Employee, [Validators.required]],
             standardHours: [rowData.HoursST.toFixed(2), [Validators.required]],
             previousStandardHours: rowData.HoursST.toFixed(2),
-            notes: ''
+            notes: rowData.Note
         });
     }
 
@@ -629,20 +654,38 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
 
         if (this.browserMode.IsUnsupportedBrowser) {
 
-            // console.log('buildTimeEntryFormGroup', rowData);
+            if (rowData.IsPunch) {
+                return {
+
+                    time: this._builder.group(this.buildTimeDetailFormGroup(rowData.TimeIn, rowData.TimeOut),
+                        {validator: validateGridTimeWithPeriod('in', 'out', 'startAfterEnd')}),
+                    break: this._builder.group(this.buildTimeDetailFormGroup(rowData.BreakIn, rowData.BreakOut),
+                        {validator: validateTimeWithPeriod('in', 'out', 'breakStartAfterEnd')})
+                };
+            }
+            return {
+
+                time: this._builder.group(this.buildTimeDetailFormGroup(rowData.TimeIn, rowData.TimeOut),
+                    {validator: validateTimeWithPeriod('in', 'out', 'startAfterEnd')}),
+                break: this._builder.group(this.buildTimeDetailFormGroup(rowData.BreakIn, rowData.BreakOut),
+                    {validator: validateTimeWithPeriod('in', 'out', 'breakStartAfterEnd')})
+            };
+        }
+
+        if (rowData.IsPunch) {
 
             return {
 
                 time: this._builder.group(this.buildTimeDetailFormGroup(rowData.TimeIn, rowData.TimeOut),
-                    {validator: validateGridTimeWithPeriod('in', 'out', 'startAfterEnd')}),
+                    {validator: validateGridTime('in', 'out', 'startAfterEnd')}),
                 break: this._builder.group(this.buildTimeDetailFormGroup(rowData.BreakIn, rowData.BreakOut),
-                    {validator: validateTimeWithPeriod('in', 'out', 'breakStartAfterEnd')})
+                    {validator: validateTime('in', 'out', 'breakStartAfterEnd')})
             };
         }
         return {
 
             time: this._builder.group(this.buildTimeDetailFormGroup(rowData.TimeIn, rowData.TimeOut),
-                {validator: validateGridTime('in', 'out', 'startAfterEnd')}),
+                {validator: validateTime('in', 'out', 'startAfterEnd')}),
             break: this._builder.group(this.buildTimeDetailFormGroup(rowData.BreakIn, rowData.BreakOut),
                 {validator: validateTime('in', 'out', 'breakStartAfterEnd')})
         };
@@ -1120,6 +1163,36 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
             (dtValue) => {
 
                 this.processExtraTimeChanges(dtValue, prevDtHrs, dtHrs, dtCardHrs, id, 'HoursDT');
+            }
+        );
+    }
+
+    private projectNoteChanges(row: FormGroup) {
+
+        const notes = row.get('notes');
+        const id = row.get('id').value;
+
+        notes.valueChanges.subscribe(
+
+            (note) => {
+
+                // console.log('projectNoteChanges note', note);
+                this._enterTimeManager.updateProjectLine(id, 'Note', note);
+            }
+        );
+    }
+
+    private indirectNoteChanges(row: FormGroup) {
+
+        const notes = row.get('notes');
+        const id = row.get('id').value;
+
+        notes.valueChanges.subscribe(
+
+            (note) => {
+
+                // console.log('indirectNoteChanges note', note);
+                this._enterTimeManager.updateIndirectLine(id, 'Note', note);
             }
         );
     }
