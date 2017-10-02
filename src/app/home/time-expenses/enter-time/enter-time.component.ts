@@ -144,6 +144,14 @@ export class EnterTimeComponent extends BaseComponent implements OnInit, OnDestr
         return true;
     }
 
+    public copyLastWeekTimesheet() {
+
+    }
+
+    public copyYesterdayTimesheet() {
+
+    }
+
     public onTimeEntryComplete (event) {
 
         this.showGrid = event;
