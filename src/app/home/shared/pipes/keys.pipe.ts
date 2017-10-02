@@ -7,7 +7,7 @@ import { PipeTransform, Pipe } from '@angular/core';
 export class KeysPipe implements PipeTransform {
   transform(value, args: string[]): any {
 
-    // pass in argument as in  | keys:toIgnore  to ignore a named objject
+    // pass in argument as in  | keys:toIgnore  to ignore a named object
     const ignore = args ? args.toString() : '';
 
     const keys = [];

@@ -57,6 +57,10 @@ h5, .h5 {
 	@include roboto-font-stack(16px, normal, $gray);
 }
 
+.expansion-title-regular {
+    @include roboto-font-stack(15px, normal, $gray-50);
+}
+
 .paragraph-bold {
 	@include roboto-font-stack(14.5px, bold, $black);
 }

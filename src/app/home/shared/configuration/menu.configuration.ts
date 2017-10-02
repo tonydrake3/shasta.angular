@@ -89,7 +89,7 @@ export const timeSidebarConfiguration = [
         'Title': 'Timesheets',
         'SidebarId': 'timesheets',
         'iconName': '',
-        'Ordinal': 1,
+        'Ordinal': 2,
         'Visible': true,
         'expandFull': false
     },
@@ -102,7 +102,7 @@ export const timeSidebarConfiguration = [
         'Title': 'Approve Time',
         'SidebarId': 'approveTime',
         'iconName': '',
-        'Ordinal': 2,
+        'Ordinal': 3,
         'Visible': true,
         'expandFull': false
     },
@@ -115,7 +115,19 @@ export const timeSidebarConfiguration = [
         'Title': 'Export Time',
         'SidebarId': 'exportTime',
         'iconName': '',
-        'Ordinal': 3,
+        'Ordinal': 4,
+        'Visible': true,
+        'expandFull': false
+    },
+    {
+        '$id': '4',
+        'Action': '/time-expenses/enter',
+        'Children': null,
+        'Key': '',
+        'System': 1,
+        'Title': 'Enter Time',
+        'iconName': '',
+        'Ordinal': 1,
         'Visible': true,
         'expandFull': false
     }

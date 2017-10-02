@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-md-6 col-xs-12">
             <md-button-toggle-group multiple #group="mdButtonToggleGroup">
-                <md-button-toggle value="status" *ngFor="let status of _statuses" [checked]="status.IsSelected"
+                <md-button-toggle value="status" *ngFor="let status of statuses" [checked]="status.IsSelected"
                                   (change)="selectStatusFilter(status)">
                     <span>{{status.Value}}</span>
                 </md-button-toggle>
@@ -17,17 +17,17 @@
     <div class="row">
         <div class="col-md-5 col-xs-12">
             <form novalidate [formGroup]="filterForm">
-                <md-input-container class="project-selection-search" floatPlaceholder="never">
+                <md-form-field class="project-selection-search" floatPlaceholder="never">
                     <md-icon mdPrefix>search</md-icon>
                     <md-placeholder> Search projects</md-placeholder>
                     <input mdInput type="search" formControlName="filter" (keyup)="filterProjects()">
-                </md-input-container>
+                </md-form-field>
             </form>
         </div>
         <div class="col-md-7">
             <div class="project-sort text-right">
                 <span class="label-bold">Sort&#58;</span>
-                <a *ngFor="let sortItem of _sortColumns" [ngClass]="{ 'active': sortItem.IsSelected }"
+                <a *ngFor="let sortItem of sortColumns" [ngClass]="{ 'active': sortItem.IsSelected }"
                     (click)="sortProjects(sortItem)">
                     {{sortItem.Value}}
                     <i *ngIf="sortItem.IsDescending && sortItem.IsSelected" class="sort-icon material-icons">keyboard_arrow_down</i>

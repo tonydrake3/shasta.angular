@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed, fakeAsync, tick, discardPeriodicTasks } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { MdDatepickerModule, MdNativeDateModule, MdProgressSpinnerModule } from '@angular/material';
@@ -44,8 +45,9 @@ describe('TimeExpenses Component', () => {
       imports: [
         MdDatepickerModule,
         MdNativeDateModule,
-        MdProgressSpinnerModule,
-        FormsModule
+        FormsModule,
+        RouterTestingModule,
+        MdProgressSpinnerModule
       ],
       providers: [
         { provide: TimeRecordsService, useValue: mockTimeRecordsService },

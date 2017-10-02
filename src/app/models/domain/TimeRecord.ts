@@ -2,30 +2,31 @@ import {Hours} from './Hours';
 import {Punch} from './Punch';
 
 export class TimeRecordPost {
-    Id: number;
-    PhaseId?: number;
-    ProjectId?: number;
-    CostCodeId?: number;
-    EmployeeId?: number;
+    Id: string;
+    PhaseId?: string;
+    ProjectId?: string;
+    CostCodeId?: string;
+    EmployeeId?: string;
     Hours?: Hours;
     Punch?: Punch;
     Comments?: Array<any>;
 }
 
 export class TimeRecord {
-    Id: number;
-    PhaseId?: number;
-    ProjectId?: number;
-    CostCodeId?: number;
-    EmployeeId?: number;
+    Id: string;
+    PhaseId?: string;
+    ProjectId?: string;
+    CostCodeId?: string;
+    IndirectCostId?: string;
+    EmployeeId?: string;
     Hours?: Hours;
     Punch?: Punch;
     Comments?: Array<any>;
     TimeRecordStatus?: string; // 'Pending', 'Approved', 'Rejected', 'Signed', 'Exported'
-    ApprovedByUserId?: number;
+    ApprovedByUserId?: string;
     ApprovedDate?: string;
     ManualHours?: boolean;
-    SecondLvlApprovedByUserId?: number;
+    SecondLvlApprovedByUserId?: string;
     SecondLvlApprovedDate?: string;
     Signed?: boolean;
     Breaks?: Array<any>;

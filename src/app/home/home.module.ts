@@ -24,13 +24,15 @@ import { SearchOverlayDirective } from './search-overlay/search-overlay.directiv
 import { OpenSearchOverlaylDirective } from './search-overlay/open-search-overlay.directive';
 
 import {AutoExpandAccordionNavDirective} from './sidenav/sidenav-menu/auto-expand-accordion-nav.directive';
+import {MdButtonModule} from '@angular/material';
 
 
 @NgModule({
     imports: [
         HomeRoutingModule,
         CommonModule,
-        SharedHomeModule
+        SharedHomeModule,
+        MdButtonModule
     ],
     declarations: [
       // Home

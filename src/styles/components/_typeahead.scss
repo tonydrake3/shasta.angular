@@ -1,0 +1,17 @@
+.grid-typeahead {
+
+    .typeahead-list {
+        background: $true-white;
+        border: 1px solid $gray-50;
+        position: absolute;
+
+        .typeahead-list-item {
+            border: 1px solid $gray-40;
+            padding: 5px;
+
+            &:hover {
+                background-color: $gray-30;
+            }
+        }
+    }
+}

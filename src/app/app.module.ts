@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MdInputModule, MdProgressSpinnerModule } from '@angular/material';
 import 'hammerjs';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -26,7 +27,7 @@ import {LookupDataService} from './home/shared/services/lookup-data.service';
 
 // entry components
 import { CommentsComponent } from './home/shared/components/comments.component';
-import {MdInputModule, MdProgressSpinnerModule} from '@angular/material';
+import { ConfirmationDialogComponent } from './home/shared/components/confirmation-dialog.component';
 
 @NgModule({
     imports: [
@@ -57,7 +58,7 @@ import {MdInputModule, MdProgressSpinnerModule} from '@angular/material';
         LookupDataService
     ],
     bootstrap: [AppComponent],
-    entryComponents: [CommentsComponent]
+    entryComponents: [CommentsComponent, ConfirmationDialogComponent]
 })
 
 export class AppModule {
