@@ -82,7 +82,7 @@ export const projectSidebarConfiguration = [
 export const timeSidebarConfiguration = [
     {
         '$id': '1',
-        'Action': '/time-expenses/timesheets',
+        'Action': '/time/timesheets',
         'Children': null,
         'Key': '',
         'System': 1,
@@ -95,7 +95,7 @@ export const timeSidebarConfiguration = [
     },
     {
         '$id': '2',
-        'Action': '/time-expenses/approve-time',
+        'Action': '/time/approve-time',
         'Children': null,
         'Key': '',
         'System': 1,
@@ -108,7 +108,7 @@ export const timeSidebarConfiguration = [
     },
     {
         '$id': '3',
-        'Action': '/time-expenses/export-time',
+        'Action': '/time/export-time',
         'Children': null,
         'Key': '',
         'System': 1,
@@ -121,7 +121,7 @@ export const timeSidebarConfiguration = [
     },
     {
         '$id': '4',
-        'Action': '/time-expenses/enter',
+        'Action': '/time/enter',
         'Children': null,
         'Key': '',
         'System': 1,
@@ -217,11 +217,11 @@ export const sidebarConfiguration = [
     },
     {
         '$id': '4',
-        'Action': '/time-expenses/timesheets',
+        'Action': '/time/timesheets',
         'Children': timeSidebarConfiguration,
         'Key': '',
         'System': 1,
-        'Title': 'Time & Expense',
+        'Title': 'Time',
         'SidebarId': 'time',
         'iconName': 'access_time',
         'Ordinal': 4,
