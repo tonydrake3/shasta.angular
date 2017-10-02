@@ -19,7 +19,10 @@ import {EnterTimeTransformService} from '../enter-time-transform.service';
 import {EnterTimeBatchService} from '../enter-time-batch.service';
 import {TimeRecord} from '../../../../models/domain/TimeRecord';
 import {validateTimeBreakOverlap} from '../../../shared/validators/time-break-overlap.validator';
-import {validateTime, validateTimeWithPeriod} from '../../../shared/validators/time-entry.validator';
+import {
+    validateGridTime, validateGridTimeWithPeriod, validateTime,
+    validateTimeWithPeriod
+} from '../../../shared/validators/time-entry.validator';
 import {EnterTimeFilterService} from '../enter-time-filter.service';
 import {Hours} from '../../../../models/domain/Hours';
 import {DatePickerComponent, IDatePickerConfig} from 'ng2-date-picker';
@@ -485,6 +488,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
 
     public submitTime () {
 
+        // console.log('Submit');
         const projectLines = this._enterTimeManager.getProjectLines();
         const indirectLines = this._enterTimeManager.getIndirectLines();
 
@@ -630,7 +634,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
             return {
 
                 time: this._builder.group(this.buildTimeDetailFormGroup(rowData.TimeIn, rowData.TimeOut),
-                    {validator: validateTimeWithPeriod('in', 'out', 'startAfterEnd')}),
+                    {validator: validateGridTimeWithPeriod('in', 'out', 'startAfterEnd')}),
                 break: this._builder.group(this.buildTimeDetailFormGroup(rowData.BreakIn, rowData.BreakOut),
                     {validator: validateTimeWithPeriod('in', 'out', 'breakStartAfterEnd')})
             };
@@ -638,7 +642,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
         return {
 
             time: this._builder.group(this.buildTimeDetailFormGroup(rowData.TimeIn, rowData.TimeOut),
-                {validator: validateTime('in', 'out', 'startAfterEnd')}),
+                {validator: validateGridTime('in', 'out', 'startAfterEnd')}),
             break: this._builder.group(this.buildTimeDetailFormGroup(rowData.BreakIn, rowData.BreakOut),
                 {validator: validateTime('in', 'out', 'breakStartAfterEnd')})
         };
