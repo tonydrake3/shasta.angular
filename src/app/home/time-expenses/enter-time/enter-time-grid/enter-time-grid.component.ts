@@ -485,6 +485,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
 
     public submitTime () {
 
+        console.log('Submit');
         const projectLines = this._enterTimeManager.getProjectLines();
         const indirectLines = this._enterTimeManager.getIndirectLines();
 
