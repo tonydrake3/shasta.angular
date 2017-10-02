@@ -78,9 +78,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <!--<div style="order:8; width:8%" class="table-cell table-header" *ngIf="timeSettings.Overridable.IsPunchInPunchOutEnabled">Break In</div>-->
-                            <!--<div style="order:7; width:8%" class="table-cell table-header" *ngIf="timeSettings.Overridable.IsPunchInPunchOutEnabled">Break Out</div>-->
-                            <!--<div style="order:8; width:8%" class="table-cell table-header" *ngIf="timeSettings.Overridable.IsPunchInPunchOutEnabled">Time Out</div>-->
                             <div style="order:8; width:4%; max-width: 5%;" class="table-cell table-header">ST</div>
                             <div style="order:9; width:4%; max-width: 5%;" class="table-cell table-header">OT</div>
                             <div style="order:10; width:4%; max-width: 5%;" class="table-cell table-header">DT</div>
@@ -89,8 +86,17 @@
 
                         <div class="table-row" *ngFor="let record of card.get('projectRows')['controls']; let rowIndex = index" [formGroupName]="rowIndex">
                             <div style="order:1;" class="table-cell max-width-10" >
-                                <label>{{record.get('date').value.format(dateFormat)}}</label>
-                                <i mdPrefix class="material-icons grid-date" *ngIf="groupCardsBy !== 'Date'">date_range</i>
+                                <div *ngIf="groupCardsBy === 'Date'">
+                                    <label>{{record.get('date').value.format(dateFormat)}}</label>
+                                </div>
+                                <div *ngIf="groupCardsBy !== 'Date'" class="date-field">
+                                    <md-form-field>
+                                        <input mdInput [mdDatepicker]="picker" [ngModel]="record.get('date').value.toISOString()"
+                                               [ngModelOptions]="{'standalone': true }" [max]="maxDate" (ngModelChange)="dateChange($event, record)">
+                                        <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
+                                        <md-datepicker #picker startView="day"></md-datepicker>
+                                    </md-form-field>
+                                </div>
                             </div>
 
                             <div style="order:2;" class="table-cell width-9" >
@@ -295,8 +301,17 @@
 
                         <div class="table-row" *ngFor="let record of card.get('indirectRows')['controls']; let rowIndex = index" [formGroupName]="rowIndex">
                             <div style="order:1; width:15%" class="table-cell" >
-                                <label>{{record.get('date').value.format(dateFormat)}}</label>
-                                <i mdPrefix class="material-icons grid-date" *ngIf="groupCardsBy !== 'Date'">date_range</i>
+                                <div *ngIf="groupCardsBy === 'Date'">
+                                    <label>{{record.get('date').value.format(dateFormat)}}</label>
+                                </div>
+                                <div *ngIf="groupCardsBy !== 'Date'" class="date-field">
+                                    <md-form-field>
+                                        <input mdInput [mdDatepicker]="picker" [ngModel]="record.get('date').value.toISOString()"
+                                               [ngModelOptions]="{'standalone': true }" [max]="maxDate" (ngModelChange)="indirectDateChange($event, record)">
+                                        <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
+                                        <md-datepicker #picker startView="day"></md-datepicker>
+                                    </md-form-field>
+                                </div>
                             </div>
                             <div style="order:2; width:25%" class="table-cell" >
                                 <div *ngIf="groupCardsBy === 'Employee'">
@@ -364,257 +379,6 @@
             </div>
         </div>
     </form>
-    <div class="esub-card no-hover time-card" *ngFor="let card of groupedLines; let cardIndex = index">
-        <!--<div class="time-card-header">-->
-
-            <!--<div class="row">-->
-                <!--<div class="col-md-6 enter-time-card-header" [ngSwitch]="groupCardsBy">-->
-                    <!--<div class="enter-time-grid-card-title">-->
-                        <!--<label *ngSwitchCase="'Employee'">{{card.Key}}</label>-->
-                        <!--<label *ngSwitchCase="'Project'">{{card.Key}}</label>-->
-                        <!--<label *ngSwitchCase="'Date'">{{card.Key | date:'yMMMd'}}</label>-->
-                    <!--</div>-->
-                    <!--<div class="enter-time-card-totals">-->
-                        <!--<div class="enter-time-card-hours total">-->
-                            <!--<div class="card-total-label">Total</div>-->
-                            <!--<div class="card-total-value">{{card.ST + card.OT + card.DT}}</div>-->
-                        <!--</div>-->
-                        <!--<div class="enter-time-card-hours standard">-->
-                            <!--<div class="card-total-label">ST</div>-->
-                            <!--<div class="card-total-value">{{card.ST}}</div>-->
-                        <!--</div>-->
-                        <!--<div class="enter-time-card-hours overtime">-->
-                            <!--<div class="card-total-label">OT</div>-->
-                            <!--<div class="card-total-value">{{card.OT}}</div>-->
-                        <!--</div>-->
-                        <!--<div class="enter-time-card-hours doubletime">-->
-                            <!--<div class="card-total-label">DT</div>-->
-                            <!--<div class="card-total-value">{{card.DT}}</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div class="col-md-6 text-right">-->
-                    <!--<span (click)="deleteCard(card, cardIndex)">Delete card</span>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-
-        <div class="esub-table" *ngIf="card.ProjectLines?.length > 0">
-
-            <!--<div class="table-row">-->
-                <!--<div style="order:1; width:10%; max-width: 10%;" class="table-cell table-header">Date</div>-->
-                <!--<div style="order:2; width:11%" class="table-cell table-header">Project</div>-->
-                <!--<div style="order:3; width:10%" class="table-cell table-header">System</div>-->
-                <!--<div style="order:4; width:10%" class="table-cell table-header">Phase</div>-->
-                <!--<div style="order:5; width:10%" class="table-cell table-header">Cost Code</div>-->
-                <!--<div style="order:6; width:10%" class="table-cell table-header">Employee</div>-->
-                <!--<div style="order:7; width:6%" class="table-cell table-header" *ngIf="timeSettings.Overridable.IsPunchInPunchOutEnabled">Time In</div>-->
-                <!--<div style="order:8; width:6%" class="table-cell table-header" *ngIf="timeSettings.Overridable.IsPunchInPunchOutEnabled">Break In</div>-->
-                <!--<div style="order:7; width:6%" class="table-cell table-header" *ngIf="timeSettings.Overridable.IsPunchInPunchOutEnabled">Break Out</div>-->
-                <!--<div style="order:8; width:6%" class="table-cell table-header" *ngIf="timeSettings.Overridable.IsPunchInPunchOutEnabled">Time Out</div>-->
-                <!--<div style="order:9; width:4%; max-width: 5%;" class="table-cell table-header">ST</div>-->
-                <!--<div style="order:10; width:4%; max-width: 5%;" class="table-cell table-header">OT</div>-->
-                <!--<div style="order:11; width:4%; max-width: 5%;" class="table-cell table-header">DT</div>-->
-                <!--<div style="order:12; width:3%; max-width: 3%;" class="table-cell table-header"></div>-->
-            <!--</div>-->
-
-
-            <div class="table-row" *ngFor="let record of card.ProjectLines; let rowIndex = index">
-                <!--<div style="order:1; width:10%; max-width: 10%;" class="table-cell" >-->
-                    <!--<label>{{record.Date.format(dateFormat)}}</label>-->
-                    <!--<i mdPrefix class="material-icons grid-date" *ngIf="groupCardsBy !== 'Date'">date_range</i>-->
-                <!--</div>-->
-                <!--<div style="order:2; width:11%" class="table-cell" >-->
-                    <!--<div *ngIf="groupCardsBy === 'Project'">-->
-                        <!--<label mdTooltip="{{record.Project.Name}}" [mdTooltipPosition]="'below'" class="label-regular">-->
-                            <!--{{record.Project.Name}}-->
-                        <!--</label>-->
-                    <!--</div>-->
-                    <!--<div *ngIf="groupCardsBy !== 'Project'">-->
-                        <!--<md-input-container class="form-field">-->
-                            <!--<input type="text" mdInput [mdAutocomplete]="autoProject"-->
-                                   <!--[(ngModel)]="record.Project" (ngModelChange)="filteredProjects = filterCollection(record.Project, projects)">-->
-                        <!--</md-input-container>-->
-                        <!--<md-autocomplete #autoProject="mdAutocomplete" [displayWith]="displayFormatted">-->
-                            <!--<md-option *ngFor="let project of filteredProjects | async" (onSelectionChange)="onProjectSelected(record)"-->
-                                       <!--[value]="project">-->
-                                <!--{{project.Number}} - {{project.Name}}-->
-                            <!--</md-option>-->
-                        <!--</md-autocomplete>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div style="order:3; width:10%" class="table-cell" >-->
-                    <!--<md-input-container class="form-field">-->
-                        <!--<input type="text" mdInput [mdAutocomplete]="autoSystem"-->
-                               <!--[(ngModel)]="record.System" (ngModelChange)="filteredSystems = filterCollection(record.System, record.Project.Systems)">-->
-                    <!--</md-input-container>-->
-                    <!--<md-autocomplete #autoSystem="mdAutocomplete" [displayWith]="displayFormatted">-->
-                        <!--<md-option *ngFor="let system of filteredSystems | async" (onSelectionChange)="onSystemSelected(record)"-->
-                                   <!--[value]="system">-->
-                            <!--{{system.Number}} - {{system.Name}}-->
-                        <!--</md-option>-->
-                    <!--</md-autocomplete>-->
-                <!--</div>-->
-                <!--<div style="order:4; width:10%" class="table-cell" >-->
-                    <!--<md-input-container class="form-field">-->
-                        <!--<input type="text" mdInput [mdAutocomplete]="autoPhase"-->
-                               <!--[(ngModel)]="record.Phase" (ngModelChange)="filteredPhases = filterCollection(record.Phase, record.System.Phases)">-->
-                    <!--</md-input-container>-->
-                    <!--<md-autocomplete #autoPhase="mdAutocomplete" [displayWith]="displayFormatted">-->
-                        <!--<md-option *ngFor="let phase of filteredPhases | async"-->
-                                   <!--[value]="phase">-->
-                            <!--{{phase.Number}} - {{phase.Name}}-->
-                        <!--</md-option>-->
-                    <!--</md-autocomplete>-->
-                <!--</div>-->
-                <!--<div style="order:5; width:10%" class="table-cell" >-->
-                    <!--<md-input-container class="form-field">-->
-                        <!--<input type="text" mdInput [mdAutocomplete]="autoCostCode"-->
-                               <!--[(ngModel)]="record.CostCode" (ngModelChange)="filteredCostCodes = filterCollection(record.CostCode, record.Project.CostCodes)">-->
-                    <!--</md-input-container>-->
-                    <!--<md-autocomplete #autoCostCode="mdAutocomplete" [displayWith]="displayCode">-->
-                        <!--<md-option *ngFor="let costCode of filteredCostCodes | async"-->
-                                   <!--[value]="costCode">-->
-                            <!--{{costCode.Code}} - {{costCode.Name}}-->
-                        <!--</md-option>-->
-                    <!--</md-autocomplete>-->
-                <!--</div>-->
-                <!--<div style="order:6; width:10%" class="table-cell" >-->
-                    <!--<div *ngIf="groupCardsBy === 'Employee'">-->
-                        <!--<label mdTooltip="{{record.Employee.Name}}" [mdTooltipPosition]="'below'" class="label-regular">{{record.Employee.Name}}</label>-->
-                    <!--</div>-->
-                    <!--<div *ngIf="groupCardsBy !== 'Employee'">-->
-                        <!--<md-input-container class="form-field">-->
-                            <!--<input type="text" mdInput [mdAutocomplete]="autoEmployee"-->
-                                   <!--[(ngModel)]="record.Employee" (ngModelChange)="filteredEmployees = filterEmployees(record.Employee, record.Project.Id)">-->
-                        <!--</md-input-container>-->
-                        <!--<md-autocomplete #autoEmployee="mdAutocomplete" [displayWith]="displayFormatted">-->
-                            <!--<md-option *ngFor="let employee of filteredEmployees | async"-->
-                                       <!--[value]="employee">-->
-                                <!--{{employee.Number}} - {{employee.Name}}-->
-                            <!--</md-option>-->
-                        <!--</md-autocomplete>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div style="order:7; width:6%" class="table-cell" *ngIf="timeSettings.Overridable.IsPunchInPunchOutEnabled">-->
-                    <!--<div *ngIf="record.IsPunch">-->
-                        <!--<md-input-container class="form-field">-->
-                            <!--<input mdInput type="time" [(ngModel)]="record.TimeIn">-->
-                        <!--</md-input-container>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div style="order:8; width:6%" class="table-cell table-time-entry" *ngIf="timeSettings.Overridable.IsPunchInPunchOutEnabled">-->
-                    <!--<div *ngIf="record.IsPunch">-->
-                        <!--<md-input-container class="form-field">-->
-                            <!--<input mdInput type="time" [(ngModel)]="record.BreakIn">-->
-                        <!--</md-input-container>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div style="order:9; width:6%" class="table-cell table-time-entry" *ngIf="timeSettings.Overridable.IsPunchInPunchOutEnabled">-->
-                    <!--<div *ngIf="record.IsPunch">-->
-                        <!--<md-input-container class="form-field">-->
-                            <!--<input mdInput type="time" [(ngModel)]="record.BreakOut">-->
-                        <!--</md-input-container>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div style="order:10; width:6%" class="table-cell" *ngIf="timeSettings.Overridable.IsPunchInPunchOutEnabled">-->
-                    <!--<div *ngIf="record.IsPunch">-->
-                        <!--<md-input-container class="form-field">-->
-                            <!--<input mdInput type="time" [(ngModel)]="record.TimeOut">-->
-                        <!--</md-input-container>-->
-                    <!--</div>-->
-                <!--</div>-->
-
-                <!--<div style="order:11; width:4%; max-width: 5%;" class="table-cell table-time-entry">-->
-                    <!--<md-input-container class="form-field">-->
-                        <!--<input mdInput type="number" [(ngModel)]="record.HoursST" maxlength="5" step="0.25" min="0" max="24">-->
-                    <!--</md-input-container>-->
-                <!--</div>-->
-                <!--<div style="order:12; width:4%; max-width: 5%;" class="table-cell table-time-entry">-->
-                    <!--<md-input-container class="form-field">-->
-                        <!--<input mdInput type="number" [(ngModel)]="record.HoursOT" maxlength="5" step="0.25" min="0" max="24">-->
-                    <!--</md-input-container>-->
-                <!--</div>-->
-                <!--<div style="order:13; width:4%; max-width: 5%;" class="table-cell table-time-entry">-->
-                    <!--<md-input-container class="form-field">-->
-                        <!--<input mdInput type="number" [(ngModel)]="record.HoursDT" maxlength="5" step="0.25" min="0" max="24">-->
-                    <!--</md-input-container>-->
-                <!--</div>-->
-                <!--<div style="order:14; width:3%; max-width: 3%;" class="table-cell" >-->
-                    <!--<i class="material-icons" mdTooltip="Copy" (click)="copyRow(record, rowIndex, cardIndex)"-->
-                       <!--[mdTooltipPosition]="'after'">content_copy</i>-->
-                    <!--<i class="material-icons" mdTooltip="Note"-->
-                       <!--[mdTooltipPosition]="'after'">description</i>-->
-                    <!--<i class="material-icons" mdTooltip="Delete" (click)="deleteRow(record, rowIndex, cardIndex)"-->
-                       <!--[mdTooltipPosition]="'after'">delete</i>-->
-                <!--</div>-->
-            </div>
-        </div>
-        <div class="esub-table" *ngIf="card.IndirectLines?.length > 0">
-
-            <label class="title-light" *ngIf="groupCardsBy !== 'Project'">Indirect Costs</label>
-            <div class="table-row">
-                <div style="order:1; width:15%" class="table-cell table-header">Date</div>
-                <div style="order:2; width:25%" class="table-cell table-header">Employee</div>
-                <div style="order:3; width:25%" class="table-cell table-header">CostCode</div>
-                <div style="order:4; width:32%" class="table-cell table-header">ST</div>
-                <div style="order:5; width:03%" class="table-cell table-header"></div>
-            </div>
-
-            <div class="table-row" *ngFor="let record of card.IndirectLines; let rowIndex = index">
-                <div style="order:1; width:15%" class="table-cell" >
-                    <label>{{record.Date.format(dateFormat)}}</label>
-                    <i mdPrefix class="material-icons grid-date" *ngIf="groupCardsBy !== 'Date'">date_range</i>
-                </div>
-                <div style="order:2; width:25%" class="table-cell" >
-                    <div *ngIf="groupCardsBy === 'Employee'">
-                        <label mdTooltip="{{record.Employee.Name}}" [mdTooltipPosition]="'below'" class="label-regular">{{record.Employee.Name}}</label>
-                    </div>
-                    <div *ngIf="groupCardsBy !== 'Employee'">
-                        <md-input-container class="form-field">
-                            <input type="text" mdInput [mdAutocomplete]="autoEmployee"
-                                   [(ngModel)]="record.Employee" (ngModelChange)="filteredEmployees = filterAllEmployees(record.Employee)">
-                        </md-input-container>
-                        <md-autocomplete #autoEmployee="mdAutocomplete" [displayWith]="displayFormatted">
-                            <md-option *ngFor="let employee of filteredEmployees | async"
-                                       [value]="employee">
-                                {{employee.Number}} - {{employee.Name}}
-                            </md-option>
-                        </md-autocomplete>
-                    </div>
-                </div>
-                <div style="order:3; width:25%" class="table-cell" >
-                    <md-input-container class="form-field">
-                        <input type="text" mdInput [mdAutocomplete]="autoCostCodes"
-                               [(ngModel)]="record.CostCode" (ngModelChange)="filteredCostCodes = filterIndirectCodes(record.CostCode)">
-                    </md-input-container>
-                    <md-autocomplete #autoCostCodes="mdAutocomplete" [displayWith]="displayCode">
-                        <md-option *ngFor="let costCode of filteredCostCodes | async"
-                                   [value]="costCode">
-                            {{costCode.Code}} - {{costCode.Name}}
-                        </md-option>
-                    </md-autocomplete>
-                </div>
-                <div style="order:4; width:32%" class="table-cell table-time-entry">
-                    <div class="row">
-                        <div class="col-md-12 no-gutters">
-                            <md-input-container>
-                                <input mdInput [(ngModel)]="record.HoursST">
-                            </md-input-container>
-                        </div>
-                    </div>
-                </div>
-                <div style="order:5; width:03%" class="table-cell" >
-                    <i class="material-icons" mdTooltip="Copy" (click)="copyIndirectRow(record, rowIndex, cardIndex)"
-                       [mdTooltipPosition]="'after'">content_copy</i>
-                    <i class="material-icons" mdTooltip="Note"
-                       [mdTooltipPosition]="'after'">description</i>
-                    <i class="material-icons" mdTooltip="Delete" (click)="deleteIndirectRow(record, rowIndex, cardIndex)"
-                       [mdTooltipPosition]="'after'">delete</i>
-                </div>
-            </div>
-        </div>
-    </div>
 
 </div>
 

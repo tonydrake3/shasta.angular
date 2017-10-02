@@ -178,7 +178,7 @@ export class EnterTimeManager {
         this._enterTimeFormData = _.cloneDeep(formData.value);
         this._timeEntryState.Times = _.cloneDeep(times);
 
-        console.log('EnterTimeManager setLineData', this._enterTimeFormData, this._timeEntryState);
+        // console.log('EnterTimeManager setLineData', this._enterTimeFormData, this._timeEntryState);
         // TODO: Clear Private Property values?
         this.resetManager();
     }

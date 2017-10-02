@@ -119,11 +119,18 @@
                     position: relative;
                     top: 13px;
                 }
+                //
+                //i.grid-date {
+                //    padding-left: 2px;
+                //    position: relative;
+                //    top: 16px;
+                //}
 
-                i.grid-date {
-                    padding-left: 2px;
-                    position: relative;
-                    top: 16px;
+                .date-field {
+
+                    .mat-form-field {
+                        max-width: 90px;
+                    }
                 }
 
                 .time-entry-row {

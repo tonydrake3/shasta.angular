@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -22,6 +22,10 @@ import {validateTimeBreakOverlap} from '../../../shared/validators/time-break-ov
 import {validateTime, validateTimeWithPeriod} from '../../../shared/validators/time-entry.validator';
 import {EnterTimeFilterService} from '../enter-time-filter.service';
 import {Hours} from '../../../../models/domain/Hours';
+import {DatePickerComponent, IDatePickerConfig} from 'ng2-date-picker';
+import {DateFlyoutService} from '../../../shared/components/date-flyout/date-flyout.service';
+import {routeName} from '../../../shared/configuration/web-route-names.configuration';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'esub-enter-time-grid',
@@ -30,6 +34,10 @@ import {Hours} from '../../../../models/domain/Hours';
 export class EnterTimeGridComponent implements OnInit, OnDestroy {
 
     @Output() displayGrid: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+    private _cardSubscription;
+    private _projectLineSubscription;
+    private _indirectLineSubscription;
 
     public dateFormat: string;
     public groupCardsBy: string;
@@ -41,6 +49,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
     public timeSettings: TimeSettings;
     public enterTimeGrid: FormGroup;
     public browserMode: BrowserMode;
+    public maxDate;
 
     public filteredProjects: Observable<Project[]>;
     public filteredSystems: Observable<System[]>;
@@ -57,15 +66,19 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
     public autoIndirectEmployee;
     public autoIndirectCost;
 
-    private _cardSubscription;
-    private _projectLineSubscription;
-    private _indirectLineSubscription;
+    // Calendar Config
+    public dpDatepickerConfig: IDatePickerConfig = {
+        allowMultiSelect: false,
+        max: moment()
+    };
 
     constructor (private _enterTimeManager: EnterTimeManager, private _confirmationService: ConfirmationDialogService,
                  private _transformService: EnterTimeTransformService, private _batchService: EnterTimeBatchService,
-                 private _builder: FormBuilder, private _filterService: EnterTimeFilterService) {
+                 private _builder: FormBuilder, private _filterService: EnterTimeFilterService,
+                 private _router: Router) {
 
         this.dateFormat = 'MMM. Do, YYYY';
+        this.maxDate = moment().toISOString();
         this.groupCardsBy = 'Date';
         this.currentCardIndex = 0;
         this.browserMode = this._enterTimeManager.getBrowserMode();
@@ -181,6 +194,16 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
             this._confirmationService.setNeedsConfirmation(false);
             this.displayGrid.emit(false);
         }
+    }
+
+    public dateChange (event, record) {
+
+        this._enterTimeManager.updateProjectLine(record.get('id').value, 'Date', moment(event));
+    }
+
+    public indirectDateChange (event, record) {
+
+        this._enterTimeManager.updateIndirectLine(record.get('id').value, 'Date', moment(event));
     }
 
     public copyRow (record, card) {
@@ -470,26 +493,13 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
             batchPayload = _.concat(batchPayload, this._transformService.transformIndirectLinesToSubmitToTimeRecords(indirectLines))
         }
 
-        // _.forEach(this.groupedLines, (group, key) => {
-        //
-        //     records = this._transformService.transformLinesToSubmitToTimeRecords(group.ProjectLines);
-        //
-        //     if (key === 0) {
-        //
-        //         batchPayload = records;
-        //     } else {
-        //
-        //         batchPayload = _.concat(batchPayload, records);
-        //     }
-        // });
-        // console.log('submitTime', batchPayload);
-
         this._batchService.submitBatchTime(batchPayload)
             .then((response) => {
 
-                console.log('submitBatchTime', response);
+                // console.log('submitBatchTime', response);
                 this._confirmationService.setNeedsConfirmation(false);
                 this._enterTimeManager.clearLines();
+                this._router.navigate([routeName.time]);
             })
             .catch((error) => {
 
@@ -606,7 +616,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
 
         if (this.browserMode.IsUnsupportedBrowser) {
 
-            console.log('buildTimeEntryFormGroup', rowData);
+            // console.log('buildTimeEntryFormGroup', rowData);
 
             return {
 
@@ -801,8 +811,8 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
      * Form Field Change Tracking
      ******************************************************************************************************************/
     private timeChanges (row: FormGroup) {
-
-        console.log('timeChanges', row);
+        //
+        // console.log('timeChanges', row);
 
         const timeEntry = row.controls.timeEntry;
         const stdHrs = row.get('standardHours');

@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import {
     MdChipsModule, MdSelectModule, MdCheckboxModule, MdProgressBarModule,
-    MdAutocompleteModule, MdTabsModule, MdTooltipModule, MdInputModule, MdButtonModule
+    MdAutocompleteModule, MdTabsModule, MdTooltipModule, MdInputModule, MdButtonModule, MdDatepickerModule
 } from '@angular/material';
 import { DpDatePickerModule } from 'ng2-date-picker';
 
@@ -41,11 +41,12 @@ import {EnterTimeGridBuilderService} from './enter-time/enter-time-grid-builder.
       SharedModule,
       SharedHomeModule,
       DpDatePickerModule,
+      MdAutocompleteModule,
       MdButtonModule,
       MdChipsModule,
-      MdSelectModule,
+      MdDatepickerModule,
       MdInputModule,
-      MdAutocompleteModule,
+      MdSelectModule,
       MdTabsModule,
       MdTooltipModule
     ],
