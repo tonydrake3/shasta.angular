@@ -1,0 +1,6 @@
+<h2 md-dialog-title>{{data.title}}</h2>
+<md-dialog-content>{{data.contentText}}</md-dialog-content>
+<md-dialog-actions align="end">
+    <button md-button (click)="close()">{{data.cancelButtonText}}</button>
+    <button md-button (click)="navigate()">{{data.proceedButtonText}}</button>
+</md-dialog-actions>

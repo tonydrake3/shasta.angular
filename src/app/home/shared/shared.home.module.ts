@@ -33,7 +33,6 @@ import {CommentsComponent} from './components/comments.component';
 import {MapComponent} from './components/map.component';
 import {WeekSelectorComponent} from './components/week-selector.component';
 import {DaypickerFlyoutComponent} from './components/date-flyout/daypicker-flyout.component';
-import {GridTypeaheadComponent} from './components/controls/grid-typeahead.component';
 
 // Pipes
 import {DateToWeekdayPipe} from './pipes/date-to-weekday.pipe';
@@ -70,7 +69,6 @@ import {ConfirmationDialogService} from './services/confirmation-dialog.service'
         CommentsComponent,
         NumericPrecisionPipe,
         CloseDateFlyoutDirective,
-        GridTypeaheadComponent,
         TimeInputDirective,
         TimeFormatPipe,
         ConfirmationDialogComponent
@@ -106,7 +104,6 @@ import {ConfirmationDialogService} from './services/confirmation-dialog.service'
         CommentsComponent,
         NumericPrecisionPipe,
         CloseDateFlyoutDirective,
-        GridTypeaheadComponent,
         TimeInputDirective,
         TimeFormatPipe,
         ConfirmationDialogComponent
