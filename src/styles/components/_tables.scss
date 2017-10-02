@@ -1,0 +1,75 @@
+// credit to https://css-tricks.com/accessible-simple-responsive-tables/ for most of this
+
+.esub-table {
+
+    .table-row {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 0;
+        padding: 0;
+
+        .table-cell {
+            box-sizing: border-box;
+            flex-grow: 1;
+            width: 100%;  // Default to full width
+            padding: 2px 6px;
+            overflow: hidden; // Or flex might break
+            list-style: none;
+            border: solid 1px $gray-10;
+            // background-color: $gray-bg;
+            @extend .label-regular;
+
+            &.max-width-3 {
+                max-width: 3%;
+                width: 3%;
+            }
+
+            &.max-width-4 {
+                max-width: 4%;
+                padding-top: 4px;
+                width: 4%;
+            }
+
+            &.width-9 {
+                padding-top: 4px;
+                width: 9%;
+            }
+
+            &.max-width-10 {
+                max-width: 10%;
+                padding-top: 4px;
+                width:8%;
+            }
+
+            &.no-padding-cell {
+                padding: 0 4px;
+            }
+
+            &.table-header {
+                @extend .title-bold;
+                padding: 4px;
+
+                &.no-padding-header {
+                    padding: 0 4px;
+                }
+                // background-color: $true-white;
+            }
+
+            input {
+                height: 100%;
+                width: 100%;
+                border: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            .mat-select {
+                background-color: $true-white;
+            }
+
+            .material-icons {
+                font-size: 16px;
+            }
+        }
+    }
+}

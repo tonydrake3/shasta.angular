@@ -11,5 +11,6 @@ export class Employee {
     Number?: string;
     // SourceId?: number;
     // TenantId?: number;
-    // ProjectIds: number[];
+    ProjectIds: string[];
+    Name: string;
 }
