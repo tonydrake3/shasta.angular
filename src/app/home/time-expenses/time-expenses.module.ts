@@ -59,8 +59,7 @@ import {EnterTimeNoteDialogComponent} from './enter-time/enter-time-note-dialog/
       BadgedHourComponent,
       EnterTimeComponent,
       EnterTimeFormComponent,
-      EnterTimeGridComponent,
-      EnterTimeNoteDialogComponent
+      EnterTimeGridComponent
     ],
     providers: [
       TimeRecordsService,

@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
-    MdButtonModule, MdDatepickerModule, MdDialogModule, MdNativeDateModule,
+    MdButtonModule, MdDatepickerModule, MdDialogModule, MdInputModule, MdNativeDateModule,
     MdProgressSpinnerModule
 } from '@angular/material';
 import { DpDatePickerModule } from 'ng2-date-picker';
@@ -43,14 +43,16 @@ import {TimeFormatPipe} from './pipes/time-format.pipe';
 import {CanDeactivateGuard} from './services/guards/deactivate-guard.service';
 import {ConfirmationDialogComponent} from './components/confirmation-dialog.component';
 import {ConfirmationDialogService} from './services/confirmation-dialog.service';
+import {NotesEntryDialogComponent} from './components/notes-entry.component';
 
 @NgModule({
     imports: [
         MdDatepickerModule,
         MdNativeDateModule,
         MdProgressSpinnerModule,
-        MdDialogModule,
         MdButtonModule,
+        MdDialogModule,
+        MdInputModule,
         CommonModule,
         FormsModule,
         DpDatePickerModule
@@ -71,7 +73,9 @@ import {ConfirmationDialogService} from './services/confirmation-dialog.service'
         CloseDateFlyoutDirective,
         TimeInputDirective,
         TimeFormatPipe,
-        ConfirmationDialogComponent
+        ConfirmationDialogComponent,
+        NotesEntryDialogComponent
+
     ],
     providers: [
         AuthorizationService,
@@ -106,7 +110,8 @@ import {ConfirmationDialogService} from './services/confirmation-dialog.service'
         CloseDateFlyoutDirective,
         TimeInputDirective,
         TimeFormatPipe,
-        ConfirmationDialogComponent
+        ConfirmationDialogComponent,
+        NotesEntryDialogComponent
     ]
 })
 

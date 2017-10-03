@@ -28,8 +28,7 @@ import {LookupDataService} from './home/shared/services/lookup-data.service';
 // entry components
 import { CommentsComponent } from './home/shared/components/comments.component';
 import { ConfirmationDialogComponent } from './home/shared/components/confirmation-dialog.component';
-import { EnterTimeNoteDialogComponent } from './home/time-expenses/enter-time/enter-time-note-dialog/enter-time-note-dialog.component';
-import {TimeExpensesModule} from './home/time-expenses/time-expenses.module';
+import {NotesEntryDialogComponent} from './home/shared/components/notes-entry.component';
 
 @NgModule({
     imports: [
@@ -47,7 +46,7 @@ import {TimeExpensesModule} from './home/time-expenses/time-expenses.module';
         MdProgressSpinnerModule,
 
         CompanyModule,
-        TimeExpensesModule,
+
         // ProjectModule
     ],
     declarations: [
@@ -64,7 +63,7 @@ import {TimeExpensesModule} from './home/time-expenses/time-expenses.module';
     entryComponents: [
         CommentsComponent,
         ConfirmationDialogComponent,
-        EnterTimeNoteDialogComponent
+        NotesEntryDialogComponent
     ]
 })
 

@@ -30,7 +30,7 @@ import {DateFlyoutService} from '../../../shared/components/date-flyout/date-fly
 import {routeName} from '../../../shared/configuration/web-route-names.configuration';
 import {Router} from '@angular/router';
 import {MdDialog} from '@angular/material';
-import {EnterTimeNoteDialogComponent} from '../enter-time-note-dialog/enter-time-note-dialog.component';
+import {NotesEntryDialogComponent} from '../../../shared/components/notes-entry.component';
 
 @Component({
     selector: 'esub-enter-time-grid',
@@ -276,7 +276,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
 
     public openNotesModal (record) {
 
-        const notesDialogRef = this._dialog.open(EnterTimeNoteDialogComponent, {
+        const notesDialogRef = this._dialog.open(NotesEntryDialogComponent, {
             data: record.get('notes'),
             height: '220px',
             width: '280px'
