@@ -274,28 +274,28 @@
                                 </div>
                             </div>
                             <div style="order:8;" class="table-cell table-time-entry max-width-4">
-                                <md-input-container class="form-field">
+                                <md-form-field class="form-field">
                                     <input mdInput type="number" formControlName="standardHours" maxlength="5" step="0.25" min="0" max="24"
                                            [id]="'txtGridFormST-' + cardIndex + '-' + rowIndex">
-                                </md-input-container>
+                                </md-form-field>
                             </div>
                             <div style="order:9;" class="table-cell table-time-entry max-width-4">
-                                <md-input-container class="form-field">
+                                <md-form-field class="form-field">
                                     <input mdInput type="number" formControlName="overtimeHours" maxlength="5" step="0.25" min="0" max="24"
                                            [id]="'txtGridFormOT-' + cardIndex + '-' + rowIndex">
-                                </md-input-container>
+                                </md-form-field>
                             </div>
                             <div style="order:10;" class="table-cell table-time-entry max-width-4">
-                                <md-input-container class="form-field">
+                                <md-form-field class="form-field">
                                     <input mdInput type="number" formControlName="doubleTimeHours" maxlength="5" step="0.25" min="0" max="24"
                                            [id]="'txtGridFormDT-' + cardIndex + '-' + rowIndex">
-                                </md-input-container>
+                                </md-form-field>
                             </div>
 
                             <div style="order:14;" class="table-cell max-width-3" >
                                 <i class="material-icons" mdTooltip="Copy" (click)="copyRow(record, card)"
                                    [mdTooltipPosition]="'after'" [id]="'btnGridFormCopyRow-' + cardIndex + '-' + rowIndex">content_copy</i>
-                                <i class="material-icons" mdTooltip="Note"
+                                <i class="material-icons" mdTooltip="Note" (click)="openNotesModal(record)"
                                    [mdTooltipPosition]="'after'" [id]="'btnGridFormNote-' + cardIndex + '-' + rowIndex">description</i>
                                 <i class="material-icons" mdTooltip="Delete" (click)="deleteRow(record, rowIndex, card, cardIndex)"
                                    [mdTooltipPosition]="'after'" [id]="'btnGridFormDeleteRow-' + cardIndex + '-' + rowIndex">delete</i>
@@ -343,11 +343,11 @@
                                             {{record.get('employee').value.Name}}</label>
                                     </div>
                                     <div *ngIf="groupCardsBy !== 'Employee'">
-                                        <md-input-container class="form-field">
+                                        <md-form-field class="form-field">
                                             <input type="text" mdInput [mdAutocomplete]="autoIndirectEmployee" formControlName="employee"
                                                    (focus)="openIndirectEmployees()" (input)="changeIndirectEmployee($event.target.value)"
                                                    [id]="'txtGridFormIndirectEmployee-' + cardIndex + '-' + rowIndex">
-                                        </md-input-container>
+                                        </md-form-field>
                                         <md-autocomplete #autoIndirectEmployee="mdAutocomplete" [displayWith]="displayFormatted"
                                                          (optionSelected)="indirectEmployeeSelected($event, record)">
                                             <md-option *ngFor="let employee of filteredEmployees | async"
@@ -359,11 +359,11 @@
                                 </div>
                             </div>
                             <div style="order:3; width:25%" class="table-cell" >
-                                <md-input-container class="form-field">
+                                <md-form-field class="form-field">
                                     <input type="text" mdInput [mdAutocomplete]="autoIndirectCost" formControlName="costCode"
                                            (focus)="openIndirectCostCodes(record)" (input)="changeIndirectCostCodes($event.target.value)"
                                            [id]="'txtGridFormIndirectCostCode-' + cardIndex + '-' + rowIndex">
-                                </md-input-container>
+                                </md-form-field>
                                 <md-autocomplete #autoIndirectCost="mdAutocomplete" [displayWith]="displayCode"
                                                  (optionSelected)="indirectCostSelected($event, record)">
                                     <md-option *ngFor="let costCode of filteredCostCodes | async"
@@ -375,17 +375,17 @@
                             <div style="order:4; width:32%" class="table-cell table-time-entry">
                                 <div class="row">
                                     <div class="col-md-12 no-gutters">
-                                        <md-input-container class="form-field">
+                                        <md-form-field class="form-field">
                                             <input mdInput type="number" formControlName="standardHours" maxlength="5" step="0.25" min="0" max="24"
                                                    [id]="'txtGridFormIndirectST-' + cardIndex + '-' + rowIndex">
-                                        </md-input-container>
+                                        </md-form-field>
                                     </div>
                                 </div>
                             </div>
                             <div style="order:5; width:03%" class="table-cell" >
                                 <i class="material-icons" mdTooltip="Copy" (click)="copyIndirectRow(record, card)"
                                    [mdTooltipPosition]="'after'" [id]="'btnGridFormIndirectCopyRow-' + cardIndex + '-' + rowIndex">content_copy</i>
-                                <i class="material-icons" mdTooltip="Note"
+                                <i class="material-icons" mdTooltip="Note" (click)="openNotesModal(record)"
                                    [mdTooltipPosition]="'after'" [id]="'btnGridFormIndirectNote-' + cardIndex + '-' + rowIndex">description</i>
                                 <i class="material-icons" mdTooltip="Delete" (click)="deleteIndirectRow(record, rowIndex, card, cardIndex)"
                                    [mdTooltipPosition]="'after'" [id]="'btnGridFormIndirectDeleteRow-' + cardIndex + '-' + rowIndex">delete</i>
@@ -397,7 +397,7 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                <button md-raised-button [id]="'btnGridSubmit'" class="esub-button secondary" [disabled]="enterTimeGrid.invalid"
+                <button md-raised-button type="button" [id]="'btnGridSubmit'" class="esub-button secondary" [disabled]="enterTimeGrid.invalid"
                         (click)="submitTime()">Submit Time</button>
             </div>
         </div>

@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
-    MdButtonModule, MdDatepickerModule, MdDialogModule, MdNativeDateModule,
+    MdButtonModule, MdDatepickerModule, MdDialogModule, MdInputModule, MdNativeDateModule,
     MdProgressSpinnerModule
 } from '@angular/material';
 import { DpDatePickerModule } from 'ng2-date-picker';
@@ -33,7 +33,6 @@ import {CommentsComponent} from './components/comments.component';
 import {MapComponent} from './components/map.component';
 import {WeekSelectorComponent} from './components/week-selector.component';
 import {DaypickerFlyoutComponent} from './components/date-flyout/daypicker-flyout.component';
-import {GridTypeaheadComponent} from './components/controls/grid-typeahead.component';
 
 // Pipes
 import {DateToWeekdayPipe} from './pipes/date-to-weekday.pipe';
@@ -44,14 +43,16 @@ import {TimeFormatPipe} from './pipes/time-format.pipe';
 import {CanDeactivateGuard} from './services/guards/deactivate-guard.service';
 import {ConfirmationDialogComponent} from './components/confirmation-dialog.component';
 import {ConfirmationDialogService} from './services/confirmation-dialog.service';
+import {NotesEntryDialogComponent} from './components/notes-entry.component';
 
 @NgModule({
     imports: [
         MdDatepickerModule,
         MdNativeDateModule,
         MdProgressSpinnerModule,
-        MdDialogModule,
         MdButtonModule,
+        MdDialogModule,
+        MdInputModule,
         CommonModule,
         FormsModule,
         DpDatePickerModule
@@ -70,10 +71,11 @@ import {ConfirmationDialogService} from './services/confirmation-dialog.service'
         CommentsComponent,
         NumericPrecisionPipe,
         CloseDateFlyoutDirective,
-        GridTypeaheadComponent,
         TimeInputDirective,
         TimeFormatPipe,
-        ConfirmationDialogComponent
+        ConfirmationDialogComponent,
+        NotesEntryDialogComponent
+
     ],
     providers: [
         AuthorizationService,
@@ -106,10 +108,10 @@ import {ConfirmationDialogService} from './services/confirmation-dialog.service'
         CommentsComponent,
         NumericPrecisionPipe,
         CloseDateFlyoutDirective,
-        GridTypeaheadComponent,
         TimeInputDirective,
         TimeFormatPipe,
-        ConfirmationDialogComponent
+        ConfirmationDialogComponent,
+        NotesEntryDialogComponent
     ]
 })
 

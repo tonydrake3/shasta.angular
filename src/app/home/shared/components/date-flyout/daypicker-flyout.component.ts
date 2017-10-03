@@ -5,7 +5,7 @@ import {DateFlyoutService} from './date-flyout.service';
 @Component({
     selector: 'esub-daypicker-flyout',
     template: `
-        <div class="field-flyout" [ngClass]="{ 'no-display' : !open }">
+        <div class="field-flyout calendar" [ngClass]="{ 'no-display' : !open }">
             <dp-day-calendar [(ngModel)]="selectedDates" (ngModelChange)="onDateSelected($event)"
                              [config]="daypickerConfig" [theme]="'dp-material'" ></dp-day-calendar>
         </div>
