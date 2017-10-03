@@ -117,7 +117,6 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
     /******************************************************************************************************************
      * Lifecycle Methods
      ******************************************************************************************************************/
-
     ngOnInit () {
 
         this.projects = this._enterTimeManager.getProjects();

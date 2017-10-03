@@ -4,7 +4,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import {
     MdChipsModule, MdSelectModule, MdCheckboxModule, MdProgressBarModule,
-    MdAutocompleteModule, MdTabsModule, MdTooltipModule, MdInputModule, MdButtonModule, MdDatepickerModule
+    MdAutocompleteModule, MdTabsModule, MdTooltipModule, MdInputModule, MdButtonModule, MdDatepickerModule,
+    MdDialogModule
 } from '@angular/material';
 import { DpDatePickerModule } from 'ng2-date-picker';
 
@@ -29,6 +30,7 @@ import { EnterTimeBatchService } from './enter-time/enter-time-batch.service';
 import { EnterTimeFilterService } from './enter-time/enter-time-filter.service';
 import { EnterTimeTransformService } from './enter-time/enter-time-transform.service';
 import {EnterTimeGridBuilderService} from './enter-time/enter-time-grid-builder.service';
+import {EnterTimeNoteDialogComponent} from './enter-time/enter-time-note-dialog/enter-time-note-dialog.component';
 
 @NgModule({
     imports: [
@@ -45,6 +47,7 @@ import {EnterTimeGridBuilderService} from './enter-time/enter-time-grid-builder.
       MdButtonModule,
       MdChipsModule,
       MdDatepickerModule,
+      MdDialogModule,
       MdInputModule,
       MdSelectModule,
       MdTabsModule,
@@ -56,7 +59,8 @@ import {EnterTimeGridBuilderService} from './enter-time/enter-time-grid-builder.
       BadgedHourComponent,
       EnterTimeComponent,
       EnterTimeFormComponent,
-      EnterTimeGridComponent
+      EnterTimeGridComponent,
+      EnterTimeNoteDialogComponent
     ],
     providers: [
       TimeRecordsService,
