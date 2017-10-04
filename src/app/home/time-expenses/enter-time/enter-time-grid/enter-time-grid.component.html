@@ -124,7 +124,7 @@
                             </div>
 
                             <div style="order:3;" class="table-cell width-9" >
-                                <md-input-container class="form-field">
+                                <md-input-container class="form-field" *ngIf="record.get('project').value.Systems && record.get('project').value.Systems.length > 0">
                                     <input type="text" mdInput [mdAutocomplete]="autoSystem" formControlName="system"
                                            (focus)="openSystems(record)" (input)="changeSystem($event.target.value, record)"
                                            [id]="'txtGridFormSystem-' + cardIndex + '-' + rowIndex">
@@ -138,7 +138,7 @@
                             </div>
 
                             <div style="order:4;" class="table-cell width-9" >
-                                <md-input-container class="form-field">
+                                <md-input-container class="form-field" *ngIf="record.get('system').value.Phases && record.get('system').value.Phases.length > 0">
                                     <input type="text" mdInput [mdAutocomplete]="autoPhase" formControlName="phase"
                                            (focus)="openPhases(record)" (input)="changePhase($event.target.value, record)"
                                            [id]="'txtGridFormPhase-' + cardIndex + '-' + rowIndex">
