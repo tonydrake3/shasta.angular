@@ -611,17 +611,18 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
 
             gridCards.push(newCardRow);
             this.trackProcessing();
-        }, 20 * cardIndex);
+        }, 10 * cardIndex);
     }
 
     private initProjectRow(rowData: LineToSubmit) {
 
+        // console.log('initProjectRow', rowData.Project.Systems.length === 0);
         return this._builder.group({
             id: rowData.Id,
             date: [rowData.Date, [Validators.required]],
             project: [rowData.Project, [Validators.required]],
-            system: rowData.System,
-            phase: rowData.Phase,
+            system: (rowData.Project.Systems.length === 0) ? '' : [rowData.System, [Validators.required]],
+            phase: (rowData.System && rowData.System.Phases.length > 0) ? [rowData.Phase, [Validators.required]] : '',
             costCode: [rowData.CostCode, [Validators.required]],
             employee: [rowData.Employee, [Validators.required]],
             standardHours: [rowData.HoursST.toFixed(2), [Validators.required]],
@@ -721,6 +722,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
             record.patchValue({
                 system: systems[0]
             });
+            this._enterTimeManager.updateProjectLine(record.get('id').value, 'System', systems[0]);
             this.checkDefaultPhase(systems[0].Phases, record);
         } else {
             record.patchValue({
@@ -738,11 +740,13 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
             record.patchValue({
                 phase: phases[0]
             });
+            this._enterTimeManager.updateProjectLine(record.get('id').value, 'Phase', phases[0]);
         } else {
 
             record.patchValue({
                 phase: ''
             });
+            record.get('phase').setValidators([Validators.required]);
         }
     }
 
@@ -754,6 +758,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
             record.patchValue({
                 costCode: costCodes[0]
             });
+            this._enterTimeManager.updateProjectLine(record.get('id').value, 'CostCode', costCodes[0]);
         } else {
 
             record.patchValue({
@@ -866,7 +871,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
     private trackProcessing () {
 
         this._currentLine++;
-        // console.log('trackProcessing', this._currentLine);
+        console.log('trackProcessing', this._currentLine);
         if (this._currentLine === this._lineCount) {
             // console.log('trackProcessing', this._currentLine);
             this._enterTimeManager.setProcessing(false);

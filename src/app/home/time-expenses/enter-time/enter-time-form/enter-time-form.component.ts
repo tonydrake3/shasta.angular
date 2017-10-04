@@ -25,6 +25,7 @@ import {validateTimeBreakOverlap} from '../../../shared/validators/time-break-ov
 import {TimeSettings} from '../../../../models/domain/TimeSettings';
 import {EnterTimeFormTab, enterTimeTabs} from '../models/EnterTimeMenu';
 import {EnterTimeFilterService} from '../enter-time-filter.service';
+import {concatStatic} from 'rxjs/operator/concat';
 
 @Component({
     selector: 'esub-enter-time-form',
@@ -264,65 +265,78 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
         this.isEmployeeSelectionVisible = !this.isEmployeeSelectionVisible;
     }
 
-    public openProjects () {
+    public openProjects (value) {
 
-        const projectSelect = this.enterTimeForm.get('project');
+        if (value) {
 
-        if (projectSelect.value) {
-
-            this.filteredProjects = this._filterService.filterCollection(projectSelect.value, this.projects);
+            this.filteredProjects = this._filterService.filterCollection(value, this.projects);
         } else {
 
             this.filteredProjects = Observable.of(this.projects);
         }
     }
 
-    public openSystems () {
+    public projectSelected (event) {
 
-        const systemSelect = this.enterTimeForm.get('system');
+        this.enterTimeForm.patchValue({
+            selectedProject: event.option.value
+        });
+    }
 
-        if (this.systems) {
+    public openSystems (value) {
 
-            this.filteredSystems = this._filterService.filterCollection(systemSelect.value, this.systems);
+        if (value) {
+
+            this.filteredSystems = this._filterService.filterCollection(value, this.systems);
         } else {
 
             this.filteredSystems = Observable.of(this.systems);
         }
     }
 
-    public openPhases () {
+    public systemSelected (event) {
 
-        // const systemSelect = this.enterTimeForm.get('system');
-        const phaseSelect = this.enterTimeForm.get('phase');
+        this.enterTimeForm.patchValue({
+            selectedSystem: event.option.value
+        });
+    }
 
-        if (phaseSelect.value) {
+    public openPhases (value) {
 
-            this.filteredPhases = this._filterService.filterCollection(phaseSelect.value, this.phases);
+        if (value) {
+
+            this.filteredPhases = this._filterService.filterCollection(value, this.phases);
         } else {
 
             this.filteredPhases = Observable.of(this.phases);
         }
     }
 
-    public openCostCodes () {
+    public phaseSelected (event) {
 
-        const costCodeSelect = this.enterTimeForm.get('costCode');
-        const projectSelect = this.enterTimeForm.get('project');
+        this.enterTimeForm.patchValue({
+            selectedPhase: event.option.value
+        });
+    }
+
+    public openCostCodes (value) {
+
+        const selectedProject = this.enterTimeForm.get('selectedProject');
 
         if (this.costCodes.length > 0) {
 
-            if (costCodeSelect.value) {
+            if (value) {
 
-                this.filteredCostCodes = this._filterService.filterProjectCodes(costCodeSelect.value, projectSelect.value);
+                this.filteredCostCodes = this._filterService.filterProjectCodes(value, selectedProject.value);
             } else {
 
                 this.filteredCostCodes = Observable.of(this.costCodes);
             }
         } else {
 
-            if (costCodeSelect.value) {
+            if (value) {
 
-                this.filteredCostCodes = this._filterService.filterIndirectCodes(costCodeSelect.value, this._indirectCodes);
+                this.filteredCostCodes = this._filterService.filterIndirectCodes(value, this._indirectCodes);
             } else {
 
                 this.filteredCostCodes = Observable.of(this._indirectCodes);
@@ -330,19 +344,24 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
         }
     }
 
-    public openEmployee () {
+    public costCodeSelected (event) {
 
-        const employeeSelect = this.enterTimeForm.get('employee');
+        this.enterTimeForm.patchValue({
+            selectedCostCode: event.option.value
+        });
+    }
 
-        if (employeeSelect.value) {
+    public openEmployee (value) {
+
+        if (value) {
 
             if (this.employees.length > 0) {
 
-                this.filteredEmployees = this._filterService.filterEmployees(employeeSelect.value, this.employees,
+                this.filteredEmployees = this._filterService.filterEmployees(value, this.employees,
                     this.selectedEmployees);
             } else {
 
-                this.filteredEmployees = this._filterService.filterEmployees(employeeSelect.value, this._tenantEmployees,
+                this.filteredEmployees = this._filterService.filterEmployees(value, this._tenantEmployees,
                     this.selectedEmployees);
             }
         } else {
@@ -383,34 +402,6 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
         return '';
     }
 
-    public projectSelected (event) {
-
-        // console.log('EnterTimeFormComponent projectSelected', event.source.value);
-        const project = event.option.value;
-
-        this.checkDefaultSystem(project.Systems);
-        this.checkDefaultCostCode(project.CostCodes);
-        this.filterEmployeesByProject(project.Id);
-        this.selectedEmployees = [];
-
-        const costCodeSelect = this.enterTimeForm.get('costCode');
-        costCodeSelect.clearValidators();
-        costCodeSelect.setErrors(null);
-    }
-
-    public systemSelected (event) {
-
-        const system = event.option.value;
-        // console.log('EnterTimeFormComponent systemSelected', system.Phases);
-        this.checkDefaultPhase(system.Phases);
-    }
-
-    public phaseSelected (event) {
-
-        // console.log('EnterTimeFormComponent phaseSelected', event.source.value);
-        const phase = event.option.value;
-    }
-
     public employeeSelected (event) {
 
         // console.log('EnterTimeFormComponent employeeSelected', event.source.value);
@@ -422,18 +413,6 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
         });
         const employeeSelect = this.enterTimeForm.get('employee');
         employeeSelect.setValue(null);
-    }
-
-    public costCodeSelected (event) {
-
-        const costCode = event.option.value;
-
-        if (this.costCodes.length === 0) {
-
-            const projectSelect = this.enterTimeForm.get('project');
-            projectSelect.clearValidators();
-            projectSelect.setErrors(null);
-        }
     }
 
     public removeEmployee (employee) {
@@ -618,12 +597,14 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
         if (systems.length === 1) {
 
             this.enterTimeForm.patchValue({
-                system: systems[0]
+                system: systems[0],
+                selectedSystem: systems[0]
             });
             this.checkDefaultPhase(systems[0].Phases);
         } else {
             this.enterTimeForm.patchValue({
-                system: ''
+                system: '',
+                selectedSystem: ''
             });
             this.phases = [];
         }
@@ -635,12 +616,14 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
         if (phases.length === 1) {
 
             this.enterTimeForm.patchValue({
-                phase: phases[0]
+                phase: phases[0],
+                selectedPhase: phases[0]
             });
         } else {
 
             this.enterTimeForm.patchValue({
-                phase: ''
+                phase: '',
+                selectedPhase: ''
             });
         }
     }
@@ -651,12 +634,14 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
         if (costCodes.length === 1) {
 
             this.enterTimeForm.patchValue({
-                costCode: costCodes[0]
+                costCode: costCodes[0],
+                selectedCostCode: costCodes[0]
             });
         } else {
 
             this.enterTimeForm.patchValue({
-                costCode: ''
+                costCode: '',
+                selectedCostCode: ''
             });
         }
     }
@@ -671,10 +656,14 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
     private createForm () {
 
         this.enterTimeForm = this._builder.group({
-            project: ['', [Validators.required]],
+            project: '',
+            selectedProject: ['', [Validators.required]],
             system: '',
+            selectedSystem: '',
             phase: '',
-            costCode: ['', [Validators.required]],
+            selectedPhase: '',
+            costCode: '',
+            selectedCostCode: ['', [Validators.required]],
             employee: '',
             employees: ['', [Validators.required]],
             dates: ['', [Validators.required]],
@@ -795,47 +784,135 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
     }
 
     projectChange() {
-        const projectSelect = this.enterTimeForm.get('project');
-        projectSelect.valueChanges.subscribe(
+        const projectField = this.enterTimeForm.get('project');
+        const projectSelection = this.enterTimeForm.get('selectedProject');
+        const costCodeSelection = this.enterTimeForm.get('selectedCostCode');
+
+        projectField.valueChanges.subscribe(
             (project) => {
-                // console.log(project);
-                this.filteredProjects = this._filterService.filterCollection(project, this.projects);
+
+                // console.log('projectField.valueChanges', project, projectSelection.value);
+                if (project || project === '') {
+
+                    this.enterTimeForm.patchValue({
+                        selectedProject: '',
+                        system: '',
+                        selectedSystem: '',
+                        phase: '',
+                        selectedPhase: '',
+                        costCode: '',
+                        employee: '',
+                        employees: ''
+                    });
+                    this.costCodes = [];
+                    this.selectedEmployees = [];
+                    projectField.setErrors({'invalid' : true});
+
+                    this.filteredProjects = this._filterService.filterCollection(project, this.projects);
+                }
+            }
+        );
+
+        projectSelection.valueChanges.subscribe (
+            (selectedProject) => {
+
+                // console.log('projectSelection.valueChanges', selectedProject);
+                if (selectedProject) {
+
+                    projectField.setErrors(null);
+                    this.checkDefaultSystem(selectedProject.Systems);
+                    this.checkDefaultCostCode(selectedProject.CostCodes);
+                    this.filterEmployeesByProject(selectedProject.Id);
+                    this.selectedEmployees = [];
+
+                    costCodeSelection.clearValidators();
+                    costCodeSelection.setErrors(null);
+                }
             }
         );
     }
 
     systemChange() {
-        const systemSelect = this.enterTimeForm.get('system');
-        systemSelect.valueChanges.subscribe(
-            (system: System) => {
+        const systemField = this.enterTimeForm.get('system');
+        const systemSelection = this.enterTimeForm.get('selectedSystem');
+
+        systemField.valueChanges.subscribe(
+            (system) => {
                 // console.log(system);
-                this.filteredSystems = this._filterService.filterCollection(system, this.systems);
+                if (system || system === '') {
+
+                    this.enterTimeForm.patchValue({
+                        selectedSystem: '',
+                        phase: '',
+                        selectedPhase: ''
+                    });
+                    this.phases = [];
+                    this.filteredSystems = this._filterService.filterCollection(system, this.systems);
+                }
+            }
+        );
+
+        systemSelection.valueChanges.subscribe(
+            (selectedSystem) => {
+
+                if (selectedSystem) {
+
+                    this.checkDefaultPhase(selectedSystem.Phases);
+                }
             }
         );
     }
 
     phaseChange() {
-        const phaseSelect = this.enterTimeForm.get('phase');
-        phaseSelect.valueChanges.subscribe(
-            (phase: Phase) => {
+        const phaseField = this.enterTimeForm.get('phase');
+
+        phaseField.valueChanges.subscribe(
+            (phase) => {
                 // console.log(system);
-                this.filteredPhases = this._filterService.filterCollection(phase, this.phases);
+                if (phase || phase === '') {
+
+                    this.enterTimeForm.patchValue({
+                        selectedPhase: ''
+                    });
+                    this.filteredPhases = this._filterService.filterCollection(phase, this.phases);
+                }
             }
         );
     }
 
     costCodeChange() {
-        const costCodeSelect = this.enterTimeForm.get('costCode');
-        costCodeSelect.valueChanges.subscribe(
-            (costCode: CostCode) => {
+        const costCodeField = this.enterTimeForm.get('costCode');
+        const costCodeSelection = this.enterTimeForm.get('selectedCostCode');
+        const projectSelection = this.enterTimeForm.get('selectedProject');
 
-                if (this.costCodes.length > 0) {
+        costCodeField.valueChanges.subscribe(
+            (costCode) => {
 
-                    const projectSelect = this.enterTimeForm.get('project');
-                    this.filteredCostCodes = this._filterService.filterProjectCodes(costCode, projectSelect.value);
-                } else {
+                if (costCode || costCode === '') {
 
-                    this.filteredCostCodes = this._filterService.filterIndirectCodes(costCode, this._indirectCodes);
+                    this.enterTimeForm.patchValue({
+                        selectedCostCode: ''
+                    });
+                    if (this.costCodes.length > 0) {
+
+                        this.filteredCostCodes = this._filterService.filterProjectCodes(costCode, projectSelection.value);
+                    } else {
+
+                        costCodeField.setErrors({'invalid' : true});
+                        this.filteredCostCodes = this._filterService.filterIndirectCodes(costCode, this._indirectCodes);
+                    }
+                }
+            }
+        );
+
+        costCodeSelection.valueChanges.subscribe(
+            (selectedCostCode) => {
+
+                if (selectedCostCode && this.costCodes.length === 0) {
+
+                    costCodeField.setErrors(null);
+                    projectSelection.clearValidators();
+                    projectSelection.setErrors(null);
                 }
             }
         );
