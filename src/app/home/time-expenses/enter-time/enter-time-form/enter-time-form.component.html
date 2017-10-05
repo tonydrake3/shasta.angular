@@ -10,7 +10,7 @@
             <div class="col-md-12">
                 <md-form-field class="form-field">
                     <input type="text" mdInput placeholder="Project" formControlName="project" [mdAutocomplete]="autoProject"
-                            (focus)="openProjects()" [id]="'txtFormProject'">
+                            (focus)="openProjects($event.target.value)" [id]="'txtFormProject'">
                 </md-form-field>
                 <md-autocomplete #autoProject="mdAutocomplete" [displayWith]="displayFormatted"
                                  (optionSelected)="projectSelected($event)">
@@ -25,7 +25,7 @@
             <div class="col-md-12">
                 <md-form-field class="form-field">
                     <input type="text" mdInput placeholder="System" formControlName="system" [mdAutocomplete]="autoSystem"
-                           (focus)="openSystems()" [id]="'txtFormSystem'">
+                           (focus)="openSystems($event.target.value)" [id]="'txtFormSystem'">
                 </md-form-field>
                 <md-autocomplete #autoSystem="mdAutocomplete" [displayWith]="displayFormatted"
                                  (optionSelected)="systemSelected($event)">
@@ -40,7 +40,7 @@
             <div class="col-md-12">
                 <md-form-field class="form-field">
                     <input type="text" mdInput placeholder="Phase" formControlName="phase" [mdAutocomplete]="autoPhase"
-                           (focus)="openPhases()" [id]="'txtFormPhases'">
+                           (focus)="openPhases($event.target.value)" [id]="'txtFormPhases'">
                 </md-form-field>
                 <md-autocomplete #autoPhase="mdAutocomplete" [displayWith]="displayFormatted"
                                  (optionSelected)="phaseSelected($event)">
@@ -55,7 +55,7 @@
             <div class="col-md-12">
                 <md-form-field class="form-field">
                     <input type="text" mdInput placeholder="{{costCodePlaceholder}}" formControlName="costCode" [mdAutocomplete]="autoCostCode"
-                           (focus)="openCostCodes()" [id]="'txtFormCostCode'">
+                           (focus)="openCostCodes($event.target.value)" [id]="'txtFormCostCode'">
                 </md-form-field>
                 <md-autocomplete #autoCostCode="mdAutocomplete" [displayWith]="displayCostCode"
                                  (optionSelected)="costCodeSelected($event)">
@@ -65,11 +65,11 @@
                 </md-autocomplete>
             </div>
         </div>
-        <div class="row" *ngIf="(isProjectCostEntry && enterTimeForm.get('project').value) || enterTimeForm.get('costCode').value">
+        <div class="row" *ngIf="(isProjectCostEntry && enterTimeForm.get('selectedProject').value) || enterTimeForm.get('costCode').value">
             <div class="col-md-10">
                 <md-form-field class="form-field selected-employees-field">
                     <input type="text" mdInput placeholder="Employees" formControlName="employee" [mdAutocomplete]="autoEmployee"
-                           (focus)="openEmployee()" [id]="'txtFormEmployees'">
+                           (focus)="openEmployee($event.target.value)" [id]="'txtFormEmployees'">
                 </md-form-field>
                 <md-autocomplete #autoEmployee="mdAutocomplete" [displayWith]="displayFormatted"
                                  (optionSelected)="employeeSelected($event)">
