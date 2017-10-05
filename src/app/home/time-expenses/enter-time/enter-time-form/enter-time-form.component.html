@@ -5,11 +5,17 @@
     </md-tab-group>
 </div>
 <div class="enter-time-form">
+    <!--<div class="text-center mb-4">-->
+        <!--<span style="color: red;">* is required</span>-->
+    <!--</div>-->
     <form [formGroup]="enterTimeForm" (ngSubmit)="createLines(enterTimeForm)" novalidate>
         <div class="row" *ngIf="isProjectCostEntry">
             <div class="col-md-12">
                 <md-form-field class="form-field">
-                    <input type="text" mdInput placeholder="Project" formControlName="project" [mdAutocomplete]="autoProject"
+                    <md-placeholder>
+                        <span >Project </span><span class="required">*</span>
+                    </md-placeholder>
+                    <input type="text" mdInput formControlName="project" [mdAutocomplete]="autoProject"
                             (focus)="openProjects($event.target.value)" [id]="'txtFormProject'">
                 </md-form-field>
                 <md-autocomplete #autoProject="mdAutocomplete" [displayWith]="displayFormatted"
@@ -54,7 +60,10 @@
         <div class="row" *ngIf="isProjectCostEntry && costCodes.length > 0 || !isProjectCostEntry">
             <div class="col-md-12">
                 <md-form-field class="form-field">
-                    <input type="text" mdInput placeholder="{{costCodePlaceholder}}" formControlName="costCode" [mdAutocomplete]="autoCostCode"
+                    <md-placeholder>
+                        <span >{{costCodePlaceholder}}</span><span *ngIf="costCodePlaceholder === 'Indirect Cost'" class="required"> *</span>
+                    </md-placeholder>
+                    <input type="text" mdInput formControlName="costCode" [mdAutocomplete]="autoCostCode"
                            (focus)="openCostCodes($event.target.value)" [id]="'txtFormCostCode'">
                 </md-form-field>
                 <md-autocomplete #autoCostCode="mdAutocomplete" [displayWith]="displayCostCode"
@@ -68,7 +77,10 @@
         <div class="row" *ngIf="(isProjectCostEntry && enterTimeForm.get('selectedProject').value) || enterTimeForm.get('costCode').value">
             <div class="col-md-10">
                 <md-form-field class="form-field selected-employees-field">
-                    <input type="text" mdInput placeholder="Employees" formControlName="employee" [mdAutocomplete]="autoEmployee"
+                    <md-placeholder>
+                        <span >Employees </span><span class="required">*</span>
+                    </md-placeholder>
+                    <input type="text" mdInput formControlName="employee" [mdAutocomplete]="autoEmployee"
                            (focus)="openEmployee($event.target.value)" [id]="'txtFormEmployees'">
                 </md-form-field>
                 <md-autocomplete #autoEmployee="mdAutocomplete" [displayWith]="displayFormatted"
@@ -111,7 +123,7 @@
                 <div esubCloseDateFlyout>
                     <md-form-field class="form-field dates">
                         <md-placeholder>
-                            <span class="enter-time-date-placeholder">Dates</span> <i class="material-icons">date_range</i>
+                            <span class="enter-time-date-placeholder">Dates </span><span class="enter-time-date-placeholder required">*</span> <i class="material-icons">date_range</i>
                         </md-placeholder>
                         <input mdInput id="txtDates" formControlName="dates" (focus)="onFocus()" (keydown)="clearKeystroke($event)"
                                [id]="'txtFormDates'">
@@ -236,7 +248,7 @@
             </div>
         </div>
 
-        <div class="row mb-3">
+        <div class="row">
             <div class="col-md-12">
                 <md-form-field class="notes form-field">
                     <input mdInput placeholder="Notes" formControlName="notes" [id]="'txtFormNotes'">
@@ -244,7 +256,15 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div class="text-center">
+                    <span class="required">* is required</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row pt-2">
             <div class="col-md-6 esub-button-group">
                 <button md-raised-button type="button" class="primary" [disabled]="enterTimeForm.pristine" [id]="'btnFormClear'"
                         (click)="clearForm()">Clear form</button>

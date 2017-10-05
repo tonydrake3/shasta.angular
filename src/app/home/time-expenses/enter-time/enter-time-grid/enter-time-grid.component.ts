@@ -860,6 +860,11 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
             previousValue.setValue(fieldValue);
             this._enterTimeManager.updateProjectLine(id, fieldName, numberValue);
             fieldControl.setErrors(null);
+        } else {
+
+            cardControl.setValue(Number(cardControl.value) - Number(previousValue.value));
+            previousValue.setValue(0.00);
+            this._enterTimeManager.updateProjectLine(id, fieldName, 0.00);
         }
     }
 
@@ -1122,6 +1127,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
 
             (stValue) => {
 
+                // console.log('standardHourChanges', stValue);
                 this.processTimeChanges(stValue, prevStdHrs, stdHrs, stdCardHrs, id, true);
             }
         );
@@ -1137,6 +1143,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
 
             (stValue) => {
 
+                // console.log('indirectStandardHourChanges', stValue);
                 this.processTimeChanges(stValue, prevStdHrs, stdHrs, stdCardHrs, id, false);
             }
         );
