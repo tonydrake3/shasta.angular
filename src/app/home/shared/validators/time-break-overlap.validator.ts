@@ -1,7 +1,7 @@
 import {FormControl, FormGroup} from '@angular/forms';
 import * as moment from 'moment';
 
-export function validateTimeBreakOverlap(timeInKey: string, timeOutKey: string, breakInKey: string, breakOutKey: string) {
+export function validateTimeBreakOverlap(timeInKey: string, timeOutKey: string, breakInKey: string, breakOutKey: string, isUnsupportedTime: boolean) {
     return (group: FormGroup): {[key: string]: any} => {
 
         let timeIn, timeOut, breakIn, breakOut,
@@ -10,10 +10,11 @@ export function validateTimeBreakOverlap(timeInKey: string, timeOutKey: string, 
         const timeGroup = group.controls['time'] as FormGroup;
         const breakGroup = group.controls['break'] as FormGroup;
 
-        timeIn = timeGroup.controls[timeInKey];
-        timeOut = timeGroup.controls[timeOutKey];
+        // console.log('validateTimeBreakOverlap', isUnsupportedTime);
+        if (!isUnsupportedTime) {
 
-        if (timeIn && timeOut) {
+            timeIn = timeGroup.controls[timeInKey];
+            timeOut = timeGroup.controls[timeOutKey];
 
             breakIn = breakGroup.controls[breakInKey];
             breakOut = breakGroup.controls[breakOutKey];
@@ -25,6 +26,7 @@ export function validateTimeBreakOverlap(timeInKey: string, timeOutKey: string, 
             breakEndTime = moment(breakOut.value, ['H:mm A']);
         } else {
 
+            // console.log('validateTimeBreakOverlap unsupported');
             timeIn = timeGroup.controls[timeInKey + 'Value'];
             timeOut = timeGroup.controls[timeOutKey + 'Value'];
             const timeInPeriod = timeGroup.controls[timeInKey + 'Period'];
@@ -44,6 +46,7 @@ export function validateTimeBreakOverlap(timeInKey: string, timeOutKey: string, 
 
         if (breakStartTime.isAfter(endTime) && breakEndTime.isAfter(endTime)) {
 
+            // console.log('validateTimeBreakOverlap unsupported', breakStartTime.isAfter(endTime) && breakEndTime.isAfter(endTime));
             breakIn.markAsTouched();
             breakIn.setErrors({ invalid: true });
             breakOut.markAsTouched();

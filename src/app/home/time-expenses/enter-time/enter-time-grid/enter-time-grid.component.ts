@@ -539,6 +539,70 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
             });
     }
 
+    public getTimeEntryErrorMessage(record, fieldName: string, fieldGroup: string): string {
+
+        if (record.get('timeEntry').get(fieldGroup).hasError('startAfterEnd')) {
+
+            return 'Time in cannot occur after time out.';
+        } else if (record.get('timeEntry').get(fieldGroup).get(fieldName).hasError('invalid')) {
+
+            if (fieldName === 'in') {
+
+                return 'Time in requires time out.';
+            } else {
+
+                return 'Time out requires time in.';
+            }
+        }
+    }
+
+    public checkIfTimeEntryErrorDisplayed (record, fieldName: string, fieldGroup: string): boolean {
+
+        if (record.get('timeEntry').get(fieldGroup).hasError('startAfterEnd')) {
+
+            return false;
+        } else if (record.get('timeEntry').get(fieldGroup).get(fieldName).hasError('invalid')) {
+
+            return false;
+        }
+        return true
+    }
+
+    public getBreakEntryErrorMessage(record, fieldName: string, fieldGroup: string): string {
+
+        if (record.get('timeEntry').hasError('breakOutsideOfTime')) {
+
+            return 'Break cannot occur outside of time in/out.';
+        } else if (record.get('timeEntry').get(fieldGroup).hasError('breakStartAfterEnd')) {
+
+            return 'Break in cannot occur after break out.';
+        } else if (record.get('timeEntry').get(fieldGroup).get(fieldName).hasError('invalid')) {
+
+            if (fieldName === 'in') {
+
+                return 'Break in requires break out.';
+            } else {
+
+                return 'Break out requires break in.';
+            }
+        }
+    }
+
+    public checkIfBreakEntryErrorDisplayed (record, fieldName: string, fieldGroup: string): boolean {
+
+        if (record.get('timeEntry').hasError('breakOutsideOfTime')) {
+
+            return false;
+        } else if (record.get('timeEntry').get(fieldGroup).hasError('breakStartAfterEnd')) {
+
+            return false;
+        } else if (record.get('timeEntry').get(fieldGroup).get(fieldName).hasError('invalid')) {
+
+            return false;
+        }
+        return true
+    }
+
     /******************************************************************************************************************
      * Private Methods
      ******************************************************************************************************************/
@@ -633,7 +697,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
             previousDoubleTimeHours: rowData.HoursDT.toFixed(2),
             isPunch: rowData.IsPunch,
             timeEntry: this._builder.group(this.buildTimeEntryFormGroup(rowData),
-                {validator: validateTimeBreakOverlap('in', 'out', 'in', 'out')}),
+                {validator: validateTimeBreakOverlap('in', 'out', 'in', 'out', this.browserMode.IsUnsupportedBrowser)}),
             notes: rowData.Note
         });
     }
@@ -658,17 +722,17 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
             if (rowData.IsPunch) {
                 return {
 
-                    time: this._builder.group(this.buildTimeDetailFormGroup(rowData.TimeIn, rowData.TimeOut),
+                    'time': this._builder.group(this.buildTimeDetailFormGroup(rowData.TimeIn, rowData.TimeOut),
                         {validator: validateGridTimeWithPeriod('in', 'out', 'startAfterEnd')}),
-                    break: this._builder.group(this.buildTimeDetailFormGroup(rowData.BreakIn, rowData.BreakOut),
-                        {validator: validateTimeWithPeriod('in', 'out', 'breakStartAfterEnd')})
+                    'break': this._builder.group(this.buildTimeDetailFormGroup(rowData.BreakIn, rowData.BreakOut),
+                        {validator: validateGridTimeWithPeriod('in', 'out', 'breakStartAfterEnd')})
                 };
             }
             return {
 
-                time: this._builder.group(this.buildTimeDetailFormGroup(rowData.TimeIn, rowData.TimeOut),
+                'time': this._builder.group(this.buildTimeDetailFormGroup(rowData.TimeIn, rowData.TimeOut),
                     {validator: validateTimeWithPeriod('in', 'out', 'startAfterEnd')}),
-                break: this._builder.group(this.buildTimeDetailFormGroup(rowData.BreakIn, rowData.BreakOut),
+                'break': this._builder.group(this.buildTimeDetailFormGroup(rowData.BreakIn, rowData.BreakOut),
                     {validator: validateTimeWithPeriod('in', 'out', 'breakStartAfterEnd')})
             };
         }
@@ -677,17 +741,17 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
 
             return {
 
-                time: this._builder.group(this.buildTimeDetailFormGroup(rowData.TimeIn, rowData.TimeOut),
+                'time': this._builder.group(this.buildTimeDetailFormGroup(rowData.TimeIn, rowData.TimeOut),
                     {validator: validateGridTime('in', 'out', 'startAfterEnd')}),
-                break: this._builder.group(this.buildTimeDetailFormGroup(rowData.BreakIn, rowData.BreakOut),
-                    {validator: validateTime('in', 'out', 'breakStartAfterEnd')})
+                'break': this._builder.group(this.buildTimeDetailFormGroup(rowData.BreakIn, rowData.BreakOut),
+                    {validator: validateGridTime('in', 'out', 'breakStartAfterEnd')})
             };
         }
         return {
 
-            time: this._builder.group(this.buildTimeDetailFormGroup(rowData.TimeIn, rowData.TimeOut),
+            'time': this._builder.group(this.buildTimeDetailFormGroup(rowData.TimeIn, rowData.TimeOut),
                 {validator: validateTime('in', 'out', 'startAfterEnd')}),
-            break: this._builder.group(this.buildTimeDetailFormGroup(rowData.BreakIn, rowData.BreakOut),
+            'break': this._builder.group(this.buildTimeDetailFormGroup(rowData.BreakIn, rowData.BreakOut),
                 {validator: validateTime('in', 'out', 'breakStartAfterEnd')})
         };
     }
@@ -707,11 +771,11 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
                 outPeriod: outMoment.format('A')
             };
         }
-        return {
+        return _.cloneDeep({
 
-            in: inData,
-            out: outData
-        };
+            'in': inData,
+            'out': outData
+        });
     }
 
     private checkDefaultSystem (systems: Array<System>, record) {

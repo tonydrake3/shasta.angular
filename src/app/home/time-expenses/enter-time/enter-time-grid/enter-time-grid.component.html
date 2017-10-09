@@ -195,7 +195,10 @@
                                         <div class="time-entry" *ngIf="record.get('isPunch').value && !browserMode.IsUnsupportedBrowser">
                                             <md-form-field class="form-field" >
                                                 <input mdInput type="time" formControlName="in"
-                                                       [id]="'txtGridFormTimeIn-' + cardIndex + '-' + rowIndex">
+                                                       [id]="'txtGridFormTimeIn-' + cardIndex + '-' + rowIndex"
+                                                       mdTooltip="{{getTimeEntryErrorMessage(record, 'in', 'time')}}" [mdTooltipPosition]="'below'"
+                                                       [mdTooltipDisabled]="checkIfTimeEntryErrorDisplayed(record, 'in', 'time')"
+                                                       [mdTooltipClass]="{'error-tooltip' : true}">
                                             </md-form-field>
                                         </div>
                                         <div class="time-entry firefox-time" *ngIf="record.get('isPunch').value && browserMode.IsUnsupportedBrowser">
@@ -203,7 +206,10 @@
                                                 <input mdInput type="text" esubTimeInput formControlName="inValue"
                                                        (timeChange)="onTimeChange($event, record, 'time', 'in')"
                                                        (timePeriodChange)="onTimePeriodChange($event, record, 'time', 'in')"
-                                                       [id]="'txtGridFormTimeInValue-' + cardIndex + '-' + rowIndex">
+                                                       [id]="'txtGridFormTimeInValue-' + cardIndex + '-' + rowIndex"
+                                                       mdTooltip="{{getTimeEntryErrorMessage(record, 'inValue', 'time')}}" [mdTooltipPosition]="'below'"
+                                                       [mdTooltipDisabled]="checkIfTimeEntryErrorDisplayed(record, 'inValue', 'time')"
+                                                       [mdTooltipClass]="{'error-tooltip' : true}">
                                             </md-form-field>
                                             <md-select [ngClass]="{'ie-offset': browserMode.IsIE }" formControlName="inPeriod">
                                                 <md-option [value]="'AM'">AM</md-option>
@@ -215,15 +221,22 @@
                                         <div class="time-entry" *ngIf="record.get('isPunch').value && !browserMode.IsUnsupportedBrowser">
                                             <md-form-field class="form-field" >
                                                 <input mdInput type="time" formControlName="in"
-                                                       [id]="'txtGridFormBreakIn-' + cardIndex + '-' + rowIndex">
+                                                       [id]="'txtGridFormBreakIn-' + cardIndex + '-' + rowIndex"
+                                                       mdTooltip="{{getBreakEntryErrorMessage(record, 'in', 'break')}}" [mdTooltipPosition]="'below'"
+                                                       [mdTooltipDisabled]="checkIfBreakEntryErrorDisplayed(record, 'in', 'break')"
+                                                       [mdTooltipClass]="{'error-tooltip' : true}">
                                             </md-form-field>
+                                            {{record.get('timeEntry').get('break').get('in').hasError('invalid')}}
                                         </div>
                                         <div class="time-entry firefox-time" *ngIf="record.get('isPunch').value && browserMode.IsUnsupportedBrowser">
                                             <md-form-field class="form-field" >
                                                 <input mdInput type="text" esubTimeInput formControlName="inValue"
                                                        (timeChange)="onTimeChange($event, record, 'break', 'in')"
                                                        (timePeriodChange)="onTimePeriodChange($event, record, 'break', 'in')"
-                                                       [id]="'txtGridFormBreakInValue-' + cardIndex + '-' + rowIndex">
+                                                       [id]="'txtGridFormBreakInValue-' + cardIndex + '-' + rowIndex"
+                                                       mdTooltip="{{getBreakEntryErrorMessage(record, 'inValue', 'break')}}" [mdTooltipPosition]="'below'"
+                                                       [mdTooltipDisabled]="checkIfBreakEntryErrorDisplayed(record, 'inValue', 'break')"
+                                                       [mdTooltipClass]="{'error-tooltip' : true}">
                                             </md-form-field>
                                             <md-select [ngClass]="{'ie-offset': browserMode.IsIE }" formControlName="inPeriod">
                                                 <md-option [value]="'AM'">AM</md-option>
@@ -235,15 +248,22 @@
                                         <div class="time-entry" *ngIf="record.get('isPunch').value && !browserMode.IsUnsupportedBrowser">
                                             <md-form-field class="form-field" >
                                                 <input mdInput type="time" formControlName="out"
-                                                       [id]="'txtGridFormBreakOut-' + cardIndex + '-' + rowIndex">
+                                                       [id]="'txtGridFormBreakOut-' + cardIndex + '-' + rowIndex"
+                                                       mdTooltip="{{getBreakEntryErrorMessage(record, 'out', 'break')}}" [mdTooltipPosition]="'below'"
+                                                       [mdTooltipDisabled]="checkIfBreakEntryErrorDisplayed(record, 'out', 'break')"
+                                                       [mdTooltipClass]="{'error-tooltip' : true}">
                                             </md-form-field>
+                                            {{record.get('timeEntry').get('break').get('out').hasError('invalid')}}
                                         </div>
                                         <div class="time-entry firefox-time" *ngIf="record.get('isPunch').value && browserMode.IsUnsupportedBrowser">
                                             <md-form-field class="form-field" >
                                                 <input mdInput type="text" esubTimeInput formControlName="outValue"
                                                        (timeChange)="onTimeChange($event, record, 'break', 'out')"
                                                        (timePeriodChange)="onTimePeriodChange($event, record, 'break', 'out')"
-                                                       [id]="'txtGridFormBreakOutValue-' + cardIndex + '-' + rowIndex">
+                                                       [id]="'txtGridFormBreakOutValue-' + cardIndex + '-' + rowIndex"
+                                                       mdTooltip="{{getBreakEntryErrorMessage(record, 'outValue', 'break')}}" [mdTooltipPosition]="'below'"
+                                                       [mdTooltipDisabled]="checkIfBreakEntryErrorDisplayed(record, 'outValue', 'break')"
+                                                       [mdTooltipClass]="{'error-tooltip' : true}">
                                             </md-form-field>
                                             <md-select [ngClass]="{'ie-offset': browserMode.IsIE }" formControlName="outPeriod">
                                                 <md-option [value]="'AM'">AM</md-option>
@@ -255,7 +275,10 @@
                                         <div class="time-entry" *ngIf="record.get('isPunch').value && !browserMode.IsUnsupportedBrowser">
                                             <md-form-field class="form-field" >
                                                 <input mdInput type="time" formControlName="out"
-                                                       [id]="'txtGridFormTimeOut-' + cardIndex + '-' + rowIndex">
+                                                       [id]="'txtGridFormTimeOut-' + cardIndex + '-' + rowIndex"
+                                                       mdTooltip="{{getTimeEntryErrorMessage(record, 'out', 'time')}}" [mdTooltipPosition]="'below'"
+                                                       [mdTooltipDisabled]="checkIfTimeEntryErrorDisplayed(record, 'out', 'time')"
+                                                       [mdTooltipClass]="{'error-tooltip' : true}">
                                             </md-form-field>
                                         </div>
                                         <div class="time-entry firefox-time" *ngIf="record.get('isPunch').value && browserMode.IsUnsupportedBrowser">
@@ -263,7 +286,10 @@
                                                 <input mdInput type="text" esubTimeInput formControlName="outValue"
                                                        (timeChange)="onTimeChange($event, record, 'time', 'out')"
                                                        (timePeriodChange)="onTimePeriodChange($event, record, 'time', 'out')"
-                                                       [id]="'txtGridFormTimeOutValue-' + cardIndex + '-' + rowIndex">
+                                                       [id]="'txtGridFormTimeOutValue-' + cardIndex + '-' + rowIndex"
+                                                       mdTooltip="{{getTimeEntryErrorMessage(record, 'outValue', 'time')}}" [mdTooltipPosition]="'below'"
+                                                       [mdTooltipDisabled]="checkIfTimeEntryErrorDisplayed(record, 'outValue', 'time')"
+                                                       [mdTooltipClass]="{'error-tooltip' : true}">
                                             </md-form-field>
                                             <md-select [ngClass]="{'ie-offset': browserMode.IsIE }" formControlName="outPeriod">
                                                 <md-option [value]="'AM'">AM</md-option>

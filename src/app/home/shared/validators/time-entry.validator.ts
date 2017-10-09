@@ -33,20 +33,13 @@ export function validateGridTime(timeInKey: string, timeOutKey: string, errorTyp
         const startTime = moment(timeIn.value, ['H:mm A']);
         const endTime = moment(timeOut.value, ['H:mm A']);
 
-        if (!startTime.isValid() && !endTime.isValid()) {
-
-            timeIn.setErrors({ invalid: true });
-            timeOut.setErrors({ invalid: true });
-            return {
-                ['invalid-time']: true
-            };
-        } else if (!startTime.isValid()) {
+        if (!startTime.isValid() && endTime.isValid()) {
 
             timeIn.setErrors({ invalid: true });
             return {
                 ['invalid-time']: true
             };
-        } else if (!endTime.isValid()) {
+        } else if (startTime.isValid() && !endTime.isValid()) {
 
             timeOut.setErrors({ invalid: true });
             return {
@@ -108,23 +101,14 @@ export function validateGridTimeWithPeriod(timeInKey: string, timeOutKey: string
         const startTime = moment(timeInField.value + ' ' + timeInPeriod.value, ['H:mm A']);
         const endTime = moment(timeOutField.value + ' ' + timeOutPeriod.value, ['H:mm A']);
 
-        if (!startTime.isValid() && !endTime.isValid()) {
-
-            timeInField.setErrors({ invalid: true });
-            timeInPeriod.setErrors({ invalid: true });
-            timeOutField.setErrors({ invalid: true });
-            timeOutPeriod.setErrors({ invalid: true });
-            return {
-                ['invalid-time']: true
-            };
-        } else if (!startTime.isValid()) {
+        if (!startTime.isValid() && endTime.isValid()) {
 
             timeInField.setErrors({ invalid: true });
             timeInPeriod.setErrors({ invalid: true });
             return {
                 ['invalid-time']: true
             };
-        } else if (!endTime.isValid()) {
+        } else if (startTime.isValid() && !endTime.isValid()) {
 
             timeOutField.setErrors({ invalid: true });
             timeOutPeriod.setErrors({ invalid: true });
