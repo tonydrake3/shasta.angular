@@ -891,7 +891,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
         // console.log('previousValue.value', previousValue.value);
 
         const numberValue = Number(fieldValue);
-        if (numberValue === 0) {
+        if (numberValue <= 0) {
 
             fieldControl.setErrors({ 'invalid': true });
         } else if (fieldValue) {
@@ -917,7 +917,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
     private processExtraTimeChanges (fieldValue, previousValue, fieldControl, cardControl, id, fieldName) {
 
         const numberValue = Number(fieldValue);
-        if (fieldValue || fieldValue === 0) {
+        if (fieldValue || numberValue <= 0) {
 
             cardControl.setValue(Number(cardControl.value) - Number(previousValue.value));
             cardControl.setValue(Number(cardControl.value) + numberValue);
@@ -940,7 +940,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
     private trackProcessing () {
 
         this._currentLine++;
-        console.log('trackProcessing', this._currentLine);
+        // console.log('trackProcessing', this._currentLine);
         if (this._currentLine === this._lineCount) {
             // console.log('trackProcessing', this._currentLine);
             this._enterTimeManager.setProcessing(false);
@@ -978,18 +978,6 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
                 }
                 stdHrs.setValue(hours.RegularTime.toFixed(2));
                 otHrs.setValue(hours.Overtime.toFixed(2));
-            }
-        );
-
-        breakIn.statusChanges.subscribe(
-            (state) => {
-                console.log('breakIn.stateChanges', state);
-            }
-        );
-
-        breakOut.statusChanges.subscribe(
-            (state) => {
-                console.log('breakOut.stateChanges', state);
             }
         );
 
