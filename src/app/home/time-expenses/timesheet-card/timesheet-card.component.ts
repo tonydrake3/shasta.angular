@@ -11,6 +11,7 @@ import { TimesheetCardManager } from './timesheet-card.manager';
 
 import * as moment from 'moment';
 import * as _ from 'lodash';
+import {TimeRecord} from "../../../models/domain/TimeRecord";
 
 @Component({
     selector: 'esub-timesheet-card',
@@ -225,6 +226,10 @@ export class TimesheetCardComponent extends BaseComponent {
     commentsDialogRef.afterClosed().subscribe(result => {
       // modal closed
     });
+  }
+
+  onTimeRecordClicked() {
+
   }
 
   currentEmployeeCallback (employee) {
