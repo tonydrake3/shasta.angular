@@ -47,6 +47,7 @@ export function validateGridTime(timeInKey: string, timeOutKey: string, errorTyp
             };
         } else if (startTime.isAfter(endTime)) {
 
+            console.log('validateGridTime', timeIn, timeOut);
             timeIn.setErrors({ invalid: true });
             timeOut.setErrors({ invalid: true });
             return {

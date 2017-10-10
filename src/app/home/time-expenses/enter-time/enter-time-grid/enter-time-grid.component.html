@@ -219,14 +219,13 @@
                                     </div>
                                     <div class="col-md-3 time-entry-cell" formGroupName="break">
                                         <div class="time-entry" *ngIf="record.get('isPunch').value && !browserMode.IsUnsupportedBrowser">
-                                            <md-form-field class="form-field" >
+                                            <md-form-field class="form-field">
                                                 <input mdInput type="time" formControlName="in"
                                                        [id]="'txtGridFormBreakIn-' + cardIndex + '-' + rowIndex"
                                                        mdTooltip="{{getBreakEntryErrorMessage(record, 'in', 'break')}}" [mdTooltipPosition]="'below'"
                                                        [mdTooltipDisabled]="checkIfBreakEntryErrorDisplayed(record, 'in', 'break')"
                                                        [mdTooltipClass]="{'error-tooltip' : true}">
                                             </md-form-field>
-                                            {{record.get('timeEntry').get('break').get('in').hasError('invalid')}}
                                         </div>
                                         <div class="time-entry firefox-time" *ngIf="record.get('isPunch').value && browserMode.IsUnsupportedBrowser">
                                             <md-form-field class="form-field" >
@@ -253,7 +252,6 @@
                                                        [mdTooltipDisabled]="checkIfBreakEntryErrorDisplayed(record, 'out', 'break')"
                                                        [mdTooltipClass]="{'error-tooltip' : true}">
                                             </md-form-field>
-                                            {{record.get('timeEntry').get('break').get('out').hasError('invalid')}}
                                         </div>
                                         <div class="time-entry firefox-time" *ngIf="record.get('isPunch').value && browserMode.IsUnsupportedBrowser">
                                             <md-form-field class="form-field" >

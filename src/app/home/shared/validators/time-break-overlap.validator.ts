@@ -92,8 +92,15 @@ export function validateTimeBreakOverlap(timeInKey: string, timeOutKey: string, 
                 breakOutsideOfTime: true
             };
         }
-        breakIn.setErrors(null);
-        breakOut.setErrors(null);
+
+        if (group.hasError('breakOutsideOfTime') && breakIn.hasError('invalid')) {
+
+            breakIn.setErrors(null);
+        }
+        if (group.hasError('breakOutsideOfTime') && breakOut.hasError('invalid')) {
+
+            breakOut.setErrors(null);
+        }
         return null;
     }
 }

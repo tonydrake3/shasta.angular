@@ -981,6 +981,18 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
             }
         );
 
+        breakIn.statusChanges.subscribe(
+            (state) => {
+                console.log('breakIn.stateChanges', state);
+            }
+        );
+
+        breakOut.statusChanges.subscribe(
+            (state) => {
+                console.log('breakOut.stateChanges', state);
+            }
+        );
+
         timeOut.valueChanges.subscribe(
 
             (value) => {
