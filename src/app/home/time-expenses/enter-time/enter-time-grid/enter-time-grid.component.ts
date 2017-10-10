@@ -853,6 +853,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
             record.patchValue({
                 phase: ''
             });
+            this._enterTimeManager.updateProjectLine(record.get('id').value, 'Phase', '');
             record.get('phase').setValidators([Validators.required]);
         }
     }
