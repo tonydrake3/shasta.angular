@@ -231,6 +231,8 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
         const cloneRecord = _.cloneDeep(record);
         cloneRecord.get('id').setValue(uuidv4());
 
+        const copyRow = this._transformService.transformFormGroupToLineToSubmit(cloneRecord);
+
         const ST = card.get('ST');
         const OT = card.get('OT');
         const DT = card.get('DT');
@@ -243,9 +245,11 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
         OT.setValue(otVal);
         DT.setValue(dtVal);
 
-        projectRows.push(cloneRecord);
+        const newRecord = this.createProjectCardRow(copyRow, ST, OT, DT);
 
-        this._enterTimeManager.insertProjectLine(this._transformService.transformFormGroupToLineToSubmit(cloneRecord));
+        projectRows.push(newRecord);
+
+        this._enterTimeManager.insertProjectLine(copyRow);
     }
 
     public deleteRow (record, rowIndex: number, card, cardIndex: number) {
@@ -292,15 +296,19 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
         const cloneRecord =  _.cloneDeep(record);
         cloneRecord.get('id').setValue(uuidv4());
 
+        const copyRow = this._transformService.transformIndirectFormGroupToLineToSubmit(cloneRecord);
+
         const ST = card.get('ST');
 
         const stVal = Number(ST.value) + Number(cloneRecord.get('standardHours').value);
 
         ST.setValue(stVal);
 
-        indirectRows.push(cloneRecord);
+        const newRecord = this.createIndirectCardRow(copyRow, ST);
 
-        this._enterTimeManager.insertIndirectLine(this._transformService.transformIndirectFormGroupToLineToSubmit(cloneRecord));
+        indirectRows.push(newRecord);
+
+        this._enterTimeManager.insertIndirectLine(copyRow);
     }
 
     public deleteIndirectRow (record, rowIndex: number, card, cardIndex: number) {
@@ -346,8 +354,8 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
 
     public projectSelected (event, record) {
 
-        // console.log('EnterTimeFormComponent projectSelected', event, record.get('project').value);
         const project = event.option.value;
+        console.log('EnterTimeFormComponent projectSelected', project, record);
 
         this._enterTimeManager.updateProjectLine(record.get('id').value, 'Project', project);
         this.checkDefaultSystem(project.Systems, record);
@@ -652,30 +660,62 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
 
             if (rowGroup === 'projectRows') {
 
-                newCardRow = this.initProjectRow(rowData);
+                newCardRow = this.createProjectCardRow(rowData, ST, OT, DT);
+                // newCardRow = this.initProjectRow(rowData);
 
-                if (this.browserMode.IsUnsupportedBrowser) {
-
-                    this.unsupportedTimeChanges(newCardRow);
-                } else {
-
-                    this.timeChanges(newCardRow);
-                }
-
-                this.projectNoteChanges(newCardRow);
-                this.standardHourChanges(newCardRow, ST);
-                this.overtimeHourChanges(newCardRow, OT);
-                this.doubleTimeHourChanges(newCardRow, DT);
+                // if (this.browserMode.IsUnsupportedBrowser) {
+                //
+                //     this.unsupportedTimeChanges(newCardRow);
+                // } else {
+                //
+                //     this.timeChanges(newCardRow);
+                // }
+                //
+                // this.projectNoteChanges(newCardRow);
+                // this.standardHourChanges(newCardRow, ST);
+                // this.overtimeHourChanges(newCardRow, OT);
+                // this.doubleTimeHourChanges(newCardRow, DT);
             } else {
 
-                newCardRow = this.initIndirectRow(rowData);
-                this.indirectNoteChanges(newCardRow);
-                this.indirectStandardHourChanges(newCardRow, ST);
+                newCardRow = this.createIndirectCardRow(rowData, ST);
+                // newCardRow = this.initIndirectRow(rowData);
+                // this.indirectNoteChanges(newCardRow);
+                // this.indirectStandardHourChanges(newCardRow, ST);
             }
 
             gridCards.push(newCardRow);
             this.trackProcessing();
         }, 10 * cardIndex);
+    }
+
+    private createProjectCardRow (rowData: LineToSubmit, ST, OT, DT): FormGroup {
+
+        const formRow = this.initProjectRow(rowData);
+
+        if (this.browserMode.IsUnsupportedBrowser) {
+
+            this.unsupportedTimeChanges(formRow);
+        } else {
+
+            this.timeChanges(formRow);
+        }
+
+        this.projectNoteChanges(formRow);
+        this.standardHourChanges(formRow, ST);
+        this.overtimeHourChanges(formRow, OT);
+        this.doubleTimeHourChanges(formRow, DT);
+
+        return formRow;
+    }
+
+    private createIndirectCardRow (rowData: LineToSubmit, ST): FormGroup {
+
+        const formRow = this.initIndirectRow(rowData);
+
+        this.indirectNoteChanges(formRow);
+        this.indirectStandardHourChanges(formRow, ST);
+
+        return formRow;
     }
 
     private initProjectRow(rowData: LineToSubmit) {
