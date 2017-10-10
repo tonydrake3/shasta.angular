@@ -6,7 +6,7 @@
 
 <esub-base-card *ngIf="(timecards?.length == 0 && loading) || !timecards" class="timesheet-card" [loading]="true"></esub-base-card>
 
-<esub-base-card *ngFor="let timecard of timecards" class="timesheet-card" (click)="onTimeRecordClicked()">
+<esub-base-card *ngFor="let timecard of timecards" class="timesheet-card">
 
   <!-- header row -->
   <div class="row">

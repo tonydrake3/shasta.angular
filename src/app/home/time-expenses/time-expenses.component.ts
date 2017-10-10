@@ -10,6 +10,8 @@ import { Timecard, TimecardSection } from './timesheet-card/timecard.model';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import {routeName} from '../shared/configuration/web-route-names.configuration';
+import {TimeRecordDetailModalComponent} from "app/home/time-expenses/time-record-detail-modal/time-record-detail-modal.component";
+import {MdDialog} from "@angular/material";
 
 @Component({
     selector: 'esub-time-expenses',
@@ -31,7 +33,7 @@ export class TimeExpensesComponent extends BaseComponent implements OnInit {
   @ViewChild('timesheets') timesheetsComponent: TimesheetCardComponent;
 
   constructor(protected injector: Injector, private activatedRoute: ActivatedRoute,
-              private _router: Router) {
+              private _router: Router, private _dialog: MdDialog) {
     super(injector, [
       { service: 'TimeRecordsService', callback: 'timeRecordsCallback' }
     ]);
@@ -88,4 +90,18 @@ export class TimeExpensesComponent extends BaseComponent implements OnInit {
   decline() {}
 
   exportTime() {}
+
+    onTimeRecordClicked() {
+        console.log('Clicked TimeRecord Detail');
+        console.log(this.timerecords[1]);
+        const record = this.timerecords[1];
+        const timeRecordDetailModalRef = this._dialog.open(TimeRecordDetailModalComponent, {
+            data: record,
+            height: '220px',
+            width: '280px'
+        });
+        timeRecordDetailModalRef.afterClosed().subscribe(result => {
+            console.log('TimeRecordDetail modal closed.');
+        });
+    }
 }

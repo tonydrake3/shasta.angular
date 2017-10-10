@@ -31,7 +31,6 @@ import { EnterTimeFilterService } from './enter-time/enter-time-filter.service';
 import { EnterTimeTransformService } from './enter-time/enter-time-transform.service';
 import {EnterTimeGridBuilderService} from './enter-time/enter-time-grid-builder.service';
 import {EnterTimeNoteDialogComponent} from './enter-time/enter-time-note-dialog/enter-time-note-dialog.component';
-import { TimeRecordDetailModalComponent } from './time-record-detail-modal/time-record-detail-modal.component';
 
 @NgModule({
     imports: [
@@ -60,8 +59,7 @@ import { TimeRecordDetailModalComponent } from './time-record-detail-modal/time-
       BadgedHourComponent,
       EnterTimeComponent,
       EnterTimeFormComponent,
-      EnterTimeGridComponent,
-      TimeRecordDetailModalComponent
+      EnterTimeGridComponent
     ],
     providers: [
       TimeRecordsService,

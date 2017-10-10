@@ -1,3 +1,8 @@
-<p>
-  time-record-detail-modal works!
-</p>
+<h2 md-dialog-title>{{title}}</h2>
+<md-dialog-content>
+    <h1>This is the TimeRecord Detail Modal</h1>
+</md-dialog-content>
+<md-dialog-actions align="end">
+    <button md-button (click)="close()">Cancel</button>
+    <button md-button (click)="save()">Save</button>
+</md-dialog-actions>

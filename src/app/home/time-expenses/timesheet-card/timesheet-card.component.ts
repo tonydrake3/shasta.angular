@@ -228,10 +228,6 @@ export class TimesheetCardComponent extends BaseComponent {
     });
   }
 
-  onTimeRecordClicked() {
-
-  }
-
   currentEmployeeCallback (employee) {
 
       this.userId = employee[0].Id;
