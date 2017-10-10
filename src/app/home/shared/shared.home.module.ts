@@ -44,6 +44,7 @@ import {CanDeactivateGuard} from './services/guards/deactivate-guard.service';
 import {ConfirmationDialogComponent} from './components/confirmation-dialog.component';
 import {ConfirmationDialogService} from './services/confirmation-dialog.service';
 import {NotesEntryDialogComponent} from './components/notes-entry.component';
+import {TimeRecordDetailModalComponent} from '../time-expenses/time-record-detail-modal/time-record-detail-modal.component';
 
 @NgModule({
     imports: [
@@ -74,8 +75,8 @@ import {NotesEntryDialogComponent} from './components/notes-entry.component';
         TimeInputDirective,
         TimeFormatPipe,
         ConfirmationDialogComponent,
-        NotesEntryDialogComponent
-
+        NotesEntryDialogComponent,
+        TimeRecordDetailModalComponent
     ],
     providers: [
         AuthorizationService,
@@ -111,7 +112,8 @@ import {NotesEntryDialogComponent} from './components/notes-entry.component';
         TimeInputDirective,
         TimeFormatPipe,
         ConfirmationDialogComponent,
-        NotesEntryDialogComponent
+        NotesEntryDialogComponent,
+        TimeRecordDetailModalComponent
     ]
 })
 

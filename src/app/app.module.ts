@@ -29,6 +29,7 @@ import {LookupDataService} from './home/shared/services/lookup-data.service';
 import { CommentsComponent } from './home/shared/components/comments.component';
 import { ConfirmationDialogComponent } from './home/shared/components/confirmation-dialog.component';
 import {NotesEntryDialogComponent} from './home/shared/components/notes-entry.component';
+import {TimeRecordDetailModalComponent} from './home/time-expenses/time-record-detail-modal/time-record-detail-modal.component';
 
 @NgModule({
     imports: [
@@ -63,7 +64,8 @@ import {NotesEntryDialogComponent} from './home/shared/components/notes-entry.co
     entryComponents: [
         CommentsComponent,
         ConfirmationDialogComponent,
-        NotesEntryDialogComponent
+        NotesEntryDialogComponent,
+        TimeRecordDetailModalComponent
     ]
 })
 

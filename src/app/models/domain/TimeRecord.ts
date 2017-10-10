@@ -1,5 +1,7 @@
 import {Hours} from './Hours';
 import {Punch} from './Punch';
+import {CostCode} from './CostCode';
+import {Project} from './Project';
 
 export class TimeRecordPost {
     Id: string;
@@ -16,8 +18,11 @@ export class TimeRecord {
     Id: string;
     PhaseId?: string;
     ProjectId?: string;
+    Project?: Project;
     CostCodeId?: string;
+    CostCode?: CostCode;
     IndirectCostId?: string;
+    // IndirectCost?: IndirectCost;
     EmployeeId?: string;
     Hours?: Hours;
     Punch?: Punch;
@@ -35,4 +40,6 @@ export class TimeRecord {
     SignedDate?: string;
     Units: number;
     Timestamps?: any;
+
+
 }
