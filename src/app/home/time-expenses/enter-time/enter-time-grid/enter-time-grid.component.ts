@@ -160,6 +160,21 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
     /******************************************************************************************************************
      * Public Methods
      ******************************************************************************************************************/
+    public selectTab (event) {
+
+        switch (event.index) {
+            case 0:
+                this.updateGrouping('Date');
+                break;
+            case 1:
+                this.updateGrouping('Employee');
+                break;
+            case 2:
+                this.updateGrouping('Project');
+                break;
+        }
+    }
+
     public displayFormatted (value) {
 
         if (value) {
@@ -544,7 +559,9 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
             })
             .catch((error) => {
 
-                console.log(error);
+                const errors = JSON.parse(error)['ValidationErrors'];
+
+
             });
     }
 

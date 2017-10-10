@@ -1,17 +1,23 @@
 <div class="enter-time-grid">
-
+    <div class="row">
+        <div class="col-md-6">
+            <div class="enter-time-grid-tabs">
+                <md-tab-group (selectChange)="selectTab($event)">
+                    <md-tab label="Date">
+                    </md-tab>
+                    <md-tab label="Employee">
+                    </md-tab>
+                    <md-tab label="Project">
+                    </md-tab>
+                </md-tab-group>
+            </div>
+        </div>
+    </div>
     <div class="row add-more">
         <div class="col-md-4">
             <button md-raised-button [id]="'btnGridAddLines'" (click)="addMoreLines()" class="secondary">Add More Lines</button>
         </div>
-        <div class="col-md-3 groupings">
-            <label>Group by</label>
-
-            <a [ngClass]="{active: groupCardsBy == 'Date'}" [id]="'lnkGridGroupByDate'" (click)="updateGrouping('Date')">Date</a>
-            <a [ngClass]="{active: groupCardsBy == 'Employee'}" [id]="'lnkGridGroupByEmployee'" (click)="updateGrouping('Employee')">Employee</a>
-            <a [ngClass]="{active: groupCardsBy == 'Project'}"  [id]="'lnkGridGroupByProject'" (click)="updateGrouping('Project')">Project</a>
-        </div>
-        <div class="col-md-5 delete">
+        <div class="col-md-8 delete text-right">
             <span (click)="deleteAllLines()" [id]="'btnGridFormDeleteAllCards'">Delete all cards</span>
         </div>
     </div>
