@@ -1,7 +1,8 @@
 import {FormControl, FormGroup} from '@angular/forms';
 import * as moment from 'moment';
 
-export function validateTimeBreakOverlap(timeInKey: string, timeOutKey: string, breakInKey: string, breakOutKey: string, isUnsupportedTime: boolean) {
+export function validateTimeBreakOverlap(timeInKey: string, timeOutKey: string, breakInKey: string, breakOutKey: string,
+                                         isUnsupportedTime: boolean) {
     return (group: FormGroup): {[key: string]: any} => {
 
         let timeIn, timeOut, breakIn, breakOut,
