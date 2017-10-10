@@ -363,6 +363,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
         record.patchValue({
            employee: ''
         });
+        this._enterTimeManager.updateProjectLine(record.get('id').value, 'Employee', '');
     }
 
     public openSystems (record) {
@@ -833,6 +834,8 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
                 system: '',
                 phase: ''
             });
+            this._enterTimeManager.updateProjectLine(record.get('id').value, 'System', '');
+            this._enterTimeManager.updateProjectLine(record.get('id').value, 'Phase', '');
         }
     }
 
@@ -868,6 +871,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
             record.patchValue({
                 costCode: ''
             });
+            this._enterTimeManager.updateProjectLine(record.get('id').value, 'CostCode', '');
         }
     }
 
