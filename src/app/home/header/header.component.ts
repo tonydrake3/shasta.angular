@@ -21,15 +21,20 @@ export class AppHeaderComponent extends BaseComponent implements OnInit {
     constructor(protected _injector: Injector, private _authService: AuthenticationService, private _router: Router,
                 private _popoverService: PopoverService) {
 
-        super(_injector, []);
-        super.inject([
+        super(_injector, [
             {
-                toInject: MockNotificationService,
-                subject: 'notifications$',
-                initializer: 'getLatest',
+                service: 'NotificationService',
                 callback: 'notificationCallback'
             }
         ]);
+        // super.inject([
+        //     {
+        //         toInject: MockNotificationService,
+        //         subject: 'notifications$',
+        //         initializer: 'getLatest',
+        //         callback: 'notificationCallback'
+        //     }
+        // ]);
     }
 
     notificationCallback (notifications) {

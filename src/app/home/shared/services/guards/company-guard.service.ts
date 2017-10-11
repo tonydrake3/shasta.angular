@@ -30,12 +30,12 @@ export class CompanyGuard implements CanActivate, OnDestroy {
                         } else {
 
                             sessionStorage.setItem('tenant', JSON.stringify(companies[0].Id));
-                            this._router.navigate([routeName.project]);
+                            this._router.navigate([routeName.time]);
                             resolve(false);
                         }
                     },
                     (error) => {
-                        this._router.navigate([routeName.project]);
+                        this._router.navigate([routeName.time]);
                         reject(error);
                     }
                 )

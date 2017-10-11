@@ -1,5 +1,5 @@
 import { Component, Output, EventEmitter, OnInit } from '@angular/core';
-import { MaterialModule, MdDatepickerModule, MdDatepicker } from '@angular/material';
+import { MdDatepickerModule, MdDatepicker } from '@angular/material';
 
 import { WeekDateRange } from '../../../models/Date';
 

@@ -11,6 +11,7 @@ import {BaseComponent} from '../shared/components/base.component';
 })
 export class CompanySelectionComponent extends BaseComponent {
 
+    // Public
     companyList: Array<Company>;
 
     constructor (private _injector: Injector) {
@@ -27,6 +28,10 @@ export class CompanySelectionComponent extends BaseComponent {
         ])
     }
 
+    /******************************************************************************************************************
+     * Callback Handler
+     ******************************************************************************************************************/
+
     companyServiceCallback (companies) {
 
         // console.log('CompanySelection CompanyServiceCallback');
@@ -36,7 +41,11 @@ export class CompanySelectionComponent extends BaseComponent {
         this.addLogos();
     }
 
-    // TODO: Remove
+    /******************************************************************************************************************
+     * Private Methods
+     ******************************************************************************************************************/
+
+    // TODO: Remove when logos are fixed
     addLogos () {
         this.companyList.forEach((company) => {
 

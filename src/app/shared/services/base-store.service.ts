@@ -6,7 +6,8 @@ import 'rxjs/add/operator/map';
 
 export class BaseStore extends BaseHttpService {
 
-    _route: string;
+    private _route: string;
+    private _isLoadDisabled: boolean;
 
     _entity$ = new Subject();
 
@@ -19,9 +20,10 @@ export class BaseStore extends BaseHttpService {
      * Protected Methods
      ******************************************************************************************************************/
 
-    protected init (url?: string) {
+    protected init (url?: string, disableLoad?: boolean) {
 
         this._route = url;
+        this._isLoadDisabled = disableLoad;
     }
 
     protected load (): Promise<any> {
@@ -60,14 +62,19 @@ export class BaseStore extends BaseHttpService {
 
     protected addEntity(entity: any): Promise<any> {
 
+        const url = environment.apiUrl + (this._route ? this._route : '');
+
         return new Promise((resolve, reject) => {
 
-            this.post(this._route, entity)
+            this.post(url, entity)
 
                 .subscribe(
 
                     data => {
-                        this.load();
+                        if (!this._isLoadDisabled) {
+
+                            this.load();
+                        }
                         resolve(data);
                     },
                     err => {
@@ -78,13 +85,18 @@ export class BaseStore extends BaseHttpService {
 
     protected updateEntity(entity: any): Promise<any> {
 
+        const url = environment.apiUrl + (this._route ? this._route : '');
+
         return new Promise((resolve, reject) => {
 
-            this.put(this._route + '/' + entity.id, entity)
+            this.put(url + '/' + entity.id, entity)
 
                 .subscribe(
                     data => {
-                        this.load();
+                        if (!this._isLoadDisabled) {
+
+                            this.load();
+                        }
                         resolve(data);
                     },
                     err => {
@@ -95,14 +107,19 @@ export class BaseStore extends BaseHttpService {
 
     protected deleteEntity(entity: any): Promise<any> {
 
+        const url = environment.apiUrl + (this._route ? this._route : '');
+
         return new Promise((resolve, reject) => {
 
-            this.delete(this._route + '/' + entity.id)
+            this.delete(url + '/' + entity.id)
 
                 .subscribe(
 
                     data => {
-                        this.load();
+                        if (!this._isLoadDisabled) {
+
+                            this.load();
+                        }
                         resolve(data);
                     },
                     err => {

@@ -1,16 +1,17 @@
 .popover {
     background: $true-white;
-    border: 1px solid $gray-border;
+    border: 1px solid $gray-50;
     box-shadow: 1px 3px 6px $black-50;
     box-sizing: border-box;
     padding-top: 1em;
     position: relative;
     right: 245%;
     top: -7px;
+    z-index: 1100;
 
     &:before {
-        box-shadow: 0 0 2px rgba(0,0,0,0.2);
-        z-index: -1;
+        //box-shadow: 0 0 2px rgba(0,0,0,0.2);
+        z-index: 1000;
     }
 
     &:before,
@@ -20,7 +21,7 @@
         position: absolute;
         width: 15px;
         height: 15px;
-        border: 1px solid $gray-border;
+        border: 1px solid $gray-50;
         background: #fff;
         @include rotate(45deg);
     }

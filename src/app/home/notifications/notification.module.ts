@@ -1,6 +1,5 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {MaterialModule} from '@angular/material';
 
 import {SharedHomeModule} from '../shared/shared.home.module';
 import {NotificationService} from './notification.service';
@@ -10,7 +9,6 @@ import {NotificationItemComponent} from './notification-item/notification-item.c
 @NgModule({
     imports: [
         CommonModule,
-        MaterialModule,
         SharedHomeModule
     ],
     declarations: [

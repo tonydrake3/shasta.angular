@@ -20,9 +20,9 @@ export class PopoverComponent implements OnInit {
     // Public
     public contentWidth: number;
     public contentHeight: number;
+    public open = false;
 
     // Private
-    private open = false;
     private _component: any;
 
     constructor (private _componentFactoryResolver: ComponentFactoryResolver, private _popoverService: PopoverService) {}

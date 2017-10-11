@@ -37,6 +37,7 @@ export class BaseHttpService {
 
         const headers = new Headers();
         this.addHeaders(headers);
+        this.addJsonHeaders(headers);
 
         const options = new RequestOptions({headers : headers});
 
@@ -71,6 +72,7 @@ export class BaseHttpService {
 
         const headers = new Headers();
         this.addHeaders(headers);
+        this.addJsonHeaders(headers);
 
         return this._http.put(url, payload, {headers: headers})
             .map(this.processSuccess)
@@ -113,6 +115,13 @@ export class BaseHttpService {
 
         // TODO : Consider config for this?
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
+        headers.append('Accept', 'application/json');
+    }
+
+    private addJsonHeaders (headers: Headers) {
+
+        // TODO : Consider config for this?
+        headers.append('Content-Type', 'application/json');
         headers.append('Accept', 'application/json');
     }
 

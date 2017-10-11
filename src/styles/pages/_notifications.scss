@@ -6,12 +6,12 @@
     .notification-item {
 
         .row {
-            border-bottom: 2px solid $gray-hover;
+            border-bottom: 2px solid $gray-30;
             height: 65px;
             padding: 10px 25px 20px;
 
             &:hover {
-                background: $gray-hover;
+                background: $gray-30;
                 cursor: pointer;
             }
 
@@ -26,7 +26,7 @@
                     line-height: 18px;
 
                     .accent-bold {
-                        color: $gray-accent;
+                        color: $gray-70;
                     }
                 }
             }

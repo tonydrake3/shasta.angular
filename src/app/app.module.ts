@@ -2,8 +2,8 @@ import { NgModule, ApplicationRef } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MaterialModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MdInputModule, MdProgressSpinnerModule } from '@angular/material';
 import 'hammerjs';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -29,6 +29,8 @@ import {LookupDataService} from './home/shared/services/lookup-data.service';
 // entry components
 import { CommentsComponent } from './home/shared/components/comments.component';
 import { NotificationComponent } from './home/notifications/notifications.component';
+import { ConfirmationDialogComponent } from './home/shared/components/confirmation-dialog.component';
+import { NotesEntryDialogComponent } from './home/shared/components/notes-entry.component';
 
 @NgModule({
     imports: [
@@ -36,7 +38,6 @@ import { NotificationComponent } from './home/notifications/notifications.compon
         HttpModule,
         FormsModule,
         ReactiveFormsModule,
-        MaterialModule,
         BrowserAnimationsModule,
         AppRoutingModule,
         NotificationModule,
@@ -44,8 +45,11 @@ import { NotificationComponent } from './home/notifications/notifications.compon
         // Sub modules
         HomeModule,
         SharedModule,
+        MdInputModule,
+        MdProgressSpinnerModule,
 
         CompanyModule,
+
         // ProjectModule
     ],
     declarations: [
@@ -59,7 +63,12 @@ import { NotificationComponent } from './home/notifications/notifications.compon
         LookupDataService,
     ],
     bootstrap: [AppComponent],
-    entryComponents: [CommentsComponent, NotificationComponent]
+    entryComponents: [
+        CommentsComponent,
+        ConfirmationDialogComponent,
+        NotesEntryDialogComponent,
+        NotificationComponent
+    ]
 })
 
 export class AppModule {

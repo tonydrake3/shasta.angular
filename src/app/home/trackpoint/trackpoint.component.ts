@@ -61,20 +61,20 @@ export class TrackpointNavigationComponent implements OnInit {
           //         console.log('not connected' + error);
           //     });
 
-           const connection = $['hubConnection']();
-           connection.url = 'http://test.develop.shasta.esubonline.com/signalr';
-           this.hubProxy = connection.createHubProxy('testhub');
-
-           this.registerOnServerEvents();
-
-          connection.start({ withCredentials: false, transport: 'serverSentEvents'})
-               .done(function (data) {
-                   console.log('connected', data.transport.name);
-
-               })
-               .fail(function (a) {
-                   console.log('not connected' + a);
-               });
+          //  const connection = $['hubConnection']();
+          //  connection.url = 'http://test.develop.shasta.esubonline.com/signalr';
+          //  this.hubProxy = connection.createHubProxy('testhub');
+          //
+          //  this.registerOnServerEvents();
+          //
+          // connection.start({ withCredentials: false, transport: 'serverSentEvents'})
+          //      .done(function (data) {
+          //          console.log('connected', data.transport.name);
+          //
+          //      })
+          //      .fail(function (a) {
+          //          console.log('not connected' + a);
+          //      });
       });
   }
 

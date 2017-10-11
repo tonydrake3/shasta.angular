@@ -17,13 +17,17 @@
 
 @import
 // Components
-    "components/week-selector",
-    "components/cards",
+    "components/badged_hour",
     "components/buttons",
+    "components/cards",
+    "components/flyout",
     "components/indicators",
     "components/maps",
     "components/badged_hour",
-    "components/popover"
+    "components/popover",
+    "components/tables",
+    "components/typeahead",
+    "components/week-selector"
 ;
 
 @import
@@ -48,4 +52,7 @@
 ,   "pages/project-summary"
 ,   "pages/comments"
 ,   "pages/notifications"
+,   "pages/enter-time"
+,   "pages/enter-time-form"
+,   "pages/enter-time-grid"
 ;

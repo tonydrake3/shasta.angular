@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed, fakeAsync, tick, discardPeriodicTasks } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-import { MaterialModule, MdNativeDateModule } from '@angular/material';
+import { MdDatepickerModule, MdNativeDateModule, MdProgressSpinnerModule } from '@angular/material';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
@@ -42,9 +43,11 @@ describe('TimeExpenses Component', () => {
 
     TestBed.configureTestingModule({
       imports: [
-        MaterialModule,
+        MdDatepickerModule,
         MdNativeDateModule,
-        FormsModule
+        FormsModule,
+        RouterTestingModule,
+        MdProgressSpinnerModule
       ],
       providers: [
         { provide: TimeRecordsService, useValue: mockTimeRecordsService },

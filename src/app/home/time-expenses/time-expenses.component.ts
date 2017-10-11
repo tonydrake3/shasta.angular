@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Injector } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 import { BaseComponent } from '../shared/components/base.component';
 import { WeekDateRange } from '../../models/Date';
@@ -9,6 +9,7 @@ import { Timecard, TimecardSection } from './timesheet-card/timecard.model';
 
 import * as moment from 'moment';
 import * as _ from 'lodash';
+import {routeName} from '../shared/configuration/web-route-names.configuration';
 
 @Component({
     selector: 'esub-time-expenses',
@@ -29,7 +30,8 @@ export class TimeExpensesComponent extends BaseComponent implements OnInit {
 
   @ViewChild('timesheets') timesheetsComponent: TimesheetCardComponent;
 
-  constructor(protected injector: Injector, private activatedRoute: ActivatedRoute) {
+  constructor(protected injector: Injector, private activatedRoute: ActivatedRoute,
+              private _router: Router) {
     super(injector, [
       { service: 'TimeRecordsService', callback: 'timeRecordsCallback' }
     ]);
@@ -77,9 +79,10 @@ export class TimeExpensesComponent extends BaseComponent implements OnInit {
     this.timesheetsComponent.buildTimesheets(this.timerecords, this.dateRange, this.groupTimesheetsBy, this.showFilter);
   }
 
-  newTimesheet() {}
-  copyLastWeekTimesheet() {}
-  copyYesterdayTimesheet() {}
+  enterTime () {
+
+      this._router.navigate([routeName.enterTime]);
+  }
 
   approve() {}
   decline() {}

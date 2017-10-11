@@ -14,6 +14,10 @@ export class CompanySelectionCardComponent {
 
     constructor (private _router: Router) {}
 
+    /******************************************************************************************************************
+     * Public Methods
+     ******************************************************************************************************************/
+
     selectCompany (company: Company) {
 
         sessionStorage.setItem('tenant', JSON.stringify(company.Id));
