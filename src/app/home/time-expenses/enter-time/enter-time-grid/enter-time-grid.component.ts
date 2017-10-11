@@ -117,11 +117,8 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
                     // console.log('EnterTimeGridComponent card', card);
                     this._lineCount = this._enterTimeManager.getTotalLines();
                     // console.log('ngOnInit cards$', this._lineCount);
-                    // this.groupedLines.push(card);
                     this.addCard(card);
                     // console.log('EnterTimeGridComponent Form', this.enterTimeGrid);
-                    // this.buildCards(lines);
-                    // this.groupedLines = line;
                 });
 
         this._projectLineSubscription = this._enterTimeManager.projectRow$
@@ -144,7 +141,6 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
                 });
 
         setTimeout(() => {
-            // this.lineCount = this._enterTimeManager.getNumLinesToSubmit();
             // console.log(this.lineCount);
             this._enterTimeManager.getGroupedLines();
         }, 20);
@@ -537,7 +533,6 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
         const indirectLines = this._enterTimeManager.getIndirectLines();
 
         let batchPayload: Array<TimeRecord> = [];
-        // let records: Array<TimeRecord>;
 
         if (projectLines.length > 0) {
 
@@ -679,26 +674,9 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
             if (rowGroup === 'projectRows') {
 
                 newCardRow = this.createProjectCardRow(rowData, ST, OT, DT);
-                // newCardRow = this.initProjectRow(rowData);
-
-                // if (this.browserMode.IsUnsupportedBrowser) {
-                //
-                //     this.unsupportedTimeChanges(newCardRow);
-                // } else {
-                //
-                //     this.timeChanges(newCardRow);
-                // }
-                //
-                // this.projectNoteChanges(newCardRow);
-                // this.standardHourChanges(newCardRow, ST);
-                // this.overtimeHourChanges(newCardRow, OT);
-                // this.doubleTimeHourChanges(newCardRow, DT);
             } else {
 
                 newCardRow = this.createIndirectCardRow(rowData, ST);
-                // newCardRow = this.initIndirectRow(rowData);
-                // this.indirectNoteChanges(newCardRow);
-                // this.indirectStandardHourChanges(newCardRow, ST);
             }
 
             gridCards.push(newCardRow);
@@ -946,11 +924,6 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
     }
 
     private processTimeChanges (fieldValue, previousValue, fieldControl, cardControl, id, isProject: boolean) {
-
-        // console.log('Number(fieldValue)', Number(fieldValue));
-        // console.log('fieldControl.value', fieldControl.value);
-        // console.log('cardControl.value', Number(cardControl.value));
-        // console.log('previousValue.value', previousValue.value);
 
         const numberValue = Number(fieldValue);
         if (numberValue <= 0) {
