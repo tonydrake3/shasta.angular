@@ -117,11 +117,8 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
                     // console.log('EnterTimeGridComponent card', card);
                     this._lineCount = this._enterTimeManager.getTotalLines();
                     // console.log('ngOnInit cards$', this._lineCount);
-                    // this.groupedLines.push(card);
                     this.addCard(card);
                     // console.log('EnterTimeGridComponent Form', this.enterTimeGrid);
-                    // this.buildCards(lines);
-                    // this.groupedLines = line;
                 });
 
         this._projectLineSubscription = this._enterTimeManager.projectRow$
@@ -144,7 +141,6 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
                 });
 
         setTimeout(() => {
-            // this.lineCount = this._enterTimeManager.getNumLinesToSubmit();
             // console.log(this.lineCount);
             this._enterTimeManager.getGroupedLines();
         }, 20);
@@ -160,6 +156,21 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
     /******************************************************************************************************************
      * Public Methods
      ******************************************************************************************************************/
+    public selectTab (event) {
+
+        switch (event.index) {
+            case 0:
+                this.updateGrouping('Date');
+                break;
+            case 1:
+                this.updateGrouping('Employee');
+                break;
+            case 2:
+                this.updateGrouping('Project');
+                break;
+        }
+    }
+
     public displayFormatted (value) {
 
         if (value) {
@@ -231,6 +242,8 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
         const cloneRecord = _.cloneDeep(record);
         cloneRecord.get('id').setValue(uuidv4());
 
+        const copyRow = this._transformService.transformFormGroupToLineToSubmit(cloneRecord);
+
         const ST = card.get('ST');
         const OT = card.get('OT');
         const DT = card.get('DT');
@@ -243,9 +256,11 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
         OT.setValue(otVal);
         DT.setValue(dtVal);
 
-        projectRows.push(cloneRecord);
+        const newRecord = this.createProjectCardRow(copyRow, ST, OT, DT);
 
-        this._enterTimeManager.insertProjectLine(this._transformService.transformFormGroupToLineToSubmit(cloneRecord));
+        projectRows.push(newRecord);
+
+        this._enterTimeManager.insertProjectLine(copyRow);
     }
 
     public deleteRow (record, rowIndex: number, card, cardIndex: number) {
@@ -292,15 +307,19 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
         const cloneRecord =  _.cloneDeep(record);
         cloneRecord.get('id').setValue(uuidv4());
 
+        const copyRow = this._transformService.transformIndirectFormGroupToLineToSubmit(cloneRecord);
+
         const ST = card.get('ST');
 
         const stVal = Number(ST.value) + Number(cloneRecord.get('standardHours').value);
 
         ST.setValue(stVal);
 
-        indirectRows.push(cloneRecord);
+        const newRecord = this.createIndirectCardRow(copyRow, ST);
 
-        this._enterTimeManager.insertIndirectLine(this._transformService.transformIndirectFormGroupToLineToSubmit(cloneRecord));
+        indirectRows.push(newRecord);
+
+        this._enterTimeManager.insertIndirectLine(copyRow);
     }
 
     public deleteIndirectRow (record, rowIndex: number, card, cardIndex: number) {
@@ -346,8 +365,8 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
 
     public projectSelected (event, record) {
 
-        // console.log('EnterTimeFormComponent projectSelected', event, record.get('project').value);
         const project = event.option.value;
+        console.log('EnterTimeFormComponent projectSelected', project, record);
 
         this._enterTimeManager.updateProjectLine(record.get('id').value, 'Project', project);
         this.checkDefaultSystem(project.Systems, record);
@@ -355,6 +374,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
         record.patchValue({
            employee: ''
         });
+        this._enterTimeManager.updateProjectLine(record.get('id').value, 'Employee', '');
     }
 
     public openSystems (record) {
@@ -513,7 +533,6 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
         const indirectLines = this._enterTimeManager.getIndirectLines();
 
         let batchPayload: Array<TimeRecord> = [];
-        // let records: Array<TimeRecord>;
 
         if (projectLines.length > 0) {
 
@@ -535,8 +554,74 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
             })
             .catch((error) => {
 
-                console.log(error);
+                const errors = JSON.parse(error)['ValidationErrors'];
+
+
             });
+    }
+
+    public getTimeEntryErrorMessage(record, fieldName: string, fieldGroup: string): string {
+
+        if (record.get('timeEntry').get(fieldGroup).hasError('startAfterEnd')) {
+
+            return 'Time in cannot occur after time out.';
+        } else if (record.get('timeEntry').get(fieldGroup).get(fieldName).hasError('invalid')) {
+
+            if (fieldName === 'in') {
+
+                return 'Time in requires time out.';
+            } else {
+
+                return 'Time out requires time in.';
+            }
+        }
+    }
+
+    public checkIfTimeEntryErrorDisplayed (record, fieldName: string, fieldGroup: string): boolean {
+
+        if (record.get('timeEntry').get(fieldGroup).hasError('startAfterEnd')) {
+
+            return false;
+        } else if (record.get('timeEntry').get(fieldGroup).get(fieldName).hasError('invalid')) {
+
+            return false;
+        }
+        return true
+    }
+
+    public getBreakEntryErrorMessage(record, fieldName: string, fieldGroup: string): string {
+
+        if (record.get('timeEntry').hasError('breakOutsideOfTime')) {
+
+            return 'Break cannot occur outside of time in/out.';
+        } else if (record.get('timeEntry').get(fieldGroup).hasError('breakStartAfterEnd')) {
+
+            return 'Break in cannot occur after break out.';
+        } else if (record.get('timeEntry').get(fieldGroup).get(fieldName).hasError('invalid')) {
+
+            if (fieldName === 'in') {
+
+                return 'Break in requires break out.';
+            } else {
+
+                return 'Break out requires break in.';
+            }
+        }
+    }
+
+    public checkIfBreakEntryErrorDisplayed (record, fieldName: string, fieldGroup: string): boolean {
+
+        if (record.get('timeEntry').hasError('breakOutsideOfTime')) {
+
+            return false;
+        } else if (record.get('timeEntry').get(fieldGroup).hasError('breakStartAfterEnd')) {
+
+            return false;
+        } else if (record.get('timeEntry').get(fieldGroup).get(fieldName).hasError('invalid')) {
+
+            return false;
+        }
+        return true
     }
 
     /******************************************************************************************************************
@@ -588,30 +673,45 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
 
             if (rowGroup === 'projectRows') {
 
-                newCardRow = this.initProjectRow(rowData);
-
-                if (this.browserMode.IsUnsupportedBrowser) {
-
-                    this.unsupportedTimeChanges(newCardRow);
-                } else {
-
-                    this.timeChanges(newCardRow);
-                }
-
-                this.projectNoteChanges(newCardRow);
-                this.standardHourChanges(newCardRow, ST);
-                this.overtimeHourChanges(newCardRow, OT);
-                this.doubleTimeHourChanges(newCardRow, DT);
+                newCardRow = this.createProjectCardRow(rowData, ST, OT, DT);
             } else {
 
-                newCardRow = this.initIndirectRow(rowData);
-                this.indirectNoteChanges(newCardRow);
-                this.indirectStandardHourChanges(newCardRow, ST);
+                newCardRow = this.createIndirectCardRow(rowData, ST);
             }
 
             gridCards.push(newCardRow);
             this.trackProcessing();
         }, 10 * cardIndex);
+    }
+
+    private createProjectCardRow (rowData: LineToSubmit, ST, OT, DT): FormGroup {
+
+        const formRow = this.initProjectRow(rowData);
+
+        if (this.browserMode.IsUnsupportedBrowser) {
+
+            this.unsupportedTimeChanges(formRow);
+        } else {
+
+            this.timeChanges(formRow);
+        }
+
+        this.projectNoteChanges(formRow);
+        this.standardHourChanges(formRow, ST);
+        this.overtimeHourChanges(formRow, OT);
+        this.doubleTimeHourChanges(formRow, DT);
+
+        return formRow;
+    }
+
+    private createIndirectCardRow (rowData: LineToSubmit, ST): FormGroup {
+
+        const formRow = this.initIndirectRow(rowData);
+
+        this.indirectNoteChanges(formRow);
+        this.indirectStandardHourChanges(formRow, ST);
+
+        return formRow;
     }
 
     private initProjectRow(rowData: LineToSubmit) {
@@ -633,7 +733,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
             previousDoubleTimeHours: rowData.HoursDT.toFixed(2),
             isPunch: rowData.IsPunch,
             timeEntry: this._builder.group(this.buildTimeEntryFormGroup(rowData),
-                {validator: validateTimeBreakOverlap('in', 'out', 'in', 'out')}),
+                {validator: validateTimeBreakOverlap('in', 'out', 'in', 'out', this.browserMode.IsUnsupportedBrowser)}),
             notes: rowData.Note
         });
     }
@@ -658,17 +758,17 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
             if (rowData.IsPunch) {
                 return {
 
-                    time: this._builder.group(this.buildTimeDetailFormGroup(rowData.TimeIn, rowData.TimeOut),
+                    'time': this._builder.group(this.buildTimeDetailFormGroup(rowData.TimeIn, rowData.TimeOut),
                         {validator: validateGridTimeWithPeriod('in', 'out', 'startAfterEnd')}),
-                    break: this._builder.group(this.buildTimeDetailFormGroup(rowData.BreakIn, rowData.BreakOut),
-                        {validator: validateTimeWithPeriod('in', 'out', 'breakStartAfterEnd')})
+                    'break': this._builder.group(this.buildTimeDetailFormGroup(rowData.BreakIn, rowData.BreakOut),
+                        {validator: validateGridTimeWithPeriod('in', 'out', 'breakStartAfterEnd')})
                 };
             }
             return {
 
-                time: this._builder.group(this.buildTimeDetailFormGroup(rowData.TimeIn, rowData.TimeOut),
+                'time': this._builder.group(this.buildTimeDetailFormGroup(rowData.TimeIn, rowData.TimeOut),
                     {validator: validateTimeWithPeriod('in', 'out', 'startAfterEnd')}),
-                break: this._builder.group(this.buildTimeDetailFormGroup(rowData.BreakIn, rowData.BreakOut),
+                'break': this._builder.group(this.buildTimeDetailFormGroup(rowData.BreakIn, rowData.BreakOut),
                     {validator: validateTimeWithPeriod('in', 'out', 'breakStartAfterEnd')})
             };
         }
@@ -677,17 +777,17 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
 
             return {
 
-                time: this._builder.group(this.buildTimeDetailFormGroup(rowData.TimeIn, rowData.TimeOut),
+                'time': this._builder.group(this.buildTimeDetailFormGroup(rowData.TimeIn, rowData.TimeOut),
                     {validator: validateGridTime('in', 'out', 'startAfterEnd')}),
-                break: this._builder.group(this.buildTimeDetailFormGroup(rowData.BreakIn, rowData.BreakOut),
-                    {validator: validateTime('in', 'out', 'breakStartAfterEnd')})
+                'break': this._builder.group(this.buildTimeDetailFormGroup(rowData.BreakIn, rowData.BreakOut),
+                    {validator: validateGridTime('in', 'out', 'breakStartAfterEnd')})
             };
         }
         return {
 
-            time: this._builder.group(this.buildTimeDetailFormGroup(rowData.TimeIn, rowData.TimeOut),
+            'time': this._builder.group(this.buildTimeDetailFormGroup(rowData.TimeIn, rowData.TimeOut),
                 {validator: validateTime('in', 'out', 'startAfterEnd')}),
-            break: this._builder.group(this.buildTimeDetailFormGroup(rowData.BreakIn, rowData.BreakOut),
+            'break': this._builder.group(this.buildTimeDetailFormGroup(rowData.BreakIn, rowData.BreakOut),
                 {validator: validateTime('in', 'out', 'breakStartAfterEnd')})
         };
     }
@@ -707,11 +807,11 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
                 outPeriod: outMoment.format('A')
             };
         }
-        return {
+        return _.cloneDeep({
 
-            in: inData,
-            out: outData
-        };
+            'in': inData,
+            'out': outData
+        });
     }
 
     private checkDefaultSystem (systems: Array<System>, record) {
@@ -729,6 +829,8 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
                 system: '',
                 phase: ''
             });
+            this._enterTimeManager.updateProjectLine(record.get('id').value, 'System', '');
+            this._enterTimeManager.updateProjectLine(record.get('id').value, 'Phase', '');
         }
     }
 
@@ -746,6 +848,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
             record.patchValue({
                 phase: ''
             });
+            this._enterTimeManager.updateProjectLine(record.get('id').value, 'Phase', '');
             record.get('phase').setValidators([Validators.required]);
         }
     }
@@ -764,6 +867,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
             record.patchValue({
                 costCode: ''
             });
+            this._enterTimeManager.updateProjectLine(record.get('id').value, 'CostCode', '');
         }
     }
 
@@ -821,13 +925,8 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
 
     private processTimeChanges (fieldValue, previousValue, fieldControl, cardControl, id, isProject: boolean) {
 
-        // console.log('Number(fieldValue)', Number(fieldValue));
-        // console.log('fieldControl.value', fieldControl.value);
-        // console.log('cardControl.value', Number(cardControl.value));
-        // console.log('previousValue.value', previousValue.value);
-
         const numberValue = Number(fieldValue);
-        if (numberValue === 0) {
+        if (numberValue <= 0) {
 
             fieldControl.setErrors({ 'invalid': true });
         } else if (fieldValue) {
@@ -853,13 +952,18 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
     private processExtraTimeChanges (fieldValue, previousValue, fieldControl, cardControl, id, fieldName) {
 
         const numberValue = Number(fieldValue);
-        if (fieldValue || fieldValue === 0) {
+        if (fieldValue || numberValue <= 0) {
 
             cardControl.setValue(Number(cardControl.value) - Number(previousValue.value));
             cardControl.setValue(Number(cardControl.value) + numberValue);
             previousValue.setValue(fieldValue);
             this._enterTimeManager.updateProjectLine(id, fieldName, numberValue);
             fieldControl.setErrors(null);
+        } else {
+
+            cardControl.setValue(Number(cardControl.value) - Number(previousValue.value));
+            previousValue.setValue(0.00);
+            this._enterTimeManager.updateProjectLine(id, fieldName, 0.00);
         }
     }
 
@@ -871,7 +975,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
     private trackProcessing () {
 
         this._currentLine++;
-        console.log('trackProcessing', this._currentLine);
+        // console.log('trackProcessing', this._currentLine);
         if (this._currentLine === this._lineCount) {
             // console.log('trackProcessing', this._currentLine);
             this._enterTimeManager.setProcessing(false);
@@ -1122,6 +1226,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
 
             (stValue) => {
 
+                // console.log('standardHourChanges', stValue);
                 this.processTimeChanges(stValue, prevStdHrs, stdHrs, stdCardHrs, id, true);
             }
         );
@@ -1137,6 +1242,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
 
             (stValue) => {
 
+                // console.log('indirectStandardHourChanges', stValue);
                 this.processTimeChanges(stValue, prevStdHrs, stdHrs, stdCardHrs, id, false);
             }
         );

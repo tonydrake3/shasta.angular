@@ -671,7 +671,7 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
             overtimeHours: '',
             doubleTimeHours: '',
             timeEntry: this._builder.group(this.buildTimeEntryFormGroup(),
-                {validator: validateTimeBreakOverlap('in', 'out', 'in', 'out')}),
+                {validator: validateTimeBreakOverlap('in', 'out', 'in', 'out', this.isUnsupportedTime)}),
             notes: ''
         });
 
@@ -756,7 +756,7 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
             overtimeHours: '',
             doubleTimeHours: '',
             timeEntry: this._builder.group(this.buildTimeEntryFormGroup(),
-                {validator: validateTimeBreakOverlap('in', 'out', 'in', 'out')}),
+                {validator: validateTimeBreakOverlap('in', 'out', 'in', 'out', this.isUnsupportedTime)}),
             notes: ''
         });
         this.systems = [];
