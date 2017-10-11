@@ -15,6 +15,10 @@ button.esub-button,
         background-color: $red;
         color: $white;
     }
+    &.negative {
+        background-color: $gray-40;
+        color: $red;
+    }
     &.success {
         background-color: $green;
         color: $white;
