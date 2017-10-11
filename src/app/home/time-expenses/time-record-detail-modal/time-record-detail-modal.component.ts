@@ -42,8 +42,10 @@ export class TimeRecordDetailModalComponent implements OnInit {
     }
 
     private initializeTimeRecordInputData() {
-        if (this.timeRecord.IndirectCostId) { // Initialize with Indirect Cost Data
+        if (this.timeRecord.IndirectCost) { // Initialize with Indirect Cost Data
+            console.log('Initializing Modal Data from Indirect Cost Record');
             this.timeRecordData = new IndirectCostTimeModalDisplayData(this.timeRecord);
+            console.log(this.timeRecordData);
         }
     }
 }

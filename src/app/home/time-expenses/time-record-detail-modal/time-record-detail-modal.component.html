@@ -1,11 +1,19 @@
 <h2 md-dialog-title>{{title}}</h2>
 <md-dialog-content>
 
-    <h5>Project</h5>
+    <div *ngIf="timeRecordData.projectTitle">
+    <h5>{{timeRecordData.projectTitle}}</h5>
+        {{timeRecordData.projectText}}
+    </div>
+    <h5>{{timeRecordData.costCodeTitle}}</h5>
+        {{timeRecordData.costCodeText}}
+    <h5>Employee</h5>
+        {{timeRecordData.employeeText}}
+    <h5>Status</h5>
+        {{timeRecordData.statusText}}
+    <h5>Hours</h5>
+        {{timeRecordData.totalHoursText}}
 
-    <h5>Cost Code</h5>
-
-    <h5>Indirect Cost</h5>
 </md-dialog-content>
 
 <md-dialog-actions align="end">

@@ -58,6 +58,7 @@ export class TimeRecord {
         timeRecord.ProjectId = data['ProjectId'];
         timeRecord.EmployeeId = data['EmployeeId'];
         timeRecord.Employee = data['Employee'];
+        timeRecord.Hours = Hours.fromAPIData(data['Hours']);
         timeRecord.HoursOverriden = data['HoursOverriden'];
         timeRecord.Id = data['Id'];
         timeRecord.ManualHours = data['ManualHours'];
