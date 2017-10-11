@@ -43,6 +43,8 @@ export class TimeRecordDetailModalComponent implements OnInit {
         this.timeRecord.CostCodeId = this.data['CostCodeId'];
         this.timeRecord.IndirectCostId = this.data['IndirectCostId'];
         this.timeRecord.ProjectId = this.data['ProjectId'];
+        this.timeRecord.EmployeeId = this.data['EmployeeId'];
+        this.timeRecord.Employee = this.data['Employee'];
     }
 }
 

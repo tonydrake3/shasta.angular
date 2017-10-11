@@ -2,6 +2,8 @@ import {Hours} from './Hours';
 import {Punch} from './Punch';
 import {CostCode} from './CostCode';
 import {Project} from './Project';
+import {IndirectCost} from './IndirectCost';
+import {Employee} from 'app/models/domain/Employee';
 
 export class TimeRecordPost {
     Id: string;
@@ -22,8 +24,9 @@ export class TimeRecord {
     CostCodeId?: string;
     CostCode?: CostCode;
     IndirectCostId?: string;
-    // IndirectCost?: IndirectCost;
+    IndirectCost?: IndirectCost;
     EmployeeId?: string;
+    Employee?: Employee;
     Hours?: Hours;
     Punch?: Punch;
     Comments?: Array<any>;
