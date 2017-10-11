@@ -28,6 +28,7 @@ export class TimeRecord {
     EmployeeId?: string;
     Employee?: Employee;
     Hours?: Hours;
+    HoursOverriden?: boolean;
     Punch?: Punch;
     Comments?: Array<any>;
     TimeRecordStatus?: string; // 'Pending', 'Approved', 'Rejected', 'Signed', 'Exported'

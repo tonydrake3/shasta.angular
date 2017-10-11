@@ -45,56 +45,14 @@ export class TimeRecordDetailModalComponent implements OnInit {
         this.timeRecord.ProjectId = this.data['ProjectId'];
         this.timeRecord.EmployeeId = this.data['EmployeeId'];
         this.timeRecord.Employee = this.data['Employee'];
+        this.timeRecord.HoursOverriden = this.data['HoursOverriden'];
+        this.timeRecord.Id = this.data['Id'];
+        this.timeRecord.ManualHours = this.data['ManualHours'];
+        this.timeRecord.Punch = this.data['Punch'];
+        this.timeRecord.Signed = this.data['Signed'];
+        this.timeRecord.TimeRecordStatus = this.data['TimeRecordStatus'];
+        this.timeRecord.Timestamps = this.data['Timestamps'];
+        console.log('initialized timerecord from data passed to modal');
+        console.log(this.timeRecord);
     }
 }
-
-
-
-// CostCode
-//     :
-//     null
-// Employee
-//     :
-// {$id: "9", Address: {…}, LaborClassId: "c5d1ff94-da50-4498-a0e8-ce30d630f6cd", AddToNewProjects: false, FirstName: "Test", …}
-// Hours
-//     :
-// {$id: "11", DoubleTime: 0, Overtime: 0, RegularTime: 4, Date: "2017-09-22T07:00:00Z"}
-// HoursOverridden
-//     :
-//     false
-// Id
-//     :
-//     "c8b1531a-15a5-469f-887e-0a666fdc7c2b"
-// IndirectCost
-//     :
-// {$id: "10", Id: "76a199de-2dce-47f9-8074-c905baa76774", Description: "Sick Time", Code: null}
-// ManualHours
-//     :
-//     false
-// Project
-//     :
-//     null
-// Punch
-//     :
-//     null
-// SecondLvlApprovedByUserId
-//     :
-//     null
-// SecondLvlApprovedDate
-//     :
-//     null
-// Signed
-//     :
-//     false
-// SignedDate
-//     :
-//     null
-// TimeRecordStatus
-//     :
-//     "Pending"
-// Timestamps
-//     :
-// {$id: "12", ClientCreated: "2017-09-30T22:26:28.91Z", ClientUpdated: "2017-09-30T22:26:28.91Z", Created: "2017-09-30T22:26:28.91Z", CreatedBy: null, …}
-// Units
-//     :
-//     null
