@@ -44,4 +44,28 @@ export class TimeRecord {
     SignedDate?: string;
     Units: number;
     Timestamps?: any;
+
+    static fromAPIData(data: any): TimeRecord {
+        const timeRecord = new this();
+        timeRecord.CostCodeId = data['CostCodeId'];
+        timeRecord.Breaks = data['Breaks'];
+        timeRecord.Comments = data['Comments'];
+        timeRecord.CostCode = data['CostCode'];
+        timeRecord.IndirectCost = data['IndirectCost'];
+        timeRecord.Project = data['Project'];
+        timeRecord.CostCodeId = data['CostCodeId'];
+        timeRecord.IndirectCostId = data['IndirectCostId'];
+        timeRecord.ProjectId = data['ProjectId'];
+        timeRecord.EmployeeId = data['EmployeeId'];
+        timeRecord.Employee = data['Employee'];
+        timeRecord.HoursOverriden = data['HoursOverriden'];
+        timeRecord.Id = data['Id'];
+        timeRecord.ManualHours = data['ManualHours'];
+        timeRecord.Punch = data['Punch'];
+        timeRecord.Signed = data['Signed'];
+        timeRecord.TimeRecordStatus = data['TimeRecordStatus'];
+        timeRecord.Timestamps = data['Timestamps'];
+
+        return timeRecord;
+    }
 }

@@ -1,10 +1,27 @@
-export class TimeModalDisplayData {
+import {TimeRecord} from '../../../models/domain/TimeRecord';
+
+export interface TimeModalDisplayData {
+    employeeText: string;
+    projectText?: string;
+    costCodeText: string;
+    statusText: string;
+    totalHoursText: string;
+}
+
+export class IndirectCostTimeModalDisplayData implements TimeModalDisplayData {
     employeeText: string;
     projectText: string;
     costCodeText: string;
     statusText: string;
     totalHoursText: string;
-    bannerItem: BannerItem;
+
+    constructor(timeRecord: TimeRecord) {
+        this.employeeText = timeRecord.Employee.FirstName + ' ' + timeRecord.Employee.LastName;
+        this.projectText = null;
+        this.costCodeText = timeRecord.IndirectCost.Description;
+        this.statusText = timeRecord.TimeRecordStatus;
+        this.totalHoursText = String(timeRecord.Hours.total);
+    }
 }
 
 export class BannerItem {
