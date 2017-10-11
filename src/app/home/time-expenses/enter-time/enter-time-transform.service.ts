@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import * as _ from 'lodash';
 import * as moment from 'moment';
+import * as uuidv4 from 'uuid/v4';
 
 import {LineToSubmit} from './models/LinesToSubmit';
 import {TimeRecord} from '../../../models/domain/TimeRecord';
@@ -65,7 +66,7 @@ export class EnterTimeTransformService {
             line.Note = form.get('notes').value;
         }
 
-        console.log('transformFormGroupToLineToSubmit', line);
+        // console.log('transformFormGroupToLineToSubmit', line);
 
         return line;
     }
@@ -88,7 +89,7 @@ export class EnterTimeTransformService {
             line.Note = form.get('notes').value;
         }
 
-        console.log('transformFormGroupToLineToSubmit', line);
+        // console.log('transformFormGroupToLineToSubmit', line);
 
         return line;
     }

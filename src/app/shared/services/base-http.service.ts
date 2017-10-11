@@ -20,6 +20,7 @@ export class BaseHttpService {
 
         const headers = new Headers();
         this.addHeaders(headers);
+        this.addJsonHeaders(headers);
 
         const options = new RequestOptions({headers : headers});
 
@@ -137,7 +138,7 @@ export class BaseHttpService {
         if (error instanceof Response) {
             const body = error.json() || '';
             const err = body.error || JSON.stringify(body);
-            errMsg = body.error_description ? body.error_description : `${error.status} - ${error.statusText || ''} ${err}`;
+            errMsg = body.error_description ? body.error_description : err;
         } else {
             errMsg = error.message ? error.message : error.toString();
         }

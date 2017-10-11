@@ -1,14 +1,15 @@
 import { Http } from '@angular/http';
-import { ReplaySubject } from 'rxjs/Rx';
-import { BaseHttpService } from './base-http.service';
-import { environment } from '../../../environments/environment';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/map';
 
-export class BaseStore extends BaseHttpService {
+import { BaseHttpService } from './base-http.service';
+import { environment } from '../../../environments/environment';
 
-    _route: string;
+export class BaseCacheStore extends BaseHttpService {
 
-    _entity$ = new ReplaySubject();
+    private _route: string;
+
+    protected _entity$ = new BehaviorSubject(null);
 
     constructor(protected _httpPassthrough: Http) {
 
@@ -22,6 +23,11 @@ export class BaseStore extends BaseHttpService {
     protected init (url?: string) {
 
         this._route = url;
+
+        if (!this._entity$.value) {
+
+            this.load();
+        }
     }
 
     protected load (): Promise<any> {
@@ -57,58 +63,5 @@ export class BaseStore extends BaseHttpService {
 
         });
     }
-
-    protected addEntity(entity: any): Promise<any> {
-
-        return new Promise((resolve, reject) => {
-
-            this.post(this._route, entity)
-
-                .subscribe(
-
-                    data => {
-                        this.load();
-                        resolve(data);
-                    },
-                    err => {
-                        reject(err);
-                    });
-        });
-    }
-
-    protected updateEntity(entity: any): Promise<any> {
-
-        return new Promise((resolve, reject) => {
-
-            this.put(this._route + '/' + entity.id, entity)
-
-                .subscribe(
-                    data => {
-                        this.load();
-                        resolve(data);
-                    },
-                    err => {
-                        reject(err);
-                    });
-        });
-    }
-
-    protected deleteEntity(entity: any): Promise<any> {
-
-        return new Promise((resolve, reject) => {
-
-            this.delete(this._route + '/' + entity.id)
-
-                .subscribe(
-
-                    data => {
-                        this.load();
-                        resolve(data);
-                    },
-                    err => {
-                        reject(err);
-                    });
-        });
-    }
-
 }
+

@@ -9,6 +9,7 @@ export const apiRoutes = {
     'enterTimeBatch': 'Time/TimeRecords/Batch',
     'indirectCostCodes': 'Shared/IndirectCosts',
     'notifications': 'DataSync/Notifications',
+    'permissions': 'Identity/Permissions/Current',
     'projects': 'Shared/Projects',
     'system': 'Shared/Systems',
     'timeRecords': 'Time/TimeRecords/Full',

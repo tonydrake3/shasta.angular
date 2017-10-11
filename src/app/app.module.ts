@@ -28,9 +28,10 @@ import {LookupDataService} from './home/shared/services/lookup-data.service';
 
 // entry components
 import { CommentsComponent } from './home/shared/components/comments.component';
-import { NotificationComponent } from './home/notifications/notifications.component';
 import { ConfirmationDialogComponent } from './home/shared/components/confirmation-dialog.component';
 import { NotesEntryDialogComponent } from './home/shared/components/notes-entry.component';
+import { NotificationComponent } from './home/notifications/notifications.component';
+import { PermissionsService } from './shared/services/authorization/permissions.service';
 
 @NgModule({
     imports: [
@@ -61,6 +62,7 @@ import { NotesEntryDialogComponent } from './home/shared/components/notes-entry.
         AuthGuard,
         DataSyncService,
         LookupDataService,
+        PermissionsService
     ],
     bootstrap: [AppComponent],
     entryComponents: [

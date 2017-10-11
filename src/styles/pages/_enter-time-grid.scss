@@ -7,6 +7,19 @@
         margin-left: 0;
     }
 
+    .enter-time-grid-tabs {
+        margin-top: 10px;
+        max-width: 320px;
+
+        .mat-tab-label {
+            min-width: 100px;
+        }
+
+        .mat-ink-bar {
+            width: 100px;
+        }
+    }
+
     .enter-time-card-header {
         display: flex;
 
@@ -139,6 +152,7 @@
                     .time-entry-cell {
                         border-right: solid 2px $gray-10;
                         padding: 0 4px;
+
 
                         &.row-end {
                             border-right: 0;

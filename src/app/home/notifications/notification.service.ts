@@ -5,11 +5,12 @@ import {apiRoutes} from '../shared/configuration/api-routes.configuration';
 import {BaseHttpService} from '../../shared/services/base-http.service';
 import {ReplaySubject} from 'rxjs/ReplaySubject';
 import {environment} from '../../../environments/environment';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class NotificationService extends BaseHttpService {
 
-    private _notifications$ = new ReplaySubject();
+    private _notifications$ = new BehaviorSubject(null);
 
     constructor(protected _httpPassthrough: Http) {
 
@@ -41,8 +42,9 @@ export class NotificationService extends BaseHttpService {
                 .subscribe(
 
                     // TODO: Look into function handlers here
-                    data => {
+                    (data) => {
 
+                        // console.log('NotificationService load', data);
                         this._notifications$.next(data);
                         resolve(data);
                     },

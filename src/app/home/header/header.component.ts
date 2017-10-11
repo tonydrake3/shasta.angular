@@ -35,10 +35,16 @@ export class AppHeaderComponent extends BaseComponent implements OnInit {
         //         callback: 'notificationCallback'
         //     }
         // ]);
+
+        this.notificationCount = 0;
     }
 
     notificationCallback (notifications) {
-        this.notificationCount = notifications.length;
+
+        if (notifications) {
+
+            this.notificationCount = notifications.length;
+        }
     }
 
     ngOnInit() {
@@ -52,17 +58,20 @@ export class AppHeaderComponent extends BaseComponent implements OnInit {
 
     openNotifications () {
 
-        const options = new PopoverOptions();
-        options.height = 205;
-        options.width = 320;
-        options.componentName = 'notifications';
+        if (this.notificationCount > 0) {
 
-        if (this._popoverService.getCurrentPopoverState()) {
+            const options = new PopoverOptions();
+            options.height = 205;
+            options.width = 320;
+            options.componentName = 'notifications';
 
-            this._popoverService.closePopover();
-        } else {
+            if (this._popoverService.getCurrentPopoverState()) {
 
-            this._popoverService.openPopover(options);
+                this._popoverService.closePopover();
+            } else {
+
+                this._popoverService.openPopover(options);
+            }
         }
     }
 
@@ -70,4 +79,6 @@ export class AppHeaderComponent extends BaseComponent implements OnInit {
 
         this._popoverService.closePopover();
     }
+
+
 }

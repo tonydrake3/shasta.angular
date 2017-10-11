@@ -26,6 +26,7 @@ import {TimeSettings} from '../../../../models/domain/TimeSettings';
 import {EnterTimeFormTab, enterTimeTabs} from '../models/EnterTimeMenu';
 import {EnterTimeFilterService} from '../enter-time-filter.service';
 import {concatStatic} from 'rxjs/operator/concat';
+import {PermissionsService} from '../../../../shared/services/authorization/permissions.service';
 
 @Component({
     selector: 'esub-enter-time-form',
@@ -83,7 +84,8 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
 
     constructor (private _builder: FormBuilder, private _enterTimeManager: EnterTimeManager,
                  private _dateFlyoutService: DateFlyoutService, private _confirmationService: ConfirmationDialogService,
-                 private _preloadService: EnterTimePreloadManager, private _filterService: EnterTimeFilterService) {
+                 private _preloadService: EnterTimePreloadManager, private _filterService: EnterTimeFilterService,
+                 private _permissions: PermissionsService) {
 
         this.progressConfig = {
             color: 'primary',
@@ -137,6 +139,17 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
                         this.tabs = this.getTabs();
                     }
                 });
+
+        this._permissions.permissions$
+            .subscribe(
+                (permissions) => {
+
+                    if (permissions) {
+
+                        console.log('EnterTimeFormComponent permissions', permissions);
+                    }
+                }
+            );
 
         if (this.projects.length === 0 || this._tenantEmployees.length === 0 || this._indirectCodes.length === 0 ||
             _.isNull(this.timeSettings)) {
@@ -671,7 +684,7 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
             overtimeHours: '',
             doubleTimeHours: '',
             timeEntry: this._builder.group(this.buildTimeEntryFormGroup(),
-                {validator: validateTimeBreakOverlap('in', 'out', 'in', 'out')}),
+                {validator: validateTimeBreakOverlap('in', 'out', 'in', 'out', this.isUnsupportedTime)}),
             notes: ''
         });
 
@@ -756,7 +769,7 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
             overtimeHours: '',
             doubleTimeHours: '',
             timeEntry: this._builder.group(this.buildTimeEntryFormGroup(),
-                {validator: validateTimeBreakOverlap('in', 'out', 'in', 'out')}),
+                {validator: validateTimeBreakOverlap('in', 'out', 'in', 'out', this.isUnsupportedTime)}),
             notes: ''
         });
         this.systems = [];
