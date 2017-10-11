@@ -97,8 +97,8 @@ export class TimeExpensesComponent extends BaseComponent implements OnInit {
         const record = this.timerecords[1];
         const timeRecordDetailModalRef = this._dialog.open(TimeRecordDetailModalComponent, {
             data: record,
-            height: '220px',
-            width: '280px'
+            height: '500px',
+            width: '800px'
         });
         timeRecordDetailModalRef.afterClosed().subscribe(result => {
             console.log('TimeRecordDetail modal closed.');

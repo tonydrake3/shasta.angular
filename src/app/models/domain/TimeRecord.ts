@@ -44,6 +44,4 @@ export class TimeRecord {
     SignedDate?: string;
     Units: number;
     Timestamps?: any;
-
-
 }
