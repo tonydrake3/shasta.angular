@@ -9,7 +9,7 @@ export class BaseCacheStore extends BaseHttpService {
 
     private _route: string;
 
-    _entity$ = new BehaviorSubject(null);
+    protected _entity$ = new BehaviorSubject(null);
 
     constructor(protected _httpPassthrough: Http) {
 
