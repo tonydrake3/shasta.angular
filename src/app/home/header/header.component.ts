@@ -41,6 +41,7 @@ export class AppHeaderComponent extends BaseComponent implements OnInit {
 
     notificationCallback (notifications) {
 
+        // console.log(notifications);
         if (notifications) {
 
             this.notificationCount = notifications.length;
@@ -56,12 +57,22 @@ export class AppHeaderComponent extends BaseComponent implements OnInit {
         this._router.navigate(['../login']);
     }
 
-    openNotifications () {
+    openNotifications (param) {
 
-        if (this.notificationCount > 0) {
-
+        if (param > 0) {
             const options = new PopoverOptions();
-            options.height = 205;
+            switch (param) {
+                case 1:
+                    options.height = 80;
+                    break;
+                case 2:
+                    options.height = 145;
+                    break;
+                default:
+                    options.height = 206;
+                    break;
+            }
+
             options.width = 320;
             options.componentName = 'notifications';
 

@@ -3,13 +3,15 @@ import {Http} from '@angular/http';
 
 import {apiRoutes} from '../shared/configuration/api-routes.configuration';
 import {BaseHttpService} from '../../shared/services/base-http.service';
-import {ReplaySubject} from 'rxjs/ReplaySubject';
+
 import {environment} from '../../../environments/environment';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class NotificationService extends BaseHttpService {
 
+    // Private
+    private static readonly pollingPeriod = 60000;
     private _notifications$ = new BehaviorSubject(null);
 
     constructor(protected _httpPassthrough: Http) {
@@ -17,21 +19,21 @@ export class NotificationService extends BaseHttpService {
         super(_httpPassthrough);
     }
 
-    public getLatest (): Promise<any> {
+    public getLatest () {
 
-        return this.load();
+        this.pollEndpoint();
     }
 
     get notifications$ () {
 
-        return this._notifications$.takeLast(1);
+        return this._notifications$.asObservable();
     }
 
     /******************************************************************************************************************
-     * Protected Methods
+     * Private Methods
      ******************************************************************************************************************/
 
-    protected load (): Promise<any> {
+    private load (): Promise<any> {
 
         const url = environment.apiUrl + apiRoutes.notifications;
 
@@ -61,6 +63,13 @@ export class NotificationService extends BaseHttpService {
                     })
 
         });
+    }
+
+    private pollEndpoint () {
+
+        setInterval(() => {
+            this.load();
+        }, this.pollingPeriod)
     }
 
 }

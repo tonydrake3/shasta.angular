@@ -8,13 +8,15 @@ export class ClickCloseDirective {
 
     @Input() elementClickHandler: any;
     @Input() outsideClickHandler: any;
+    @Input() clickHandlerParam: any;
 
     @HostListener('document:click', ['$event'])
     public onClick(event: MouseEvent) {
 
         if (this._elementRef.nativeElement.contains(event.target)) {
 
-            this.elementClickHandler();
+            // console.log('ClickCloseDirective onClick', this.invokeClickHandlerCondition);
+            this.elementClickHandler(this.clickHandlerParam);
             // Placeholder for cases where you want to handle click on event target
         } else {
 

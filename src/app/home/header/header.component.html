@@ -35,7 +35,8 @@
               </li>
               <li class="list-inline-item notification-icon">
                   <button id="notifications" md-button class="md-button header-btn"
-                        esubClickClose [elementClickHandler]="openNotifications" [outsideClickHandler]="closeNotifications">
+                          esubClickClose [elementClickHandler]="openNotifications" [outsideClickHandler]="closeNotifications"
+                          [clickHandlerParam]="notificationCount">
                       <i class="material-icons notifications-counter"><span>{{notificationCount}}</span></i>
                       <div class="header-btn-label"><label id="notificationsLabel">Notifications</label></div>
                   </button>
