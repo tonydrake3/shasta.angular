@@ -1,4 +1,7 @@
 import {TimeRecord} from '../../../models/domain/TimeRecord';
+import {Employee} from '../../../models/domain/Employee';
+import {Punch} from '../../../models/domain/Punch';
+import {Hours} from '../../../models/domain/Hours';
 
 export interface TimeModalDisplayData {
     employeeText: string;
@@ -69,3 +72,48 @@ export class EditTimeModal implements TimeModal {
         console.log('Edit Modal Tapped Action Button');
     }
 }
+
+export interface TimeRecordConvertible {
+    asTimeRecord(): TimeRecord
+}
+
+export class HoursApproval implements TimeRecordConvertible {
+
+    status: string;
+    day: string;
+    job: string;
+    hourlyValues: string;
+    Regulartime: number;
+    Overtime: number;
+    Doubletime: number;
+    isSelected: boolean;
+    punch: Punch;
+    costCode: string;
+    $id: string;
+    isRejected: boolean;
+    note: string;
+    comments: Array<Comment>;
+    TimeRecordId: string;
+    projectId: string;
+    employee: Employee;
+    punchIn?: Date;
+    punchOut?: Date;
+
+    asTimeRecord(): TimeRecord {
+        const timeRecord = new TimeRecord();
+        timeRecord.TimeRecordStatus = this.status;
+        // timeRecord.ManualHours = //???//We need a good way to figure out if we should set Manual Hours.
+        // timeRecord.Hours = new Hours(this.Regulartime, this.Overtime, this.Doubletime, ????) // what is the date?
+        timeRecord.Employee = this.employee;
+        timeRecord.Comments = this.comments;
+        timeRecord.Id = this.TimeRecordId;
+        // timeRecord.Breaks = ???? Breaks?
+        // timeRecord.IndirectCost = ???
+        timeRecord.CostCode = this.costCode;
+        // timeRecord.Project = ???this.projectId?
+        // timeRecord.PhaseId = ????
+
+        return timeRecord
+    }
+}
+
