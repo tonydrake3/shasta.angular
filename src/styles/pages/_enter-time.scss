@@ -74,17 +74,10 @@
     .row.add-more {
         margin-top: 15px;
 
-        .groupings {
-            margin-top: 15px;
-        }
-
-        .delete {
+        .delete,
+        .add-lines{
             margin-top: 16px;
-            @extend .paragraph-disabled;
-
-            span {
-                cursor: pointer;
-            }
+            @extend .paragraph-regular;
         }
     }
 

@@ -29,8 +29,6 @@ import { EnterTimePreloadManager } from './enter-time/enter-time-preload.manager
 import { EnterTimeBatchService } from './enter-time/enter-time-batch.service';
 import { EnterTimeFilterService } from './enter-time/enter-time-filter.service';
 import { EnterTimeTransformService } from './enter-time/enter-time-transform.service';
-import {EnterTimeGridBuilderService} from './enter-time/enter-time-grid-builder.service';
-import {EnterTimeNoteDialogComponent} from './enter-time/enter-time-note-dialog/enter-time-note-dialog.component';
 
 @NgModule({
     imports: [
@@ -65,7 +63,6 @@ import {EnterTimeNoteDialogComponent} from './enter-time/enter-time-note-dialog/
       TimeRecordsService,
       EnterTimeBatchService,
       EnterTimeFilterService,
-      EnterTimeGridBuilderService,
       EnterTimeManager,
       EnterTimeStatusService,
       EnterTimePreloadManager,
