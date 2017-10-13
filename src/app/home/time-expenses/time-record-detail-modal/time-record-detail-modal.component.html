@@ -1,18 +1,43 @@
 <h2 md-dialog-title>{{title}}</h2>
 <md-dialog-content>
 
-    <div *ngIf="timeRecordData.projectTitle">
-    <h5>{{timeRecordData.projectTitle}}</h5>
-        {{timeRecordData.projectText}}
-    </div>
-    <h5>{{timeRecordData.costCodeTitle}}</h5>
-        {{timeRecordData.costCodeText}}
-    <h5>Employee</h5>
-        {{timeRecordData.employeeText}}
-    <h5>Status</h5>
-        {{timeRecordData.statusText}}
-    <h5>Hours</h5>
-        {{timeRecordData.totalHoursText}}
+    <!--<div *ngIf="displayData.projectTitle">-->
+    <!--<h5>{{displayData.projectTitle}}</h5>-->
+       <!--<h3> {{displayData.projectText}}</h3>-->
+    <!--</div>-->
+    <!--<h5>{{displayData.costCodeTitle}}</h5>-->
+        <!--<h3>{{displayData.costCodeText}}</h3>-->
+    <!--<h5>Employee</h5>-->
+        <!--<h3>{{displayData.employeeText}}</h3>-->
+    <!--<h5>Status</h5>-->
+        <!--<h3>{{displayData.statusText}}</h3>-->
+    <!--<h5>Hours</h5>-->
+        <!--<h3>{{displayData.totalHoursText}}</h3>-->
+
+    <form [formGroup]="enterTimeForm" (ngSubmit)="onSubmit(enterTimeForm)" novalidate>
+        <div class="row" *ngIf="timeRecord.Project">
+            <div class="col-md-12">
+                <md-form-field class="form-field">
+                    <input
+                        type="text"
+                        mdInput placeholder="Project"
+                        formControlName="project"
+                        [mdAutocomplete]="autoProject"
+                        (focus)="openProjects($event.target.value)"
+                        [id]="txtFormProject"
+                    >
+                </md-form-field>
+                <md-autocomplete #autoProject="mdAutocomplete"
+                                 [displayWith]="displayFormatted"
+                                 (optionSelected)="projectSelected($event)">
+                    <md-option *ngFor="let project of filteredProjects | async" [value]="[project]">
+                        {{project.Number}} - {{project.Name}}
+                    </md-option>
+                </md-autocomplete>
+            </div>
+        </div>
+    </form>
+
 
 </md-dialog-content>
 

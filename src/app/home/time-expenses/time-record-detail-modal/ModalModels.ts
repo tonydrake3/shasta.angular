@@ -3,6 +3,11 @@ import {Employee} from '../../../models/domain/Employee';
 import {Punch} from '../../../models/domain/Punch';
 import {Hours} from '../../../models/domain/Hours';
 
+export const enum TimeModalMode {
+    view,
+    edit
+}
+
 export interface TimeModalDisplayData {
     employeeText: string;
     projectTitle?: string;
@@ -44,33 +49,20 @@ export class BannerItem {
 }
 
 export interface TimeModal {
+    displayMode: TimeModalMode;
     displayData: TimeModalDisplayData;
     didTapCancelButton(): void;
-    didTapActionButton(): void;
 }
 
-export class ViewTimeModal implements TimeModal {
-    displayData: TimeModalDisplayData;
-
-    didTapCancelButton(): void {
-        console.log('View Modal Tapped Cancel Button');
-    }
-
-    didTapActionButton(): void {
-        console.log('View Modal Tapped Action Button');
-    }
-}
-
-export class EditTimeModal implements TimeModal {
-    displayData: TimeModalDisplayData;
-
-    didTapCancelButton(): void {
-        console.log('Edit Modal Tapped Cancel Button');
-    }
-
-    didTapActionButton(): void {
-        console.log('Edit Modal Tapped Action Button');
-    }
+// export class EditTimeModal implements TimeModal {
+//     displayData: TimeModalDisplayData;
+//
+//     didTapCancelButton(): void {
+//         console.log('Edit Modal Tapped Cancel Button');
+//     }
+// }
+export interface DisplayModeSpecifying {
+    displayMode: TimeModalMode;
 }
 
 export interface TimeRecordConvertible {
