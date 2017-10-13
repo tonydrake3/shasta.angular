@@ -101,4 +101,21 @@ export class EnterTimeFilterService {
 
         return Observable.of(filtered);
     }
+
+    public filterByKeyValuePair<A> (dictionary: any, collection: Array<A>): Observable<A[]> {
+        let filtered = [];
+
+        filtered = _.filter(collection, (item) => {
+
+            for (const key in dictionary) {
+                console.log('the key is ' + key + ' and the value is ' + item[key]);
+                console.log('does ' + item[key] + ' include ' + dictionary[key]);
+                if (item[key] && item[key].includes(dictionary[key])) { return true }
+            }
+
+            return false;
+        });
+
+        return Observable.of(filtered);
+    }
 }

@@ -1,8 +1,9 @@
 ///<reference path="components/base.card.component.ts"/>
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {
+    MdAutocompleteModule,
     MdButtonModule, MdDatepickerModule, MdDialogModule, MdInputModule, MdNativeDateModule,
     MdProgressSpinnerModule
 } from '@angular/material';
@@ -54,8 +55,10 @@ import {TimeRecordDetailModalComponent} from '../time-expenses/time-record-detai
         MdButtonModule,
         MdDialogModule,
         MdInputModule,
+        MdAutocompleteModule,
         CommonModule,
         FormsModule,
+        ReactiveFormsModule,
         DpDatePickerModule
     ],
     declarations: [
