@@ -745,7 +745,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
             date: [rowData.Date, [Validators.required]],
             costCode: [rowData.CostCode, [Validators.required]],
             employee: [rowData.Employee, [Validators.required]],
-            standardHours: [rowData.HoursST.toFixed(2), [Validators.required, Validators.max(24)]],
+            standardHours: [rowData.HoursST.toFixed(2), [Validators.required]],
             previousStandardHours: rowData.HoursST.toFixed(2),
             notes: rowData.Note
         });
