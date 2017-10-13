@@ -29,5 +29,4 @@ export class ProjectService extends BaseStore {
         this.init(apiRoutes.projects + '?query=' + filter);
         return this.load();
     }
-
 }

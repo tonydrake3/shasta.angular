@@ -31,6 +31,7 @@ import {routeName} from '../../../shared/configuration/web-route-names.configura
 import {Router} from '@angular/router';
 import {MdDialog} from '@angular/material';
 import {NotesEntryDialogComponent} from '../../../shared/components/notes-entry.component';
+import {PermissionsService} from '../../../../shared/services/authorization/permissions.service';
 
 @Component({
     selector: 'esub-enter-time-grid',
@@ -82,7 +83,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
     constructor (private _enterTimeManager: EnterTimeManager, private _confirmationService: ConfirmationDialogService,
                  private _transformService: EnterTimeTransformService, private _batchService: EnterTimeBatchService,
                  private _builder: FormBuilder, private _filterService: EnterTimeFilterService,
-                 private _router: Router, private _dialog: MdDialog) {
+                 private _router: Router, private _dialog: MdDialog, private _permissions: PermissionsService) {
 
         this.dateFormat = 'MMM. Do, YYYY';
         this.maxDate = moment().toISOString();
@@ -139,6 +140,17 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
                     // console.log('EnterTimeGridComponent indirectRow$', row);
                     this.addRow('indirectRows', row.CardIndex, row);
                 });
+
+        this._permissions.permissions$
+            .subscribe(
+                (permissions) => {
+
+                    if (permissions) {
+
+                        console.log('EnterTimeGridComponent permissions', permissions);
+                    }
+                }
+            );
 
         setTimeout(() => {
             // console.log(this.lineCount);
