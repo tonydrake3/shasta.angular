@@ -37,7 +37,7 @@
             .enter-time-card-hours {
                 border: 1px solid $gray-30;
                 font-size: 16px;
-                width: 70px;
+                min-width: 70px;
 
                 .card-total-label {
                     color: $gray-70;
