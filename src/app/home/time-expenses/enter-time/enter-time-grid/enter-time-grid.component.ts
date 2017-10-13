@@ -745,7 +745,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
             date: [rowData.Date, [Validators.required]],
             costCode: [rowData.CostCode, [Validators.required]],
             employee: [rowData.Employee, [Validators.required]],
-            standardHours: [rowData.HoursST.toFixed(2), [Validators.required]],
+            standardHours: [rowData.HoursST.toFixed(2), [Validators.required, Validators.max(24)]],
             previousStandardHours: rowData.HoursST.toFixed(2),
             notes: rowData.Note
         });
@@ -926,7 +926,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
     private processTimeChanges (fieldValue, previousValue, fieldControl, cardControl, id, isProject: boolean) {
 
         const numberValue = Number(fieldValue);
-        if (numberValue <= 0) {
+        if (numberValue <= 0 || numberValue > 24) {
 
             fieldControl.setErrors({ 'invalid': true });
         } else if (fieldValue) {
@@ -952,7 +952,11 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
     private processExtraTimeChanges (fieldValue, previousValue, fieldControl, cardControl, id, fieldName) {
 
         const numberValue = Number(fieldValue);
-        if (fieldValue || numberValue <= 0) {
+
+        if (numberValue > 24) {
+
+            fieldControl.setErrors({ 'invalid': true });
+        } else if (fieldValue || numberValue <= 0) {
 
             cardControl.setValue(Number(cardControl.value) - Number(previousValue.value));
             cardControl.setValue(Number(cardControl.value) + numberValue);
