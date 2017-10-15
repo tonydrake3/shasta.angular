@@ -27,6 +27,7 @@ import {EnterTimeFormTab, enterTimeTabs} from '../models/EnterTimeMenu';
 import {EnterTimeFilterService} from '../enter-time-filter.service';
 import {concatStatic} from 'rxjs/operator/concat';
 import {PermissionsService} from '../../../../shared/services/authorization/permissions.service';
+import {Permissions} from '../../../../models/domain/Permissions';
 
 @Component({
     selector: 'esub-enter-time-form',
@@ -39,6 +40,10 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
     // Private
     private _tenantEmployees: Array<Employee>;
     private _indirectCodes: Array<CostCode>;
+    private permissions: Permissions;
+
+    private preloadSubscription: any;
+    private permissionsSubscription: any;
 
     // Public
     public enterTimeForm: FormGroup;
@@ -127,7 +132,7 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
         this._indirectCodes = this._enterTimeManager.getIndirectCodes();
         this.timeSettings = this._enterTimeManager.getSettings();
 
-        this._preloadService.loading$
+        this.preloadSubscription = this._preloadService.loading$
             .subscribe(
                 (loading) => {
 
@@ -140,13 +145,13 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
                     }
                 });
 
-        this._permissions.permissions$
+        this.permissionsSubscription = this._permissions.permissions$
             .subscribe(
                 (permissions) => {
 
                     if (permissions) {
 
-                        console.log('EnterTimeFormComponent permissions', permissions);
+                        this.permissions = permissions;
                     }
                 }
             );
@@ -164,6 +169,8 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
 
     ngOnDestroy () {
 
+        this.preloadSubscription.unsubscribe();
+        this.permissionsSubscription.unsubscribe();
     }
 
     ngAfterViewInit () {
