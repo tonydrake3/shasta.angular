@@ -32,6 +32,7 @@ import {Router} from '@angular/router';
 import {MdDialog} from '@angular/material';
 import {NotesEntryDialogComponent} from '../../../shared/components/notes-entry.component';
 import {PermissionsService} from '../../../../shared/services/authorization/permissions.service';
+import {Permissions} from '../../../../models/domain/Permissions';
 
 @Component({
     selector: 'esub-enter-time-grid',
@@ -46,6 +47,8 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
     private _indirectLineSubscription;
     private _lineCount: number;
     private _currentLine: number;
+    private permissionsSubscription;
+    private permissions: Permissions;
 
     public dateFormat: string;
     public groupCardsBy: string;
@@ -141,13 +144,13 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
                     this.addRow('indirectRows', row.CardIndex, row);
                 });
 
-        this._permissions.permissions$
+        this.permissionsSubscription = this._permissions.permissions$
             .subscribe(
                 (permissions) => {
 
                     if (permissions) {
 
-                        console.log('EnterTimeGridComponent permissions', permissions);
+                        this.permissions = permissions;
                     }
                 }
             );
@@ -163,6 +166,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
         this._cardSubscription.unsubscribe();
         this._projectLineSubscription.unsubscribe();
         this._indirectLineSubscription.unsubscribe();
+        this.permissionsSubscription.unsubscribe();
     }
 
     /******************************************************************************************************************
