@@ -146,10 +146,11 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
 
         this.permissionsSubscription = this._permissions.permissions$
             .subscribe(
-                (observable) => {
+                (permissions) => {
 
-                    if (observable) {
-                        this.permissions = observable.Permissions as Permissions;
+                    if (permissions) {
+
+                        this.permissions = permissions;
                     }
                 }
             );
