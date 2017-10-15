@@ -1,56 +1,5 @@
 import {BaseClass} from '../BaseClass';
 
-export class Permissions {
-    public Identity: IdentityPermissions;
-    public TimeRecords: TimeRecordsPermissions;
-    public Projects: ProjectPermissions;
-    public CostCodes: CostCodePermissions;
-    public DataSyncs: DataSyncsPermissions;
-
-    constructor (json) {
-
-        // console.log('Permissions constructor', json);
-        for (const propName in json) {
-
-            if (propName === 'Identity') {
-
-                this[propName] = new IdentityPermissions(json[propName]);
-            } else if (propName === 'TimeRecords') {
-
-                this[propName] = new TimeRecordsPermissions(json[propName]);
-            } else if (propName === 'Projects') {
-
-                this[propName] = new ProjectPermissions(json[propName]);
-            } else if (propName === 'CostCodes') {
-
-                this[propName] = new CostCodePermissions(json[propName]);
-            } else if (propName === 'DataSyncs') {
-
-                this[propName] = new DataSyncsPermissions(json[propName]);
-            }
-        }
-    }
-}
-
-export class IdentityPermissions {
-    public Tenant: TenantPermissions;
-    public User: UserPermissions;
-
-    constructor (json) {
-
-        for (const propName in json) {
-
-            if (propName === 'Tenant') {
-
-                this[propName] = new TenantPermissions(json[propName]);
-            } else if (propName === 'User') {
-
-                this[propName] = new UserPermissions(json[propName]);
-            }
-        }
-    }
-}
-
 export class TenantPermissions extends BaseClass {
     public Settings: boolean;
 
@@ -70,6 +19,25 @@ export class UserPermissions extends BaseClass {
 
         super();
         this.fromObject(json);
+    }
+}
+
+export class IdentityPermissions {
+    public Tenant: TenantPermissions;
+    public User: UserPermissions;
+
+    constructor (json) {
+
+        for (const propName in json) {
+
+            if (propName === 'Tenant') {
+
+                this[propName] = new TenantPermissions(json[propName]);
+            } else if (propName === 'User') {
+
+                this[propName] = new UserPermissions(json[propName]);
+            }
+        }
     }
 }
 
@@ -126,5 +94,37 @@ export class DataSyncsPermissions extends BaseClass {
 
         super();
         this.fromObject(json);
+    }
+}
+
+export class Permissions {
+    public Identity: IdentityPermissions;
+    public TimeRecords: TimeRecordsPermissions;
+    public Projects: ProjectPermissions;
+    public CostCodes: CostCodePermissions;
+    public DataSyncs: DataSyncsPermissions;
+
+    constructor (json) {
+
+        // console.log('Permissions constructor', json);
+        for (const propName in json) {
+
+            if (propName === 'Identity') {
+
+                this[propName] = new IdentityPermissions(json[propName]);
+            } else if (propName === 'TimeRecords') {
+
+                this[propName] = new TimeRecordsPermissions(json[propName]);
+            } else if (propName === 'Projects') {
+
+                this[propName] = new ProjectPermissions(json[propName]);
+            } else if (propName === 'CostCodes') {
+
+                this[propName] = new CostCodePermissions(json[propName]);
+            } else if (propName === 'DataSyncs') {
+
+                this[propName] = new DataSyncsPermissions(json[propName]);
+            }
+        }
     }
 }
