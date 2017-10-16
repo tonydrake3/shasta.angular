@@ -122,7 +122,8 @@ export class TimeRecordDetailModalComponent implements OnInit, TimeModal {
         console.log('Project Typeahead has focus with value', value);
         if (value) {
 
-            this.filteredProjects = this._filterService.filterCollection(value, this.projects);
+            this.filteredProjects = this._filterService
+                .filterCollection(this.projects, 'value');
 
         } else {
 
@@ -144,36 +145,19 @@ export class TimeRecordDetailModalComponent implements OnInit, TimeModal {
 
         console.log('Indirect Cost Code TypeAhead has focus with value: ');
         console.log(value);
-        if (value) {
-            console.log('by ' + value);
-            this.filteredIndirectCostCodes = this._filterService
-                .filterByKeyValuePair({ 'Description': value }, this.indirectCostCodes);
+        const keys = ['Description'];
+        this.filteredIndirectCostCodes = this._filterService.filterCollection(this.indirectCostCodes, value, keys);
 
-        } else {
-
-            this.filteredIndirectCostCodes = Observable.of(this.indirectCostCodes);
-
-        }
     }
 
-    // Duplicated
+
+// Duplicated
     public costCodesTypeAheadHasFocus (value) {
 
         console.log('Cost Code TypeAhead has focus with value: ');
         console.log(value);
-        if (value) {
-            this.filteredCostCodes = this._filterService
-                .filterByKeyValuePair({
-                        'Code': value,
-                        'Name': value
-                    }, this.costCodes
-                );
-
-        } else {
-
-            this.filteredCostCodes = Observable.of(this.costCodes);
-
-        }
+        const keys = ['Code', 'Name'];
+        this.filteredCostCodes = this._filterService.filterCollection(this.costCodes, value, keys);
     }
 
     // Duplicated
@@ -207,14 +191,14 @@ export class TimeRecordDetailModalComponent implements OnInit, TimeModal {
                     if (this.indirectCostCodes.length > 0) {
 
                         this.filteredIndirectCostCodes = this._filterService
-                            .filterByKeyValuePair({'Description': indirectCostCodeFieldText}, this.indirectCostCodes);
+                            .filterByKeyValuePair(this.indirectCostCodes, {'Description': indirectCostCodeFieldText});
 
                     } else {
 
                         indirectCostCodeField.setErrors({'invalid' : true});
 
                         this.filteredIndirectCostCodes = this._filterService
-                            .filterByKeyValuePair({'Description': indirectCostCodeFieldText}, this.indirectCostCodes);
+                            .filterByKeyValuePair(this.indirectCostCodes, {'Description': indirectCostCodeFieldText});
 
                     }
                 }
@@ -257,7 +241,7 @@ export class TimeRecordDetailModalComponent implements OnInit, TimeModal {
                     projectField.setErrors({'invalid' : true});
 
                     this.filteredProjects = this._filterService
-                        .filterCollection(project, this.projects);
+                        .filterCollection(this.projects, project);
                 }
             }
         );
@@ -304,22 +288,20 @@ export class TimeRecordDetailModalComponent implements OnInit, TimeModal {
                     if (this.costCodes.length > 0) {
 
                         this.filteredIndirectCostCodes = this._filterService
-                            .filterByKeyValuePair({
+                            .filterByKeyValuePair(this.costCodes, {
                                 'Code': costCodeFieldText,
                                 'Name': costCodeFieldText
-                            }, this.costCodes
-                            );
+                            });
 
                     } else {
 
                         costCodeField.setErrors({'invalid' : true});
 
                         this.filteredIndirectCostCodes = this._filterService
-                            .filterByKeyValuePair({
-                                    'Code': costCodeFieldText,
-                                    'Name': costCodeFieldText
-                                }, this.costCodes
-                            );
+                            .filterByKeyValuePair(this.costCodes, {
+                                'Code': costCodeFieldText,
+                                'Name': costCodeFieldText
+                            });
 
                     }
                 }

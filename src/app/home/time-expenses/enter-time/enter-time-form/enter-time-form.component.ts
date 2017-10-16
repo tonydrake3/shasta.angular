@@ -275,7 +275,7 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
 
         if (value) {
 
-            this.filteredProjects = this._filterService.filterCollection(value, this.projects);
+            this.filteredProjects = this._filterService.filterCollection(this.projects, value);
         } else {
 
             this.filteredProjects = Observable.of(this.projects);
@@ -293,7 +293,8 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
 
         if (value) {
 
-            this.filteredSystems = this._filterService.filterCollection(value, this.systems);
+            this.filteredSystems = this._filterService
+                .filterCollection(this.systems, value);
         } else {
 
             this.filteredSystems = Observable.of(this.systems);
@@ -311,7 +312,8 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
 
         if (value) {
 
-            this.filteredPhases = this._filterService.filterCollection(value, this.phases);
+            this.filteredPhases = this._filterService
+                .filterCollection(this.phases, value);
         } else {
 
             this.filteredPhases = Observable.of(this.phases);
@@ -796,7 +798,7 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
                     this.selectedEmployees = [];
                     projectField.setErrors({'invalid' : true});
 
-                    this.filteredProjects = this._filterService.filterCollection(project, this.projects);
+                    this.filteredProjects = this._filterService.filterCollection(this.projects, project);
                 }
             }
         );
@@ -835,7 +837,7 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
                         selectedPhase: ''
                     });
                     this.phases = [];
-                    this.filteredSystems = this._filterService.filterCollection(system, this.systems);
+                    this.filteredSystems = this._filterService.filterCollection(this.systems, system);
                 }
             }
         );
@@ -862,7 +864,7 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
                     this.enterTimeForm.patchValue({
                         selectedPhase: ''
                     });
-                    this.filteredPhases = this._filterService.filterCollection(phase, this.phases);
+                    this.filteredPhases = this._filterService.filterCollection(this.phases, phase);
                 }
             }
         );
