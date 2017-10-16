@@ -29,7 +29,7 @@
                         >
                     </md-form-field>
                     <md-autocomplete #autoProject="mdAutocomplete"
-                                     [displayWith]="entityFormatter.displayProject"
+                                     [displayWith]="entityFormatter.displayFormatted"
                                      (optionSelected)="projectWasSelected($event)">
                         <md-option *ngFor="let project of filteredProjects | async" [value]="project">
                             {{project.Number}} - {{project.Name}}

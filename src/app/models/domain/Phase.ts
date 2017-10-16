@@ -1,6 +1,8 @@
-export class Phase {
+import {NumberContainingEntity} from '../NumberContainingEntity';
 
-    Id?: string;
-    Name?: string;
-    Number?: string;
+export class Phase implements NumberContainingEntity{
+
+    Id: string;
+    Name: string;
+    Number: string;
 }

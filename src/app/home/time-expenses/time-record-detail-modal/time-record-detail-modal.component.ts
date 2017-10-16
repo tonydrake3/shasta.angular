@@ -13,7 +13,7 @@ import {CostCode} from '../../../models/domain/CostCode';
 import {ProjectService} from '../../shared/services/project.service';
 import {IndirectCostCodesService} from '../../shared/services/indirect-cost-codes.service';
 import {IndirectCost} from '../../../models/domain/IndirectCost';
-import {EntityDisplayFormatterService} from './entity-display-formatter.service';
+import {EntityDisplayFormatterService} from '../../shared/services/entity-display-formatter.service';
 
 @Component({
     selector: 'esub-time-record-detail-modal',

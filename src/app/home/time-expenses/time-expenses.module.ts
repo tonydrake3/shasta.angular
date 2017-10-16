@@ -31,7 +31,7 @@ import { EnterTimeFilterService } from './enter-time/enter-time-filter.service';
 import { EnterTimeTransformService } from './enter-time/enter-time-transform.service';
 import {EnterTimeGridBuilderService} from './enter-time/enter-time-grid-builder.service';
 import {EnterTimeNoteDialogComponent} from './enter-time/enter-time-note-dialog/enter-time-note-dialog.component';
-import {EntityDisplayFormatterService} from './time-record-detail-modal/entity-display-formatter.service';
+import {EntityDisplayFormatterService} from '../shared/services/entity-display-formatter.service';
 
 @NgModule({
     imports: [
@@ -70,8 +70,7 @@ import {EntityDisplayFormatterService} from './time-record-detail-modal/entity-d
         EnterTimeManager,
         EnterTimeStatusService,
         EnterTimePreloadManager,
-        EnterTimeTransformService,
-        EntityDisplayFormatterService
+        EnterTimeTransformService
     ]
 })
 

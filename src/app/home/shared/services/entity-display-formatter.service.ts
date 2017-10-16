@@ -2,14 +2,15 @@ import { Injectable } from '@angular/core';
 import {Project} from '../../../models/domain/Project';
 import {CostCode} from '../../../models/domain/CostCode';
 import {IndirectCost} from '../../../models/domain/IndirectCost';
+import {NumberContainingEntity} from '../../../models/NumberContainingEntity';
 
 @Injectable()
 export class EntityDisplayFormatterService {
 
   constructor() { }
 
-  displayProject(project: Project) {
-        return project.Number + ' - ' + project.Name;
+  displayFormatted(entity: NumberContainingEntity) {
+        return entity.Number + ' - ' + entity.Name;
     }
 
     displayCostCode(costCode: CostCode) {
