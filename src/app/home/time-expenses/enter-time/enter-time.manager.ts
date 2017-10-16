@@ -433,9 +433,9 @@ export class EnterTimeManager {
             EmployeeId: '',
             IndirectCostId: lines.costCode.Id,
             CostCode: _.cloneDeep(lines.costCode),
-            HoursST: Number(lines.standardHours),
-            HoursOT: Number(lines.overtimeHours),
-            HoursDT: Number(lines.doubleTimeHours),
+            HoursST: lines.standardHours ? Number(lines.standardHours) : 0,
+            HoursOT: 0,
+            HoursDT: 0,
             Note: lines.notes,
             CardIndex: -1
         };
