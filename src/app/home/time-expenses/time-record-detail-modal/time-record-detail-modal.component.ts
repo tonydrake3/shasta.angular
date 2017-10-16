@@ -23,7 +23,7 @@ import {EntityDisplayFormatterService} from '../../shared/services/entity-displa
 export class TimeRecordDetailModalComponent implements OnInit, TimeModal {
 
     // Private
-    private timeRecord: TimeRecord;
+    public timeRecord: TimeRecord;
 
     // Public
     public enterTimeForm: FormGroup; // Duplicated
@@ -36,6 +36,14 @@ export class TimeRecordDetailModalComponent implements OnInit, TimeModal {
 
     public displayData: TimeModalDisplayData;
     public displayMode: TimeModalMode;
+
+    // Duplicated
+    public autoProject;
+    public autoSystem;
+    public autoPhase;
+    public autoCostCode;
+    public autoIndirectCostCode
+    public autoEmployee;
 
     constructor (
         public dialogRef: MdDialogRef<TimeRecordDetailModalComponent>,
@@ -140,6 +148,11 @@ export class TimeRecordDetailModalComponent implements OnInit, TimeModal {
     public costCodeWasSelected (event) {
 
         this.enterTimeForm.patchValue({ selectedCostCode: event.option.value });
+    }
+
+    public indirectCostCodeWasSelected (event) {
+
+        this.enterTimeForm.patchValue({ selectedIndirectCost: event.option.value });
     }
 
     // Duplicated

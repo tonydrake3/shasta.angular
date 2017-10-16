@@ -1,4 +1,3 @@
-<h2 md-dialog-title>{{title}}</h2>
 <md-dialog-content>
 
     <!--<div *ngIf="displayData.projectTitle">-->
@@ -25,7 +24,7 @@
                             formControlName="project"
                             [mdAutocomplete]="autoProject"
                             (focus)="projectsTypeAheadHasFocus($event.target.value)"
-                            [id]="txtFormProject"
+                            [id]="'txtFormProject'"
                         >
                     </md-form-field>
                     <md-autocomplete #autoProject="mdAutocomplete"
@@ -49,7 +48,7 @@
                                formControlName="indirectCostCode"
                                [mdAutocomplete]="autoIndirectCostCode"
                                (focus)="indirectCostCodesTypeAheadHasFocus($event.target.value)"
-                               [id]="txtFormIndirectCost"
+                               [id]="'txtFormIndirectCost'"
                         >
                     </md-form-field>
                     <md-autocomplete #autoIndirectCostCode="mdAutocomplete"
@@ -72,7 +71,7 @@
                                formControlName="costCode"
                                [mdAutocomplete]="autoCostCode"
                                (focus)="costCodesTypeAheadHasFocus($event.target.value)"
-                               [id]="txtFormCostCode"
+                               [id]="'txtFormCostCode'"
                         >
                     </md-form-field>
                     <md-autocomplete #autoCostCode="mdAutocomplete"
