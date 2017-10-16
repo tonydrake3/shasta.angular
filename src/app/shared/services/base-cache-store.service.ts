@@ -8,8 +8,10 @@ import { environment } from '../../../environments/environment';
 export class BaseCacheStore extends BaseHttpService {
 
     private _route: string;
+    private dataType: any;
+    private propertyKey: string;
 
-    _entity$ = new BehaviorSubject(null);
+    protected _entity$ = new BehaviorSubject(null);
 
     constructor(protected _httpPassthrough: Http) {
 
@@ -20,9 +22,22 @@ export class BaseCacheStore extends BaseHttpService {
      * Protected Methods
      ******************************************************************************************************************/
 
-    protected init (url?: string) {
+    protected init (url?: string, dataType?: any, propertyKey?: string) {
 
-        this._route = url;
+        if (url) {
+
+            this._route = url;
+        }
+
+        if (dataType) {
+
+            this.dataType = dataType;
+        }
+
+        if (propertyKey) {
+
+            this.propertyKey = propertyKey;
+        }
 
         if (!this._entity$.value) {
 
@@ -32,21 +47,19 @@ export class BaseCacheStore extends BaseHttpService {
 
     protected load (): Promise<any> {
 
-        // var loading = this.loadingCtrl.create();
-        // loading.present();
         const url = environment.apiUrl + (this._route ? this._route : '');
 
         return new Promise((resolve, reject) => {
 
             this.get(url)
-
                 .subscribe(
 
-                    // TODO: Look into function handlers here
-                    data => {
-                        // loading.dismiss();
-                        this._entity$.next(data);
-                        resolve(data);
+                    (data) => {
+
+                        const payload = this.processResponse(data);
+
+                        this._entity$.next(payload);
+                        resolve(payload);
                     },
 
                     error => {
@@ -62,6 +75,20 @@ export class BaseCacheStore extends BaseHttpService {
                     })
 
         });
+    }
+
+    private processResponse (data: any) {
+
+        if (this.dataType && this.propertyKey) {
+
+            return new this.dataType(data[this.propertyKey]);
+        } else if (this.dataType) {
+
+            return new this.dataType(data);
+        } else {
+
+            return data;
+        }
     }
 }
 

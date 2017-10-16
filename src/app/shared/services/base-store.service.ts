@@ -9,7 +9,7 @@ export class BaseStore extends BaseHttpService {
     private _route: string;
     private _isLoadDisabled: boolean;
 
-    _entity$ = new Subject();
+    protected _entity$ = new Subject();
 
     constructor(protected _httpPassthrough: Http) {
 
