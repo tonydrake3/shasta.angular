@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
+import {EsubNotification} from '../../../models/domain/EsubNotification';
 
 @Component({
     selector: 'esub-notification-item',
@@ -8,7 +9,7 @@ import {Router} from '@angular/router';
 })
 export class NotificationItemComponent implements OnInit {
 
-    @Input() notification: any;
+    @Input() notification: EsubNotification;
 
     constructor (private _router: Router) {}
 

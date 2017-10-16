@@ -1,18 +1,19 @@
 import {Injectable} from '@angular/core';
 import {Http} from '@angular/http';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import * as _ from 'lodash';
 
 import {apiRoutes} from '../shared/configuration/api-routes.configuration';
 import {BaseHttpService} from '../../shared/services/base-http.service';
-
 import {environment} from '../../../environments/environment';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {EsubNotification} from '../../models/domain/EsubNotification';
 
 @Injectable()
 export class NotificationService extends BaseHttpService {
 
     // Private
-    private static readonly pollingPeriod = 60000;
-    private _notifications$ = new BehaviorSubject(null);
+    private readonly pollingPeriod = 15000;
+    private _notifications$ = new BehaviorSubject<Array<EsubNotification>>(null);
 
     constructor(protected _httpPassthrough: Http) {
 
@@ -47,8 +48,8 @@ export class NotificationService extends BaseHttpService {
                     (data) => {
 
                         // console.log('NotificationService load', data);
-                        this._notifications$.next(data);
-                        resolve(data);
+                        this._notifications$.next(this.castNotifications(data));
+                        resolve(this.castNotifications(data));
                     },
 
                     error => {
@@ -72,4 +73,15 @@ export class NotificationService extends BaseHttpService {
         }, this.pollingPeriod)
     }
 
+    private castNotifications (jsonArray): Array<EsubNotification> {
+
+        const esubNotificationArray = [];
+
+        _.forEach(jsonArray, (item) => {
+
+            esubNotificationArray.push(new EsubNotification(item));
+        });
+
+        return esubNotificationArray;
+    }
 }

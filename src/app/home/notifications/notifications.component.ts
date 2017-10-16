@@ -1,52 +1,39 @@
-import {Component, Injector, OnInit} from '@angular/core';
+import {Component, Injector, OnDestroy, OnInit} from '@angular/core';
+import {Subscription} from 'rxjs/Subscription';
 
 import {NotificationService} from './notification.service';
 import {BaseComponent} from '../shared/components/base.component';
-import {NotificationMap, notificationMap} from '../shared/map/notification.map';
-import {Notification} from '../../models/domain/Notification'
-import {MockNotificationService} from '../../mocks/mock.notification.service';
+import {EsubNotification} from '../../models/domain/EsubNotification';
 
 @Component({
     selector: 'esub-notification',
     styles: [],
     templateUrl: './notifications.component.html'
 })
-export class NotificationComponent implements OnInit {
+export class NotificationComponent implements OnInit, OnDestroy {
 
     // Private
-    _notificationMap: NotificationMap[];
+    private notificationSubscription: Subscription;
 
     // Public
-    notificationList: Notification[];
+    notificationList: EsubNotification[];
 
-    constructor (protected injector: Injector, private _notifications: MockNotificationService) {
+    constructor (protected injector: Injector, private _notifications: NotificationService) {
 
-        this._notificationMap = notificationMap;
+        this.notificationList = [];
     }
 
     ngOnInit () {
 
-        this._notifications.notifications$
+        this.notificationSubscription = this._notifications.notifications$
             .subscribe((notifications) => {
-                this.notificationList = this.updateNotificationList(notifications);
+                this.notificationList = notifications;
+                // console.log(this.notificationList);
             });
     }
 
-    updateNotificationList (notifications) {
+    ngOnDestroy () {
 
-        notifications.forEach((notificationItem) => {
-
-            this._notificationMap.forEach((mapItem) => {
-
-                if (mapItem.Value === notificationItem.Type) {
-
-                    notificationItem.Icon = mapItem.Icon;
-                    notificationItem.Action = mapItem.Action;
-                    notificationItem.ActionDescription = mapItem.ActionDescription;
-                }
-            });
-        });
-
-        return notifications;
+        this.notificationSubscription.unsubscribe();
     }
 }
