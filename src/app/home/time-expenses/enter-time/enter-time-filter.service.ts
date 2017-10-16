@@ -34,8 +34,9 @@ export class EnterTimeFilterService {
 
             filtered = _.filter(employeeList, (employee) => {
                 return employee.Name.toLowerCase().includes(match.toLowerCase()) ||
-                    employee.Number.toLowerCase().includes(match.toLowerCase()) ||
-                    (employee.Number.toLowerCase() + ' - ' + employee.Name.toLowerCase()).includes(match.toLowerCase());
+                    (employee.Number && employee.Number.toLowerCase().includes(match.toLowerCase())) ||
+                    (employee.Number &&
+                    (employee.Number.toLowerCase() + ' - ' + employee.Name.toLowerCase()).includes(match.toLowerCase()));
             });
 
             if (selectedEmployees && selectedEmployees.length > 0) {

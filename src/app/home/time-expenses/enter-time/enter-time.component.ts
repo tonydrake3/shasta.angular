@@ -11,7 +11,7 @@ import {EnterTimeStatusService} from './enter-time-status.service';
 import {ConfirmationDialogComponent} from '../../shared/components/confirmation-dialog.component';
 import {NavigationCancel, Router} from '@angular/router';
 import {ConfirmationDialogService} from '../../shared/services/confirmation-dialog.service';
-import {DialogData} from '../../../models/DialogData';
+import {DialogData, DialogServiceReference} from '../../../models/DialogData';
 import {EnterTimePreloadManager} from './enter-time-preload.manager';
 import {EnterTimeManager} from './enter-time.manager';
 
@@ -105,6 +105,7 @@ export class EnterTimeComponent extends BaseComponent implements OnInit, OnDestr
                         dialogConfig.cancelButtonText = 'Cancel';
                         dialogConfig.proceedButtonText = 'OK';
                         dialogConfig.component = ConfirmationDialogComponent;
+                        dialogConfig.service = new DialogServiceReference(EnterTimeManager, 'clearLines');
 
                         if (this._confirmationService && this._confirmationService.isDialogOpen() === false) {
                             this._confirmationService.openNavigationWarningModal(dialogConfig);

@@ -27,6 +27,8 @@ import {EnterTimeFormTab, enterTimeTabs} from '../models/EnterTimeMenu';
 import {EnterTimeFilterService} from '../enter-time-filter.service';
 import {concatStatic} from 'rxjs/operator/concat';
 import {EntityDisplayFormatterService} from '../../../shared/services/entity-display-formatter.service';
+import {PermissionsService} from '../../../../shared/services/authorization/permissions.service';
+import {Permissions} from '../../../../models/domain/Permissions';
 
 @Component({
     selector: 'esub-enter-time-form',
@@ -39,6 +41,10 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
     // Private
     private _tenantEmployees: Array<Employee>;
     private _indirectCodes: Array<CostCode>;
+    private permissions: Permissions;
+
+    private preloadSubscription: any;
+    private permissionsSubscription: any;
 
     // Public
     public enterTimeForm: FormGroup;
@@ -88,8 +94,8 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
                  private _confirmationService: ConfirmationDialogService,
                  private _preloadService: EnterTimePreloadManager,
                  private _filterService: EnterTimeFilterService,
-                 public entityFormatter: EntityDisplayFormatterService
-                 ) {
+                 public entityFormatter: EntityDisplayFormatterService,
+                 private _permissions: PermissionsService ) {
 
         this.progressConfig = {
             color: 'primary',
@@ -131,7 +137,7 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
         this._indirectCodes = this._enterTimeManager.getIndirectCodes();
         this.timeSettings = this._enterTimeManager.getSettings();
 
-        this._preloadService.loading$
+        this.preloadSubscription = this._preloadService.loading$
             .subscribe(
                 (loading) => {
 
@@ -143,6 +149,17 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
                         this.tabs = this.getTabs();
                     }
                 });
+
+        this.permissionsSubscription = this._permissions.permissions$
+            .subscribe(
+                (permissions) => {
+
+                    if (permissions) {
+
+                        this.permissions = permissions;
+                    }
+                }
+            );
 
         if (this.projects.length === 0 || this._tenantEmployees.length === 0 || this._indirectCodes.length === 0 ||
             _.isNull(this.timeSettings)) {
@@ -157,6 +174,8 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
 
     ngOnDestroy () {
 
+        this.preloadSubscription.unsubscribe();
+        this.permissionsSubscription.unsubscribe();
     }
 
     ngAfterViewInit () {
@@ -657,11 +676,11 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
             employee: '',
             employees: ['', [Validators.required]],
             dates: ['', [Validators.required]],
-            standardHours: '',
-            overtimeHours: '',
-            doubleTimeHours: '',
+            standardHours: [0, [Validators.max(24)]],
+            overtimeHours: [0, [Validators.max(24)]],
+            doubleTimeHours: [0, [Validators.max(24)]],
             timeEntry: this._builder.group(this.buildTimeEntryFormGroup(),
-                {validator: validateTimeBreakOverlap('in', 'out', 'in', 'out')}),
+                {validator: validateTimeBreakOverlap('in', 'out', 'in', 'out', this.isUnsupportedTime)}),
             notes: ''
         });
 
@@ -742,11 +761,11 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
             employee: null,
             employees: [],
             dates: '',
-            standardHours: '',
-            overtimeHours: '',
-            doubleTimeHours: '',
+            standardHours: 0,
+            overtimeHours: 0,
+            doubleTimeHours: 0,
             timeEntry: this._builder.group(this.buildTimeEntryFormGroup(),
-                {validator: validateTimeBreakOverlap('in', 'out', 'in', 'out')}),
+                {validator: validateTimeBreakOverlap('in', 'out', 'in', 'out', this.isUnsupportedTime)}),
             notes: ''
         });
         this.systems = [];

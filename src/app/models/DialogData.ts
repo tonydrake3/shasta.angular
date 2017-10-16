@@ -8,4 +8,17 @@ export class DialogData {
     height: string;
     width: string;
     component: any;
+    service?: DialogServiceReference;
+}
+
+export class DialogServiceReference {
+
+    referenceObject: any;
+    referenceMethod: string;
+
+    constructor(service: any, method: string) {
+
+        this.referenceObject = service;
+        this.referenceMethod = method;
+    }
 }

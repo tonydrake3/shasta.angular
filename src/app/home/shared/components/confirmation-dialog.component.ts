@@ -1,4 +1,4 @@
-import {Component, Inject} from '@angular/core';
+import {Component, Inject, Injector} from '@angular/core';
 import {MD_DIALOG_DATA, MdDialogRef} from '@angular/material';
 import {Router} from '@angular/router';
 import {DialogData} from '../../../models/DialogData';
@@ -17,11 +17,8 @@ import {ConfirmationDialogService} from '../services/confirmation-dialog.service
 })
 export class ConfirmationDialogComponent {
 
-    constructor(public dialogRef: MdDialogRef<ConfirmationDialogComponent>, @Inject(MD_DIALOG_DATA) public data: DialogData,
-                private _router: Router, private _confirmationService: ConfirmationDialogService) {
-
-        console.log('Confirmation Data', data);
-    }
+    constructor(@Inject(MD_DIALOG_DATA) public data: DialogData, private _router: Router,
+                private _confirmationService: ConfirmationDialogService, private _injector: Injector) {}
 
     public close () {
 
@@ -33,5 +30,11 @@ export class ConfirmationDialogComponent {
         this._confirmationService.setNeedsConfirmation(false);
         this._router.navigateByUrl(this.data.navigationUrl);
         this._confirmationService.closeNavigationWarningModal();
+
+        if (this.data.service) {
+
+            const serviceRef = this._injector.get(this.data.service.referenceObject);
+            serviceRef[this.data.service.referenceMethod]();
+        }
     }
 }
