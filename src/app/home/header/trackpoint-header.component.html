@@ -1,0 +1,67 @@
+<section class="trackpoint-header">
+    <div class="trackpoint-header-inner"
+         [ngClass]="{'bg-color-light': ['11','12','13','14','15','16','21'].indexOf(AppConfig.colorOption) >= 0,
+                     'bg-tp-color-esub': AppConfig.colorOption === '31',
+                     'bg-color-primary': ['22','32'].indexOf(AppConfig.colorOption) >= 0,
+                     'bg-color-success': ['23','33'].indexOf(AppConfig.colorOption) >= 0,
+                     'bg-color-info': ['24','34'].indexOf(AppConfig.colorOption) >= 0,
+                     'bg-color-warning': ['25','35'].indexOf(AppConfig.colorOption) >= 0,
+                     'bg-color-danger': ['26','36'].indexOf(AppConfig.colorOption) >= 0}">
+
+
+        <div class="brand hidden-md-down">
+            <h2><a [routerLink]="['/']"><img class="logo-img" src="assets/images/brand/esub-logo-top.png" height="30" width="104" alt="{{AppConfig.brand}}"/></a></h2>
+        </div>
+
+        <div class="top-nav-left">
+            <ul class="list-unstyled float-left">
+                <li class="list-inline-item">
+                    <button md-button class="md-button header-btn" [mdMenuTriggerFor]="timeMenu">
+                        Time
+                    </button>
+                    <md-menu #timeMenu="mdMenu" [overlapTrigger]="false" class="time-menu">
+                        <button md-menu-item>
+                            <span>Enter time</span>
+                        </button>
+                        <button md-menu-item>
+                            <span>Timesheet log</span>
+                        </button>
+                    </md-menu>
+                </li>
+                <li class="list-inline-item">
+                    <button md-button class="md-button header-btn">
+                        Utilities
+                    </button>
+                </li>
+                <li class="list-inline-item">
+                    <button md-button class="md-button header-btn">
+                        Report
+                    </button>
+                </li>
+            </ul>
+        </div>
+
+        <div class="top-nav-right">
+            <ul class="list-unstyled float-right">
+                <li class="list-inline-item notification-icon">
+                    <button id="notifications" md-button class="md-button header-btn"
+                            esubClickClose [elementClickHandler]="openNotifications" [outsideClickHandler]="closeNotifications"
+                            [clickHandlerParam]="notificationCount">
+                        <i class="material-icons notifications-counter"><span>{{notificationCount}}</span></i>
+                    </button>
+                    <esub-popover></esub-popover>
+                </li>
+                <li class="profile-icon header-sticky">
+                    <button md-button class="md-button header-btn" (click)="logout()">
+                        {{fullName}}
+                        <div class="chevron-holder">
+                            <i class="material-icons">expand_more</i>
+                        </div>
+                    </button>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</section>
+

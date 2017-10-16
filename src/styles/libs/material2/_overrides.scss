@@ -92,3 +92,12 @@ md-input-container {
     }
 }
 
+.mat-menu-panel {
+
+    &.time-menu {
+        background-color: $tp-menu-background;
+        border: 2px solid $tp-blue;
+        margin-top: 6px;
+    }
+}
+

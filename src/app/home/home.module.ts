@@ -24,7 +24,8 @@ import { SearchOverlayDirective } from './search-overlay/search-overlay.directiv
 import { OpenSearchOverlaylDirective } from './search-overlay/open-search-overlay.directive';
 
 import {AutoExpandAccordionNavDirective} from './sidenav/sidenav-menu/auto-expand-accordion-nav.directive';
-import {MdButtonModule} from '@angular/material';
+import {MdButtonModule, MdMenuModule} from '@angular/material';
+import {TrackpointHeaderComponent} from './header/trackpoint-header.component';
 
 
 @NgModule({
@@ -32,14 +33,16 @@ import {MdButtonModule} from '@angular/material';
         HomeRoutingModule,
         CommonModule,
         SharedHomeModule,
-        MdButtonModule
+        MdButtonModule,
+        MdMenuModule
     ],
     declarations: [
       // Home
       HomeComponent,
       PreloaderDirective,
       // Header
-      AppHeaderComponent,
+      // AppHeaderComponent,
+      TrackpointHeaderComponent,
 
       AppSidenavComponent,
       ToggleOffcanvasNavDirective,

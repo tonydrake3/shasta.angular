@@ -4,24 +4,30 @@ import {AuthenticationService} from '../../shared/services/authentication/authen
 import {Router} from '@angular/router';
 import {BaseComponent} from '../shared/components/base.component';
 import {NotificationService} from '../notifications/notification.service';
-import {MockNotificationService} from '../../mocks/mock.notification.service';
 import {PopoverService} from '../shared/services/popover.service';
 import {PopoverOptions} from '../../models/configuration/PopoverOptions';
 
 @Component({
-    selector: 'esub-app-header',
+    selector: 'esub-trackpoint-header',
     styles: [],
-    templateUrl: './header.component.html'
+    templateUrl: './trackpoint-header.component.html'
 })
 
-export class AppHeaderComponent extends BaseComponent implements OnInit {
+export class TrackpointHeaderComponent extends BaseComponent implements OnInit {
+
     AppConfig: any;
+
     public notificationCount: number;
+    public fullName: string;
 
     constructor(protected _injector: Injector, private _authService: AuthenticationService, private _router: Router,
                 private _popoverService: PopoverService) {
 
         super(_injector, [
+            {
+                service: 'CurrentEmployeeService',
+                callback: 'employeeCallback'
+            },
             {
                 service: 'NotificationService',
                 callback: 'notificationCallback'
@@ -29,6 +35,12 @@ export class AppHeaderComponent extends BaseComponent implements OnInit {
         ]);
 
         this.notificationCount = 0;
+    }
+
+    employeeCallback (employee) {
+
+        // console.log(employee['Value']);
+        this.fullName = employee['Value'].FirstName + ' ' + employee['Value'].LastName;
     }
 
     notificationCallback (notifications) {
