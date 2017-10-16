@@ -31,45 +31,47 @@ import { EnterTimeFilterService } from './enter-time/enter-time-filter.service';
 import { EnterTimeTransformService } from './enter-time/enter-time-transform.service';
 import {EnterTimeGridBuilderService} from './enter-time/enter-time-grid-builder.service';
 import {EnterTimeNoteDialogComponent} from './enter-time/enter-time-note-dialog/enter-time-note-dialog.component';
+import {EntityDisplayFormatterService} from './time-record-detail-modal/entity-display-formatter.service';
 
 @NgModule({
     imports: [
-      CommonModule,
-      FormsModule,
-      ReactiveFormsModule,
-      MdCheckboxModule,
-      MdProgressBarModule,
-      TimeExpensesRoutingModule,
-      SharedModule,
-      SharedHomeModule,
-      DpDatePickerModule,
-      MdAutocompleteModule,
-      MdButtonModule,
-      MdChipsModule,
-      MdDatepickerModule,
-      MdDialogModule,
-      MdInputModule,
-      MdSelectModule,
-      MdTabsModule,
-      MdTooltipModule
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MdCheckboxModule,
+        MdProgressBarModule,
+        TimeExpensesRoutingModule,
+        SharedModule,
+        SharedHomeModule,
+        DpDatePickerModule,
+        MdAutocompleteModule,
+        MdButtonModule,
+        MdChipsModule,
+        MdDatepickerModule,
+        MdDialogModule,
+        MdInputModule,
+        MdSelectModule,
+        MdTabsModule,
+        MdTooltipModule
     ],
     declarations: [
-      TimeExpensesComponent,
-      TimesheetCardComponent,
-      BadgedHourComponent,
-      EnterTimeComponent,
-      EnterTimeFormComponent,
-      EnterTimeGridComponent
+        TimeExpensesComponent,
+        TimesheetCardComponent,
+        BadgedHourComponent,
+        EnterTimeComponent,
+        EnterTimeFormComponent,
+        EnterTimeGridComponent
     ],
     providers: [
-      TimeRecordsService,
-      EnterTimeBatchService,
-      EnterTimeFilterService,
-      EnterTimeGridBuilderService,
-      EnterTimeManager,
-      EnterTimeStatusService,
-      EnterTimePreloadManager,
-      EnterTimeTransformService
+        TimeRecordsService,
+        EnterTimeBatchService,
+        EnterTimeFilterService,
+        EnterTimeGridBuilderService,
+        EnterTimeManager,
+        EnterTimeStatusService,
+        EnterTimePreloadManager,
+        EnterTimeTransformService,
+        EntityDisplayFormatterService
     ]
 })
 

@@ -92,11 +92,16 @@ export class TimeExpensesComponent extends BaseComponent implements OnInit {
   exportTime() {}
 
     onTimeRecordClicked() {
-        console.log('Clicked TimeRecord Detail');
-        console.log(this.timerecords[1]);
-        const record = this.timerecords[1];
+        console.log('Clicked TimeRecord Detail. Sending a record:');
+        console.log(this.timerecords);
+        const timeRecordsWithProjects = this.timerecords
+            .filter((record) => { return record.project });
+
+        console.log(timeRecordsWithProjects);
+        const timeRecordToSend = timeRecordsWithProjects.pop() || this.timerecords.pop();
+        console.log(timeRecordToSend);
         const timeRecordDetailModalRef = this._dialog.open(TimeRecordDetailModalComponent, {
-            data: record,
+            data: timeRecordToSend,
             height: '500px',
             width: '800px'
         });

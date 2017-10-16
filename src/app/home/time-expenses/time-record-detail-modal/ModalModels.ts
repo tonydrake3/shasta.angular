@@ -43,6 +43,56 @@ export class IndirectCostTimeModalDisplayData implements TimeModalDisplayData {
     }
 }
 
+export class ProjectPunchDisplayData implements TimeModalDisplayData {
+    employeeText: string;
+    projectTitle: string;
+    projectText: string;
+    costCodeTitle: string;
+    costCodeText: string;
+    statusText: string;
+    totalHoursText: string;
+
+    constructor(timeRecord: TimeRecord) {
+        this.employeeText = timeRecord.Employee.FirstName + ' ' + timeRecord.Employee.LastName;
+        this.projectTitle = 'Project';
+        this.projectText = timeRecord.Project.Number + ' - ' + timeRecord.Project.Name;
+        this.costCodeTitle = 'Cost Code';
+        this.costCodeText = timeRecord.CostCode.Code + ' - ' + timeRecord.CostCode.Name;
+        this.statusText = timeRecord.TimeRecordStatus;
+        console.log('The timeRecord Hours object is');
+        console.log(timeRecord.Hours);
+        const hours = timeRecord.Hours.total;
+        console.log('The total is');
+        console.log(hours);
+        this.totalHoursText = String(hours);
+    }
+}
+
+export class ProjectManualHoursDisplayData implements TimeModalDisplayData {
+    employeeText: string;
+    projectTitle: string;
+    projectText: string;
+    costCodeTitle: string;
+    costCodeText: string;
+    statusText: string;
+    totalHoursText: string;
+
+    constructor(timeRecord: TimeRecord) {
+        this.employeeText = timeRecord.Employee.FirstName + ' ' + timeRecord.Employee.LastName;
+        this.projectTitle = 'Project';
+        this.projectText = timeRecord.Project.Number + ' - ' + timeRecord.Project.Name;
+        this.costCodeTitle = 'Cost Code';
+        this.costCodeText = timeRecord.CostCode.Code + ' - ' + timeRecord.CostCode.Name;
+        this.statusText = timeRecord.TimeRecordStatus;
+        console.log('The timeRecord Hours object is');
+        console.log(timeRecord.Hours);
+        const hours = timeRecord.Hours.total;
+        console.log('The total is');
+        console.log(hours);
+        this.totalHoursText = String(hours);
+    }
+}
+
 export class BannerItem {
     title: string;
     value: string;

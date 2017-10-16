@@ -24,14 +24,14 @@
                             mdInput placeholder="Project"
                             formControlName="project"
                             [mdAutocomplete]="autoProject"
-                            (focus)="openProjects($event.target.value)"
+                            (focus)="projectsTypeAheadHasFocus($event.target.value)"
                             [id]="txtFormProject"
                         >
                     </md-form-field>
                     <md-autocomplete #autoProject="mdAutocomplete"
-                                     [displayWith]="displayFormatted"
-                                     (optionSelected)="projectSelected($event)">
-                        <md-option *ngFor="let project of filteredProjects | async" [value]="[project]">
+                                     [displayWith]="entityFormatter.displayProject"
+                                     (optionSelected)="projectWasSelected($event)">
+                        <md-option *ngFor="let project of filteredProjects | async" [value]="project">
                             {{project.Number}} - {{project.Name}}
                         </md-option>
                     </md-autocomplete>
@@ -40,7 +40,6 @@
 
             <!--// TODO: Systems and Phases-->
 
-            <!--// TODO: Add ngIf-->
             <div class="row" *ngIf="timeRecord.IndirectCost">
                 <div class="col-md-12">
                     <md-form-field class="form-field">
@@ -48,17 +47,40 @@
                                mdInput
                                placeholder="{{displayData.costCodeTitle}}"
                                formControlName="indirectCostCode"
-                               [mdAutocomplete]="autoCostCode"
-                               (focus)="openIndirectCostCodes($event.target.value)"
+                               [mdAutocomplete]="autoIndirectCostCode"
+                               (focus)="indirectCostCodesTypeAheadHasFocus($event.target.value)"
                                [id]="txtFormIndirectCost"
                         >
                     </md-form-field>
-                    <md-autocomplete #autoCostCode="mdAutocomplete"
-                                     [displayWith]="displayIndirectCostCode"
-                                     (optionSelected)="indirectCostCodeSelected($event)"
+                    <md-autocomplete #autoIndirectCostCode="mdAutocomplete"
+                                     [displayWith]="entityFormatter.displayIndirectCostCode"
+                                     (optionSelected)="indirectCostCodeWasSelected($event)"
                     >
                         <md-option *ngFor="let indirectCostCode of filteredIndirectCostCodes | async" [value]="indirectCostCode">
                             {{indirectCostCode.Code}} - {{indirectCostCode.Description}}
+                        </md-option>
+                    </md-autocomplete>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="timeRecord.CostCode">
+                <div class="col-md-12">
+                    <md-form-field class="form-field">
+                        <input type="text"
+                               mdInput
+                               placeholder="{{displayData.costCodeTitle}}"
+                               formControlName="costCode"
+                               [mdAutocomplete]="autoCostCode"
+                               (focus)="costCodesTypeAheadHasFocus($event.target.value)"
+                               [id]="txtFormCostCode"
+                        >
+                    </md-form-field>
+                    <md-autocomplete #autoCostCode="mdAutocomplete"
+                                     [displayWith]="entityFormatter.displayCostCode"
+                                     (optionSelected)="costCodeWasSelected($event)"
+                    >
+                        <md-option *ngFor="let costCode of filteredCostCodes | async" [value]="costCode">
+                            {{costCode.Code}} - {{costCode.Name}}
                         </md-option>
                     </md-autocomplete>
                 </div>
