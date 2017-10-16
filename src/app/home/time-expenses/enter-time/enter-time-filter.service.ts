@@ -107,8 +107,9 @@ export class EnterTimeFilterService {
 
         if (value) {
             const dictionary = withPropertyKeys.reduce((previous, current) => {
-                return previous[current] = value;
-            });
+                previous[current] = value;
+                return previous;
+            }, {});
             filteredCollection = this.filterByKeyValuePair(collection, dictionary);
 
         } else {

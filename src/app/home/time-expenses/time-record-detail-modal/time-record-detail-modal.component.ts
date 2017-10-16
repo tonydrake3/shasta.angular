@@ -53,19 +53,15 @@ export class TimeRecordDetailModalComponent implements OnInit, TimeModal {
         this._projectService.projects$
             .subscribe(
                 (result) => {
-                    const projects: Project[] = result['Value'];
-                    this.projects = projects;
+                    this.projects = result['Value'];
                 }
             );
 
         // Duplicated from Enter-time-preload-manager
         this._indirectCostsService.indirectCostCodes$
             .subscribe( (result) => {
-                console.log('updated indirect costs...');
-                console.log(result);
-                const indirectCostCodes: Array<IndirectCost> = result['Value'];
-                this.indirectCostCodes = indirectCostCodes;
-            })
+                this.indirectCostCodes = result['Value'];
+            });
     }
 
     ngOnInit () {
@@ -100,7 +96,7 @@ export class TimeRecordDetailModalComponent implements OnInit, TimeModal {
             standardHours: '',
             overtimeHours: '',
             doubleTimeHours: '',
-        })
+        });
 
         this.observeProjectChanges();
         this.observeCostCodeChanges();
@@ -117,57 +113,35 @@ export class TimeRecordDetailModalComponent implements OnInit, TimeModal {
         this.dialogRef.close();
     }
 
-    // Duplicated from Enter Form
     public projectsTypeAheadHasFocus (value) {
-        console.log('Project Typeahead has focus with value', value);
-        if (value) {
 
-            this.filteredProjects = this._filterService
-                .filterCollection(this.projects, 'value');
-
-        } else {
-
-            this.filteredProjects = Observable.of(this.projects);
-
-        }
-    }
-
-    // Duplicated
-    public projectWasSelected (event) {
-        console.log('Project was selected with event', event);
-        this.enterTimeForm.patchValue({
-            selectedProject: event.option.value
-        });
-    }
-
-    // Duplicated
-    public indirectCostCodesTypeAheadHasFocus (value) {
-
-        console.log('Indirect Cost Code TypeAhead has focus with value: ');
-        console.log(value);
-        const keys = ['Description'];
-        this.filteredIndirectCostCodes = this._filterService.filterCollection(this.indirectCostCodes, value, keys);
+            this.filteredProjects = this._filterService.filterCollection(this.projects, value);
 
     }
 
-
-// Duplicated
     public costCodesTypeAheadHasFocus (value) {
 
-        console.log('Cost Code TypeAhead has focus with value: ');
-        console.log(value);
-        const keys = ['Code', 'Name'];
-        this.filteredCostCodes = this._filterService.filterCollection(this.costCodes, value, keys);
+        this.filteredCostCodes = this._filterService.filterCollection(this.costCodes, value, ['Code', 'Name']);
+
     }
 
-    // Duplicated
+    public indirectCostCodesTypeAheadHasFocus (value) {
+
+        this.filteredIndirectCostCodes = this._filterService.filterCollection(this.indirectCostCodes, value, ['Description']);
+
+    }
+
+    public projectWasSelected (event) {
+
+        this.enterTimeForm.patchValue({ selectedProject: event.option.value });
+
+    }
+
     public costCodeWasSelected (event) {
-        console.log('Cost Code was selected with event', event);
 
-        this.enterTimeForm.patchValue({
-            selectedCostCode: event.option.value
-        });
+        this.enterTimeForm.patchValue({ selectedCostCode: event.option.value });
     }
+
     // Duplicated
     observeIndirectCostCodeChanges() {
         console.log('Indirect Cost Code changed');
