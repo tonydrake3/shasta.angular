@@ -34,12 +34,12 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
     private timeRecordSubject = new BehaviorSubject<TimeRecord>(new TimeRecord());
     private systemsSubject = new BehaviorSubject<System[]>([]);
     private phasesSubject = new BehaviorSubject<Phase[]>([]);
+    private costCodeSubject = new BehaviorSubject<CostCode[]>([]);
     // Selected Subjects
 
     // Public
     public enterTimeForm: FormGroup; // Duplicated
     public projects: Project[];   // Duplicated
-    public costCodes: CostCode[];
     public indirectCostCodes: IndirectCost[];
     public filteredProjects: Observable<Project[]>; // Duplicated
     public filteredSystems: Observable<System[]>; // Duplicated
@@ -105,7 +105,6 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
         this.buildForm();
         this.indirectCostCodes = [];
         this.projects = [];
-        this.costCodes = [];
 
         // Bindings
         this.showIndirectCostView = this.timeRecordSubject
@@ -169,6 +168,13 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
             .takeUntil(this.ngUnsubscribe)
             .subscribe();
 
+        this.costCodeSubject
+            .do((subjects) => {
+                console.log('next costCodes');
+                console.log(subjects);
+            })
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe();
     }
 
     ngOnDestroy() {
@@ -256,7 +262,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
     public costCodesTypeAheadHasFocus (value) {
 
         this.filteredCostCodes = this._filterService
-            .filterCollectionByKey(this.costCodes, value, ['Code', 'Name']);
+            .filterCollectionByKey(this.costCodeSubject.getValue(), value, ['Code', 'Name']);
 
     }
 
@@ -370,16 +376,51 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
                 if (selectedProject) {
 
                     projectField.setErrors(null);
-                    this.costCodes = selectedProject.CostCodes;
                     this.checkDefaultSystem(selectedProject.Systems);
-                    // this.checkDefaultCostCode(selectedProject.CostCodes);
-
+                    this.checkDefaultCostCode(selectedProject.CostCodes);
                     // costCodeSelection.clearValidators();
                     // costCodeSelection.setErrors(null);
 
                 }
             }
         );
+    }
+
+//     if (systems && systems.length >= 1) {
+//     this.systemsSubject.next(systems);
+//
+//     this.enterTimeForm.patchValue({
+//                                       system: systems[0],
+//                                       selectedSystem: systems[0]
+//                                   });
+//     this.checkDefaultPhase(systems[0].Phases);
+// } else {
+//     this.systemsSubject.next([]);
+//
+//     this.enterTimeForm.patchValue({
+//         system: '',
+//         selectedSystem: ''
+//     });
+//     this.phasesSubject.next([]);
+// }
+
+    private checkDefaultCostCode (costCodes: CostCode[]) {
+
+        if (costCodes && costCodes.length >= 1) {
+            this.costCodeSubject.next(costCodes);
+
+            // this.enterTimeForm.patchValue({
+            //     costCode: costCodes[0],
+            //     selectedCostCode: costCodes[0]
+            // });
+
+        } else {
+
+            this.enterTimeForm.patchValue({
+                costCode: '',
+                selectedCostCode: ''
+            });
+        }
     }
 
     observeSystemChanges() {
@@ -417,7 +458,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
         if (fieldValue || fieldValue === '') {
 
             this.enterTimeForm.patchValue(fieldsToClear);
-            this.costCodes = [];
+            this.costCodeSubject.next([]);
             field.setErrors({'invalid': true});
 
         }
@@ -481,10 +522,10 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
                         selectedCostCode: ''
                     });
 
-                    if (this.costCodes.length > 0) {
+                    if (this.costCodeSubject.getValue().length > 0) {
 
                         this.filteredCostCodes = this._filterService
-                            .filterByKeyValuePair(this.costCodes, {
+                            .filterByKeyValuePair(this.costCodeSubject.getValue(), {
                                 'Code': costCodeFieldText,
                                 'Name': costCodeFieldText
                             });
@@ -494,7 +535,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
                         costCodeField.setErrors({'invalid' : true});
 
                         this.filteredCostCodes = this._filterService
-                            .filterByKeyValuePair(this.costCodes, {
+                            .filterByKeyValuePair(this.costCodeSubject.getValue(), {
                                 'Code': costCodeFieldText,
                                 'Name': costCodeFieldText
                             });
@@ -507,8 +548,10 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
         costCodeSelection.valueChanges.subscribe(
             (selectedCostCode) => {
 
-                if (selectedCostCode && this.costCodes.length === 0) {
+                if (selectedCostCode && this.costCodeSubject.getValue().length === 0) {
+
                     costCodeField.setErrors(null);
+
                 }
 
             }

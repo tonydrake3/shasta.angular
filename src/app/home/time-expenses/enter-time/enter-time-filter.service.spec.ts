@@ -112,7 +112,7 @@ describe('EntityDisplayFormatterService', () => {
                 ) => {
 
                     const expected: Observable<Project[]> = Observable.of([projects[0]]);
-                    expect(service.filterCollectionByKey(projects, '123 - P')).toEqual(expected);
+                    expect(service.filterCollection('123 - P', projects)).toEqual(expected);
 
                 }));
 
