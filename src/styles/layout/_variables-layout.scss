@@ -23,7 +23,8 @@ $l_zindex_quickview:             ($l_zindex_navbar + 1);
 $l_zindex_overlay:               $zindex-modal-backdrop;
 
 // Layout
-$l_header_height:               47px;
+$l_header_height:               60px;
+$l_tp_header_height:            29px;
 $l_mobile_header_height:        48px;
 
 $l_sidebar_width_collapsed:     64px;  // Desktop only: collpased sidebar
@@ -52,6 +53,7 @@ $l_transition_ease_out_quickview: cubic-bezier(.05,.74,.2,.99);
 // --------------------------------------------------
 
 $header_line_height: 24px;
+$tp_header_line_height: 24px;
 $header_box_shadow:  0 2px 3px 0 rgba(0, 0, 0, 0.36), 0 2px 10px 0 rgba(0, 0, 0, 0.12); // .z-depth-1
 
 $sidebar_footer_height:     44px;

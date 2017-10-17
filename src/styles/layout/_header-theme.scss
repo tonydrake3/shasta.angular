@@ -49,7 +49,7 @@
     text-align: center;
 
     .trackpoint-header-inner {
-        height: $l_header_height;
+        height: $l_tp_header_height;
         box-shadow: $header_box_shadow;
 
         &.bg-tp-color-esub {
@@ -72,13 +72,13 @@
         h2 {
             font-size: 30px;
             margin: 0;
-            line-height: $l_header_height;
+            line-height: $l_tp_header_height;
         }
     }
 
     .header-icon {
         display: inline-block;
-        height: $l_header_height;
+        height: $l_tp_header_height;
         padding: 0 14px;
         @media only screen and (min-width: $l_screen_md_min) {
             padding-left: 18px;
@@ -94,7 +94,7 @@
 .top-nav-right {
     > ul > .list-inline-item {
         margin: 0;
-        padding: 8px 0 0;
+        padding: 2px;
     }
 }
 
@@ -106,17 +106,22 @@
     }
 
     li {
-        height: $l_header_height;
+        height: $l_tp_header_height;
         float: left;
         max-width: 100px;
 
         .header-btn {
             color: $true-white;
-            font-size: 14px;
-            padding-top: 5px;
+            font-size: 13.5px;
+            font-weight: normal;
 
             &.md-button {
-                line-height: 33px !important;
+                line-height: 22px !important;
+
+                &:hover {
+                    background: $tp-menu-background;
+                    color: $tp-blue;
+                }
             }
         }
     }
@@ -126,26 +131,32 @@
 .top-nav-right {
     display: inline-block;
     font-size: 16px;
-    line-height: $header_line_height;
+    //line-height: $tp_header_line_height;
     float: right;
 
-    ul {
+    > ul {
+        display: inline;
         margin: 0;
     }
 
     //
     li {
-        height: $l_header_height;
+        height: $l_tp_header_height;
         float: left;
         max-width: 100px;
 
         .header-btn {
             color: $true-white;
-            font-size: 14px;
-            padding-top: 5px;
+            font-size: 13.5px;
+            font-weight: normal;
 
             &.md-button {
-                line-height: 33px !important;
+                line-height: 22px !important;
+
+                &:hover {
+                    background: $tp-menu-background;
+                    color: $tp-blue;
+                }
             }
         }
     }
