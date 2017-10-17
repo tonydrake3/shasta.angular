@@ -2,6 +2,12 @@
 
 Shasta Angular project for eSub https://esub.com/, originally generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.4.
 
+## Node Version
+
+Please check your Node.js and NPM versions to make sure they match…Jenkins build environment. https://nodejs.org/download/release/v7.10.1/
+- Node.js  = 7.10.1
+- NPM  = 4.2.0
+
 ## Development server
 
 Run `npm run serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.

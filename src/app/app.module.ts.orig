@@ -29,8 +29,12 @@ import {LookupDataService} from './home/shared/services/lookup-data.service';
 import { CommentsComponent } from './home/shared/components/comments.component';
 import { ConfirmationDialogComponent } from './home/shared/components/confirmation-dialog.component';
 import {NotesEntryDialogComponent} from './home/shared/components/notes-entry.component';
+<<<<<<< HEAD
 import {TimeRecordDetailModalComponent} from './home/time-expenses/time-record-detail-modal/time-record-detail-modal.component';
+||||||| merged common ancestors
+=======
 import {PermissionsService} from './shared/services/authorization/permissions.service';
+>>>>>>> develop
 
 @NgModule({
     imports: [

@@ -26,23 +26,6 @@ export class EnterTimeFilterService {
         }
     }
 
-    public filterCollection (match, collection: Array<any>): Observable<Array<any>> {
-
-        let filtered = [];
-
-        if (typeof match === 'string') {
-
-            filtered = _.filter(collection, (item) => {
-                return item.Name && item.Number &&
-                    (item.Name.toLowerCase().includes(match.toLowerCase()) ||
-                    item.Number.toLowerCase().includes(match.toLowerCase()) ||
-                    (item.Number.toLowerCase() + ' - ' + item.Name.toLowerCase()).includes(match.toLowerCase()));
-            });
-        }
-
-        return Observable.of(filtered);
-    }
-
     public filterEmployees (match, employeeList: Array<Employee>, selectedEmployees?: Array<Employee>): Observable<Array<any>> {
 
         let filtered = [];
@@ -101,5 +84,40 @@ export class EnterTimeFilterService {
         }
 
         return Observable.of(filtered);
+    }
+
+    public filterByKeyValuePair<T>(collection: Array<T>, dictionary: any): Observable<T[]> {
+        let filtered = [];
+
+        filtered = _.filter(collection, (item) => {
+
+            for (const key of Object.keys(dictionary)) {
+                console.log('the key is ' + key + ' and the value is ' + item[key]);
+                console.log('does ' + item[key] + ' include ' + dictionary[key]);
+                if (item[key] && item[key].includes(dictionary[key])) { return true }
+            }
+
+            return false;
+        });
+
+        return Observable.of(filtered);
+    }
+
+    public filterCollection<T>(collection: Array<T>, value: string, withPropertyKeys: string[] = ['Name', 'Number']): Observable<T[]> {
+        let filteredCollection: Observable<T[]>;
+
+        if (value) {
+            const dictionary = withPropertyKeys.reduce((previous, current) => {
+                previous[current] = value;
+                return previous;
+            }, {});
+            filteredCollection = this.filterByKeyValuePair(collection, dictionary);
+
+        } else {
+
+            filteredCollection = Observable.of(collection);
+
+        }
+        return filteredCollection
     }
 }
