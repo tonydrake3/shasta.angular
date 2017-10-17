@@ -59,7 +59,27 @@
                 </div>
             </div>
 
-            <!--// TODO: Systems and Phases-->
+            <div class="row" *ngIf="showPhaseView | async">
+                <div class="col-md-12">
+                    <md-form-field class="form-field">
+                        <input
+                            type="text"
+                            mdInput placeholder="Phase"
+                            formControlName="phase"
+                            [mdAutocomplete]="autoPhase"
+                            (focus)="phaseTypeAheadHasFocus($event.target.value)"
+                            [id]="'txtFormPhase'"
+                        >
+                    </md-form-field>
+                    <md-autocomplete #autoPhase="mdAutocomplete"
+                                     [displayWith]="entityFormatter.displayFormatted"
+                                     (optionSelected)="phaseWasSelected($event)">
+                        <md-option *ngFor="let phase of filteredPhases | async" [value]="phase">
+                            {{phase.Number}} - {{phase.Name}}
+                        </md-option>
+                    </md-autocomplete>
+                </div>
+            </div>
 
             <div class="row" *ngIf="showIndirectCostView | async">
                 <div class="col-md-12">

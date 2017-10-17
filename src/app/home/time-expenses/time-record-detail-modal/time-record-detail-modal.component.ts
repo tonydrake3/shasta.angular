@@ -5,7 +5,7 @@ import {
     IndirectCostTimeModalDisplayData, TimeModal, TimeModalDisplayData, TimeModalMode, DisplayModeSpecifying,
     ProjectManualHoursDisplayData, ProjectPunchDisplayData
 } from './ModalModels';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators, AbstractControl} from '@angular/forms';
 import {EnterTimeFilterService} from '../enter-time/enter-time-filter.service';
 import {Observable} from 'rxjs/Observable';
 import {Project} from '../../../models/domain/Project';
@@ -28,19 +28,22 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
     private ngUnsubscribe: Subject<void> = new Subject<void>();
 
     // Private
-    public timeRecord: TimeRecord;
-    public timeRecordSubject = new BehaviorSubject<TimeRecord>(new TimeRecord());
+    private timeRecord: TimeRecord;
 
-    public systemsSubject = new BehaviorSubject<System[]>([]);
+    // Subjects
+    private timeRecordSubject = new BehaviorSubject<TimeRecord>(new TimeRecord());
+    private systemsSubject = new BehaviorSubject<System[]>([]);
+    private phasesSubject = new BehaviorSubject<Phase[]>([]);
+    // Selected Subjects
 
     // Public
     public enterTimeForm: FormGroup; // Duplicated
     public projects: Project[];   // Duplicated
-    public phases: Phase[];
     public costCodes: CostCode[];
     public indirectCostCodes: IndirectCost[];
     public filteredProjects: Observable<Project[]>; // Duplicated
     public filteredSystems: Observable<System[]>; // Duplicated
+    public filteredPhases: Observable<Phase[]>;
     public filteredIndirectCostCodes: Observable<IndirectCost[]>; // Duplicated
     public filteredCostCodes: Observable<IndirectCost[]>; // Duplicated
 
@@ -59,6 +62,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
     public showIndirectCostView: Observable<boolean>;
     public showProjectView: Observable<boolean>;
     public showSystemView: Observable<boolean>;
+    public showPhaseView: Observable<boolean>;
 
     constructor (
         public dialogRef: MdDialogRef<TimeRecordDetailModalComponent>,
@@ -134,6 +138,37 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
                 console.log('show system view', showSystemsView);
             })
             .takeUntil(this.ngUnsubscribe);
+
+        this.showPhaseView = Observable
+            .combineLatest(
+                this.enterTimeForm.get('selectedSystem').valueChanges,
+                this.phasesSubject,
+                (selectedSystem, phases) => {
+                    return selectedSystem != null && !(phases.length === 0);
+                }
+            )
+            .do((showPhaseView) =>  {
+                console.log('show phase view', showPhaseView);
+            })
+            .takeUntil(this.ngUnsubscribe);
+
+        //DEBUGGING
+        this.systemsSubject
+            .do((subjects) => {
+                console.log('next systems');
+                console.log(subjects);
+            })
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe();
+
+        this.phasesSubject
+            .do((subjects) => {
+                console.log('next phases');
+                console.log(subjects);
+            })
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe();
+
     }
 
     ngOnDestroy() {
@@ -178,6 +213,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
         });
 
         this.observeProjectChanges();
+        this.observeSystemChanges();
         this.observeCostCodeChanges();
         this.observeIndirectCostCodeChanges();
     }
@@ -193,20 +229,34 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
     }
 
     public projectsTypeAheadHasFocus (value) {
+        console.log('projectsTypeAheadHasFocus');
+        this.filterProjectsBy(value);
 
-        this.filteredProjects = this._filterService.filterCollection(this.projects, value);
+    }
 
+    private filterProjectsBy(value) {
+        this.filteredProjects = this._filterService
+            .filterCollection(this.projects, value);
     }
 
     public systemTypeAheadHasFocus(value) {
 
-        this.filteredSystems = this._filterService.filterCollection(this.systemsSubject.getValue(), value);
+        this.filteredSystems = this._filterService
+            .filterCollection(this.systemsSubject.getValue(), value);
+
+    }
+
+    public phaseTypeAheadHasFocus(value) {
+
+        this.filteredPhases = this._filterService
+            .filterCollection(this.phasesSubject.getValue(), value);
 
     }
 
     public costCodesTypeAheadHasFocus (value) {
 
-        this.filteredCostCodes = this._filterService.filterCollection(this.costCodes, value, ['Code', 'Name']);
+        this.filteredCostCodes = this._filterService
+            .filterCollection(this.costCodes, value, ['Code', 'Name']);
 
     }
 
@@ -218,13 +268,19 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
 
     public projectWasSelected (event) {
 
-        this.enterTimeForm.patchValue({ selectedProject: event.option.value });
+        this.enterTimeForm.patchValue({selectedProject: event.option.value});
 
     }
 
     public systemWasSelected (event) {
 
         this.enterTimeForm.patchValue({selectedSystem: event.option.value});
+
+    }
+
+    public phaseWasSelected (event) {
+
+        this.enterTimeForm.patchValue({selectedPhase: event.option.value});
 
     }
 
@@ -292,51 +348,82 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
         const costCodeSelection = this.enterTimeForm.get('selectedCostCode');
 
         projectField.valueChanges.subscribe(
-            (project) => {
+            (projectText) => {
 
-                // console.log('projectField.valueChanges', project, projectSelection.value);
-                if (project || project === '') {
+                const fieldsToClear = {
+                    selectedProject: '',
+                    system: '',
+                    selectedSystem: '',
+                    phase: '',
+                    selectedPhase: '',
+                    costCode: ''
+                };
+                this.resetField(projectText, projectField, fieldsToClear);
+                this.filterProjectsBy(projectText);
 
-                    this.enterTimeForm.patchValue({
-                        selectedProject: '',
-                        system: '',
-                        selectedSystem: '',
-                        phase: '',
-                        selectedPhase: '',
-                        costCode: '',
-                        employee: '',
-                        employees: ''
-                    });
-                    this.costCodes = [];
-                    projectField.setErrors({'invalid' : true});
-
-                    this.filteredProjects = this._filterService
-                        .filterCollection(this.projects, project);
-                }
             }
         );
 
         projectSelection.valueChanges.subscribe (
             (selectedProject) => {
 
-                console.log('projectSelection.valueChanges', selectedProject);
                 if (selectedProject) {
 
                     projectField.setErrors(null);
                     this.costCodes = selectedProject.CostCodes;
                     this.checkDefaultSystem(selectedProject.Systems);
                     // this.checkDefaultCostCode(selectedProject.CostCodes);
-                    // this.filterEmployeesByProject(selectedProject.Id);
-                    // this.selectedEmployees = [];
 
-                    costCodeSelection.clearValidators();
-                    costCodeSelection.setErrors(null);
+                    // costCodeSelection.clearValidators();
+                    // costCodeSelection.setErrors(null);
+
                 }
             }
         );
     }
 
-    // Duplicated... convert to observables
+    observeSystemChanges() {
+        const systemField = this.enterTimeForm.get('system');
+        const systemSelection = this.enterTimeForm.get('selectedSystem');
+
+        systemField.valueChanges.subscribe(
+            (systemText) => {
+
+                const fieldsToClear = {
+                    selectedSystem: '',
+                    phase: '',
+                    selectedPhase: '',
+                };
+                this.resetField(systemText, systemField, fieldsToClear)
+
+            }
+        )
+
+        systemSelection.valueChanges.subscribe(
+            (selectedSystem) => {
+
+                if (selectedSystem) {
+
+                    systemField.setErrors(null);
+                    this.checkDefaultPhase(selectedSystem.Phases);
+
+                }
+
+            }
+        )
+    }
+
+    private resetField(fieldValue: string, field: AbstractControl, fieldsToClear: any) {
+        if (fieldValue || fieldValue === '') {
+
+            this.enterTimeForm.patchValue(fieldsToClear);
+            this.costCodes = [];
+            field.setErrors({'invalid': true});
+
+        }
+    }
+
+// Duplicated... convert to observables
     private checkDefaultSystem (systems: Array<System>) {
 
         this.systemsSubject.next(systems);
@@ -352,14 +439,15 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
                 system: '',
                 selectedSystem: ''
             });
-            this.phases = [];
+            this.phasesSubject.next([]);
         }
     }
 
     // Duplicated
     private checkDefaultPhase (phases: Array<Phase>) {
-
-        this.phases = phases;
+        console.log('checkDefaultPhase');
+        console.log(phases);
+        this.phasesSubject.next(phases);
         if (phases.length === 1) {
 
             this.enterTimeForm.patchValue({
@@ -376,7 +464,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
     }
 
     observeCostCodeChanges() {
-        console.log('Cost Code changed');
+
         const costCodeField = this.enterTimeForm.get('costCode');
         const costCodeSelection = this.enterTimeForm.get('selectedCostCode');
 
@@ -388,12 +476,12 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
                 if (costCodeFieldText || costCodeFieldText === '') {
 
                     this.enterTimeForm.patchValue({
-                        selectedIndirectCostCode: ''
+                        selectedCostCode: ''
                     });
 
                     if (this.costCodes.length > 0) {
 
-                        this.filteredIndirectCostCodes = this._filterService
+                        this.filteredCostCodes = this._filterService
                             .filterByKeyValuePair(this.costCodes, {
                                 'Code': costCodeFieldText,
                                 'Name': costCodeFieldText
@@ -403,7 +491,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
 
                         costCodeField.setErrors({'invalid' : true});
 
-                        this.filteredIndirectCostCodes = this._filterService
+                        this.filteredCostCodes = this._filterService
                             .filterByKeyValuePair(this.costCodes, {
                                 'Code': costCodeFieldText,
                                 'Name': costCodeFieldText
