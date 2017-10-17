@@ -236,33 +236,33 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
 
     private filterProjectsBy(value) {
         this.filteredProjects = this._filterService
-            .filterCollection(this.projects, value);
+            .filterCollectionByKey(this.projects, value);
     }
 
     public systemTypeAheadHasFocus(value) {
 
         this.filteredSystems = this._filterService
-            .filterCollection(this.systemsSubject.getValue(), value);
+            .filterCollectionByKey(this.systemsSubject.getValue(), value);
 
     }
 
     public phaseTypeAheadHasFocus(value) {
 
         this.filteredPhases = this._filterService
-            .filterCollection(this.phasesSubject.getValue(), value);
+            .filterCollectionByKey(this.phasesSubject.getValue(), value);
 
     }
 
     public costCodesTypeAheadHasFocus (value) {
 
         this.filteredCostCodes = this._filterService
-            .filterCollection(this.costCodes, value, ['Code', 'Name']);
+            .filterCollectionByKey(this.costCodes, value, ['Code', 'Name']);
 
     }
 
     public indirectCostCodesTypeAheadHasFocus (value) {
 
-        this.filteredIndirectCostCodes = this._filterService.filterCollection(this.indirectCostCodes, value, ['Description']);
+        this.filteredIndirectCostCodes = this._filterService.filterCollectionByKey(this.indirectCostCodes, value, ['Description']);
 
     }
 
