@@ -7,17 +7,23 @@ import {NumberContainingEntity} from '../../../models/NumberContainingEntity';
 @Injectable()
 export class EntityDisplayFormatterService {
 
-  constructor() { }
+    constructor() { }
 
-  displayFormatted(entity: NumberContainingEntity) {
+    displayFormatted(entity?: NumberContainingEntity) {
+        if (!entity) { return '' };
+
         return entity.Number + ' - ' + entity.Name;
     }
 
-    displayCostCode(costCode: CostCode) {
+    displayCostCode(costCode?: CostCode) {
+        if (!costCode) { return '' };
+
         return costCode.Code + '-' + costCode.Name;
     }
 
-    displayIndirectCostCode(indirectCostCode: IndirectCost) {
+    displayIndirectCostCode(indirectCostCode?: IndirectCost) {
+        if (!indirectCostCode) { return '' };
+
         return indirectCostCode.Description;
     }
 }
