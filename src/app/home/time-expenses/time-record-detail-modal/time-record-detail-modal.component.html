@@ -14,8 +14,8 @@
     <!--<h3>{{displayData.totalHoursText}}</h3>-->
     <div class="enter-time-form">
         <form [formGroup]="enterTimeForm" (ngSubmit)="onSubmit(enterTimeForm)" novalidate>
-            <!--// TODO: Add ngIf-->
-            <div class="row">
+
+            <div class="row" *ngIf="showProjectView | async">
                 <div class="col-md-12">
                     <md-form-field class="form-field">
                         <input
@@ -37,9 +37,31 @@
                 </div>
             </div>
 
+            <div class="row" *ngIf="showSystemsView | async">
+                <div class="col-md-12">
+                    <md-form-field class="form-field">
+                        <input
+                            type="text"
+                            mdInput placeholder="System"
+                            formControlName="system"
+                            [mdAutocomplete]="autoSystem"
+                            (focus)="systemTypeAheadHasFocus($event.target.value)"
+                            [id]="'txtFormSystem'"
+                        >
+                    </md-form-field>
+                    <md-autocomplete #autoSystem="mdAutocomplete"
+                                     [displayWith]="entityFormatter.displayFormatted"
+                                     (optionSelected)="systemWasSelected($event)">
+                        <md-option *ngFor="let system of filteredSystems | async" [value]="system">
+                            {{system.Number}} - {{system.Name}}
+                        </md-option>
+                    </md-autocomplete>
+                </div>
+            </div>
+
             <!--// TODO: Systems and Phases-->
 
-            <div class="row" *ngIf="timeRecord.IndirectCost">
+            <div class="row" *ngIf="showIndirectCostView | async">
                 <div class="col-md-12">
                     <md-form-field class="form-field">
                         <input type="text"

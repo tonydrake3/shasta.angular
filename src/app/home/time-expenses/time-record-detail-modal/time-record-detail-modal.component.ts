@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {MD_DIALOG_DATA, MdDialogRef} from '@angular/material';
 import {TimeRecord} from '../../../models/domain/TimeRecord';
 import {
@@ -14,20 +14,29 @@ import {ProjectService} from '../../shared/services/project.service';
 import {IndirectCostCodesService} from '../../shared/services/indirect-cost-codes.service';
 import {IndirectCost} from '../../../models/domain/IndirectCost';
 import {EntityDisplayFormatterService} from '../../shared/services/entity-display-formatter.service';
+import {Subject} from 'rxjs/Subject';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {System} from '../../../models/domain/System';
+import {Phase} from '../../../models/domain/Phase';
 
 @Component({
     selector: 'esub-time-record-detail-modal',
     templateUrl: './time-record-detail-modal.component.html',
     styleUrls: ['./time-record-detail-modal.component.scss']
 })
-export class TimeRecordDetailModalComponent implements OnInit, TimeModal {
+export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeModal {
+    private ngUnsubscribe: Subject<void> = new Subject<void>();
 
     // Private
     public timeRecord: TimeRecord;
+    public timeRecordSubject = new BehaviorSubject<TimeRecord>(new TimeRecord());
+
+    public systemsSubject = new BehaviorSubject<System[]>([]);
 
     // Public
     public enterTimeForm: FormGroup; // Duplicated
     public projects: Project[];   // Duplicated
+    public phases: Phase[];
     public costCodes: CostCode[];
     public indirectCostCodes: IndirectCost[];
     public filteredProjects: Observable<Project[]>; // Duplicated
@@ -37,13 +46,18 @@ export class TimeRecordDetailModalComponent implements OnInit, TimeModal {
     public displayData: TimeModalDisplayData;
     public displayMode: TimeModalMode;
 
-    // Duplicated
+    // Duplicated... This is here because of a weird TSlint error that comes up
     public autoProject;
     public autoSystem;
     public autoPhase;
     public autoCostCode;
-    public autoIndirectCostCode
+    public autoIndirectCostCode;
     public autoEmployee;
+
+    // Observable Bindings
+    public showIndirectCostView: Observable<boolean>;
+    public showProjectView: Observable<boolean>;
+    public showSystemView: Observable<boolean>;
 
     constructor (
         public dialogRef: MdDialogRef<TimeRecordDetailModalComponent>,
@@ -70,6 +84,11 @@ export class TimeRecordDetailModalComponent implements OnInit, TimeModal {
             .subscribe( (result) => {
                 this.indirectCostCodes = result['Value'];
             });
+
+        this.timeRecordSubject.asObservable()
+            .subscribe( (result) => {
+                console.log('next timerecordsubject', result);
+            })
     }
 
     ngOnInit () {
@@ -82,6 +101,36 @@ export class TimeRecordDetailModalComponent implements OnInit, TimeModal {
         this.indirectCostCodes = [];
         this.projects = [];
         this.costCodes = [];
+
+        // Bindings
+        this.showIndirectCostView = this.timeRecordSubject
+            .map((record) => {
+                return record && record.IndirectCost != null;
+            })
+            .do((showindirectcostView) =>  {
+                console.log('show indirect cost view', showindirectcostView);
+            })
+            .takeUntil(this.ngUnsubscribe);
+
+        this.showProjectView = this.timeRecordSubject
+            .map((record) => {
+                return record && record.Project != null;
+            })
+            .do((showProjectView) =>  {
+                console.log('show project view', showProjectView);
+            })
+            .takeUntil(this.ngUnsubscribe);
+
+        // this.showSystemView = Observable
+        //     .combineLatest(
+        //         this.enterTimeForm.get('selectedProject').valueChanges,
+        //         this.systemsSubject
+        //     )
+    }
+
+    ngOnDestroy() {
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
     }
 
     // Duplicated from Enter Form... refactor?
@@ -90,13 +139,13 @@ export class TimeRecordDetailModalComponent implements OnInit, TimeModal {
         console.log(this.displayData);
         this.enterTimeForm = this._formBuilder.group( {
             project: this.timeRecord.Project,
-            selectedProject: ['', [ Validators.required ] ],
+            selectedProject: [this.timeRecord.Project, [ Validators.required ] ],
             system: '',
             selectedSystem: '',
             phase: '',
             selectedPhase: '',
             costCode: this.timeRecord.CostCode,
-            selectedCostCode: ['', [Validators.required]],
+            selectedCostCode: [this.timeRecord.CostCode, [Validators.required]],
             indirectCostCode: '',
             selectedIndirectCostCode: ['', [Validators.required]],
             employee: '',
@@ -241,7 +290,7 @@ export class TimeRecordDetailModalComponent implements OnInit, TimeModal {
 
                     projectField.setErrors(null);
                     this.costCodes = selectedProject.CostCodes;
-                    // this.checkDefaultSystem(selectedProject.Systems);
+                    this.checkDefaultSystem(selectedProject.Systems);
                     // this.checkDefaultCostCode(selectedProject.CostCodes);
                     // this.filterEmployeesByProject(selectedProject.Id);
                     // this.selectedEmployees = [];
@@ -251,6 +300,45 @@ export class TimeRecordDetailModalComponent implements OnInit, TimeModal {
                 }
             }
         );
+    }
+
+    // Duplicated... convert to observables
+    private checkDefaultSystem (systems: Array<System>) {
+
+        this.systemsSubject.next(systems);
+        if (systems.length === 1) {
+
+            this.enterTimeForm.patchValue({
+                system: systems[0],
+                selectedSystem: systems[0]
+            });
+            this.checkDefaultPhase(systems[0].Phases);
+        } else {
+            this.enterTimeForm.patchValue({
+                system: '',
+                selectedSystem: ''
+            });
+            this.phases = [];
+        }
+    }
+
+    // Duplicated
+    private checkDefaultPhase (phases: Array<Phase>) {
+
+        this.phases = phases;
+        if (phases.length === 1) {
+
+            this.enterTimeForm.patchValue({
+                phase: phases[0],
+                selectedPhase: phases[0]
+            });
+        } else {
+
+            this.enterTimeForm.patchValue({
+                phase: '',
+                selectedPhase: ''
+            });
+        }
     }
 
     observeCostCodeChanges() {
@@ -319,6 +407,7 @@ export class TimeRecordDetailModalComponent implements OnInit, TimeModal {
         this.timeRecord = TimeRecord.fromAPIData(this.data);
         console.log('initialized timerecord from data passed to modal');
         console.log(this.timeRecord);
+        this.timeRecordSubject.next(this.timeRecord);
     }
 
     private initializeTimeRecordInputData() {
