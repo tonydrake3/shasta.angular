@@ -145,22 +145,36 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
     private buildForm() {
         console.log('Building form. The display data is');
         console.log(this.displayData);
+
+        let project: Project;
+        let system: System;
+        let phase: Phase;
+
+        project = this.timeRecord.Project;
+
+        if (project && project.hasOwnProperty('System')) {
+            system = project.System;
+        }
+
+        if (system && system.hasOwnProperty('Phase')) {
+            phase = system.Phase;
+        }
+
         this.enterTimeForm = this._formBuilder.group( {
             project: this.timeRecord.Project,
             selectedProject: [this.timeRecord.Project, [ Validators.required ] ],
-            system: '',
-            selectedSystem: '',
-            phase: '',
-            selectedPhase: '',
+            system: system,
+            selectedSystem: system,
+            phase: phase,
+            selectedPhase: phase,
             costCode: this.timeRecord.CostCode,
             selectedCostCode: [this.timeRecord.CostCode, [Validators.required]],
-            indirectCostCode: '',
-            selectedIndirectCostCode: ['', [Validators.required]],
-            employee: '',
-            date: ['', [Validators.required]],
-            standardHours: '',
-            overtimeHours: '',
-            doubleTimeHours: '',
+            indirectCostCode: this.timeRecord.IndirectCost,
+            selectedIndirectCostCode: [this.timeRecord.IndirectCost, [Validators.required]],
+            date: [this.timeRecord.Hours.Date, [Validators.required]],
+            standardHours: this.timeRecord.Hours.RegularTime,
+            overtimeHours: this.timeRecord.Hours.Overtime,
+            doubleTimeHours: this.timeRecord.Hours.DoubleTime,
         });
 
         this.observeProjectChanges();
