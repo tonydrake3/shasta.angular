@@ -152,7 +152,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
             })
             .takeUntil(this.ngUnsubscribe);
 
-        //DEBUGGING
+        // DEBUGGING
         this.systemsSubject
             .do((subjects) => {
                 console.log('next systems');
@@ -424,10 +424,10 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
     }
 
 // Duplicated... convert to observables
-    private checkDefaultSystem (systems: Array<System>) {
+    private checkDefaultSystem (systems: System[]) {
 
-        this.systemsSubject.next(systems);
-        if (systems.length === 1) {
+        if (systems && systems.length >= 1) {
+            this.systemsSubject.next(systems);
 
             this.enterTimeForm.patchValue({
                 system: systems[0],
@@ -435,6 +435,8 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
             });
             this.checkDefaultPhase(systems[0].Phases);
         } else {
+            this.systemsSubject.next([]);
+
             this.enterTimeForm.patchValue({
                 system: '',
                 selectedSystem: ''
@@ -448,7 +450,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
         console.log('checkDefaultPhase');
         console.log(phases);
         this.phasesSubject.next(phases);
-        if (phases.length === 1) {
+        if (phases.length >= 1) {
 
             this.enterTimeForm.patchValue({
                 phase: phases[0],
@@ -526,6 +528,21 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
         this.timeRecord = TimeRecord.fromAPIData(this.data);
         console.log('initialized timerecord from data passed to modal');
         console.log(this.timeRecord);
+        if (this.timeRecord.Project) {
+            this._projectService.getById(this.timeRecord.Project.Id)
+                .then((result) => {
+                    console.log('got project by id');
+                    console.log(result);
+
+                    const projectArray = result['Value'];
+
+                    if (projectArray && projectArray.length > 0) {
+                        this.enterTimeForm.patchValue({
+                            selectedProject: projectArray[0]
+                        });
+                    }
+                })
+        }
         this.timeRecordSubject.next(this.timeRecord);
     }
 
