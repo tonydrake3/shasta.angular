@@ -5,14 +5,26 @@ Library    Selenium2Library
 # ***Environment - Dev ***
 
 *** Test Cases ***
+Group by Mine    Group by Mine
 Grid Form Verification - Enter Hours    Grid Form Verification - Enter Hours
     Project
     Employees
     Dates
     Hours Worked
     Notes
-Grid Form Verification - Enter Time In / Time Out    Grid Form Verification - Enter Time In / Time Out
-    Clear Form after Project entry
+
+#Grid Form Verification - Enter Time In / Time Out    Grid Form Verification - Enter Time In / Time Out
+    #Clear Form after Project entry
+    #Resubmit Form
+    #Enter Time In and Time Out Hours
+    #Notes
+    #Filter By Employee
+    #Filter By Project
+    #Filter By Date
+    #Modify the time In and Time out under Grid View
+    #Modify The Break In and Break Out under Grid View
+    #Modify Employee Field to an Incorrect Name
+    #Add More Lines
 
 
 *** Keywords ***
@@ -107,6 +119,8 @@ Grid Form Verification - Enter Time In / Time Out
     wait until page contains    eSUB
     Sleep    3s
 Clear Form after Project entry
+    click element    id=md-tab-label-0-1
+    Sleep    3s
     input text    id=txtFormProject    10000 - Frank's House
     Sleep    7s
     Click Element    id=md-autocomplete-0
@@ -123,10 +137,22 @@ Clear Form after Project entry
     Sleep    3s
     Input Text    id=txtFormCostCode    888 - Demolition
     Sleep    4s
-    Click Element    id=md-autocomplete-1
+    Click Element    id=md-autocomplete-2
+    Sleep    3s
+    input text    id=txtFormEmployees    10001 - String String
+    Sleep    5s
+    click element    id=md-autocomplete-3
+    Sleep    4s
+    click element    id=lnkClearEmployees
     Sleep    3s
     input text    id=txtFormEmployees    10001 - String String
     Sleep    3s
+    click element    id=txtFormDates
+    Sleep    3s
+    click element    id=txtFormTimeIn
+    Sleep    3s
+    input text    id=txtFormNotes    Clear Notes
+    Sleep    4s
     click button    id=btnFormClear
 Resubmit Form
     Sleep    6s
@@ -136,22 +162,22 @@ Resubmit Form
     Sleep    4s
     Input Text    id=txtFormPhases    1 - New Phase A
     Sleep    4s
-    click element    id=md-autocomplete-1
+    click element    id=md-autocomplete-4
     Sleep    3s
     clear element text    id=txtFormPhases
     Sleep    3s
     Input Text    id=txtFormPhases    1 - Default Phase
     Sleep    4s
-    click element    id=md-autocomplete-1
+    click element    id=md-autocomplete-4
     Sleep    3s
     Input Text    id=txtFormCostCode    888 - Demolition
     Sleep    4s
-    Click Element    id=md-autocomplete-1
+    Click Element    id=md-autocomplete-5
     Sleep    3s
-    Input Text    id=txtFormPhases    1 - Default Phase
-    Sleep    4s
-    click element    id=md-autocomplete-1
-    Sleep    3s
+    #Input Text    id=txtFormPhases    1 - Default Phase
+    #Sleep    4s
+    #click element    id=md-autocomplete-1
+    #Sleep    3s
     click element    id=lnkClearEmployees
     Sleep    4s
     click element    id=lnkFormAllEmployees
@@ -225,11 +251,64 @@ Add More Lines
     click element    id=md-autocomplete-344
     Sleep    3s
     input text    id=txtFormEmployees    10001 - String String
-    Sleep    3s
-    Input Text    id=txtFormPhases    1 - Default Phase
     Sleep    4s
     click element    id=md-autocomplete-1
     Sleep    3s
+    click button    Xpath=//*[@id="page-container"]/div/div/div/ng-component/div/div/esub-enter-time-form/div[2]/form/div[5]/div/div/esub-daypicker-flyout/div/dp-day-calendar/div/div/div[3]/button[6]
+    Sleep    5s
+    input text    id=txtFormTimeIn    7:15 AM
+    Sleep    3s
+    input text    id=txtFormTimeOut   5:15 PM
+    sleep    4s
+    input text    id=txtFormBreakIn    12:00 PM
+    Sleep    4s
+    input text    id=txtFormBreakOut    12:19 PM
+    Sleep    4s
+    click button    id=btnFormCreate
+    sleep    4s
+    capture page screenshot    Filename=SubmitTime.png
+    Sleep    3s
+    close browser
+
+
+
+
+
+
+###########
+Group by Mine
+    [Tags]    Smoke
+    Open Browser    http://web.develop.shasta.esubonline.com/#/time/timesheets    Chrome
+    Set Window Size    ${1600}    ${1000}
+    Wait Until Page Contains    eSUB
+    Sleep    3s
+    Input Text    id=txtUsername    Tonyd@esub.com
+    Sleep    3s
+    Input Text    id=txtPassword     Test1234
+    Sleep    3s
+    Click Button    id=btnLogin
+    Wait Until Page Contains    eSUB
+    Sleep    5s
+    click element    id=time-expenses.filter-to-mine
+    #Filter should display when user selects "Mine" (bug #SH-887)
+    sleep    4s
+    capture page screenshot    Filename=noRecordsunderMine.png
+    click element    id=time-expenses.group-by-project
+    #group by project (Timerecords does not display)
+    Sleep    4s
+    capture page screenshot    Filename=noRecordsunderMineProject.png
+    click element    id=time-expenses.group-by-employee
+    #group by Employee (Timerecords does not display)
+    Sleep    4s
+    capture page screenshot    Filename=noRecordsunderMineEmployee.png
+    click element    id=time-expenses.filter-to-all
+    #clicking on (ALL) displays the time records
+    Sleep    4s
+    click element    id=esub-week-selector.previous-week
+    Sleep    4s
+    click element    id=esub-week-selector.next-week
+    Sleep    4s
+    close browser
 
 
 
@@ -245,6 +324,9 @@ Add More Lines
 
 
 
+
+
+####################################################
 
 
     #click element    id=txtFormProject
