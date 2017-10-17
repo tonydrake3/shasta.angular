@@ -40,6 +40,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
     public costCodes: CostCode[];
     public indirectCostCodes: IndirectCost[];
     public filteredProjects: Observable<Project[]>; // Duplicated
+    public filteredSystems: Observable<System[]>; // Duplicated
     public filteredIndirectCostCodes: Observable<IndirectCost[]>; // Duplicated
     public filteredCostCodes: Observable<IndirectCost[]>; // Duplicated
 
@@ -121,11 +122,18 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
             })
             .takeUntil(this.ngUnsubscribe);
 
-        // this.showSystemView = Observable
-        //     .combineLatest(
-        //         this.enterTimeForm.get('selectedProject').valueChanges,
-        //         this.systemsSubject
-        //     )
+        this.showSystemView = Observable
+            .combineLatest(
+                this.enterTimeForm.get('selectedProject').valueChanges,
+                this.systemsSubject,
+                (selectedProject, systems) => {
+                    return selectedProject != null && !(systems.length === 0);
+                }
+            )
+            .do((showSystemsView) =>  {
+                console.log('show system view', showSystemsView);
+            })
+            .takeUntil(this.ngUnsubscribe);
     }
 
     ngOnDestroy() {
@@ -172,7 +180,13 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
 
     public projectsTypeAheadHasFocus (value) {
 
-            this.filteredProjects = this._filterService.filterCollection(this.projects, value);
+        this.filteredProjects = this._filterService.filterCollection(this.projects, value);
+
+    }
+
+    public systemTypeAheadHasFocus(value) {
+
+        this.filteredSystems = this._filterService.filterCollection(this.systemsSubject.getValue(), value);
 
     }
 
@@ -191,6 +205,12 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
     public projectWasSelected (event) {
 
         this.enterTimeForm.patchValue({ selectedProject: event.option.value });
+
+    }
+
+    public systemWasSelected (event) {
+
+        this.enterTimeForm.patchValue({selectedSystem: event.option.value});
 
     }
 
@@ -345,9 +365,6 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
         console.log('Cost Code changed');
         const costCodeField = this.enterTimeForm.get('costCode');
         const costCodeSelection = this.enterTimeForm.get('selectedCostCode');
-
-        console.log(costCodeField);
-        console.log(costCodeSelection);
 
         costCodeField.valueChanges.subscribe(
             (costCodeFieldText) => {

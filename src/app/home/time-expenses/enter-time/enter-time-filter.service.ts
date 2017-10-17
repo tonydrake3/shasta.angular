@@ -52,7 +52,6 @@ export class EnterTimeFilterService {
 
     public filterIndirectCodes (match, indirectCodes: Array<CostCode>): Observable<CostCode[]> {
 
-        // console.log('filterIndirectCodes', match, this._indirectCodes);
         let filtered = [];
 
         if (typeof match === 'string') {
@@ -69,10 +68,7 @@ export class EnterTimeFilterService {
 
     public filterProjectCodes (match, project: Project): Observable<CostCode[]> {
 
-        // console.log('filterProjectCodes', match);
         let filtered = [];
-        // const projectSelect = this.enterTimeForm.get('project');
-        // console.log('filterProjectCodes', projectSelect.value);
 
         if (project && project.CostCodes && typeof match === 'string') {
 
@@ -92,9 +88,7 @@ export class EnterTimeFilterService {
         filtered = _.filter(collection, (item) => {
 
             for (const key of Object.keys(dictionary)) {
-                console.log('the key is ' + key + ' and the value is ' + item[key]);
-                console.log('does ' + item[key] + ' include ' + dictionary[key]);
-                if (item[key] && item[key].includes(dictionary[key])) { return true }
+             if (item[key] && item[key].includes(dictionary[key])) { return true }
             }
 
             return false;
