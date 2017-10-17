@@ -1,8 +1,9 @@
 ///<reference path="components/base.card.component.ts"/>
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {
+    MdAutocompleteModule,
     MdButtonModule, MdDatepickerModule, MdDialogModule, MdInputModule, MdNativeDateModule,
     MdProgressSpinnerModule
 } from '@angular/material';
@@ -44,6 +45,8 @@ import {CanDeactivateGuard} from './services/guards/deactivate-guard.service';
 import {ConfirmationDialogComponent} from './components/confirmation-dialog.component';
 import {ConfirmationDialogService} from './services/confirmation-dialog.service';
 import {NotesEntryDialogComponent} from './components/notes-entry.component';
+import {TimeRecordDetailModalComponent} from '../time-expenses/time-record-detail-modal/time-record-detail-modal.component';
+import {EntityDisplayFormatterService} from './services/entity-display-formatter.service';
 
 @NgModule({
     imports: [
@@ -53,8 +56,10 @@ import {NotesEntryDialogComponent} from './components/notes-entry.component';
         MdButtonModule,
         MdDialogModule,
         MdInputModule,
+        MdAutocompleteModule,
         CommonModule,
         FormsModule,
+        ReactiveFormsModule,
         DpDatePickerModule
     ],
     declarations: [
@@ -74,8 +79,8 @@ import {NotesEntryDialogComponent} from './components/notes-entry.component';
         TimeInputDirective,
         TimeFormatPipe,
         ConfirmationDialogComponent,
-        NotesEntryDialogComponent
-
+        NotesEntryDialogComponent,
+        TimeRecordDetailModalComponent
     ],
     providers: [
         AuthorizationService,
@@ -91,7 +96,8 @@ import {NotesEntryDialogComponent} from './components/notes-entry.component';
         WeatherService,
         TimeFormatPipe,
         CanDeactivateGuard,
-        ConfirmationDialogService
+        ConfirmationDialogService,
+        EntityDisplayFormatterService
     ],
     exports: [
         BaseCardComponent,
@@ -111,7 +117,8 @@ import {NotesEntryDialogComponent} from './components/notes-entry.component';
         TimeInputDirective,
         TimeFormatPipe,
         ConfirmationDialogComponent,
-        NotesEntryDialogComponent
+        NotesEntryDialogComponent,
+        TimeRecordDetailModalComponent
     ]
 })
 

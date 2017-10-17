@@ -7,8 +7,9 @@ import {Superintendent} from './Superintendent';
 import {System} from './System';
 import {Division} from './Division';
 import {Employee} from './Employee';
+import {NumberContainingEntity} from '../NumberContainingEntity';
 
-export class Project {
+export class Project implements NumberContainingEntity {
     Address?: Address;
     Architect?: Architect;
     Comments?: Comment[];
@@ -23,8 +24,8 @@ export class Project {
     IsTraining?: boolean;
     Location?: Location;
     MarketArea?: MarketArea;
-    Name?: string;
-    Number?: string;
+    Name: string;
+    Number: string;
     // Owner?: Owner; // TODO: Add model?
     // ProjectEngineer?: ProjectEngineer; // TODO: Add model?
     ProjectManager?: ProjectManager;
