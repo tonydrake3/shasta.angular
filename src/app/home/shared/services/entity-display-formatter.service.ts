@@ -18,7 +18,7 @@ export class EntityDisplayFormatterService {
     displayCostCode(costCode?: CostCode) {
         if (!costCode) { return '' };
 
-        return costCode.Code + '-' + costCode.Name;
+        return costCode.Code + ' - ' + costCode.Name;
     }
 
     displayIndirectCostCode(indirectCostCode?: IndirectCost) {

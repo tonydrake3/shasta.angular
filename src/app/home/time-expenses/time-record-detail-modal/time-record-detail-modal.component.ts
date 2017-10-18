@@ -213,15 +213,16 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
             indirectCostCode: this.timeRecord.IndirectCost,
             selectedIndirectCostCode: [this.timeRecord.IndirectCost, [Validators.required]],
             date: [this.timeRecord.Hours.Date, [Validators.required]],
-            standardHours: this.timeRecord.Hours.RegularTime,
-            overtimeHours: this.timeRecord.Hours.Overtime,
-            doubleTimeHours: this.timeRecord.Hours.DoubleTime,
+            standardHours: [this.timeRecord.Hours.RegularTime, [Validators.max(24)]],
+            overtimeHours: [this.timeRecord.Hours.Overtime, [Validators.max(24)]],
+            doubleTimeHours: [this.timeRecord.Hours.DoubleTime, [Validators.max(24)]],
         });
 
         this.observeProjectChanges();
         this.observeSystemChanges();
         this.observeCostCodeChanges();
         this.observeIndirectCostCodeChanges();
+        this.observeStandardTimeHoursChanges();
     }
 
     public close () {
@@ -384,6 +385,33 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
                 }
             }
         );
+    }
+
+    observeStandardTimeHoursChanges() {
+        const standardTimeField = this.enterTimeForm.get('standardHours');
+        const overtimeField = this.enterTimeForm.get('overtimeHours');
+        const doubleTimeField = this.enterTimeForm.get('doubleTimeHours');
+
+        standardTimeField.valueChanges.subscribe(
+            (standardTime) => {
+                console.log('standard time changed');
+                console.log(standardTime);
+            }
+        )
+
+        overtimeField.valueChanges.subscribe(
+            (overtime) => {
+                console.log('overtime changed');
+                console.log(overtime);
+            }
+        )
+
+        doubleTimeField.valueChanges.subscribe(
+            (doubleTime) => {
+                console.log('doubleTime changed');
+                console.log(doubleTime);
+            }
+        )
     }
 
 //     if (systems && systems.length >= 1) {
