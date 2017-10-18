@@ -14,6 +14,7 @@ export class NotificationService extends BaseHttpService {
     // Private
     private readonly pollingPeriod = 15000;
     private _notifications$ = new BehaviorSubject<Array<EsubNotification>>(null);
+    private interval;
 
     constructor(protected _httpPassthrough: Http) {
 
@@ -31,9 +32,18 @@ export class NotificationService extends BaseHttpService {
     }
 
     /******************************************************************************************************************
+     * Public Methods
+     ******************************************************************************************************************/
+    public stopPolling () {
+
+        if (this.interval) {
+            clearInterval(this.interval);
+        }
+    }
+
+    /******************************************************************************************************************
      * Private Methods
      ******************************************************************************************************************/
-
     private load (): Promise<any> {
 
         const url = environment.apiUrl + apiRoutes.notifications;
@@ -68,7 +78,7 @@ export class NotificationService extends BaseHttpService {
 
     private pollEndpoint () {
 
-        setInterval(() => {
+        this.interval = setInterval(() => {
             this.load();
         }, this.pollingPeriod)
     }

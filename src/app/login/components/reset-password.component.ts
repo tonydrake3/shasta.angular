@@ -1,28 +1,40 @@
 import { Component } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/map';
 
 @Component({
-    selector: 'esub-login',
-    template: `<router-outlet></router-outlet>`
+    selector: 'esub-reset-password',
+    templateUrl: './reset-password.component.html'
 })
-export class LoginComponent {
+export class ResetPasswordComponent {
 
-    view: string;
+    resetPasswordForm: FormGroup;
+    errorMessage = '';
 
-    constructor() {}
+    constructor(private _builder: FormBuilder) {
+
+        this.createForm();
+    }
 
     /******************************************************************************************************************
      * Public Methods
      ******************************************************************************************************************/
 
-    /******************************************************************************************************************
-     * Public Methods
-     ******************************************************************************************************************/
+     submit (form) {
+
+     }
 
     /******************************************************************************************************************
      * Private Methods
      ******************************************************************************************************************/
 
+     private createForm () {
+
+        this.resetPasswordForm = this._builder.group({
+
+            email: ['', Validators.required ]
+        })
+    }
 }

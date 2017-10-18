@@ -17,6 +17,7 @@ import { LoginComponent } from './login/login.component'
 import { HomeModule } from './home/home.module';
 import { SharedModule } from './shared/shared.module';
 import { CompanyModule } from './home/company/company.module';
+import { LoginModule } from './login/login.module';
 import { SettingsModule } from './home/settings/settings.module';
 
 // hmr
@@ -44,6 +45,7 @@ import { PermissionsService } from './shared/services/authorization/permissions.
         NotificationModule,
 
         // Sub modules
+        LoginModule,
         HomeModule,
         SharedModule,
         MdInputModule,
@@ -54,8 +56,7 @@ import { PermissionsService } from './shared/services/authorization/permissions.
         // ProjectModule
     ],
     declarations: [
-        AppComponent,
-        LoginComponent,
+        AppComponent
     ],
     providers: [
         AuthenticationService,
