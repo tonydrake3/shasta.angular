@@ -26,6 +26,23 @@ export class EnterTimeFilterService {
         }
     }
 
+    public filterCollection (match, collection: Array<any>): Observable<Array<any>> {
+
+        let filtered = [];
+
+        if (typeof match === 'string') {
+
+            filtered = _.filter(collection, (item) => {
+                return item.Name && item.Number &&
+                    (item.Name.toLowerCase().includes(match.toLowerCase()) ||
+                        item.Number.toLowerCase().includes(match.toLowerCase()) ||
+                        (item.Number.toLowerCase() + ' - ' + item.Name.toLowerCase()).includes(match.toLowerCase()));
+            });
+        }
+
+        return Observable.of(filtered);
+    }
+
     public filterEmployees (match, employeeList: Array<Employee>, selectedEmployees?: Array<Employee>): Observable<Array<any>> {
 
         let filtered = [];
@@ -52,7 +69,6 @@ export class EnterTimeFilterService {
 
     public filterIndirectCodes (match, indirectCodes: Array<CostCode>): Observable<CostCode[]> {
 
-        // console.log('filterIndirectCodes', match, this._indirectCodes);
         let filtered = [];
 
         if (typeof match === 'string') {
@@ -69,10 +85,7 @@ export class EnterTimeFilterService {
 
     public filterProjectCodes (match, project: Project): Observable<CostCode[]> {
 
-        // console.log('filterProjectCodes', match);
         let filtered = [];
-        // const projectSelect = this.enterTimeForm.get('project');
-        // console.log('filterProjectCodes', projectSelect.value);
 
         if (project && project.CostCodes && typeof match === 'string') {
 
@@ -92,9 +105,9 @@ export class EnterTimeFilterService {
         filtered = _.filter(collection, (item) => {
 
             for (const key of Object.keys(dictionary)) {
-                console.log('the key is ' + key + ' and the value is ' + item[key]);
-                console.log('does ' + item[key] + ' include ' + dictionary[key]);
-                if (item[key] && item[key].includes(dictionary[key])) { return true }
+
+             if (item[key] && item[key].includes(dictionary[key])) { return true }
+
             }
 
             return false;
@@ -103,7 +116,7 @@ export class EnterTimeFilterService {
         return Observable.of(filtered);
     }
 
-    public filterCollection<T>(collection: Array<T>, value: string, withPropertyKeys: string[] = ['Name', 'Number']): Observable<T[]> {
+    public filterCollectionByKey<T>(collection: Array<T>, value: string, withPropertyKeys: string[] = ['Name', 'Number']): Observable<T[]> {
         let filteredCollection: Observable<T[]>;
 
         if (value) {
