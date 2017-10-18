@@ -10,7 +10,8 @@ export const apiRoutes = {
     'indirectCostCodes': 'Shared/IndirectCosts',
     'permissions': 'Identity/Permissions/Current',
     'projects': 'Shared/Projects',
-    'timeRecords': 'Time/TimeRecords/Full',
+    'timeRecords': 'Time/TimeRecords',
+    'timeRecordsFull': 'Time/TimeRecords/Full',
     'timeSettings': 'Time/Settings'
 };
 

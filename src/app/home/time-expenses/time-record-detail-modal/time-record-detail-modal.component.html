@@ -86,7 +86,6 @@
                                placeholder="{{displayData.costCodeTitle}}"
                                formControlName="indirectCostCode"
                                [mdAutocomplete]="autoIndirectCostCode"
-                               (focus)="indirectCostCodesTypeAheadHasFocus($event.target.value)"
                                [id]="'txtFormIndirectCost'"
                         >
                     </md-form-field>
@@ -158,5 +157,5 @@
 
 <md-dialog-actions align="end">
     <button md-button (click)="close()">Cancel</button>
-    <button md-button (click)="save()">Save</button>
+    <button md-button (click)="onSubmit()">Save</button>
 </md-dialog-actions>

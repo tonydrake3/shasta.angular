@@ -18,6 +18,7 @@ import {Subject} from 'rxjs/Subject';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {System} from '../../../models/domain/System';
 import {Phase} from '../../../models/domain/Phase';
+import * as _ from 'lodash';
 
 @Component({
     selector: 'esub-time-record-detail-modal',
@@ -36,21 +37,20 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
     private systemsSubject = new BehaviorSubject<System[]>([]);
     private phasesSubject = new BehaviorSubject<Phase[]>([]);
     private costCodeSubject = new BehaviorSubject<CostCode[]>([]);
-    // Selected Subjects
+    private indirectCostsSubject = new BehaviorSubject<IndirectCost[]>([]);
 
     // Public
-    public enterTimeForm: FormGroup; // Duplicated
-    public indirectCostCodes: IndirectCost[];
-    public filteredProjects: Observable<Project[]>; // Duplicated
-    public filteredSystems: Observable<System[]>; // Duplicated
+    public enterTimeForm: FormGroup;
+    public filteredProjects: Observable<Project[]>;
+    public filteredSystems: Observable<System[]>;
     public filteredPhases: Observable<Phase[]>;
-    public filteredIndirectCostCodes: Observable<IndirectCost[]>; // Duplicated
-    public filteredCostCodes: Observable<IndirectCost[]>; // Duplicated
+    public filteredIndirectCostCodes: Observable<IndirectCost[]>;
+    public filteredCostCodes: Observable<CostCode[]>; // Duplicated
 
     public displayData: TimeModalDisplayData;
     public displayMode: TimeModalMode;
 
-    // Duplicated... This is here because of a weird TSlint error that comes up
+    // Duplicated... This is here because of a weird TSlint error that comes up :shrug:
     public autoProject;
     public autoSystem;
     public autoPhase;
@@ -79,7 +79,6 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
         this.initializeTimeRecordInputData();
         this.displayMode = this.data.displayMode;
         this.buildForm();
-        this.indirectCostCodes = [];
 
         // For now we are just getting all of the projects but we will want to probably use the
         // Lookup functionality from the server
@@ -169,14 +168,30 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
             this.costCodeSubject,
             (filterText, costCodes) => {
                 console.log('filtering cost codes with text', filterText);
-                console.log('currently have ' + costCodes.length + ' projects total');
+                console.log('currently have ' + costCodes.length + ' cost codes total');
                 return this._filterService
                     .filterCollectionByKey(costCodes, filterText)
             }
         )
-            .do((projects) => {
-                console.log('filtering projects');
-                console.log(projects);
+            .do((costCodes) => {
+                console.log('filtering costCodes');
+                console.log(costCodes);
+            })
+            .takeUntil(this.ngUnsubscribe);
+
+        this.filteredIndirectCostCodes = Observable.combineLatest(
+            this.enterTimeForm.get('indirectCostCode').valueChanges,
+            this.indirectCostsSubject,
+            (filterText, indirectCostCodes) => {
+                console.log('filtering cost codes with text', filterText);
+                console.log('currently have ' + indirectCostCodes.length + ' indirect costcodes total');
+                return this._filterService
+                    .filterCollectionByKey(indirectCostCodes, filterText)
+            }
+        )
+            .do((indirectCostCodes) => {
+                console.log('filtering indirect costcodes');
+                console.log(indirectCostCodes);
             })
             .takeUntil(this.ngUnsubscribe);
 
@@ -185,14 +200,14 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
             this.systemsSubject,
             (filterText, systems) => {
                 console.log('filtering systems with text', filterText);
-                console.log('currently have ' + systems.length + ' projects total');
+                console.log('currently have ' + systems.length + ' systems total');
                 return this._filterService
                     .filterCollectionByKey(systems, filterText)
             }
         )
-            .do((projects) => {
-                console.log('filtering projects');
-                console.log(projects);
+            .do((systems) => {
+                console.log('filtering systems');
+                console.log(systems);
             })
             .takeUntil(this.ngUnsubscribe);
 
@@ -201,14 +216,14 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
             this.phasesSubject,
             (filterText, phases) => {
                 console.log('filtering phases with text', filterText);
-                console.log('currently have ' + phases.length + ' projects total');
+                console.log('currently have ' + phases.length + ' phases total');
                 return this._filterService
                     .filterCollectionByKey(phases, filterText)
             }
         )
-            .do((projects) => {
-                console.log('filtering projects');
-                console.log(projects);
+            .do((phases) => {
+                console.log('filtering phases');
+                console.log(phases);
             })
             .takeUntil(this.ngUnsubscribe);
 
@@ -243,10 +258,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
         this.ngUnsubscribe.complete();
     }
 
-    // Duplicated from Enter Form... refactor?
     private buildForm() {
-        console.log('Building form. The display data is');
-        console.log(this.displayData);
 
         let project: Project;
         let system: System;
@@ -288,19 +300,11 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
     }
 
     public close () {
-        console.log('Close modal without saving');
         this.dialogRef.close();
     }
 
     public save () {
-        console.log('Save this record');
         this.dialogRef.close();
-    }
-
-    public indirectCostCodesTypeAheadHasFocus (value) {
-
-        // this.filteredIndirectCostCodes = this._filterService.filterCollectionByKey(this.indirectCostCodes, value, ['Description']);
-
     }
 
     public projectWasSelected (event) {
@@ -333,17 +337,11 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
 
     // Duplicated
     observeIndirectCostCodeChanges() {
-        console.log('Indirect Cost Code changed');
         const indirectCostCodeField = this.enterTimeForm.get('indirectCostCode');
         const indirectCostCodeSelection = this.enterTimeForm.get('selectedIndirectCostCode');
 
-        console.log(indirectCostCodeField);
-        console.log(indirectCostCodeSelection);
-
         indirectCostCodeField.valueChanges.subscribe(
             (indirectCostCodeFieldText) => {
-                console.log('next indirect cost code field change');
-                console.log(indirectCostCodeFieldText);
 
                 if (indirectCostCodeFieldText || indirectCostCodeFieldText === '') {
 
@@ -351,19 +349,8 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
                         selectedIndirectCostCode: ''
                     });
 
-                    if (this.indirectCostCodes.length > 0) {
+                    indirectCostCodeField.setErrors({'invalid' : true});
 
-                        // this.filteredIndirectCostCodes = this._filterService
-                        //     .filterByKeyValuePair(this.indirectCostCodes, {'Description': indirectCostCodeFieldText});
-
-                    } else {
-
-                        indirectCostCodeField.setErrors({'invalid' : true});
-
-                        // this.filteredIndirectCostCodes = this._filterService
-                        //     .filterByKeyValuePair(this.indirectCostCodes, {'Description': indirectCostCodeFieldText});
-
-                    }
                 }
             }
         );
@@ -371,8 +358,9 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
         indirectCostCodeSelection.valueChanges.subscribe(
             (selectedIndirectCostCode) => {
 
-                if (selectedIndirectCostCode && this.indirectCostCodes.length === 0) {
+                if (selectedIndirectCostCode) {
                     indirectCostCodeField.setErrors(null);
+                    indirectCostCodeSelection.markAsDirty();
                 }
 
             }
@@ -406,6 +394,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
                 if (selectedProject) {
 
                     projectField.setErrors(null);
+                    projectSelection.markAsDirty();
                     this.checkDefaultSystem(selectedProject.Systems);
                     this.costCodeSubject.next(selectedProject.CostCodes);
                     costCodeSelection.clearValidators();
@@ -425,6 +414,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
             (standardTime) => {
                 console.log('standard time changed');
                 console.log(standardTime);
+                standardTimeField.markAsDirty();
             }
         )
 
@@ -432,6 +422,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
             (overtime) => {
                 console.log('overtime changed');
                 console.log(overtime);
+                overtimeField.markAsDirty();
             }
         )
 
@@ -439,6 +430,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
             (doubleTime) => {
                 console.log('doubleTime changed');
                 console.log(doubleTime);
+                doubleTimeField.markAsDirty();
             }
         )
     }
@@ -495,7 +487,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
                 if (selectedPhase) {
 
                     phaseField.setErrors(null);
-
+                    phaseSelection.markAsDirty();
                 }
 
             }
@@ -576,21 +568,53 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
                 if (selectedCostCode) {
 
                     costCodeField.setErrors(null);
-
+                    costCodeSelection.markAsDirty();
                 }
 
             }
         );
     }
 
-    public onSubmit(form: FormGroup) {
+    public onSubmit() {
         console.log('Save TimeRecord');
         const timeRecord = this.prepareTimeRecordToSave();
         // update timeRecord on server
     }
 
     private prepareTimeRecordToSave(): TimeRecord {
-        return this.timeRecord;
+        const timeRecordToSave = new TimeRecord();
+
+        const formValues = this.enterTimeForm.value;
+        const changedProperties = this.getChangedProperties();
+
+        if (_.indexOf(changedProperties, 'selectedProject') > -1) {
+            timeRecordToSave.ProjectId = formValues.selectedProject.Id;
+        }
+
+        if (_.indexOf(changedProperties, 'selectedPhase') > -1) {
+            timeRecordToSave.PhaseId = formValues.selectedPhase.Id;
+        }
+
+        if (_.indexOf(changedProperties, 'selectedCostCode') > -1) {
+            timeRecordToSave.CostCodeId = formValues.selectedCostCode.Id;
+        }
+
+        return timeRecordToSave;
+    }
+
+    private getChangedProperties(): string[] {
+        const changedProperties = [];
+
+        Object.keys(this.enterTimeForm.controls).forEach((name) => {
+            const currentControl = this.enterTimeForm.controls[name];
+
+            if (currentControl.dirty) {
+                changedProperties.push(name);
+            }
+
+        });
+
+        return changedProperties;
     }
 
     didTapCancelButton(): void {
