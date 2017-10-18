@@ -14,12 +14,14 @@ import {emailValidator} from '../../home/shared/validators/email.validator';
 })
 export class LoginFieldsComponent {
 
-    loginForm: FormGroup;
-    _usernameControl;
-    _passwordControl;
+    // Private
+    private loginForm: FormGroup;
+    private _usernameControl;
+    private _passwordControl;
 
-    loading = false;
-    errorMessage = '';
+    // Public
+    public loading = false;
+    public errorMessage = '';
 
     constructor(private _builder: FormBuilder, private _route: ActivatedRoute, private _router: Router,
                 private _authenticationService: AuthenticationService) {
@@ -32,7 +34,6 @@ export class LoginFieldsComponent {
     /******************************************************************************************************************
      * Public Methods
      ******************************************************************************************************************/
-
     login ({value, valid}: {value: Credentials, valid: boolean}) {
 
         this.loading = true;

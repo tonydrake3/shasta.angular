@@ -10,8 +10,10 @@ import 'rxjs/add/operator/map';
 })
 export class ResetPasswordComponent {
 
-    resetPasswordForm: FormGroup;
-    errorMessage = '';
+    // Public
+    public loading = false;
+    public resetPasswordForm: FormGroup;
+    public errorMessage = '';
 
     constructor(private _builder: FormBuilder) {
 
