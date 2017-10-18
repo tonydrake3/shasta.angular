@@ -33,11 +33,14 @@
                   <div class="header-btn-label"><label>Inbox</label></div>
                 </button>
               </li>
-              <li class="list-inline-item header-sticky notification-icon">
-                  <button md-button class="md-button header-btn">
+              <li class="list-inline-item notification-icon">
+                  <button id="notifications" md-button class="md-button header-btn"
+                          esubClickClose [elementClickHandler]="openNotifications" [outsideClickHandler]="closeNotifications"
+                          [clickHandlerParam]="notificationCount">
                       <i class="material-icons notifications-counter"><span>{{notificationCount}}</span></i>
-                      <div class="header-btn-label"><label>Notifications</label></div>
+                      <div class="header-btn-label"><label id="notificationsLabel">Notifications</label></div>
                   </button>
+                  <esub-popover></esub-popover>
               </li>
               <li class="profile-icon header-sticky">
                   <button md-button class="md-button header-btn" (click)="logout()">

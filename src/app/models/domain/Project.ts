@@ -34,6 +34,7 @@ export class Project implements NumberContainingEntity {
     Status?: number;
     Superintendent?: Superintendent;
     Systems?: System[];
+    System?: System; // to use as selected system when in timerecord... refactor later
     TenantId?: string;
     TimeZone?: number;
 }

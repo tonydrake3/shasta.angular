@@ -9,19 +9,19 @@ export class EntityDisplayFormatterService {
 
     constructor() { }
 
-    displayFormatted(entity?: NumberContainingEntity) {
+    displayFormatted(entity?: NumberContainingEntity): string {
         if (!entity) { return '' };
 
         return entity.Number + ' - ' + entity.Name;
     }
 
-    displayCostCode(costCode?: CostCode) {
+    displayCostCode(costCode?: CostCode): string {
         if (!costCode) { return '' };
 
-        return costCode.Code + '-' + costCode.Name;
+        return costCode.Code + ' - ' + costCode.Name;
     }
 
-    displayIndirectCostCode(indirectCostCode?: IndirectCost) {
+    displayIndirectCostCode(indirectCostCode?: IndirectCost): string {
         if (!indirectCostCode) { return '' };
 
         return indirectCostCode.Description;

@@ -74,7 +74,7 @@ describe('EntityDisplayFormatterService', () => {
 
     })
 
-    describe('filterCollection', () => {
+    describe('filterCollectionByKey', () => {
 
         it('collection should be empty when no matching info is passed in',
             inject([EnterTimeFilterService],
@@ -82,7 +82,7 @@ describe('EntityDisplayFormatterService', () => {
                 ) => {
 
                     const expected: Observable<Project[]> = Observable.of([]);
-                    expect(service.filterCollection(projects, 'apples')).toEqual(expected);
+                    expect(service.filterCollectionByKey(projects, 'apples')).toEqual(expected);
 
                 }));
 
@@ -92,7 +92,7 @@ describe('EntityDisplayFormatterService', () => {
                 ) => {
 
                     const expected: Observable<Project[]> = Observable.of(projects);
-                    expect(service.filterCollection(projects, 'Project')).toEqual(expected);
+                    expect(service.filterCollectionByKey(projects, 'Project')).toEqual(expected);
 
                 }));
 
@@ -102,7 +102,17 @@ describe('EntityDisplayFormatterService', () => {
                 ) => {
 
                     const expected: Observable<Project[]> = Observable.of([projects[0]]);
-                    expect(service.filterCollection(projects, '12')).toEqual(expected);
+                    expect(service.filterCollectionByKey(projects, '12')).toEqual(expected);
+
+                }));
+
+        it('collection should match one when number - name is sent',
+            inject([EnterTimeFilterService],
+                (service: EnterTimeFilterService
+                ) => {
+
+                    const expected: Observable<Project[]> = Observable.of([projects[0]]);
+                    expect(service.filterCollection('123 - P', projects)).toEqual(expected);
 
                 }));
 

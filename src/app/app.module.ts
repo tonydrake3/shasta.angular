@@ -8,6 +8,7 @@ import 'hammerjs';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { NotificationModule } from './home/notifications/notification.module';
 
 // Pages
 import { LoginComponent } from './login/login.component'
@@ -16,6 +17,7 @@ import { LoginComponent } from './login/login.component'
 import { HomeModule } from './home/home.module';
 import { SharedModule } from './shared/shared.module';
 import { CompanyModule } from './home/company/company.module';
+import { LoginModule } from './login/login.module';
 import { SettingsModule } from './home/settings/settings.module';
 
 // hmr
@@ -28,9 +30,10 @@ import {LookupDataService} from './home/shared/services/lookup-data.service';
 // entry components
 import { CommentsComponent } from './home/shared/components/comments.component';
 import { ConfirmationDialogComponent } from './home/shared/components/confirmation-dialog.component';
-import {NotesEntryDialogComponent} from './home/shared/components/notes-entry.component';
-import {TimeRecordDetailModalComponent} from './home/time-expenses/time-record-detail-modal/time-record-detail-modal.component';
-import {PermissionsService} from './shared/services/authorization/permissions.service';
+import { NotesEntryDialogComponent } from './home/shared/components/notes-entry.component';
+import { NotificationComponent } from './home/notifications/notifications.component';
+import { PermissionsService } from './shared/services/authorization/permissions.service';
+import { TimeRecordDetailModalComponent } from './home/time-expenses/time-record-detail-modal/time-record-detail-modal.component';
 
 @NgModule({
     imports: [
@@ -40,8 +43,10 @@ import {PermissionsService} from './shared/services/authorization/permissions.se
         ReactiveFormsModule,
         BrowserAnimationsModule,
         AppRoutingModule,
+        NotificationModule,
 
         // Sub modules
+        LoginModule,
         HomeModule,
         SharedModule,
         MdInputModule,
@@ -52,8 +57,7 @@ import {PermissionsService} from './shared/services/authorization/permissions.se
         // ProjectModule
     ],
     declarations: [
-        AppComponent,
-        LoginComponent,
+        AppComponent
     ],
     providers: [
         AuthenticationService,
@@ -67,6 +71,7 @@ import {PermissionsService} from './shared/services/authorization/permissions.se
         CommentsComponent,
         ConfirmationDialogComponent,
         NotesEntryDialogComponent,
+        NotificationComponent,
         TimeRecordDetailModalComponent
     ]
 })
