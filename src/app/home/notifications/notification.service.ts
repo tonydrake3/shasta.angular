@@ -12,7 +12,7 @@ import {EsubNotification} from '../../models/domain/EsubNotification';
 export class NotificationService extends BaseHttpService {
 
     // Private
-    private readonly pollingPeriod = 60000;
+    private readonly pollingPeriod = 15000;
     private _notifications$ = new BehaviorSubject<Array<EsubNotification>>(null);
 
     constructor(protected _httpPassthrough: Http) {
