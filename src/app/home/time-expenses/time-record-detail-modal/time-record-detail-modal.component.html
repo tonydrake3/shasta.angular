@@ -23,7 +23,6 @@
                             mdInput placeholder="Project"
                             formControlName="project"
                             [mdAutocomplete]="autoProject"
-                            (focus)="projectsTypeAheadHasFocus($event.target.value)"
                             [id]="'txtFormProject'"
                         >
                     </md-form-field>
@@ -45,7 +44,6 @@
                             mdInput placeholder="System"
                             formControlName="system"
                             [mdAutocomplete]="autoSystem"
-                            (focus)="systemTypeAheadHasFocus($event.target.value)"
                             [id]="'txtFormSystem'"
                         >
                     </md-form-field>
@@ -67,7 +65,6 @@
                             mdInput placeholder="Phase"
                             formControlName="phase"
                             [mdAutocomplete]="autoPhase"
-                            (focus)="phaseTypeAheadHasFocus($event.target.value)"
                             [id]="'txtFormPhase'"
                         >
                     </md-form-field>
@@ -112,7 +109,6 @@
                                placeholder="{{displayData.costCodeTitle}}"
                                formControlName="costCode"
                                [mdAutocomplete]="autoCostCode"
-                               (focus)="costCodesTypeAheadHasFocus($event.target.value)"
                                [id]="'txtFormCostCode'"
                         >
                     </md-form-field>

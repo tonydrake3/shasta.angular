@@ -53,7 +53,7 @@ export class EnterTimeFilterService {
                 return employee.Name.toLowerCase().includes(match.toLowerCase()) ||
                     (employee.Number && employee.Number.toLowerCase().includes(match.toLowerCase())) ||
                     (employee.Number &&
-                    (employee.Number.toLowerCase() + ' - ' + employee.Name.toLowerCase()).includes(match.toLowerCase()));
+                        (employee.Number.toLowerCase() + ' - ' + employee.Name.toLowerCase()).includes(match.toLowerCase()));
             });
 
             if (selectedEmployees && selectedEmployees.length > 0) {
@@ -106,7 +106,12 @@ export class EnterTimeFilterService {
 
             for (const key of Object.keys(dictionary)) {
 
-             if (item[key] && item[key].includes(dictionary[key])) { return true }
+                const searchText = String(dictionary[key]).toLowerCase();
+                const fieldValue = String(item[key]).toLowerCase();
+                console.log(searchText);
+                console.log(fieldValue);
+                console.log(key);
+                if (fieldValue && fieldValue.includes(searchText)) { return true }
 
             }
 

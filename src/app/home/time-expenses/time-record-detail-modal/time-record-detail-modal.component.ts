@@ -31,7 +31,6 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
     private timeRecord: TimeRecord;
 
     // Subjects
-    private projectFilterText = new BehaviorSubject<string>('');
     private timeRecordSubject = new BehaviorSubject<TimeRecord>(new TimeRecord());
     private projectsSubject = new BehaviorSubject<Project[]>([]);
     private systemsSubject = new BehaviorSubject<System[]>([]);
@@ -72,13 +71,10 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
         private _formBuilder: FormBuilder,
         private _filterService: EnterTimeFilterService,
         private _projectService: ProjectService,
-        private _indirectCostsService: IndirectCostCodesService, // reused Filter Service... yay!
         public entityFormatter: EntityDisplayFormatterService
     ) {}
 
     ngOnInit () {
-        console.log('Initializing modal. The data is');
-        console.log(this.data);
         this.initializeTimeRecordFromInputData();
         this.initializeTimeRecordInputData();
         this.displayMode = this.data.displayMode;
@@ -91,9 +87,11 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
         this._projectService.projects$
             .do(
                 (result) => {
+                    console.log('got projects');
                     this.projectsSubject.next(result['Value']);
                 }
             )
+            .takeUntil(this.ngUnsubscribe)
             .subscribe();
 
         // Bindings
@@ -101,8 +99,8 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
             .map((record) => {
                 return record && record.IndirectCost != null;
             })
-            .do((showindirectcostView) =>  {
-                console.log('show indirect cost view', showindirectcostView);
+            .do((showIndirectCostView) =>  {
+                console.log('show indirect cost view', showIndirectCostView);
             })
             .takeUntil(this.ngUnsubscribe);
 
@@ -151,17 +149,67 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
             .takeUntil(this.ngUnsubscribe);
 
         this.filteredProjects = Observable.combineLatest(
-            this.projectFilterText,
+            this.enterTimeForm.get('project').valueChanges,
             this.projectsSubject,
             (filterText, projects) => {
+                console.log('filtering projects with text', filterText);
+                console.log('currently have ' + projects.length + ' projects total');
                 return this._filterService
                     .filterCollectionByKey(projects, filterText)
             }
         )
-        .do((projects) => {
-            console.log('filtering projects');
-            console.log(projects);
-        })
+            .do((projects) => {
+                console.log('filtering projects');
+                console.log(projects);
+            })
+            .takeUntil(this.ngUnsubscribe);
+
+        this.filteredCostCodes = Observable.combineLatest(
+            this.enterTimeForm.get('costCode').valueChanges,
+            this.costCodeSubject,
+            (filterText, costCodes) => {
+                console.log('filtering cost codes with text', filterText);
+                console.log('currently have ' + costCodes.length + ' projects total');
+                return this._filterService
+                    .filterCollectionByKey(costCodes, filterText)
+            }
+        )
+            .do((projects) => {
+                console.log('filtering projects');
+                console.log(projects);
+            })
+            .takeUntil(this.ngUnsubscribe);
+
+        this.filteredSystems = Observable.combineLatest(
+            this.enterTimeForm.get('system').valueChanges,
+            this.systemsSubject,
+            (filterText, systems) => {
+                console.log('filtering systems with text', filterText);
+                console.log('currently have ' + systems.length + ' projects total');
+                return this._filterService
+                    .filterCollectionByKey(systems, filterText)
+            }
+        )
+            .do((projects) => {
+                console.log('filtering projects');
+                console.log(projects);
+            })
+            .takeUntil(this.ngUnsubscribe);
+
+        this.filteredPhases = Observable.combineLatest(
+            this.enterTimeForm.get('phase').valueChanges,
+            this.phasesSubject,
+            (filterText, phases) => {
+                console.log('filtering phases with text', filterText);
+                console.log('currently have ' + phases.length + ' projects total');
+                return this._filterService
+                    .filterCollectionByKey(phases, filterText)
+            }
+        )
+            .do((projects) => {
+                console.log('filtering projects');
+                console.log(projects);
+            })
             .takeUntil(this.ngUnsubscribe);
 
         // DEBUGGING
@@ -233,6 +281,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
 
         this.observeProjectChanges();
         this.observeSystemChanges();
+        this.observePhaseChanges();
         this.observeCostCodeChanges();
         this.observeIndirectCostCodeChanges();
         this.observeStandardTimeHoursChanges();
@@ -248,43 +297,9 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
         this.dialogRef.close();
     }
 
-    public projectsTypeAheadHasFocus (value) {
-
-        this.filterProjectsBy(value);
-
-    }
-
-    private filterProjectsBy(value) {
-
-        this.filteredProjects = this._filterService
-            .filterCollectionByKey(this.projectsSubject.getValue(), value);
-
-    }
-
-    public systemTypeAheadHasFocus(value) {
-
-        this.filteredSystems = this._filterService
-            .filterCollectionByKey(this.systemsSubject.getValue(), value);
-
-    }
-
-    public phaseTypeAheadHasFocus(value) {
-
-        this.filteredPhases = this._filterService
-            .filterCollectionByKey(this.phasesSubject.getValue(), value);
-
-    }
-
-    public costCodesTypeAheadHasFocus (value) {
-
-        this.filteredCostCodes = this._filterService
-            .filterCollectionByKey(this.costCodeSubject.getValue(), value, ['Code', 'Name']);
-
-    }
-
     public indirectCostCodesTypeAheadHasFocus (value) {
 
-        this.filteredIndirectCostCodes = this._filterService.filterCollectionByKey(this.indirectCostCodes, value, ['Description']);
+        // this.filteredIndirectCostCodes = this._filterService.filterCollectionByKey(this.indirectCostCodes, value, ['Description']);
 
     }
 
@@ -338,15 +353,15 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
 
                     if (this.indirectCostCodes.length > 0) {
 
-                        this.filteredIndirectCostCodes = this._filterService
-                            .filterByKeyValuePair(this.indirectCostCodes, {'Description': indirectCostCodeFieldText});
+                        // this.filteredIndirectCostCodes = this._filterService
+                        //     .filterByKeyValuePair(this.indirectCostCodes, {'Description': indirectCostCodeFieldText});
 
                     } else {
 
                         indirectCostCodeField.setErrors({'invalid' : true});
 
-                        this.filteredIndirectCostCodes = this._filterService
-                            .filterByKeyValuePair(this.indirectCostCodes, {'Description': indirectCostCodeFieldText});
+                        // this.filteredIndirectCostCodes = this._filterService
+                        //     .filterByKeyValuePair(this.indirectCostCodes, {'Description': indirectCostCodeFieldText});
 
                     }
                 }
@@ -381,8 +396,6 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
                     costCode: ''
                 };
                 this.resetField(projectText, projectField, fieldsToClear);
-                this.projectFilterText = projectText;
-                // this.filterProjectsBy(projectText);
 
             }
         );
@@ -394,9 +407,9 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
 
                     projectField.setErrors(null);
                     this.checkDefaultSystem(selectedProject.Systems);
-                    this.checkDefaultCostCode(selectedProject.CostCodes);
-                    // costCodeSelection.clearValidators();
-                    // costCodeSelection.setErrors(null);
+                    this.costCodeSubject.next(selectedProject.CostCodes);
+                    costCodeSelection.clearValidators();
+                    costCodeSelection.setErrors(null);
 
                 }
             }
@@ -430,43 +443,6 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
         )
     }
 
-//     if (systems && systems.length >= 1) {
-//     this.systemsSubject.next(systems);
-//
-//     this.enterTimeForm.patchValue({
-//                                       system: systems[0],
-//                                       selectedSystem: systems[0]
-//                                   });
-//     this.checkDefaultPhase(systems[0].Phases);
-// } else {
-//     this.systemsSubject.next([]);
-//
-//     this.enterTimeForm.patchValue({
-//         system: '',
-//         selectedSystem: ''
-//     });
-//     this.phasesSubject.next([]);
-// }
-
-    private checkDefaultCostCode (costCodes: CostCode[]) {
-
-        if (costCodes && costCodes.length >= 1) {
-            this.costCodeSubject.next(costCodes);
-
-            // this.enterTimeForm.patchValue({
-            //     costCode: costCodes[0],
-            //     selectedCostCode: costCodes[0]
-            // });
-
-        } else {
-
-            this.enterTimeForm.patchValue({
-                costCode: '',
-                selectedCostCode: ''
-            });
-        }
-    }
-
     observeSystemChanges() {
         const systemField = this.enterTimeForm.get('system');
         const systemSelection = this.enterTimeForm.get('selectedSystem');
@@ -491,6 +467,34 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
 
                     systemField.setErrors(null);
                     this.checkDefaultPhase(selectedSystem.Phases);
+
+                }
+
+            }
+        )
+    }
+
+    observePhaseChanges() {
+        const phaseField = this.enterTimeForm.get('phase');
+        const phaseSelection = this.enterTimeForm.get('selectedPhase');
+
+        phaseField.valueChanges.subscribe(
+            (phaseText) => {
+
+                const fieldsToClear = {
+                    selectedPhase: '',
+                };
+                this.resetField(phaseText, phaseField, fieldsToClear)
+
+            }
+        )
+
+        phaseSelection.valueChanges.subscribe(
+            (selectedPhase) => {
+
+                if (selectedPhase) {
+
+                    phaseField.setErrors(null);
 
                 }
 
@@ -557,34 +561,12 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
 
         costCodeField.valueChanges.subscribe(
             (costCodeFieldText) => {
-                console.log('next cost code field change');
-                console.log(costCodeFieldText);
 
                 if (costCodeFieldText || costCodeFieldText === '') {
 
-                    this.enterTimeForm.patchValue({
-                        selectedCostCode: ''
-                    });
+                    const fieldsToClear = { selectedCostCode: '' };
+                    this.resetField(costCodeFieldText, costCodeField, fieldsToClear);
 
-                    if (this.costCodeSubject.getValue().length > 0) {
-
-                        this.filteredCostCodes = this._filterService
-                            .filterByKeyValuePair(this.costCodeSubject.getValue(), {
-                                'Code': costCodeFieldText,
-                                'Name': costCodeFieldText
-                            });
-
-                    } else {
-
-                        costCodeField.setErrors({'invalid' : true});
-
-                        this.filteredCostCodes = this._filterService
-                            .filterByKeyValuePair(this.costCodeSubject.getValue(), {
-                                'Code': costCodeFieldText,
-                                'Name': costCodeFieldText
-                            });
-
-                    }
                 }
             }
         );
@@ -592,7 +574,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
         costCodeSelection.valueChanges.subscribe(
             (selectedCostCode) => {
 
-                if (selectedCostCode && this.costCodeSubject.getValue().length === 0) {
+                if (selectedCostCode) {
 
                     costCodeField.setErrors(null);
 
@@ -603,8 +585,13 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
     }
 
     public onSubmit(form: FormGroup) {
-        console.log('Submitted form');
-        console.log(form);
+        console.log('Save TimeRecord');
+        const timeRecord = this.prepareTimeRecordToSave();
+        // update timeRecord on server
+    }
+
+    private prepareTimeRecordToSave(): TimeRecord {
+        return this.timeRecord;
     }
 
     didTapCancelButton(): void {
