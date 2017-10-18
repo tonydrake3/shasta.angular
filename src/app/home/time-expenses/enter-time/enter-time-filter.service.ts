@@ -99,7 +99,7 @@ export class EnterTimeFilterService {
         return Observable.of(filtered);
     }
 
-    public filterByKeyValuePair<T>(collection: Array<T>, dictionary: any): Observable<T[]> {
+    public filterByKeyValuePair<T>(collection: Array<T>, dictionary: any): T[] {
         let filtered = [];
 
         filtered = _.filter(collection, (item) => {
@@ -113,11 +113,11 @@ export class EnterTimeFilterService {
             return false;
         });
 
-        return Observable.of(filtered);
+        return filtered;
     }
 
-    public filterCollectionByKey<T>(collection: Array<T>, value: string, withPropertyKeys: string[] = ['Name', 'Number']): Observable<T[]> {
-        let filteredCollection: Observable<T[]>;
+    public filterCollectionByKey<T>(collection: Array<T>, value: string, withPropertyKeys: string[] = ['Name', 'Number']): T[] {
+        let filteredCollection: T[];
 
         if (value) {
             const dictionary = withPropertyKeys.reduce((previous, current) => {
@@ -128,7 +128,7 @@ export class EnterTimeFilterService {
 
         } else {
 
-            filteredCollection = Observable.of(collection);
+            filteredCollection = collection;
 
         }
         return filteredCollection
