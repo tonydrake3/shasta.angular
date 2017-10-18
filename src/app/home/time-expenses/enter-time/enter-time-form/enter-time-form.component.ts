@@ -26,6 +26,7 @@ import {TimeSettings} from '../../../../models/domain/TimeSettings';
 import {EnterTimeFormTab, enterTimeTabs} from '../models/EnterTimeMenu';
 import {EnterTimeFilterService} from '../enter-time-filter.service';
 import {concatStatic} from 'rxjs/operator/concat';
+import {EntityDisplayFormatterService} from '../../../shared/services/entity-display-formatter.service';
 import {PermissionsService} from '../../../../shared/services/authorization/permissions.service';
 import {Permissions} from '../../../../models/domain/Permissions';
 
@@ -87,10 +88,14 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
         max: moment()
     };
 
-    constructor (private _builder: FormBuilder, private _enterTimeManager: EnterTimeManager,
-                 private _dateFlyoutService: DateFlyoutService, private _confirmationService: ConfirmationDialogService,
-                 private _preloadService: EnterTimePreloadManager, private _filterService: EnterTimeFilterService,
-                 private _permissions: PermissionsService) {
+    constructor (private _builder: FormBuilder,
+                 private _enterTimeManager: EnterTimeManager,
+                 private _dateFlyoutService: DateFlyoutService,
+                 private _confirmationService: ConfirmationDialogService,
+                 private _preloadService: EnterTimePreloadManager,
+                 private _filterService: EnterTimeFilterService,
+                 public entityFormatter: EntityDisplayFormatterService,
+                 private _permissions: PermissionsService ) {
 
         this.progressConfig = {
             color: 'primary',
@@ -307,7 +312,8 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
 
         if (value) {
 
-            this.filteredSystems = this._filterService.filterCollection(value, this.systems);
+            this.filteredSystems = this._filterService
+                .filterCollection(value, this.systems);
         } else {
 
             this.filteredSystems = Observable.of(this.systems);
@@ -325,7 +331,8 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
 
         if (value) {
 
-            this.filteredPhases = this._filterService.filterCollection(value, this.phases);
+            this.filteredPhases = this._filterService
+                .filterCollection(value, this.phases);
         } else {
 
             this.filteredPhases = Observable.of(this.phases);
@@ -402,24 +409,6 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
                 this.filteredEmployees = Observable.of(this._tenantEmployees);
             }
         }
-    }
-
-    public displayFormatted (value) {
-
-        if (value) {
-
-            return value.Number + ' - ' + value.Name;
-        }
-        return '';
-    }
-
-    public displayCostCode (value) {
-
-        if (value) {
-
-            return value.Code + ' - ' + value.Name;
-        }
-        return '';
     }
 
     public employeeSelected (event) {

@@ -15,7 +15,7 @@
                     <input type="text" mdInput formControlName="project" [mdAutocomplete]="autoProject"
                             (focus)="openProjects($event.target.value)" [id]="'txtFormProject'">
                 </md-form-field>
-                <md-autocomplete #autoProject="mdAutocomplete" [displayWith]="displayFormatted"
+                <md-autocomplete #autoProject="mdAutocomplete" [displayWith]="entityFormatter.displayFormatted"
                                  (optionSelected)="projectSelected($event)">
                     <md-option *ngFor="let project of filteredProjects | async" [value]="project" >
                         {{project.Number}} - {{project.Name}}
@@ -30,7 +30,7 @@
                     <input type="text" mdInput placeholder="System" formControlName="system" [mdAutocomplete]="autoSystem"
                            (focus)="openSystems($event.target.value)" [id]="'txtFormSystem'">
                 </md-form-field>
-                <md-autocomplete #autoSystem="mdAutocomplete" [displayWith]="displayFormatted"
+                <md-autocomplete #autoSystem="mdAutocomplete" [displayWith]="entityFormatter.displayFormatted"
                                  (optionSelected)="systemSelected($event)">
                     <md-option *ngFor="let system of filteredSystems | async" [value]="system">
                         {{system.Number}} - {{system.Name}}
@@ -45,7 +45,7 @@
                     <input type="text" mdInput placeholder="Phase" formControlName="phase" [mdAutocomplete]="autoPhase"
                            (focus)="openPhases($event.target.value)" [id]="'txtFormPhases'">
                 </md-form-field>
-                <md-autocomplete #autoPhase="mdAutocomplete" [displayWith]="displayFormatted"
+                <md-autocomplete #autoPhase="mdAutocomplete" [displayWith]="entityFormatter.displayFormatted"
                                  (optionSelected)="phaseSelected($event)">
                     <md-option *ngFor="let phase of filteredPhases | async" [value]="phase">
                         {{phase.Number}} - {{phase.Name}}
@@ -63,7 +63,7 @@
                     <input type="text" mdInput formControlName="costCode" [mdAutocomplete]="autoCostCode"
                            (focus)="openCostCodes($event.target.value)" [id]="'txtFormCostCode'">
                 </md-form-field>
-                <md-autocomplete #autoCostCode="mdAutocomplete" [displayWith]="displayCostCode"
+                <md-autocomplete #autoCostCode="mdAutocomplete" [displayWith]="entityFormatter.displayCostCode"
                                  (optionSelected)="costCodeSelected($event)">
                     <md-option *ngFor="let costCode of filteredCostCodes | async" [value]="costCode">
                         {{costCode.Code}} - {{costCode.Name}}
@@ -80,7 +80,7 @@
                     <input type="text" mdInput formControlName="employee" [mdAutocomplete]="autoEmployee"
                            (focus)="openEmployee($event.target.value)" [id]="'txtFormEmployees'">
                 </md-form-field>
-                <md-autocomplete #autoEmployee="mdAutocomplete" [displayWith]="displayFormatted"
+                <md-autocomplete #autoEmployee="mdAutocomplete" [displayWith]="entityFormatter.displayFormatted"
                                  (optionSelected)="employeeSelected($event)">
                     <md-option *ngFor="let employee of filteredEmployees | async" [value]="employee">
                         {{employee.Number}} - {{employee.Name}}

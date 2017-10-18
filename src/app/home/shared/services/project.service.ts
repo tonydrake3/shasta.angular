@@ -3,6 +3,7 @@ import { Http } from '@angular/http';
 
 import { apiRoutes } from '../configuration/api-routes.configuration';
 import { BaseStore } from '../../../shared/services/base-store.service';
+import {Project} from '../../../models/domain/Project';
 
 @Injectable()
 export class ProjectService extends BaseStore {
@@ -16,6 +17,10 @@ export class ProjectService extends BaseStore {
     public getLatest (): Promise<any> {
 
         return this.load();
+    }
+
+    public getById(id: string): Promise<any> {
+        return this.load(id);
     }
 
     get projects$ () {
