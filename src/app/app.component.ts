@@ -31,6 +31,7 @@ export class AppComponent implements OnInit {
 
     ngOnInit() {
 
+        // this.loadScript();
         this.AppConfig = APPCONFIG;
 
         // Scroll to top on route change
@@ -41,5 +42,13 @@ export class AppComponent implements OnInit {
             document.body.scrollTop = 0;
         });
 
+    }
+
+    loadScript () {
+        const scriptUrl = 'http://test.develop.shasta.esubonline.com/signalr/hubs';
+        const script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = scriptUrl;
+        document.getElementsByTagName('head')[0].appendChild(script);
     }
 }

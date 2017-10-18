@@ -57,7 +57,7 @@ export class ProjectSelectionComponent extends BaseComponent implements OnInit, 
             .subscribe(
                 (projects) => {
 
-                    // console.log('ProjectSelectionComponent OnInit filteredProjects$', projects);
+                    console.log('ProjectSelectionComponent OnInit filteredProjects$', projects);
                     this.filteredProjects = <Project[]> projects;
                 },
                 (error) => {
@@ -120,7 +120,7 @@ export class ProjectSelectionComponent extends BaseComponent implements OnInit, 
 
     projectServiceCallback(projects) {
 
-        // console.log('ProjectService Callback');
+        // console.log('ProjectService Callback', <Project[]> projects['Value']);
         this.sortColumns = _.orderBy(projectSortColumns, ['Ordinal'], ['asc']);
 
         this.statuses = this._projectSelection.getStatusFilters();

@@ -133,24 +133,24 @@
 
         <div class="row" class="time-entry-method">
             <div class="col-md-12" *ngIf="!isTimeIn">
-                <span class="label-bold">Hours Worked</span>
+                <span class="label-bold">Hours worked per day</span>
 
                 <div class="row hours-entry">
                     <div class="col-md-2">
                         <md-form-field>
-                            <input mdInput type="number" placeholder="ST" formControlName="standardHours"
+                            <input mdInput type="number" placeholder="Regular" formControlName="standardHours"
                                    maxlength="5" step="0.25" min="0" max="24" [id]="'txtFormST'">
                         </md-form-field>
                     </div>
                     <div class="col-md-2" *ngIf="isProjectCostEntry">
                         <md-form-field>
-                            <input mdInput type="number" placeholder="OT" formControlName="overtimeHours"
+                            <input mdInput type="number" placeholder="Overtime" formControlName="overtimeHours"
                                    maxlength="5" step="0.25" min="0" max="24" [id]="'txtFormOT'">
                         </md-form-field>
                     </div>
                     <div class="col-md-2" *ngIf="isProjectCostEntry">
                         <md-form-field>
-                            <input mdInput type="number" placeholder="DT" formControlName="doubleTimeHours"
+                            <input mdInput type="number" placeholder="Double Time" formControlName="doubleTimeHours"
                                    maxlength="5" step="0.25" min="0" max="24" [id]="'txtFormDT'">
                         </md-form-field>
                     </div>

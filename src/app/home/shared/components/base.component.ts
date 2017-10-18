@@ -12,13 +12,16 @@ import * as _ from 'lodash';
 import { ProjectService } from '../../shared/services/project.service';
 import { TimeRecordsService } from '../../time-expenses/time-records.service';
 import { UserService } from '../services/user/user.service';
-import { ProjectSummaryService } from '../../projects/project-summary/project-summary.service';
+import {ProjectSummaryService} from '../../projects/project-summary/project-summary.service';
+import {NotificationService} from '../../notifications/notification.service';
+import {MockNotificationService} from '../../../mocks/mock.notification.service';
 import { MapsService } from '../services/maps.service';
 import { WeatherService } from '../services/weather.service';
 import { EmployeeService } from '../../shared/services/user/employee.service';
-import { IndirectCostCodesService } from '../../shared/services/indirect-cost-codes.service'
+import { IndirectCostCodesService } from '../../shared/services/indirect-cost-codes.service';
 import { TimeSettingsService } from '../services/time-settings.service';
 import {PermissionsService} from '../../../shared/services/authorization/permissions.service';
+import {CurrentEmployeeService} from '../services/user/current-employee.service';
 
 // child component passes in array of these to super(), BaseComponent facilitates DI of them and provides references
 class AutomaticInjectionRequest {
@@ -67,10 +70,11 @@ export class BaseComponent implements OnDestroy {
         // list of services to automatically inject, if requested by child component
         //   must provide them in the constructor
         this.autoInjections = [
-            { key: 'EmployeeService', serviceObject: EmployeeService, subject: 'currentEmployee$', initializer: 'getLatest' },
+            { key: 'CurrentEmployeeService', serviceObject: CurrentEmployeeService, subject: 'currentEmployee$', initializer: 'getLatest' },
             { key: 'IndirectCostCodesService', serviceObject: IndirectCostCodesService, subject: 'indirectCostCodes$',
                 initializer: 'getLatest' },
             { key: 'MapsService', serviceObject: MapsService, subject: 'location$', initializer: 'getLatest'},
+            { key: 'NotificationService', serviceObject: NotificationService, subject: 'notifications$', initializer: 'getLatest'},
             { key: 'PermissionsService', serviceObject: PermissionsService, subject: 'permissions$', initializer: 'getLatest' },
             { key: 'ProjectService', serviceObject: ProjectService, subject: 'projects$', initializer: 'getLatest' },
             { key: 'ProjectSummaryService', serviceObject: ProjectSummaryService, subject: 'projectDetail$', initializer: 'getLatest' },
