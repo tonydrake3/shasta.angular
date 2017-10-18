@@ -31,7 +31,9 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
     private timeRecord: TimeRecord;
 
     // Subjects
+    private projectFilterText = new BehaviorSubject<string>('');
     private timeRecordSubject = new BehaviorSubject<TimeRecord>(new TimeRecord());
+    private projectsSubject = new BehaviorSubject<Project[]>([]);
     private systemsSubject = new BehaviorSubject<System[]>([]);
     private phasesSubject = new BehaviorSubject<Phase[]>([]);
     private costCodeSubject = new BehaviorSubject<CostCode[]>([]);
@@ -39,7 +41,6 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
 
     // Public
     public enterTimeForm: FormGroup; // Duplicated
-    public projects: Project[];   // Duplicated
     public indirectCostCodes: IndirectCost[];
     public filteredProjects: Observable<Project[]>; // Duplicated
     public filteredSystems: Observable<System[]>; // Duplicated
@@ -73,29 +74,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
         private _projectService: ProjectService,
         private _indirectCostsService: IndirectCostCodesService, // reused Filter Service... yay!
         public entityFormatter: EntityDisplayFormatterService
-    ) {
-
-        // Duplicated from Enter-time-preload-manager
-        this._projectService.getLatest();
-        this._indirectCostsService.getLatest();
-        this._projectService.projects$
-            .subscribe(
-                (result) => {
-                    this.projects = result['Value'];
-                }
-            );
-
-        // Duplicated from Enter-time-preload-manager
-        this._indirectCostsService.indirectCostCodes$
-            .subscribe( (result) => {
-                this.indirectCostCodes = result['Value'];
-            });
-
-        this.timeRecordSubject.asObservable()
-            .subscribe( (result) => {
-                console.log('next timerecordsubject', result);
-            })
-    }
+    ) {}
 
     ngOnInit () {
         console.log('Initializing modal. The data is');
@@ -105,7 +84,17 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
         this.displayMode = this.data.displayMode;
         this.buildForm();
         this.indirectCostCodes = [];
-        this.projects = [];
+
+        // For now we are just getting all of the projects but we will want to probably use the
+        // Lookup functionality from the server
+        this._projectService.getLatest();
+        this._projectService.projects$
+            .do(
+                (result) => {
+                    this.projectsSubject.next(result['Value']);
+                }
+            )
+            .subscribe();
 
         // Bindings
         this.showIndirectCostView = this.timeRecordSubject
@@ -159,6 +148,20 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
             .do((showPhaseView) =>  {
                 console.log('show phase view', showPhaseView);
             })
+            .takeUntil(this.ngUnsubscribe);
+
+        this.filteredProjects = Observable.combineLatest(
+            this.projectFilterText,
+            this.projectsSubject,
+            (filterText, projects) => {
+                return this._filterService
+                    .filterCollectionByKey(projects, filterText)
+            }
+        )
+        .do((projects) => {
+            console.log('filtering projects');
+            console.log(projects);
+        })
             .takeUntil(this.ngUnsubscribe);
 
         // DEBUGGING
@@ -246,14 +249,16 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
     }
 
     public projectsTypeAheadHasFocus (value) {
-        console.log('projectsTypeAheadHasFocus');
+
         this.filterProjectsBy(value);
 
     }
 
     private filterProjectsBy(value) {
+
         this.filteredProjects = this._filterService
-            .filterCollectionByKey(this.projects, value);
+            .filterCollectionByKey(this.projectsSubject.getValue(), value);
+
     }
 
     public systemTypeAheadHasFocus(value) {
@@ -376,7 +381,8 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
                     costCode: ''
                 };
                 this.resetField(projectText, projectField, fieldsToClear);
-                this.filterProjectsBy(projectText);
+                this.projectFilterText = projectText;
+                // this.filterProjectsBy(projectText);
 
             }
         );
