@@ -15,11 +15,11 @@ import {emailValidator} from '../../home/shared/validators/email.validator';
 export class LoginFieldsComponent {
 
     // Private
-    private loginForm: FormGroup;
     private _usernameControl;
     private _passwordControl;
 
     // Public
+    public loginForm: FormGroup;
     public loading = false;
     public errorMessage = '';
 
