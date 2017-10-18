@@ -44,11 +44,11 @@ export class AppComponent implements OnInit {
 
     }
 
-    loadScript () {
-        const scriptUrl = 'http://test.develop.shasta.esubonline.com/signalr/hubs';
-        const script = document.createElement('script');
-        script.type = 'text/javascript';
-        script.src = scriptUrl;
-        document.getElementsByTagName('head')[0].appendChild(script);
-    }
+    // loadScript () {
+    //     const scriptUrl = 'http://test.develop.shasta.esubonline.com/signalr/hubs';
+    //     const script = document.createElement('script');
+    //     script.type = 'text/javascript';
+    //     script.src = scriptUrl;
+    //     document.getElementsByTagName('head')[0].appendChild(script);
+    // }
 }

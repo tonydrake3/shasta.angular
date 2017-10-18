@@ -181,6 +181,22 @@
             &:hover {
                 background: $tp-blue;
             }
+
+            .notification-count-small {
+                background-color: $true-black;
+                border-radius: 40px;
+                font-size: 9px;
+                margin-left: -21px;
+                padding: 1px 3px;
+            }
+
+            .notification-count {
+                background-color: $true-black;
+                border-radius: 30px;
+                font-size: 9px;
+                margin-left: -21px;
+                padding: 1px 1px;
+            }
         }
 
         .profile-btn {
