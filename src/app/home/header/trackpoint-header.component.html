@@ -51,8 +51,8 @@
                     <button id="notifications" md-button class="header-notification-btn"
                             esubClickClose [elementClickHandler]="openNotifications" [outsideClickHandler]="closeNotifications"
                             [clickHandlerParam]="notificationCount">
-                        <img class="notification-bell" src="assets/images/notification-vr2.svg" height="23" width="23" alt="{{AppConfig.brand}}"/>
-                        <!--<span>{{notificationCount}}</span>-->
+                        <img class="notification-bell" src="assets/images/notification-bell.svg" height="23" width="24" alt="Notifications"/>
+                        <span [ngClass]="{'notification-count': notificationCount === '9+' , 'notification-count-small': notificationCount !== '9+'}">{{notificationCount}}</span>
                     </button>
                     <esub-popover></esub-popover>
                 </li>
@@ -63,6 +63,7 @@
                     </button>
                     <md-menu #profileMenu="mdMenu" [overlapTrigger]="false" class="tp-menu">
                         <button md-menu-item (click)="logout()">
+                            <img class="logout" src="assets/images/logout.svg" height="12" width="12" alt="Logout"/>
                             <span>Logout</span>
                         </button>
                     </md-menu>

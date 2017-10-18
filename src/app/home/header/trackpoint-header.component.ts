@@ -17,7 +17,7 @@ export class TrackpointHeaderComponent extends BaseComponent implements OnInit {
 
     AppConfig: any;
 
-    public notificationCount: number;
+    public notificationCount: string;
     public fullName: string;
 
     constructor(protected _injector: Injector, private _authService: AuthenticationService, private _router: Router,
@@ -34,7 +34,7 @@ export class TrackpointHeaderComponent extends BaseComponent implements OnInit {
             }
         ]);
 
-        this.notificationCount = 0;
+        this.notificationCount = '0';
     }
 
     employeeCallback (employee) {
@@ -48,7 +48,13 @@ export class TrackpointHeaderComponent extends BaseComponent implements OnInit {
         // console.log(notifications);
         if (notifications) {
 
-            this.notificationCount = notifications.length;
+            if (notifications.length < 9) {
+
+                this.notificationCount = notifications.length.toString();
+            } else {
+
+                this.notificationCount = '9+';
+            }
         }
     }
 

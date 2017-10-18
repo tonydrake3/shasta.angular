@@ -29,8 +29,7 @@ import { EnterTimePreloadManager } from './enter-time/enter-time-preload.manager
 import { EnterTimeBatchService } from './enter-time/enter-time-batch.service';
 import { EnterTimeFilterService } from './enter-time/enter-time-filter.service';
 import { EnterTimeTransformService } from './enter-time/enter-time-transform.service';
-import {EnterTimeNoteDialogComponent} from './enter-time/enter-time-note-dialog/enter-time-note-dialog.component';
-import {EntityDisplayFormatterService} from '../shared/services/entity-display-formatter.service';
+import { EntityDisplayFormatterService } from '../shared/services/entity-display-formatter.service';
 
 @NgModule({
     imports: [
@@ -68,7 +67,8 @@ import {EntityDisplayFormatterService} from '../shared/services/entity-display-f
         EnterTimeManager,
         EnterTimeStatusService,
         EnterTimePreloadManager,
-        EnterTimeTransformService
+        EnterTimeTransformService,
+        EntityDisplayFormatterService
     ]
 })
 
