@@ -506,7 +506,6 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
         if (fieldValue || fieldValue === '') {
 
             this.enterTimeForm.patchValue(fieldsToClear);
-            this.costCodeSubject.next([]);
             field.setErrors({'invalid': true});
 
         }
