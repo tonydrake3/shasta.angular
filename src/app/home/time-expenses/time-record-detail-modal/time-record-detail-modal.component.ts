@@ -63,6 +63,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
     public showProjectView: Observable<boolean>;
     public showSystemView: Observable<boolean>;
     public showPhaseView: Observable<boolean>;
+    public showCostCodeView: Observable<boolean>;
 
     constructor (
         public dialogRef: MdDialogRef<TimeRecordDetailModalComponent>,
@@ -122,6 +123,15 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
             })
             .do((showProjectView) =>  {
                 console.log('show project view', showProjectView);
+            })
+            .takeUntil(this.ngUnsubscribe);
+
+        this.showCostCodeView = this.timeRecordSubject
+            .map((record) => {
+                return record && record.CostCode != null;
+            })
+            .do((showProjectView) =>  {
+                console.log('show cost code view', showProjectView);
             })
             .takeUntil(this.ngUnsubscribe);
 
