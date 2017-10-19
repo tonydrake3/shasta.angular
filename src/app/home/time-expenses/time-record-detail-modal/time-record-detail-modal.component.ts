@@ -571,8 +571,8 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
         );
     }
 
-    public onSubmit() {
-        console.log('Save TimeRecord');
+    public didTapSaveButton() {
+        console.log('Saving TimeRecord');
         this.loading = true;
         const timeRecord = this.prepareTimeRecordToSave();
         this._timeRecordUpdater.updateTimeRecord(timeRecord)

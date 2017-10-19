@@ -1,7 +1,7 @@
 <md-dialog-content>
 
     <div class="enter-time-form">
-        <form [formGroup]="enterTimeForm" (ngSubmit)="onSubmit(enterTimeForm)" novalidate>
+        <form [formGroup]="enterTimeForm" (ngSubmit)="didTapSaveButton(enterTimeForm)" novalidate>
 
             <div class="row" *ngIf="showProjectView | async">
                 <div class="col-md-12">
@@ -145,6 +145,6 @@
 
 <md-dialog-actions align="end">
     <md-spinner *ngIf="loading"></md-spinner>
-    <button md-button (click)="close()">Cancel</button>
-    <button md-button (click)="onSubmit()">Save</button>
+    <button md-button (click)="didTapCancelButton()">Cancel</button>
+    <button md-button (click)="didTapSaveButton()">Save</button>
 </md-dialog-actions>

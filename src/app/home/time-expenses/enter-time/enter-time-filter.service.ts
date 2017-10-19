@@ -108,9 +108,7 @@ export class EnterTimeFilterService {
 
                 const searchText = String(dictionary[key]).toLowerCase();
                 const fieldValue = String(item[key]).toLowerCase();
-                console.log(searchText);
-                console.log(fieldValue);
-                console.log(key);
+
                 if (fieldValue && fieldValue.includes(searchText)) { return true }
 
             }
