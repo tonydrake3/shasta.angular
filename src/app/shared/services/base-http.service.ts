@@ -20,6 +20,7 @@ export class BaseHttpService {
 
         const headers = new Headers();
         this.addHeaders(headers);
+        this.addJsonHeaders(headers);
 
         const options = new RequestOptions({headers : headers});
 

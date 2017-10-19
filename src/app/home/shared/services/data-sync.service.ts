@@ -1,4 +1,3 @@
-
 import {Injectable} from '@angular/core';
 import {Project} from '../../../models/domain/Project';
 import {ReplaySubject} from 'rxjs/ReplaySubject';

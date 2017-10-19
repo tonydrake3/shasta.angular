@@ -4,8 +4,10 @@
     height: 100%;
 
     .login-fields {
-        margin: 0 auto;
-        margin-bottom: 200px;
+        height: 320px;
+        margin-top: -100px;
+        margin-left: auto;
+        margin-right: auto;
         max-width: 450px;
 
         .login-description {
@@ -25,16 +27,22 @@
 
         }
 
-        button {
-            background-color: $yellow-30;
-            border-color: $yellow;
-            color: $black;
-            cursor: pointer;
+        .reset-email-field {
+            padding-top: 28px;
+            padding-bottom: 29px;
+        }
 
-            &.btn:disabled {
-                background-color: rgba($gray, 0.3);
-                border-color: $gray;
-                cursor: not-allowed;
+        button {
+            background-color: $gray-30;
+            border-color: $gray;
+            color: $black;
+            cursor: not-allowed;
+
+            &.btn-enabled {
+                background-color: $blue;
+                border-color: $blue;
+                color: $true-white;
+                cursor: pointer;
             }
 
             .login-button-spinner {
@@ -47,8 +55,21 @@
                 }
 
                 .mat-progress-spinner path {
-                    stroke: $black;
+                    stroke: $true-white;
                 }
+            }
+        }
+    }
+
+    .login-links {
+        margin-top: 20px;
+
+        a {
+            color: $gray-70;
+            text-decoration: none;
+
+            &:hover {
+                color: $gray;
             }
         }
     }
@@ -59,6 +80,8 @@
         background-color: $true-white;
 
         .login-fields {
+            margin-left: 15px;
+            margin-right: 15px;
 
             .form-inputs {
 
@@ -68,9 +91,17 @@
             }
 
             button {
+                background-color: $gray-30;
+                border-color: $gray;
                 color: $black;
-                background-color: $yellow-30;
-                border-color: $yellow;
+                cursor: not-allowed;
+
+                &.btn-enabled {
+                    background-color: $blue;
+                    border-color: $blue;
+                    color: $true-white;
+                    cursor: pointer;
+                }
 
                 &.btn {
                     line-height: 2;
@@ -86,9 +117,17 @@
                     }
 
                     .mat-progress-spinner path {
-                        stroke: $black;
+                        stroke: $true-white;
                     }
                 }
+            }
+        }
+
+        .login-links {
+            margin-top: 60px;
+
+            a {
+                font-size: 16px;
             }
         }
     }

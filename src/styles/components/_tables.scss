@@ -16,7 +16,6 @@
             overflow: hidden; // Or flex might break
             list-style: none;
             border: solid 1px $gray-10;
-            // background-color: $gray-bg;
             @extend .label-regular;
 
             &.max-width-3 {

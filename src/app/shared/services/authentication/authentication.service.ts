@@ -5,11 +5,13 @@ import { BaseHttpService } from '../base-http.service';
 import { AuthorizationService } from '../../../home/shared/services/authorization/authorization.service';
 import { environment } from '../../../../environments/environment';
 import { apiRoutes } from '../../../home/shared/configuration/api-routes.configuration';
+import {NotificationService} from '../../../home/notifications/notification.service';
 
 @Injectable ()
 export class AuthenticationService extends BaseHttpService {
 
-    constructor(private _httpPassthrough: Http, private _authorizationService: AuthorizationService) {
+    constructor(private _httpPassthrough: Http, private _authorizationService: AuthorizationService,
+                private notificationService: NotificationService) {
         super(_httpPassthrough);
     }
 
@@ -43,6 +45,7 @@ export class AuthenticationService extends BaseHttpService {
 
             sessionStorage.clear();
         }
+        this.notificationService.stopPolling();
 
     }
 

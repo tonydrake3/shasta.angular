@@ -48,3 +48,53 @@
     }
 }
 
+
+// layout
+.trackpoint-header{
+    display: block;
+    position: relative;
+    z-index: $l_zindex_navbar;
+    height: $l_tp_header_height;
+    width: 100%;
+    background-color: $l_white;
+
+    .toggle-sidebar{
+        display: block;
+    }
+
+    .brand {
+        display: inline-block;
+        padding: 0;
+        a {
+            font-weight: normal;
+            padding-left: 33px;
+            padding-right: 15px;
+            text-decoration: none;
+        }
+    }
+}
+
+.fixed-header {
+    .trackpoint-header {
+        position: fixed;
+        left: 0;
+        top: 0;
+        right: 0;
+    }
+}
+// desktop
+@media only screen and (min-width: $l_screen_md_min) {
+    .trackpoint-header {
+        .toggle-sidebar-btn {
+            display: none;
+        }
+    }
+
+    .nav-behind {
+        .trackpoint-header {
+            .brand {
+                padding-left: 0;
+            }
+        }
+    }
+}
