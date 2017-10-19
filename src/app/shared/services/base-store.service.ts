@@ -3,6 +3,7 @@ import { Subject} from 'rxjs/Rx';
 import { BaseHttpService } from './base-http.service';
 import { environment } from '../../../environments/environment';
 import 'rxjs/add/operator/map';
+import {Identifiable} from '../../models/Identifiable';
 
 export class BaseStore extends BaseHttpService {
 
@@ -85,13 +86,13 @@ export class BaseStore extends BaseHttpService {
         });
     }
 
-    protected updateEntity(entity: any): Promise<any> {
+    protected updateEntity(entity: Identifiable): Promise<any> {
 
         const url = environment.apiUrl + (this._route ? this._route : '');
 
         return new Promise((resolve, reject) => {
 
-            this.put(url + '/' + entity.id, entity)
+            this.put(url + '/' + entity.Id, entity)
 
                 .subscribe(
                     data => {

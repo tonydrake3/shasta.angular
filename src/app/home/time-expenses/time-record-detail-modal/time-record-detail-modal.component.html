@@ -1,17 +1,5 @@
 <md-dialog-content>
 
-    <!--<div *ngIf="displayData.projectTitle">-->
-    <!--<h5>{{displayData.projectTitle}}</h5>-->
-    <!--<h3> {{displayData.projectText}}</h3>-->
-    <!--</div>-->
-    <!--<h5>{{displayData.costCodeTitle}}</h5>-->
-    <!--<h3>{{displayData.costCodeText}}</h3>-->
-    <!--<h5>Employee</h5>-->
-    <!--<h3>{{displayData.employeeText}}</h3>-->
-    <!--<h5>Status</h5>-->
-    <!--<h3>{{displayData.statusText}}</h3>-->
-    <!--<h5>Hours</h5>-->
-    <!--<h3>{{displayData.totalHoursText}}</h3>-->
     <div class="enter-time-form">
         <form [formGroup]="enterTimeForm" (ngSubmit)="onSubmit(enterTimeForm)" novalidate>
 
@@ -156,6 +144,7 @@
 </md-dialog-content>
 
 <md-dialog-actions align="end">
+    <md-spinner *ngIf="loading"></md-spinner>
     <button md-button (click)="close()">Cancel</button>
     <button md-button (click)="onSubmit()">Save</button>
 </md-dialog-actions>

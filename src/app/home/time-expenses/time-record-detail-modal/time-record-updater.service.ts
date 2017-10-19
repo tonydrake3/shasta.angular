@@ -13,7 +13,9 @@ export class TimeRecordUpdaterService extends BaseStore {
     }
 
     public updateTimeRecord(record: TimeRecord): Promise<TimeRecord> {
+
         return super.updateEntity(record);
+
     }
 
 }
