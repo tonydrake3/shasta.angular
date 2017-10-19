@@ -50,7 +50,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
     public displayData: TimeModalDisplayData;
     public displayMode: TimeModalMode;
 
-    // Duplicated... This is here because of a weird TSlint error that comes up :shrug:
+    /* This is here because of a weird TSlint error that comes up :shrug: */
     public autoProject;
     public autoSystem;
     public autoPhase;
@@ -93,7 +93,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
             .takeUntil(this.ngUnsubscribe)
             .subscribe();
 
-        // Bindings
+        /* Visibility Bindings */
         this.showIndirectCostView = this.timeRecordSubject
             .map((record) => {
                 return record && record.IndirectCost != null;
@@ -199,10 +199,9 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
             this.enterTimeForm.get('system').valueChanges,
             this.systemsSubject,
             (filterText, systems) => {
-                console.log('filtering systems with text', filterText);
-                console.log('currently have ' + systems.length + ' systems total');
-                return this._filterService
-                    .filterCollectionByKey(systems, filterText)
+
+                return this._filterService.filterCollectionByKey(systems, filterText)
+
             }
         )
             .do((systems) => {
@@ -215,10 +214,9 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
             this.enterTimeForm.get('phase').valueChanges,
             this.phasesSubject,
             (filterText, phases) => {
-                console.log('filtering phases with text', filterText);
-                console.log('currently have ' + phases.length + ' phases total');
-                return this._filterService
-                    .filterCollectionByKey(phases, filterText)
+
+                return this._filterService.filterCollectionByKey(phases, filterText)
+
             }
         )
             .do((phases) => {
@@ -227,19 +225,34 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
             })
             .takeUntil(this.ngUnsubscribe);
 
-        // DEBUGGING
+        /* When the collection of systems changes, we automatically select the first one and pass on the phases */
         this.systemsSubject
-            .do((subjects) => {
-                console.log('next systems');
-                console.log(subjects);
+            .do((systems) => {
+
+                const autoSelectedSystem = systems[0];
+                this.enterTimeForm.patchValue({
+                    system: autoSelectedSystem || '',
+                    selectedSystem: autoSelectedSystem || ''
+                });
+
+                const phases = autoSelectedSystem ? autoSelectedSystem.Phases : [];
+
+                this.phasesSubject.next(phases);
+
             })
             .takeUntil(this.ngUnsubscribe)
             .subscribe();
 
+        /* When the collection of phases changes, we will automatically the first one if it is there. */
         this.phasesSubject
-            .do((subjects) => {
-                console.log('next phases');
-                console.log(subjects);
+            .do((phases) => {
+
+                const autoSelectedPhase = phases[0];
+                this.enterTimeForm.patchValue({
+                    phase: autoSelectedPhase || '',
+                    selectedPhase: autoSelectedPhase || ''
+                });
+
             })
             .takeUntil(this.ngUnsubscribe)
             .subscribe();
@@ -333,10 +346,12 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
     public indirectCostCodeWasSelected (event) {
 
         this.enterTimeForm.patchValue({ selectedIndirectCost: event.option.value });
+
     }
 
     // Duplicated
     observeIndirectCostCodeChanges() {
+
         const indirectCostCodeField = this.enterTimeForm.get('indirectCostCode');
         const indirectCostCodeSelection = this.enterTimeForm.get('selectedIndirectCostCode');
 
@@ -359,8 +374,10 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
             (selectedIndirectCostCode) => {
 
                 if (selectedIndirectCostCode) {
+
                     indirectCostCodeField.setErrors(null);
                     indirectCostCodeSelection.markAsDirty();
+
                 }
 
             }
@@ -368,6 +385,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
     }
 
     observeProjectChanges() {
+
         const projectField = this.enterTimeForm.get('project');
         const projectSelection = this.enterTimeForm.get('selectedProject');
         const costCodeSelection = this.enterTimeForm.get('selectedCostCode');
@@ -389,14 +407,20 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
         );
 
         projectSelection.valueChanges.subscribe (
+
             (selectedProject) => {
 
                 if (selectedProject) {
 
                     projectField.setErrors(null);
+
+                    // we need to do this explicitly since we set the selectedProject field programmatically
                     projectSelection.markAsDirty();
-                    this.checkDefaultSystem(selectedProject.Systems);
+
+                    this.systemsSubject.next(selectedProject.Systems);
+
                     this.costCodeSubject.next(selectedProject.CostCodes);
+
                     costCodeSelection.clearValidators();
                     costCodeSelection.setErrors(null);
 
@@ -416,7 +440,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
                 console.log(standardTime);
                 standardTimeField.markAsDirty();
             }
-        )
+        );
 
         overtimeField.valueChanges.subscribe(
             (overtime) => {
@@ -424,7 +448,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
                 console.log(overtime);
                 overtimeField.markAsDirty();
             }
-        )
+        );
 
         doubleTimeField.valueChanges.subscribe(
             (doubleTime) => {
@@ -432,7 +456,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
                 console.log(doubleTime);
                 doubleTimeField.markAsDirty();
             }
-        )
+        );
     }
 
     observeSystemChanges() {
@@ -458,7 +482,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
                 if (selectedSystem) {
 
                     systemField.setErrors(null);
-                    this.checkDefaultPhase(selectedSystem.Phases);
+                    this.phasesSubject.next(selectedSystem.Phases);
 
                 }
 
@@ -500,48 +524,6 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
             this.enterTimeForm.patchValue(fieldsToClear);
             field.setErrors({'invalid': true});
 
-        }
-    }
-
-// Duplicated... convert to observables
-    private checkDefaultSystem (systems: System[]) {
-
-        if (systems && systems.length >= 1) {
-            this.systemsSubject.next(systems);
-
-            this.enterTimeForm.patchValue({
-                system: systems[0],
-                selectedSystem: systems[0]
-            });
-            this.checkDefaultPhase(systems[0].Phases);
-        } else {
-            this.systemsSubject.next([]);
-
-            this.enterTimeForm.patchValue({
-                system: '',
-                selectedSystem: ''
-            });
-            this.phasesSubject.next([]);
-        }
-    }
-
-    // Duplicated
-    private checkDefaultPhase (phases: Array<Phase>) {
-        console.log('checkDefaultPhase');
-        console.log(phases);
-        this.phasesSubject.next(phases);
-        if (phases.length >= 1) {
-
-            this.enterTimeForm.patchValue({
-                phase: phases[0],
-                selectedPhase: phases[0]
-            });
-        } else {
-
-            this.enterTimeForm.patchValue({
-                phase: '',
-                selectedPhase: ''
-            });
         }
     }
 
