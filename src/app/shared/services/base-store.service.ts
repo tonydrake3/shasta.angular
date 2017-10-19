@@ -9,7 +9,7 @@ export class BaseStore extends BaseHttpService {
     private _route: string;
     private _isLoadDisabled: boolean;
 
-    _entity$ = new Subject();
+    protected _entity$ = new Subject();
 
     constructor(protected _httpPassthrough: Http) {
 
@@ -26,11 +26,13 @@ export class BaseStore extends BaseHttpService {
         this._isLoadDisabled = disableLoad;
     }
 
-    protected load (): Promise<any> {
+    protected load (id?: string): Promise<any> {
 
         // var loading = this.loadingCtrl.create();
         // loading.present();
-        const url = environment.apiUrl + (this._route ? this._route : '');
+        let url = environment.apiUrl + (this._route ? this._route : '');
+
+        if (id) { url += '/' + id }
 
         return new Promise((resolve, reject) => {
 

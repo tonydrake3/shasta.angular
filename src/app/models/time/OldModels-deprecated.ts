@@ -44,16 +44,16 @@ export class ProjectManager {
     tenantId: number;
 }
 
-export class MarketArea {
-    division: Division;
-    divisionId: number;
-    id: number;
-    name: string;
-    number: string;
-    projects: Project[];
-    sourceId: number;
-    tenantId: number;
-}
+// export class MarketArea {
+//     division: Division;
+//     divisionId: number;
+//     id: number;
+//     name: string;
+//     number: string;
+//     projects: Project[];
+//     sourceId: number;
+//     tenantId: number;
+// }
 
 export class Phase {
     id: number;
@@ -165,71 +165,71 @@ export interface HOURTYPE {
     doubleTime: string;
 }
 
-export class Project {
-    address?: Address;
-    architectId?: number;
-    comments?: string;
-    configuration?: string; // TODO?: create interface for configuration object
-    contractNumber?: string;
-    costCodes?: CostCode[];
-    countryId?: number;
-    employees?: Employee[];
-    engineerId?: number;
-    fax?: string;
-    id?: number;
-    isComplete?: boolean;
-    isHidden?: boolean;
-    isTemplate?: boolean;
-    isTemplatesContainer?: boolean;
-    isTraining?: boolean;
-    key?: string;
-    location?: string;
-    marketAreaId?: number;
-    marketArea?: MarketArea;
-    name?: string;
-    number?: string;
-    ownerId?: number;
-    phone?: string;
-    projectEngineerId?: number;
-    projectManagerId?: number;
-    projectManager?: ProjectManager;
-    salesmanId?: number;
-    state?: string;
-    statusId?: number;
-    status?: string;
-    superintendentId?: number;
-    systems?: System[];
-    timeZoneId?: number;
-    zip?: string;
-}
+// export class Project {
+//     address?: Address;
+//     architectId?: number;
+//     comments?: string;
+//     configuration?: string; // TODO?: create interface for configuration object
+//     contractNumber?: string;
+//     costCodes?: CostCode[];
+//     countryId?: number;
+//     employees?: Employee[];
+//     engineerId?: number;
+//     fax?: string;
+//     id?: number;
+//     isComplete?: boolean;
+//     isHidden?: boolean;
+//     isTemplate?: boolean;
+//     isTemplatesContainer?: boolean;
+//     isTraining?: boolean;
+//     key?: string;
+//     location?: string;
+//     marketAreaId?: number;
+//     marketArea?: MarketArea;
+//     name?: string;
+//     number?: string;
+//     ownerId?: number;
+//     phone?: string;
+//     projectEngineerId?: number;
+//     projectManagerId?: number;
+//     projectManager?: ProjectManager;
+//     salesmanId?: number;
+//     state?: string;
+//     statusId?: number;
+//     status?: string;
+//     superintendentId?: number;
+//     systems?: System[];
+//     timeZoneId?: number;
+//     zip?: string;
+// }
 
-export class CostCode {
-    code?: string;
-    displayOn?: string;
-    displayOnAllProjects?: boolean;
-    id: number;
-    isInactive?: boolean;
-    isOverheadActivity?: boolean;
-    name: string;
-    projects?: Project[];
-    sourceId?: number;
-    tenantId?: number;
-}
+// export class CostCode {
+//     code?: string;
+//     displayOn?: string;
+//     displayOnAllProjects?: boolean;
+//     id: number;
+//     isInactive?: boolean;
+//     isOverheadActivity?: boolean;
+//     name: string;
+//     projects?: Project[];
+//     sourceId?: number;
+//     tenantId?: number;
+// }
 
 
-    export interface TimeRecordRow {
-        id?: number;
-        costCode?: CostCode;
-        system?: System;
-        phase?: Phase;
-        punchIn?: any; // string | Date
-        punchOut?: any; // string | Date
-        regularTime?: string | number;
-        doubleTime?: string | number;
-        overtime?: string | number;
-        // expenses?: Expense[];
-        comments?: Comment[]
-    }
+    // export interface TimeRecordRow {
+    //     id?: number;
+    //     costCode?: CostCode;
+    //     system?: System;
+    //     phase?: Phase;
+    //     punchIn?: any; // string | Date
+    //     punchOut?: any; // string | Date
+    //     regularTime?: string | number;
+    //     doubleTime?: string | number;
+    //     overtime?: string | number;
+    //     // expenses?: Expense[];
+    //     comments?: Comment[]
+    // }
 
     // export interface TimeRecordGrouping {
     //     projectId?: number;

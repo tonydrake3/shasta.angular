@@ -3,7 +3,7 @@ import {Http} from '@angular/http';
 
 import {apiRoutes} from '../../../home/shared/configuration/api-routes.configuration';
 import {BaseCacheStore} from '../base-cache-store.service';
-
+import {Permissions} from '../../../models/domain/Permissions';
 
 @Injectable()
 export class PermissionsService extends BaseCacheStore {
@@ -20,6 +20,6 @@ export class PermissionsService extends BaseCacheStore {
 
     public getLatest () {
 
-        this.init(apiRoutes.permissions);
+        this.init(apiRoutes.permissions, Permissions, 'Permissions');
     }
 }

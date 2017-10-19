@@ -1,5 +1,4 @@
 
-import {Project} from '../../models/domain/Project';
 export const mockProjects = {
     Value: [
         {
@@ -74,7 +73,13 @@ export const mockProjects = {
             },
             'Name': 'Project A',
             'Number': '7543533',
-            'CostCodes': [],
+            'CostCodes': [
+        {
+          'Id': '51e36cc7-4303-481f-bbe0-a7ca70a2ed97',
+          'Code': '777',
+          'Name': 'Install'
+        }
+      ],
             'Owner': null,
             'ProjectEngineer': null,
             'ProjectManager': {
@@ -217,7 +222,14 @@ export const mockProjects = {
             },
             'Name': 'Project B',
             'Number': '100023',
-            'CostCodes': [],
+            'CostCodes': [
+        {
+          '$id': '9',
+          'Id': '51e36cc7-4303-481f-bbe0-a7ca70a2ed97',
+          'Code': '777',
+          'Name': 'Install'
+        }
+      ],
             'Owner': null,
             'ProjectEngineer': null,
             'ProjectManager': {
@@ -360,7 +372,14 @@ export const mockProjects = {
             },
             'Name': 'Project C',
             'Number': '100',
-            'CostCodes': [],
+            'CostCodes': [
+        {
+          '$id': '9',
+          'Id': '51e36cc7-4303-481f-bbe0-a7ca70a2ed97',
+          'Code': '777',
+          'Name': 'Install'
+        }
+      ],
             'Owner': null,
             'ProjectEngineer': null,
             'ProjectManager': {
@@ -503,7 +522,14 @@ export const mockProjects = {
             },
             'Name': 'Project D',
             'Number': '1',
-            'CostCodes': [],
+            'CostCodes': [
+        {
+          '$id': '9',
+          'Id': '51e36cc7-4303-481f-bbe0-a7ca70a2ed97',
+          'Code': '777',
+          'Name': 'Install'
+        }
+      ],
             'Owner': null,
             'ProjectEngineer': null,
             'ProjectManager': {
@@ -646,7 +672,14 @@ export const mockProjects = {
             },
             'Name': 'Project E',
             'Number': '99435435333423',
-            'CostCodes': [],
+            'CostCodes': [
+        {
+          '$id': '9',
+          'Id': '51e36cc7-4303-481f-bbe0-a7ca70a2ed97',
+          'Code': '777',
+          'Name': 'Install'
+        }
+      ],
             'Owner': null,
             'ProjectEngineer': null,
             'ProjectManager': {
@@ -789,7 +822,14 @@ export const mockProjects = {
             },
             'Name': 'Project AA',
             'Number': '3243423',
-            'CostCodes': [],
+            'CostCodes': [
+        {
+          '$id': '9',
+          'Id': '51e36cc7-4303-481f-bbe0-a7ca70a2ed97',
+          'Code': '777',
+          'Name': 'Install'
+        }
+      ],
             'Owner': null,
             'ProjectEngineer': null,
             'ProjectManager': {
@@ -932,7 +972,14 @@ export const mockProjects = {
             },
             'Name': 'Project AB',
             'Number': '555234',
-            'CostCodes': [],
+            'CostCodes': [
+        {
+          '$id': '9',
+          'Id': '51e36cc7-4303-481f-bbe0-a7ca70a2ed97',
+          'Code': '777',
+          'Name': 'Install'
+        }
+      ],
             'Owner': null,
             'ProjectEngineer': null,
             'ProjectManager': {

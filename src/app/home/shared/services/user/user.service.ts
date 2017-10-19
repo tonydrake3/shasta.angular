@@ -17,6 +17,7 @@ export class UserService extends BaseStore {
     get currentUserInfo$ () {
 
         return this._entity$.asObservable();
+
     }
 
     getLatest() {

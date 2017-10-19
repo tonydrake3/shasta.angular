@@ -32,6 +32,7 @@ import {Router} from '@angular/router';
 import {MdDialog} from '@angular/material';
 import {NotesEntryDialogComponent} from '../../../shared/components/notes-entry.component';
 import {PermissionsService} from '../../../../shared/services/authorization/permissions.service';
+import {Permissions} from '../../../../models/domain/Permissions';
 
 @Component({
     selector: 'esub-enter-time-grid',
@@ -46,6 +47,8 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
     private _indirectLineSubscription;
     private _lineCount: number;
     private _currentLine: number;
+    private permissionsSubscription;
+    private permissions: Permissions;
 
     public dateFormat: string;
     public groupCardsBy: string;
@@ -141,13 +144,13 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
                     this.addRow('indirectRows', row.CardIndex, row);
                 });
 
-        this._permissions.permissions$
+        this.permissionsSubscription = this._permissions.permissions$
             .subscribe(
                 (permissions) => {
 
                     if (permissions) {
 
-                        console.log('EnterTimeGridComponent permissions', permissions);
+                        this.permissions = permissions;
                     }
                 }
             );
@@ -163,6 +166,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
         this._cardSubscription.unsubscribe();
         this._projectLineSubscription.unsubscribe();
         this._indirectLineSubscription.unsubscribe();
+        this.permissionsSubscription.unsubscribe();
     }
 
     /******************************************************************************************************************
@@ -367,7 +371,8 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
 
         if (value) {
 
-            this.filteredProjects = this._filterService.filterCollection(value, this.projects);
+            this.filteredProjects = this._filterService
+                .filterCollectionByKey(this.projects, value);
         } else {
 
             this.filteredProjects = Observable.of(this.projects);
@@ -398,7 +403,8 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
 
         if (value) {
 
-            this.filteredSystems = this._filterService.filterCollection(value, (<Project>record.get('project').value).Systems);
+            this.filteredSystems = this._filterService
+                .filterCollectionByKey((<Project>record.get('project').value).Systems, value);
         } else {
 
             this.filteredSystems = Observable.of((<Project>record.get('project').value).Systems);
@@ -422,7 +428,8 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
 
         if (value) {
 
-            this.filteredSystems = this._filterService.filterCollection(value, (<System>record.get('system').value).Phases);
+            this.filteredSystems = this._filterService
+                .filterCollectionByKey((<System>record.get('system').value).Phases, value);
         } else {
 
             this.filteredSystems = Observable.of((<System>record.get('system').value).Phases);
@@ -448,7 +455,8 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
 
         if (value) {
 
-            this.filteredEmployees = this._filterService.filterCollection(value, this.filterEmployeesByProject(project.Id, this.employees));
+            this.filteredEmployees = this._filterService
+                .filterCollectionByKey(this.filterEmployeesByProject(project.Id, this.employees), value, ['Name', 'Numnber']);
         } else {
 
             this.filteredEmployees = Observable.of(this.filterEmployeesByProject(project.Id, this.employees));
@@ -470,7 +478,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
 
         if (value) {
 
-            this.filteredEmployees = this._filterService.filterCollection(value, this.employees);
+            this.filteredEmployees = this._filterService.filterCollectionByKey(this.employees, value);
         } else {
 
             this.filteredEmployees = Observable.of(this.employees);
@@ -492,7 +500,8 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
 
         if (value) {
 
-            this.filteredCostCodes = this._filterService.filterCollection(value, (<Project>record.get('project').value).CostCodes);
+            this.filteredCostCodes = this._filterService
+                .filterCollectionByKey((<Project>record.get('project').value).CostCodes, value);
         } else {
 
             this.filteredCostCodes = Observable.of((<Project>record.get('project').value).CostCodes);

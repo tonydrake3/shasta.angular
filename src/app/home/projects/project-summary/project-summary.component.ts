@@ -6,7 +6,7 @@ import {Project} from '../../../models/domain/Project';
 import {MapsService} from '../../shared/services/maps.service';
 import {WeatherService} from '../../shared/services/weather.service';
 import {statusMap, StatusMap} from '../../shared/map/status.map';
-import {projectPlaces} from '../../../models/configuration/projectPlaces';
+import {projectPlaces} from '../../shared/map/project-places.map';
 import {weatherMap} from '../../shared/map/weather.map';
 import {mockWeather} from '../../../mocks/data/mockWeather.data';
 import {BaseComponent} from '../../shared/components/base.component';
