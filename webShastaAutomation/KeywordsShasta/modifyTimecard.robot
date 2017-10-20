@@ -5,15 +5,17 @@ Library    Selenium2Library
 *** Test Cases ***
 
 Group By Project    Group By Project
+Modify Timecard    Modify Timecard
+    Project
+    Employees
+    Dates
+    Hours Worked
+    Notes
+    Edit Time Card
 
-#Modify Timecard    Modify Timecard
-    #Project
-    #Employees
-    #Dates
-   # Hours Worked
-   # Notes
-   # Edit Time Card
-    #Delete Timecard
+Click on show all    Click on show all
+
+
 
 *** Keywords ***
 
@@ -90,19 +92,11 @@ Edit Time Card
     Sleep    4s
     click element   id=cdk-overlay-4
     Sleep    4s
-
-
-    #Click Element    Xpath=//*[@id="body"]/div[1]/div/div[1]
-#Delete Timecard
-    #wait until page contains    eSUB
-    #Sleep    3s
-    ##click element    id=btnGridFormDeleteCard-0
-    #Sleep    4s
     capture page screenshot    Filename=deleteTimecard
     close browser
 
 
-#######Tests while BlackListed#######
+
 
 Group By Project
     [Tags]    Smoke
@@ -129,7 +123,7 @@ Group By Project
 
 
 #############################################
-SHOW MINE
+Click on show mine
     [Tags]    Smoke
     Open Browser    http://web.develop.shasta.esubonline.com/    Chrome
     Set Window Size    ${1600}    ${1000}
@@ -144,7 +138,7 @@ SHOW MINE
     Sleep    5s
     Click Element    id=(Enter ID HERE)   ##########OF SHOW MINE#######
     Sleep    4s
-Show ALL
+Click on show all
     Click Element    id=(Enter ID HERE)   ##########OF SHOW MINE#######
     Sleep    4s
     Click Button    id=btnLogin

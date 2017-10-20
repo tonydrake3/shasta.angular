@@ -5,7 +5,7 @@ Library    Selenium2Library
 # ***Environment - Dev ***
 
 *** Test Cases ***
-Group by Mine    Group by Mine
+#Group by Mine    Group by Mine
 Grid Form Verification - Enter Hours    Grid Form Verification - Enter Hours
     Project
     Employees
@@ -29,7 +29,7 @@ Grid Form Verification - Enter Hours    Grid Form Verification - Enter Hours
 
 *** Keywords ***
 Grid Form Verification - Enter Hours
-    [Tags]    Smoke
+     [Tags]    Smoke
     Open Browser    http://web.develop.shasta.esubonline.com/    Chrome
     Set Window Size    ${1600}    ${1000}
     Wait Until Page Contains    eSUB
@@ -49,24 +49,41 @@ Grid Form Verification - Enter Hours
     Sleep    5s
     go to    http://web.develop.shasta.esubonline.com/#/time/timesheets
     wait until page contains    eSUB
+    Sleep    4s
     click element    id=btnEnterTime
+    Sleep    3s
     wait until page contains    eSUB
     Sleep    3s
 Project
-    input text    id=txtFormProject    Random Auto Dealership
-    Sleep    7s
+    #Select Project that contains costcode and employees
+    Input Text    id=txtFormProject    99 - Random Auto Dealership
+    Sleep    3s
     Click Element    id=md-autocomplete-0
     Sleep    4s
-    Input Text    id=txtFormCostCode    777 - Install
-    Sleep    4s
-    Click Element    id=md-autocomplete-1
-    Sleep    2s
-    #click element    id=txtFormProject
+
+    input text    id=txtFormCostCode    999 - Shaftwall Framing
+    Sleep    3s
+    click element    id=md-autocomplete-2
+
+    #Input Text    id=txtFormSystem    100 - System Beta Zero
+    #Sleep    4s
+    #lick Element    id=md-autocomplete-18
     #Sleep    3s
+    #cost code should not promote any other fields below
+    #nput text    id=txtFormCostCode    666 - Site Work
+    Sleep    3s
 Employees
-    input text    id=txtFormEmployees    eSUB Support
+    input text    id=txtFormEmployees    10001 - String String
     Sleep    4s
-    Click Element    id=md-autocomplete-2
+    click element    id=md-autocomplete-3
+    Sleep    3s
+    click element    id=lnkClearEmployees
+    Sleep    3s
+    click element   id=lnkFormAllEmployees
+    Sleep    4s
+    #input text    id=txtFormEmployees    eSUB Support
+    Sleep    4s
+    #Click Element    id=md-autocomplete-2
 Dates
     click element    id=txtFormDates
     Sleep    4s

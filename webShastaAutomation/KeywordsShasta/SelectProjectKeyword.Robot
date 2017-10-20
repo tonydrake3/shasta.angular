@@ -2,6 +2,8 @@
 Documentation    Select Project and Timesheet, Taken from Zeplin Wireframes
 Library    Selenium2Library
 
+*** Test Cases ***
+Create Project    Create Project
 
 *** Keywords ***
 
@@ -10,7 +12,7 @@ Valid Login
     Open Browser    http://web.develop.shasta.esubonline.com/   Chrome
     Set Window Size    ${800}    ${600}
     Wait Until Page Contains    eSUB
-    Input Text    id=txtUsername    manager@esub.com
+    Input Text    id=txtUsername    Tonyd@esub.com
     Sleep    3s
     Input Text    id=txtPassword     Test1234
     Click Button    id=btnLogin
@@ -23,7 +25,7 @@ Select Project
     Open Browser    http://web.develop.shasta.esubonline.com/   Chrome
     Set Window Size    ${800}    ${600}
     Wait Until Page Contains    eSUB
-    Input Text    id=txtUsername    manager@esub.com
+    Input Text    id=txtUsername    Tonyd@esub.com
     Sleep    2s
     Input Text    id=txtPassword     Test1234
     Click Button    id=btnLogin
@@ -40,13 +42,14 @@ Create Project
     Open Browser    http://web.develop.shasta.esubonline.com/   Chrome
     Set Window Size    ${800}    ${600}
     Wait Until Page Contains    eSUB
-    Input Text    id=txtUsername    manager@esub.com
+    Input Text    id=txtUsername    Tonyd@esub.com
     Sleep    2s
     Input Text    id=txtPassword     Test1234
     Click Button    id=btnLogin
     Sleep    3s
-    Wait Until Page Contains    Project Manager
-    Click Button    css=esub-button secondary mat-raised-button
+    Wait Until Page Contains    eSUB
+    Sleep    5s
+    Click Button    Xpath=//*[@id="page-container"]/div/div/div/esub-project/ng-component/div/div[1]/div[3]/button
     Sleep    3s
     Close Browser
 
