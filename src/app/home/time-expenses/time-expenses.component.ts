@@ -18,7 +18,7 @@ import {
   TimecardSection,
   HoursApproval
 } from './timesheet-card/timecard.model';
-//import { FlashMessagesService } from 'angular2-flash-messages';
+import { FlashMessagesService } from 'angular2-flash-messages';
 
 import * as moment from 'moment';
 import * as _ from 'lodash';
@@ -48,7 +48,7 @@ export class TimeExpensesComponent implements OnInit, AfterViewInit {
     private timeRecordsService: TimeRecordsService,
     private activatedRoute: ActivatedRoute,
     private timeExpensesService: TimeExpensesService,
-    //private _flashMessagesService: FlashMessagesService,
+    private _flashMessagesService: FlashMessagesService,
     protected messageService: MessageService
   ) {
     this.loading = true;
@@ -79,7 +79,7 @@ export class TimeExpensesComponent implements OnInit, AfterViewInit {
           message =
             ' Well done ! You successfully APPROVED the all timecards that you selected ';
           this.successConfirm(message);
-          //this._flashMessagesService.grayOut(true);
+          this._flashMessagesService.grayOut(true);
           break;
         case 'rejected':
           message =
@@ -172,7 +172,7 @@ export class TimeExpensesComponent implements OnInit, AfterViewInit {
         const message =
           ' Well done! You successfully approve the all timecards that you selected !';
         this.successConfirm(message);
-        //this._flashMessagesService.grayOut(true);
+        this._flashMessagesService.grayOut(true);
       } else {
         const message =
           '  Error !  A problem has been occurred while submitting your data. The Approve Time process is failed, please try it again';
@@ -182,19 +182,19 @@ export class TimeExpensesComponent implements OnInit, AfterViewInit {
   }
 
   private successConfirm(message: string) {
-    // this._flashMessagesService.show(message, {
-    //   cssClass: 'alert-success',
-    //   timeout: 3000,
-    //   close: true
-    // });
+    this._flashMessagesService.show(message, {
+      cssClass: 'alert-success',
+      timeout: 3000,
+      close: true
+    });
   }
 
   private failedConfirm(message: string) {
-    // this._flashMessagesService.show(message, {
-    //   cssClass: 'alert-danger',
-    //   timeout: 3000,
-    //   close: true
-    // });
+    this._flashMessagesService.show(message, {
+      cssClass: 'alert-danger',
+      timeout: 3000,
+      close: true
+    });
   }
   private BuildTimeApprovalRecords(timecards: Array<Timecard>) {
     const selectedTimeRecords = {

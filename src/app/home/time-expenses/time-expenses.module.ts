@@ -26,7 +26,7 @@ import { EnterTimeGridComponent } from './enter-time/enter-time-grid/enter-time-
 // Services
 import { TimeRecordsService } from './time-records.service';
 import { TimeExpensesService } from './time-expenses.service';
-//import { FlashMessagesModule } from 'angular2-flash-messages';
+import { FlashMessagesModule } from 'angular2-flash-messages';
 import { ProjectSummaryService } from '../projects/project-summary/project-summary.service';
 import { EnterTimeManager } from './enter-time/enter-time.manager';
 import { EnterTimeStatusService } from './enter-time/enter-time-status.service';
@@ -56,7 +56,7 @@ import { EntityDisplayFormatterService } from '../shared/services/entity-display
         MdSelectModule,
         MdTabsModule,
         MdTooltipModule,
-	//FlashMessagesModule
+        FlashMessagesModule
     ],
     declarations: [
         TimeExpensesComponent,
