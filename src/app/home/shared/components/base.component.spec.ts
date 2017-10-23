@@ -8,9 +8,7 @@ import { Subject } from 'rxjs/Subject';
 import { MockEmptyService } from '../../../mocks/mock.empty.service';
 import { MockProjectService } from '../../../mocks/mock.project.service';
 import { MockEmptyComponent } from '../../../mocks/mock.empty.component';
-
-
-import { ProjectService } from '../../projects/project.service';
+import {ProjectService} from '../services/project.service';
 
 import 'hammerjs';
 

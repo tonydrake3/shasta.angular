@@ -3,7 +3,7 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { HttpModule, XHRBackend } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
-import { MaterialModule, MdNativeDateModule } from '@angular/material';
+import { MdDatepickerModule, MdNativeDateModule } from '@angular/material';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
@@ -32,7 +32,7 @@ xdescribe('TimesheetCard Component', () => {
 
     TestBed.configureTestingModule({
       imports: [
-        MaterialModule,
+          MdDatepickerModule,
         MdNativeDateModule,
         FormsModule,
         HttpModule

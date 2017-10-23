@@ -1,0 +1,215 @@
+.enter-time-grid {
+    margin-right: 30px;
+    margin-left: 30px;
+
+    .esub-card {
+        margin-right: 0;
+        margin-left: 0;
+    }
+
+    .enter-time-grid-tabs {
+        margin-top: 10px;
+        max-width: 320px;
+
+        .mat-tab-label {
+            min-width: 100px;
+        }
+
+        .mat-ink-bar {
+            width: 100px;
+        }
+    }
+
+    .enter-time-card-header {
+        display: flex;
+
+        .enter-time-grid-card-title {
+            label {
+                @extend .title-light;
+                font-size: 20px !important;
+            }
+        }
+
+        .enter-time-card-totals {
+            display: flex;
+            margin-left: 20px;
+
+            .enter-time-card-hours {
+                border: 1px solid $gray-30;
+                font-size: 16px;
+                min-width: 70px;
+
+                .card-total-label {
+                    color: $gray-70;
+                    font-weight: bold;
+                    padding-top: 2px;
+                    text-align: center;
+                }
+
+                &.total {
+                    background-color: $gray-10;
+                    font-size: 20px;
+                    font-weight: bold;
+
+                    .card-total-label,
+                    .card-total-value {
+                        color: $gray-90;
+                    }
+                }
+
+                .card-total-value {
+                    color: $gray-70;
+                    padding: 5px;
+                    text-align: center;
+                }
+            }
+        }
+    }
+
+    .groupings {
+
+        > * {
+            @media(max-width: 1092px) and (min-width: 992px) {
+                font-size: 10px !important;
+            }
+            @media(max-width: 841px) {
+                font-size: 10px !important;
+            }
+        }
+
+        @include noselect();
+
+        label {
+            @extend .label-light;
+        }
+        a {
+            @extend .label-regular;
+            cursor: pointer;
+        }
+
+        > .active,
+        > .active:hover {
+            text-decoration: underline;
+            cursor: default;
+            pointer-events: none;
+        }
+    }
+
+    .esub-table {
+
+        .table-header {
+            border-bottom: 0;
+
+            &.table-cell {
+                color: $gray-70;
+            }
+
+            .time-entry-header-row {
+                height: 100%;
+
+                .time-entry-header-cell {
+                    border-right: solid 2px $gray-10;
+                    padding: 4px;
+
+                    &-end {
+                        border-right: 0;
+                        padding: 4px;
+                    }
+                }
+            }
+        }
+
+
+        .table-row {
+
+            .table-cell {
+
+                .form-field {
+                    width: 100%;
+                }
+
+                label {
+                    position: relative;
+                    top: 13px;
+                }
+                //
+                //i.grid-date {
+                //    padding-left: 2px;
+                //    position: relative;
+                //    top: 16px;
+                //}
+
+                .date-field {
+
+                    .mat-form-field {
+                        max-width: 90px;
+                    }
+                }
+
+                .time-entry-row {
+                    height: 100%;
+
+                    .time-entry-cell {
+                        border-right: solid 2px $gray-10;
+                        padding: 0 4px;
+
+
+                        &.row-end {
+                            border-right: 0;
+                            padding: 0 4px;
+                        }
+
+                        .firefox-time {
+
+                            .form-field {
+                                //padding-top: 20px;
+                                width: 40px;
+                            }
+
+                            md-select {
+                                position: relative;
+                                top: -6px;
+                                width: 40px;
+
+                                &.ie-offset {
+                                    top: 8px;
+                                }
+
+                                div.mat-select-trigger {
+                                    font-size: 10px;
+                                    min-width: 35px;
+                                }
+                            }
+                        }
+                    }
+                }
+
+
+                //input {
+                //    border: 0;
+                //    background: transparent;
+                //    border-bottom: 1px solid $gray-50;
+                //    color: $gray-70;
+                //    height: 20px;
+                //    outline: 0;
+                //    margin-top: 10px;
+                //    padding: 15px 0;
+                //
+                //    &:focus {
+                //        color: $blue;
+                //        border-bottom: 1px solid $blue;
+                //    }
+                //}
+                //
+                //label {
+                //    color: $gray-70;
+                //    height: 20px;
+                //    margin-top: 6px;
+                //    padding: 15px 0;
+                //}
+            }
+        }
+    }
+;
+}
+

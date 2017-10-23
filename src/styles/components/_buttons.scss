@@ -2,25 +2,34 @@
 
 button.esub-button,
 .esub-button-group > button {
-  @extend .title-light;
-  border-radius: 2px;
-  padding: 6px 16px;
-  text-transform: capitalize;
+    @extend .title-light;
+    border-radius: 2px;
+    padding: 6px 16px;
+    text-transform: capitalize;
 
-  &.primary {
-    background-color: $white;
-    color: $black;
-  }
-  &.danger {
-    background-color: $red;
-    color: $white;
-  }
-  &.success {
-    background-color: $green;
-    color: $white;
-  }
-  &.secondary {
-    background-color: $blue;
-    color: $white;
-  }
+    &.primary {
+        background-color: $white;
+        color: $black;
+    }
+    &.danger {
+        background-color: $red;
+        color: $white;
+    }
+    &.negative {
+        background-color: $gray-40;
+        color: $red;
+    }
+    &.success {
+        background-color: $green;
+        color: $white;
+    }
+    &.secondary {
+        background-color: $blue;
+        color: $white;
+
+        &[disabled] {
+            background-color: $blue-button-disabled !important;
+            color: $true-white !important;
+        }
+    }
 }

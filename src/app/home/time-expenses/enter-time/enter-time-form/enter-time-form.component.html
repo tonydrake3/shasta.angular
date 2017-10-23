@@ -1,0 +1,277 @@
+<div class="enter-time-form-tabs" [ngClass]="{'time-in-tab' : tabs?.length > 2}">
+    <md-tab-group [selectedIndex]="enterTimeTabIndex" (selectChange)="selectTab($event)">
+        <md-tab *ngFor="let tab of tabs" label="{{tab.Title}}">
+        </md-tab>
+    </md-tab-group>
+</div>
+<div class="enter-time-form">
+    <form [formGroup]="enterTimeForm" (ngSubmit)="createLines(enterTimeForm)" novalidate>
+        <div class="row" *ngIf="isProjectCostEntry">
+            <div class="col-md-12">
+                <md-form-field class="form-field">
+                    <md-placeholder>
+                        <span >Project </span><span class="required">*</span>
+                    </md-placeholder>
+                    <input type="text" mdInput formControlName="project" [mdAutocomplete]="autoProject"
+                            (focus)="openProjects($event.target.value)" [id]="'txtFormProject'">
+                </md-form-field>
+                <md-autocomplete #autoProject="mdAutocomplete" [displayWith]="entityFormatter.displayFormatted"
+                                 (optionSelected)="projectSelected($event)">
+                    <md-option *ngFor="let project of filteredProjects | async" [value]="project" >
+                        {{project.Number}} - {{project.Name}}
+                    </md-option>
+                </md-autocomplete>
+            </div>
+        </div>
+
+        <div class="row" *ngIf="systems.length > 1">
+            <div class="col-md-12">
+                <md-form-field class="form-field">
+                    <input type="text" mdInput placeholder="System" formControlName="system" [mdAutocomplete]="autoSystem"
+                           (focus)="openSystems($event.target.value)" [id]="'txtFormSystem'">
+                </md-form-field>
+                <md-autocomplete #autoSystem="mdAutocomplete" [displayWith]="entityFormatter.displayFormatted"
+                                 (optionSelected)="systemSelected($event)">
+                    <md-option *ngFor="let system of filteredSystems | async" [value]="system">
+                        {{system.Number}} - {{system.Name}}
+                    </md-option>
+                </md-autocomplete>
+            </div>
+        </div>
+
+        <div class="row" *ngIf="phases.length > 1">
+            <div class="col-md-12">
+                <md-form-field class="form-field">
+                    <input type="text" mdInput placeholder="Phase" formControlName="phase" [mdAutocomplete]="autoPhase"
+                           (focus)="openPhases($event.target.value)" [id]="'txtFormPhases'">
+                </md-form-field>
+                <md-autocomplete #autoPhase="mdAutocomplete" [displayWith]="entityFormatter.displayFormatted"
+                                 (optionSelected)="phaseSelected($event)">
+                    <md-option *ngFor="let phase of filteredPhases | async" [value]="phase">
+                        {{phase.Number}} - {{phase.Name}}
+                    </md-option>
+                </md-autocomplete>
+            </div>
+        </div>
+
+        <div class="row" *ngIf="isProjectCostEntry && costCodes.length > 0 || !isProjectCostEntry">
+            <div class="col-md-12">
+                <md-form-field class="form-field">
+                    <md-placeholder>
+                        <span >{{costCodePlaceholder}}</span><span *ngIf="costCodePlaceholder === 'Indirect Cost'" class="required"> *</span>
+                    </md-placeholder>
+                    <input type="text" mdInput formControlName="costCode" [mdAutocomplete]="autoCostCode"
+                           (focus)="openCostCodes($event.target.value)" [id]="'txtFormCostCode'">
+                </md-form-field>
+                <md-autocomplete #autoCostCode="mdAutocomplete" [displayWith]="entityFormatter.displayCostCode"
+                                 (optionSelected)="costCodeSelected($event)">
+                    <md-option *ngFor="let costCode of filteredCostCodes | async" [value]="costCode">
+                        {{costCode.Code}} - {{costCode.Name}}
+                    </md-option>
+                </md-autocomplete>
+            </div>
+        </div>
+        <div class="row" *ngIf="(isProjectCostEntry && enterTimeForm.get('selectedProject').value) || enterTimeForm.get('costCode').value">
+            <div class="col-md-10">
+                <md-form-field class="form-field selected-employees-field">
+                    <md-placeholder>
+                        <span >Employees </span><span class="required">*</span>
+                    </md-placeholder>
+                    <input type="text" mdInput formControlName="employee" [mdAutocomplete]="autoEmployee"
+                           (focus)="openEmployee($event.target.value)" [id]="'txtFormEmployees'">
+                </md-form-field>
+                <md-autocomplete #autoEmployee="mdAutocomplete" [displayWith]="entityFormatter.displayFormatted"
+                                 (optionSelected)="employeeSelected($event)">
+                    <md-option *ngFor="let employee of filteredEmployees | async" [value]="employee">
+                        {{employee.Number}} - {{employee.Name}}
+                    </md-option>
+                </md-autocomplete>
+            </div>
+            <div class="col-md-2 groupings">
+                <label>select</label>
+                <a (click)="selectAllEmployees()" [id]="'lnkFormAllEmployees'">All</a>
+                <a (click)="clearEmployeeSelection()" [id]="'lnkClearEmployees'">None</a>
+            </div>
+        </div>
+        <div class="row" *ngIf="(isProjectCostEntry && enterTimeForm.get('project').value) || enterTimeForm.get('costCode').value">
+            <div class="col-md-12">
+                <div class="enter-time-selected-employees" *ngIf="selectedEmployees.length > 0">
+                    <div [ngClass]="getExpandContainer('enter-time-selected-employees-container')">
+                        <div class="selected-header" (click)="toggleSelectedEmployees()" [id]="'expandEmployee'">
+                            <span class="selected-header-label expansion-title-regular">{{selectedEmployees.length}} employees selected</span>
+                            <i [ngClass]="getExpandIcon()">keyboard_arrow_up</i>
+                        </div>
+                        <div [ngClass]="getExpandContainer('selected-employee-list')">
+                            <md-chip-list>
+                                <md-chip *ngFor="let employee of selectedEmployees; let empIndex = index"
+                                         (click)="removeEmployee(employee)" [id]="'chpEmployee'+ empIndex">
+                                    <span>{{employee.Number}} - {{employee.Name}}</span>
+                                    <i class="mdi mdi-close-circle"></i>
+                                </md-chip>
+                            </md-chip-list>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-12" >
+                <div esubCloseDateFlyout>
+                    <md-form-field class="form-field dates">
+                        <md-placeholder>
+                            <span class="enter-time-date-placeholder">Dates </span><span class="enter-time-date-placeholder required">*</span> <i class="material-icons">date_range</i>
+                        </md-placeholder>
+                        <input mdInput id="txtDates" formControlName="dates" (focus)="onFocus()" (keydown)="clearKeystroke($event)"
+                               [id]="'txtFormDates'">
+                    </md-form-field>
+                    <esub-daypicker-flyout [daypickerConfig]="dpDatepickerConfig" [selectedDates]="selectedDates"
+                                           (selectedDatesChange)="onDatesChanged($event)" ></esub-daypicker-flyout>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" class="time-entry-method">
+            <div class="col-md-12" *ngIf="!isTimeIn">
+                <span class="label-bold">Hours worked per day</span>
+
+                <div class="row hours-entry">
+                    <div class="col-md-2">
+                        <md-form-field>
+                            <input mdInput type="number" placeholder="Regular" formControlName="standardHours"
+                                   maxlength="5" step="0.25" min="0" max="24" [id]="'txtFormST'">
+                        </md-form-field>
+                    </div>
+                    <div class="col-md-2" *ngIf="isProjectCostEntry">
+                        <md-form-field>
+                            <input mdInput type="number" placeholder="Overtime" formControlName="overtimeHours"
+                                   maxlength="5" step="0.25" min="0" max="24" [id]="'txtFormOT'">
+                        </md-form-field>
+                    </div>
+                    <div class="col-md-2" *ngIf="isProjectCostEntry">
+                        <md-form-field>
+                            <input mdInput type="number" placeholder="Double Time" formControlName="doubleTimeHours"
+                                   maxlength="5" step="0.25" min="0" max="24" [id]="'txtFormDT'">
+                        </md-form-field>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-12" *ngIf="isTimeIn" formGroupName="timeEntry">
+                <div class="row">
+                    <div class="col-md-2" formGroupName="time">
+                        <div class="time-entry" *ngIf="!isUnsupportedTime">
+                            <md-form-field class="form-field" >
+                                <input mdInput placeholder="Time in" type="time" formControlName="in" [id]="'txtFormTimeIn'">
+                            </md-form-field>
+                        </div>
+                        <div class="time-entry firefox-time" *ngIf="isUnsupportedTime">
+                            <md-form-field class="form-field" >
+                                <input mdInput placeholder="Time in" type="text" esubTimeInput formControlName="inValue"
+                                       (timeChange)="onTimeInChange($event)" (timePeriodChange)="onTimeInPeriodChange($event)"
+                                       [id]="'txtFormTimeInValue'">
+                            </md-form-field>
+                            <md-select [ngClass]="{'ie-offset': isIE }" formControlName="inPeriod" [id]="'selFormTimeInPeriod'">
+                                <md-option [value]="'AM'">AM</md-option>
+                                <md-option [value]="'PM'">PM</md-option>
+                            </md-select>
+                        </div>
+                    </div>
+                    <div class="col-md-2" formGroupName="time">
+                        <div class="time-entry" *ngIf="!isUnsupportedTime">
+                            <md-form-field class="form-field">
+                                <input mdInput placeholder="Time out" type="time" formControlName="out" [id]="'txtFormTimeOut'">
+                            </md-form-field>
+                        </div>
+                        <div class="time-entry firefox-time" *ngIf="isUnsupportedTime">
+                            <md-form-field class="form-field" >
+                                <input mdInput placeholder="Time out" type="text" esubTimeInput formControlName="outValue"
+                                       (timeChange)="onTimeOutChange($event)" (timePeriodChange)="onTimeOutPeriodChange($event)"
+                                       [id]="'txtFormTimeOutValue'">
+                            </md-form-field>
+                            <md-select [ngClass]="{'ie-offset': isIE }" formControlName="outPeriod" [id]="'selFormTimeOutPeriod'">
+                                <md-option [value]="'AM'">AM</md-option>
+                                <md-option [value]="'PM'">PM</md-option>
+                            </md-select>
+                        </div>
+                    </div>
+                    <div class="col-md-2 offset-1" formGroupName="break">
+                        <div class="time-entry" *ngIf="!isUnsupportedTime">
+                            <md-form-field class="form-field">
+                                <input mdInput placeholder="Break in" type="time" formControlName="in" [id]="'txtFormBreakIn'">
+                            </md-form-field>
+                        </div>
+                        <div class="time-entry firefox-time" *ngIf="isUnsupportedTime">
+                            <md-form-field class="form-field" >
+                                <input mdInput placeholder="Break in" type="text" esubTimeInput formControlName="inValue"
+                                       (timeChange)="onBreakInChange($event)" (timePeriodChange)="onBreakInPeriodChange($event)"
+                                       [id]="'txtFormBreakInValue'">
+                            </md-form-field>
+                            <md-select [ngClass]="{'ie-offset': isIE }" formControlName="inPeriod" [id]="'selFormBreakInPeriod'">
+                                <md-option [value]="'AM'">AM</md-option>
+                                <md-option [value]="'PM'">PM</md-option>
+                            </md-select>
+                        </div>
+                    </div>
+                    <div class="col-md-2" formGroupName="break">
+                        <div class="time-entry" *ngIf="!isUnsupportedTime">
+                            <md-form-field class="form-field">
+                                <input mdInput placeholder="Break out" type="time" formControlName="out" [id]="'txtFormBreakOut'">
+                            </md-form-field>
+                        </div>
+                        <div class="time-entry firefox-time" *ngIf="isUnsupportedTime">
+                            <md-form-field class="form-field" >
+                                <input mdInput placeholder="Break out" type="text" esubTimeInput formControlName="outValue"
+                                       (timeChange)="onBreakOutChange($event)" (timePeriodChange)="onBreakOutPeriodChange($event)"
+                                       [id]="'txtFormBreakOutValue'">
+                            </md-form-field>
+                            <md-select [ngClass]="{'ie-offset': isIE }" formControlName="outPeriod" [id]="'selFormBreakOutPeriod'">
+                                <md-option [value]="'AM'">AM</md-option>
+                                <md-option [value]="'PM'">PM</md-option>
+                            </md-select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-error-container">
+                    <div class="col-md-4">
+                        <span class="form-error" *ngIf="enterTimeForm.get('timeEntry').get('time').hasError('startAfterEnd')">Time in cannot occur after time out.</span>
+                    </div>
+                    <div class="col-md-4 offset-1">
+                        <span class="form-error" *ngIf="enterTimeForm.get('timeEntry').get('break').hasError('breakStartAfterEnd')">Break in cannot occur after break out.</span>
+                        <span class="form-error" *ngIf="enterTimeForm.get('timeEntry').hasError('breakOutsideOfTime') &&
+                            !enterTimeForm.get('timeEntry').get('break').hasError('breakStartAfterEnd')">Break cannot occur outside of time in/out.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <md-form-field class="notes form-field">
+                    <input mdInput placeholder="Notes" formControlName="notes" [id]="'txtFormNotes'">
+                </md-form-field>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div class="text-center">
+                    <span class="required">* is required</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row pt-2">
+            <div class="col-md-6 esub-button-group">
+                <button md-raised-button type="button" class="primary" [disabled]="enterTimeForm.pristine" [id]="'btnFormClear'"
+                        (click)="clearForm()">Clear form</button>
+            </div>
+            <div class="col-md-6 esub-button-group">
+                <button md-raised-button type="submit" class="secondary" [disabled]="enterTimeForm.invalid" [id]="'btnFormCreate'">
+                    Create {{linesToAddCount()}} time entries</button>
+            </div>
+        </div>
+
+    </form>
+
+</div>

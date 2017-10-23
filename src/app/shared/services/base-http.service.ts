@@ -20,6 +20,7 @@ export class BaseHttpService {
 
         const headers = new Headers();
         this.addHeaders(headers);
+        this.addJsonHeaders(headers);
 
         const options = new RequestOptions({headers : headers});
 
@@ -37,6 +38,7 @@ export class BaseHttpService {
 
         const headers = new Headers();
         this.addHeaders(headers);
+        this.addJsonHeaders(headers);
 
         const options = new RequestOptions({headers : headers});
 
@@ -45,6 +47,15 @@ export class BaseHttpService {
             .catch(this.processError);
     }
 
+  postData(url: string, payload: any): Observable<any> {
+    const headers = new Headers();
+    this.addHeaders(headers);
+    const options = new RequestOptions({ headers: headers });
+    return this._http
+      .post(url, payload, options)
+      .map(this.processIsSuccess)
+      .catch(this.processError);
+  }
     postForm (url: string, data: any): Observable<any> {
 
         const headers = new Headers();
@@ -71,12 +82,22 @@ export class BaseHttpService {
 
         const headers = new Headers();
         this.addHeaders(headers);
+        this.addJsonHeaders(headers);
 
         return this._http.put(url, payload, {headers: headers})
             .map(this.processSuccess)
             .catch(this.processError);
     }
 
+  putData(url: string, payload: any): Observable<any> {
+    const headers = new Headers();
+    this.addHeaders(headers);
+
+    return this._http
+      .put(url, payload, { headers: headers })
+      .map(this.processIsSuccess)
+      .catch(this.processError);
+  }
     delete (url: string) {
 
         const headers = new Headers();
@@ -116,19 +137,29 @@ export class BaseHttpService {
         headers.append('Accept', 'application/json');
     }
 
+    private addJsonHeaders (headers: Headers) {
+
+        // TODO : Consider config for this?
+        headers.append('Content-Type', 'application/json');
+        headers.append('Accept', 'application/json');
+    }
+
     private processSuccess (response: Response) {
 
         const body = response.json();
         return body.data || body;
     }
 
+  private processIsSuccess(response: Response) {
+    return response.status;
+  }
     private processError (error: Response | any) {
 
         let errMsg: string;
         if (error instanceof Response) {
             const body = error.json() || '';
             const err = body.error || JSON.stringify(body);
-            errMsg = body.error_description ? body.error_description : `${error.status} - ${error.statusText || ''} ${err}`;
+            errMsg = body.error_description ? body.error_description : err;
         } else {
             errMsg = error.message ? error.message : error.toString();
         }

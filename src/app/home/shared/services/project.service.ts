@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 
-import { apiRoutes } from '../shared/configuration/api-routes.configuration';
-import { BaseStore } from '../../shared/services/base-store.service';
+import { apiRoutes } from '../configuration/api-routes.configuration';
+import { BaseStore } from '../../../shared/services/base-store.service';
+import {Project} from '../../../models/domain/Project';
 
 @Injectable()
 export class ProjectService extends BaseStore {
@@ -18,6 +19,10 @@ export class ProjectService extends BaseStore {
         return this.load();
     }
 
+    public getById(id: string): Promise<any> {
+        return this.load(id);
+    }
+
     get projects$ () {
 
         return this._entity$.asObservable();
@@ -29,5 +34,4 @@ export class ProjectService extends BaseStore {
         this.init(apiRoutes.projects + '?query=' + filter);
         return this.load();
     }
-
 }

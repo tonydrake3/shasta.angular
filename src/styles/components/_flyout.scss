@@ -1,0 +1,10 @@
+.field-flyout {
+    background-color: $true-white;
+    position: absolute;
+    top: 52px;
+    z-index: 999;
+
+    &.calendar {
+        left: 100px;
+    }
+}

@@ -3,4 +3,6 @@ export const routeName = {
     'dashboard': 'dashboard',
     'company': 'company',
     'project': 'project',
+    'time': 'time',
+    'enterTime': 'time/enter'
 };

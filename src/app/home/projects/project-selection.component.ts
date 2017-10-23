@@ -1,4 +1,4 @@
-import {Component, Injector, OnDestroy, OnInit} from '@angular/core';
+import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BaseComponent } from '../shared/components/base.component';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -9,8 +9,9 @@ import { statusMap, StatusMap } from '../shared/map/status.map';
 import { SortColumn } from '../shared/configuration/sort-column.configuration';
 import { projectSortColumns } from '../shared/configuration/sort-column.configuration';
 import { ProjectSelectionManager } from './project-selection.manager';
-import { ProjectService } from './project.service';
+import { ProjectService } from '../shared/services/project.service';
 import { routeName } from '../shared/configuration/web-route-names.configuration';
+
 
 @Component({
     styles: [],
@@ -19,18 +20,19 @@ import { routeName } from '../shared/configuration/web-route-names.configuration
 export class ProjectSelectionComponent extends BaseComponent implements OnInit, OnDestroy {
 
     // Private
-    private _statuses;
-    private _sortColumns: Array<SortColumn>;
     private _filterSubscription;
     private _filterField;
+    private _projects;
 
     // Public
-    filterForm: FormGroup;
-    filteredProjects: Project[];
-    filterText = '';
+    public statuses;
+    public sortColumns: Array<SortColumn>;
+    public filterForm: FormGroup;
+    public filteredProjects: Project[];
+    public filterText = '';
 
     constructor (protected injector: Injector, private _builder: FormBuilder, private _router: Router,
-                 private _projectSelection: ProjectSelectionManager, private _projects: ProjectService) {
+                 private _projectSelection: ProjectSelectionManager) {
 
         super(injector, [
             {
@@ -39,6 +41,7 @@ export class ProjectSelectionComponent extends BaseComponent implements OnInit, 
             }
         ]);
 
+        this._projects = super.getServiceRef('ProjectService') as ProjectService;
         this.createForm();
         this._filterField = this.filterForm.get('filter');
         // console.log('ProjectSelectionComponent Ctor', this._projectSelection);
@@ -54,7 +57,7 @@ export class ProjectSelectionComponent extends BaseComponent implements OnInit, 
             .subscribe(
                 (projects) => {
 
-                    // console.log('ProjectSelectionComponent OnInit filteredProjects$', projects);
+                    console.log('ProjectSelectionComponent OnInit filteredProjects$', projects);
                     this.filteredProjects = <Project[]> projects;
                 },
                 (error) => {
@@ -80,7 +83,7 @@ export class ProjectSelectionComponent extends BaseComponent implements OnInit, 
 
     sortProjects (column: SortColumn) {
 
-        this._sortColumns.forEach((col) => {
+        this.sortColumns.forEach((col) => {
 
             if (col.Key === column.Key) {
 
@@ -117,10 +120,10 @@ export class ProjectSelectionComponent extends BaseComponent implements OnInit, 
 
     projectServiceCallback(projects) {
 
-        // console.log('ProjectService Callback');
-        this._sortColumns = _.orderBy(projectSortColumns, ['Ordinal'], ['asc']);
+        // console.log('ProjectService Callback', <Project[]> projects['Value']);
+        this.sortColumns = _.orderBy(projectSortColumns, ['Ordinal'], ['asc']);
 
-        this._statuses = this._projectSelection.getStatusFilters();
+        this.statuses = this._projectSelection.getStatusFilters();
         this.reloadColumns(this._projectSelection.getSortColumn());
 
         this._projectSelection.init(<Project[]> projects['Value']);
@@ -151,7 +154,7 @@ export class ProjectSelectionComponent extends BaseComponent implements OnInit, 
 
     reloadColumns (sortCol: SortColumn) {
 
-        this._sortColumns.forEach((column) => {
+        this.sortColumns.forEach((column) => {
 
             if (sortCol.Key === column.Key) {
 

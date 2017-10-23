@@ -3,12 +3,14 @@ import { Subject} from 'rxjs/Rx';
 import { BaseHttpService } from './base-http.service';
 import { environment } from '../../../environments/environment';
 import 'rxjs/add/operator/map';
+import {Identifiable} from '../../models/Identifiable';
 
 export class BaseStore extends BaseHttpService {
 
-    _route: string;
+    protected _route: string;
+    private _isLoadDisabled: boolean;
 
-    _entity$ = new Subject();
+    protected _entity$ = new Subject();
 
     constructor(protected _httpPassthrough: Http) {
 
@@ -19,16 +21,19 @@ export class BaseStore extends BaseHttpService {
      * Protected Methods
      ******************************************************************************************************************/
 
-    protected init (url?: string) {
+    protected init (url?: string, disableLoad?: boolean) {
 
         this._route = url;
+        this._isLoadDisabled = disableLoad;
     }
 
-    protected load (): Promise<any> {
+    protected load (id?: string): Promise<any> {
 
         // var loading = this.loadingCtrl.create();
         // loading.present();
-        const url = environment.apiUrl + (this._route ? this._route : '');
+        let url = environment.apiUrl + (this._route ? this._route : '');
+
+        if (id) { url += '/' + id }
 
         return new Promise((resolve, reject) => {
 
@@ -60,14 +65,19 @@ export class BaseStore extends BaseHttpService {
 
     protected addEntity(entity: any): Promise<any> {
 
+        const url = environment.apiUrl + (this._route ? this._route : '');
+
         return new Promise((resolve, reject) => {
 
-            this.post(this._route, entity)
+            this.post(url, entity)
 
                 .subscribe(
 
                     data => {
-                        this.load();
+                        if (!this._isLoadDisabled) {
+
+                            this.load();
+                        }
                         resolve(data);
                     },
                     err => {
@@ -76,15 +86,20 @@ export class BaseStore extends BaseHttpService {
         });
     }
 
-    protected updateEntity(entity: any): Promise<any> {
+    protected updateEntity(entity: Identifiable): Promise<any> {
+
+        const url = environment.apiUrl + (this._route ? this._route : '');
 
         return new Promise((resolve, reject) => {
 
-            this.put(this._route + '/' + entity.id, entity)
+            this.put(url + '/' + entity.Id, entity)
 
                 .subscribe(
                     data => {
-                        this.load();
+                        if (!this._isLoadDisabled) {
+
+                            this.load();
+                        }
                         resolve(data);
                     },
                     err => {
@@ -95,14 +110,19 @@ export class BaseStore extends BaseHttpService {
 
     protected deleteEntity(entity: any): Promise<any> {
 
+        const url = environment.apiUrl + (this._route ? this._route : '');
+
         return new Promise((resolve, reject) => {
 
-            this.delete(this._route + '/' + entity.id)
+            this.delete(url + '/' + entity.id)
 
                 .subscribe(
 
                     data => {
-                        this.load();
+                        if (!this._isLoadDisabled) {
+
+                            this.load();
+                        }
                         resolve(data);
                     },
                     err => {

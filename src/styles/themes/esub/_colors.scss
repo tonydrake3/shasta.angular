@@ -23,10 +23,17 @@ $dark-sky-blue: #2094de;
 $gray: $warm-grey;
 $gray-20: #D8D8D8;
 $gray-40: #F4F4F4;
-$gray-bg: rgba($gray, 0.1);
-$gray-hover: rgba($gray, 0.3);
+$gray-10: rgba($gray, 0.1);
+$gray-30: rgba($gray, 0.3);
+$gray-50: rgba($gray, 0.5);
+$gray-70: rgba($gray, 0.7);
+$gray-80: rgba($gray, 0.8);
+$gray-90: rgba($gray, 0.9);
+
 
 // black variants
+$true-black-12: rgba($true-black, 0.12);
+
 $black-10: rgba($black, 0.1);
 $black-25: rgba($black, 0.25);
 $black-50: rgba($true-black, 0.5);
@@ -41,12 +48,27 @@ $yellow-80: #fdc641;
 
 // red variants
 $red: $tomato;
+$red-10: rgba($red, 0.1);
+$red-20: rgba($red, 0.2);
+$red-30: rgba($red, 0.3);
+$red-40: rgba($red, 0.4);
+$red-50: rgba($red, 0.5);
+$red-70: rgba($red, 0.7);
+$red-90: rgba($red, 0.9);
 
 // green variants
 $green: $frog-green;
 
 // blue variants
 $blue: $dark-sky-blue;
+$blue-10: rgba($blue, 0.1);
+$blue-30: rgba($blue, 0.3);
+$blue-50: rgba($blue, 0.5);
+$blue-70: rgba($blue, 0.7);
+$blue-button-disabled: rgba(32, 148, 222, 0.25);
+
+$tp-blue: #006699;
+$tp-menu-background: #E3EAF3;
 
 // component specific colors
 //
@@ -55,3 +77,5 @@ $nav-link-active: $true-white;
 $sub-nav-link-odd: $gray-20;
 $sub-nav-link-even: $gray-20;
 $nav_link_active_color: $true-white;
+$chip-text: rgba($true-black, 0.87);
+$chip-close-icon: rgba($true-black, 0.54);

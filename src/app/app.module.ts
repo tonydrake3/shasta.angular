@@ -1,13 +1,16 @@
+import { OnlyNumber } from './home/shared/directives/onlyNumber.directive';
+
 import { NgModule, ApplicationRef } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MaterialModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MdInputModule, MdProgressSpinnerModule } from '@angular/material';
 import 'hammerjs';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { NotificationModule } from './home/notifications/notification.module';
 
 // Pages
 import { LoginComponent } from './login/login.component'
@@ -16,7 +19,7 @@ import { LoginComponent } from './login/login.component'
 import { HomeModule } from './home/home.module';
 import { SharedModule } from './shared/shared.module';
 import { CompanyModule } from './home/company/company.module';
-import { SettingsModule } from './home/settings/settings.module';
+import { LoginModule } from './login/login.module';
 
 // hmr
 import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
@@ -27,6 +30,13 @@ import {LookupDataService} from './home/shared/services/lookup-data.service';
 
 // entry components
 import { CommentsComponent } from './home/shared/components/comments.component';
+import { TimeCardTimeDetailComponent } from './home/time-expenses/timesheet-card/timesheet-card-timedetail.component';
+import { ConfirmationDialogComponent } from './home/shared/components/confirmation-dialog.component';
+import { NotesEntryDialogComponent } from './home/shared/components/notes-entry.component';
+import { NotificationComponent } from './home/notifications/notifications.component';
+import { PermissionsService } from './shared/services/authorization/permissions.service';
+import { TimesheetCardPinComponent } from 'app/home/time-expenses/timesheet-card/timesheet-card-pin.component';
+import { TimeRecordDetailModalComponent } from './home/time-expenses/time-record-detail-modal/time-record-detail-modal.component';
 
 @NgModule({
     imports: [
@@ -34,29 +44,40 @@ import { CommentsComponent } from './home/shared/components/comments.component';
         HttpModule,
         FormsModule,
         ReactiveFormsModule,
-        MaterialModule,
         BrowserAnimationsModule,
         AppRoutingModule,
+        NotificationModule,
 
         // Sub modules
+        LoginModule,
         HomeModule,
         SharedModule,
+        MdInputModule,
+        MdProgressSpinnerModule,
 
         CompanyModule,
+
         // ProjectModule
     ],
     declarations: [
-        AppComponent,
-        LoginComponent,
+        AppComponent
     ],
     providers: [
         AuthenticationService,
         AuthGuard,
         DataSyncService,
-        LookupDataService
+        LookupDataService,
+        PermissionsService
     ],
     bootstrap: [AppComponent],
-    entryComponents: [CommentsComponent]
+    entryComponents: [
+        CommentsComponent,
+        ConfirmationDialogComponent,
+        NotesEntryDialogComponent,
+        NotificationComponent,
+        TimeRecordDetailModalComponent,
+	TimeCardTimeDetailComponent, TimesheetCardPinComponent
+    ]
 })
 
 export class AppModule {

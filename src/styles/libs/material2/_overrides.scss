@@ -79,4 +79,47 @@ md-input-container {
     }
 }
 
+// Override width
+.mat-autocomplete-panel.mat-autocomplete-visible {
+    width: 100%;
+    min-width: 300px;
+}
+
+.mat-dialog-container {
+
+    .mat-dialog-content {
+        margin-bottom: 20px;
+    }
+}
+
+.mat-menu-panel {
+
+    &.tp-menu {
+        background-color: $tp-menu-background;
+        border: 2px solid $tp-blue;
+
+        .mat-menu-content {
+            padding-top: 0;
+            padding-bottom: 0;
+
+            .mat-menu-item {
+                font-size: 13.5px;
+                font-weight: normal;
+                height: 22px;
+                line-height: 22px;
+
+                &:hover {
+                    background: $tp-blue;
+                    color: $tp-menu-background;
+                }
+            }
+        }
+    }
+}
+
+.trackpoint-header {
+    .mat-button-focus-overlay {
+        background-color: transparent !important;
+    }
+}
 

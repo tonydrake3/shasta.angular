@@ -1,0 +1,442 @@
+<div class="enter-time-grid">
+    <!--<div class="row">-->
+        <!---->
+    <!--</div>-->
+    <div class="row add-more">
+        <div class="col-md-6">
+            <div class="enter-time-grid-tabs">
+                <md-tab-group (selectChange)="selectTab($event)">
+                    <md-tab label="Date">
+                    </md-tab>
+                    <md-tab label="Employee">
+                    </md-tab>
+                    <md-tab label="Project">
+                    </md-tab>
+                </md-tab-group>
+            </div>
+        </div>
+        <div class="col-md-3 add-lines">
+            <button md-raised-button type="button" class="esub-button primary" [id]="'btnGridAddLines'" (click)="addMoreLines()">Add More Lines</button>
+        </div>
+        <div class="col-md-3 delete text-right">
+            <button md-raised-button type="button" class="esub-button negative" [id]="'btnGridFormDeleteAllCards'"
+                    (click)="deleteAllLines()">Delete all cards</button>
+        </div>
+    </div>
+
+    <form [formGroup]="enterTimeGrid" novalidate>
+        <div formArrayName="cards">
+            <div class="esub-card no-hover time-card" *ngFor="let card of enterTimeGrid.controls['cards']['controls']; let cardIndex = index"
+                 [formGroupName]="cardIndex">
+                <div class="time-card-header">
+
+                    <div class="row">
+                        <div class="col-md-6 enter-time-card-header" [ngSwitch]="groupCardsBy">
+                            <div class="enter-time-grid-card-title">
+                                <label *ngSwitchCase="'Employee'">{{card.get('key').value}}</label>
+                                <label *ngSwitchCase="'Project'">{{card.get('key').value}}</label>
+                                <label *ngSwitchCase="'Date'">{{card.get('key').value | date:'yMMMd'}}</label>
+                            </div>
+                            <div class="enter-time-card-totals">
+                                <div class="enter-time-card-hours total">
+                                    <div class="card-total-label">Total</div>
+                                    <div class="card-total-value">{{(card.get('ST').value + card.get('OT').value + card.get('DT').value).toFixed(2)}}</div>
+                                </div>
+                                <div class="enter-time-card-hours standard">
+                                    <div class="card-total-label">ST</div>
+                                    <div class="card-total-value">{{card.get('ST').value.toFixed(2)}}</div>
+                                </div>
+                                <div class="enter-time-card-hours overtime">
+                                    <div class="card-total-label">OT</div>
+                                    <div class="card-total-value">{{card.get('OT').value.toFixed(2)}}</div>
+                                </div>
+                                <div class="enter-time-card-hours doubletime">
+                                    <div class="card-total-label">DT</div>
+                                    <div class="card-total-value">{{card.get('DT').value.toFixed(2)}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <button md-raised-button type="button" class="esub-button negative" [id]="'btnGridFormDeleteCard-' + cardIndex"
+                                    (click)="deleteCard(card, cardIndex)">Delete card</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="esub-table" *ngIf="card.get('projectRows')['controls'].length > 0">
+
+                    <div formArrayName="projectRows">
+                        <div class="table-row">
+                            <div style="order:1; width:8%; max-width: 10%;" class="table-cell table-header">Date</div>
+                            <div style="order:2; width:9%" class="table-cell table-header">Project</div>
+                            <div style="order:3; width:9%" class="table-cell table-header">System</div>
+                            <div style="order:4; width:9%" class="table-cell table-header">Phase</div>
+                            <div style="order:5; width:9%" class="table-cell table-header">Cost Code</div>
+                            <div style="order:6; width:9%" class="table-cell table-header">Employee</div>
+                            <div style="order:7; width:32%" class="table-cell table-header no-padding-header" *ngIf="timeSettings.Overridable.IsPunchInPunchOutEnabled">
+                                <div class="row no-gutters time-entry-header-row">
+                                    <div class="col-md-3 time-entry-header-cell">
+                                        Time In
+                                    </div>
+                                    <div class="col-md-3 time-entry-header-cell">
+                                        Break In
+                                    </div>
+                                    <div class="col-md-3 time-entry-header-cell">
+                                        Break Out
+                                    </div>
+                                    <div class="col-md-3 time-entry-header-cell-end">
+                                        Time Out
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="order:8; width:4%; max-width: 5%;" class="table-cell table-header">ST</div>
+                            <div style="order:9; width:4%; max-width: 5%;" class="table-cell table-header">OT</div>
+                            <div style="order:10; width:4%; max-width: 5%;" class="table-cell table-header">DT</div>
+                            <div style="order:11; width:3%; max-width: 3%;" class="table-cell table-header"></div>
+                        </div>
+
+                        <div class="table-row" *ngFor="let record of card.get('projectRows')['controls']; let rowIndex = index" [formGroupName]="rowIndex">
+                            <div style="order:1;" class="table-cell max-width-10" >
+                                <div *ngIf="groupCardsBy === 'Date'">
+                                    <label>{{record.get('date').value.format(dateFormat)}}</label>
+                                </div>
+                                <div *ngIf="groupCardsBy !== 'Date'" class="date-field">
+                                    <md-form-field>
+                                        <input mdInput [mdDatepicker]="picker" [ngModel]="record.get('date').value.toISOString()"
+                                               [ngModelOptions]="{'standalone': true }" [max]="maxDate" (ngModelChange)="dateChange($event, record)"
+                                               [id]="'txtGridFormDate-' + cardIndex + '-' + rowIndex">
+                                        <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
+                                        <md-datepicker #picker startView="day"></md-datepicker>
+                                    </md-form-field>
+                                </div>
+                            </div>
+
+                            <div style="order:2;" class="table-cell width-9" >
+                                <div *ngIf="groupCardsBy === 'Project'">
+                                    <label mdTooltip="{{record.get('project').value.Name}}" [mdTooltipPosition]="'below'" class="label-regular">
+                                    {{record.get('project').value.Name}}
+                                    </label>
+                                </div>
+                                <div *ngIf="groupCardsBy !== 'Project'">
+                                    <md-input-container class="form-field">
+                                        <input type="text" mdInput [mdAutocomplete]="autoProject" formControlName="project"
+                                               (focus)="openProjects()" (input)="changeProject($event.target.value)"
+                                               [id]="'txtGridFormProject-' + cardIndex + '-' + rowIndex">
+                                    </md-input-container>
+                                    <md-autocomplete #autoProject="mdAutocomplete" [displayWith]="displayFormatted"
+                                                     (optionSelected)="projectSelected($event, record)">
+                                        <md-option *ngFor="let project of filteredProjects | async"
+                                            [value]="project">
+                                            {{project.Number}} - {{project.Name}}
+                                        </md-option>
+                                    </md-autocomplete>
+                                </div>
+                            </div>
+
+                            <div style="order:3;" class="table-cell width-9" >
+                                <md-input-container class="form-field" *ngIf="record.get('project').value.Systems && record.get('project').value.Systems.length > 0">
+                                    <input type="text" mdInput [mdAutocomplete]="autoSystem" formControlName="system"
+                                           (focus)="openSystems(record)" (input)="changeSystem($event.target.value, record)"
+                                           [id]="'txtGridFormSystem-' + cardIndex + '-' + rowIndex">
+                                </md-input-container>
+                                <md-autocomplete #autoSystem="mdAutocomplete" [displayWith]="displayFormatted"
+                                                 (optionSelected)="systemSelected($event, record)">
+                                    <md-option *ngFor="let system of filteredSystems | async" [value]="system">
+                                        {{system.Number}} - {{system.Name}}
+                                    </md-option>
+                                </md-autocomplete>
+                            </div>
+
+                            <div style="order:4;" class="table-cell width-9" >
+                                <md-input-container class="form-field" *ngIf="record.get('system').value.Phases && record.get('system').value.Phases.length > 0">
+                                    <input type="text" mdInput [mdAutocomplete]="autoPhase" formControlName="phase"
+                                           (focus)="openPhases(record)" (input)="changePhase($event.target.value, record)"
+                                           [id]="'txtGridFormPhase-' + cardIndex + '-' + rowIndex">
+                                </md-input-container>
+                                <md-autocomplete #autoPhase="mdAutocomplete" [displayWith]="displayFormatted"
+                                                 (optionSelected)="phaseSelected($event, record)">
+                                    <md-option *ngFor="let phase of filteredPhases | async"
+                                               [value]="phase">
+                                        {{phase.Number}} - {{phase.Name}}
+                                    </md-option>
+                                </md-autocomplete>
+                            </div>
+
+                            <div style="order:5;" class="table-cell width-9" >
+                                <md-input-container class="form-field">
+                                    <input type="text" mdInput [mdAutocomplete]="autoCostCode" formControlName="costCode"
+                                           (focus)="openCostCodes(record)" (input)="changeCostCodes($event.target.value, record)"
+                                           [id]="'txtGridFormCostCode-' + cardIndex + '-' + rowIndex">
+                                </md-input-container>
+                                <md-autocomplete #autoCostCode="mdAutocomplete" [displayWith]="displayCode"
+                                                 (optionSelected)="costCodeSelected($event, record)">
+                                    <md-option *ngFor="let costCode of filteredCostCodes | async"
+                                               [value]="costCode">
+                                        {{costCode.Code}} - {{costCode.Name}}
+                                    </md-option>
+                                </md-autocomplete>
+                            </div>
+
+                            <div style="order:6;" class="table-cell width-9" >
+                                <div *ngIf="groupCardsBy === 'Employee'">
+                                    <label mdTooltip="{{record.get('employee').value.Name}}" [mdTooltipPosition]="'below'" class="label-regular">
+                                        {{record.get('employee').value.Name}}</label>
+                                </div>
+                                <div *ngIf="groupCardsBy !== 'Employee'">
+                                    <md-input-container class="form-field">
+                                        <input type="text" mdInput [mdAutocomplete]="autoEmployee" formControlName="employee"
+                                               (focus)="openEmployees(record)" (input)="changeEmployee($event.target.value, record)"
+                                               [id]="'txtGridFormEmployee-' + cardIndex + '-' + rowIndex">
+                                    </md-input-container>
+                                    <md-autocomplete #autoEmployee="mdAutocomplete" [displayWith]="displayFormatted"
+                                                     (optionSelected)="employeeSelected($event, record)">
+                                        <md-option *ngFor="let employee of filteredEmployees | async"
+                                                   [value]="employee">
+                                            {{employee.Number}} - {{employee.Name}}
+                                        </md-option>
+                                    </md-autocomplete>
+                                </div>
+                            </div>
+
+                            <div style="order:7; width:32%" class="table-cell no-padding-cell" *ngIf="timeSettings.Overridable.IsPunchInPunchOutEnabled"
+                                 formGroupName="timeEntry">
+                                <div class="row no-gutters time-entry-row">
+                                    <div class="col-md-3 time-entry-cell" formGroupName="time">
+                                        <div class="time-entry" *ngIf="record.get('isPunch').value && !browserMode.IsUnsupportedBrowser">
+                                            <md-form-field class="form-field" >
+                                                <input mdInput type="time" formControlName="in"
+                                                       [id]="'txtGridFormTimeIn-' + cardIndex + '-' + rowIndex"
+                                                       mdTooltip="{{getTimeEntryErrorMessage(record, 'in', 'time')}}" [mdTooltipPosition]="'below'"
+                                                       [mdTooltipDisabled]="checkIfTimeEntryErrorDisplayed(record, 'in', 'time')"
+                                                       [mdTooltipClass]="{'error-tooltip' : true}">
+                                            </md-form-field>
+                                        </div>
+                                        <div class="time-entry firefox-time" *ngIf="record.get('isPunch').value && browserMode.IsUnsupportedBrowser">
+                                            <md-form-field class="form-field" >
+                                                <input mdInput type="text" esubTimeInput formControlName="inValue"
+                                                       (timeChange)="onTimeChange($event, record, 'time', 'in')"
+                                                       (timePeriodChange)="onTimePeriodChange($event, record, 'time', 'in')"
+                                                       [id]="'txtGridFormTimeInValue-' + cardIndex + '-' + rowIndex"
+                                                       mdTooltip="{{getTimeEntryErrorMessage(record, 'inValue', 'time')}}" [mdTooltipPosition]="'below'"
+                                                       [mdTooltipDisabled]="checkIfTimeEntryErrorDisplayed(record, 'inValue', 'time')"
+                                                       [mdTooltipClass]="{'error-tooltip' : true}">
+                                            </md-form-field>
+                                            <md-select [ngClass]="{'ie-offset': browserMode.IsIE }" formControlName="inPeriod">
+                                                <md-option [value]="'AM'">AM</md-option>
+                                                <md-option [value]="'PM'">PM</md-option>
+                                            </md-select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 time-entry-cell" formGroupName="break">
+                                        <div class="time-entry" *ngIf="record.get('isPunch').value && !browserMode.IsUnsupportedBrowser">
+                                            <md-form-field class="form-field">
+                                                <input mdInput type="time" formControlName="in"
+                                                       [id]="'txtGridFormBreakIn-' + cardIndex + '-' + rowIndex"
+                                                       mdTooltip="{{getBreakEntryErrorMessage(record, 'in', 'break')}}" [mdTooltipPosition]="'below'"
+                                                       [mdTooltipDisabled]="checkIfBreakEntryErrorDisplayed(record, 'in', 'break')"
+                                                       [mdTooltipClass]="{'error-tooltip' : true}">
+                                            </md-form-field>
+                                        </div>
+                                        <div class="time-entry firefox-time" *ngIf="record.get('isPunch').value && browserMode.IsUnsupportedBrowser">
+                                            <md-form-field class="form-field" >
+                                                <input mdInput type="text" esubTimeInput formControlName="inValue"
+                                                       (timeChange)="onTimeChange($event, record, 'break', 'in')"
+                                                       (timePeriodChange)="onTimePeriodChange($event, record, 'break', 'in')"
+                                                       [id]="'txtGridFormBreakInValue-' + cardIndex + '-' + rowIndex"
+                                                       mdTooltip="{{getBreakEntryErrorMessage(record, 'inValue', 'break')}}" [mdTooltipPosition]="'below'"
+                                                       [mdTooltipDisabled]="checkIfBreakEntryErrorDisplayed(record, 'inValue', 'break')"
+                                                       [mdTooltipClass]="{'error-tooltip' : true}">
+                                            </md-form-field>
+                                            <md-select [ngClass]="{'ie-offset': browserMode.IsIE }" formControlName="inPeriod">
+                                                <md-option [value]="'AM'">AM</md-option>
+                                                <md-option [value]="'PM'">PM</md-option>
+                                            </md-select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 time-entry-cell" formGroupName="break">
+                                        <div class="time-entry" *ngIf="record.get('isPunch').value && !browserMode.IsUnsupportedBrowser">
+                                            <md-form-field class="form-field" >
+                                                <input mdInput type="time" formControlName="out"
+                                                       [id]="'txtGridFormBreakOut-' + cardIndex + '-' + rowIndex"
+                                                       mdTooltip="{{getBreakEntryErrorMessage(record, 'out', 'break')}}" [mdTooltipPosition]="'below'"
+                                                       [mdTooltipDisabled]="checkIfBreakEntryErrorDisplayed(record, 'out', 'break')"
+                                                       [mdTooltipClass]="{'error-tooltip' : true}">
+                                            </md-form-field>
+                                        </div>
+                                        <div class="time-entry firefox-time" *ngIf="record.get('isPunch').value && browserMode.IsUnsupportedBrowser">
+                                            <md-form-field class="form-field" >
+                                                <input mdInput type="text" esubTimeInput formControlName="outValue"
+                                                       (timeChange)="onTimeChange($event, record, 'break', 'out')"
+                                                       (timePeriodChange)="onTimePeriodChange($event, record, 'break', 'out')"
+                                                       [id]="'txtGridFormBreakOutValue-' + cardIndex + '-' + rowIndex"
+                                                       mdTooltip="{{getBreakEntryErrorMessage(record, 'outValue', 'break')}}" [mdTooltipPosition]="'below'"
+                                                       [mdTooltipDisabled]="checkIfBreakEntryErrorDisplayed(record, 'outValue', 'break')"
+                                                       [mdTooltipClass]="{'error-tooltip' : true}">
+                                            </md-form-field>
+                                            <md-select [ngClass]="{'ie-offset': browserMode.IsIE }" formControlName="outPeriod">
+                                                <md-option [value]="'AM'">AM</md-option>
+                                                <md-option [value]="'PM'">PM</md-option>
+                                            </md-select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 time-entry-cell row-end" formGroupName="time">
+                                        <div class="time-entry" *ngIf="record.get('isPunch').value && !browserMode.IsUnsupportedBrowser">
+                                            <md-form-field class="form-field" >
+                                                <input mdInput type="time" formControlName="out"
+                                                       [id]="'txtGridFormTimeOut-' + cardIndex + '-' + rowIndex"
+                                                       mdTooltip="{{getTimeEntryErrorMessage(record, 'out', 'time')}}" [mdTooltipPosition]="'below'"
+                                                       [mdTooltipDisabled]="checkIfTimeEntryErrorDisplayed(record, 'out', 'time')"
+                                                       [mdTooltipClass]="{'error-tooltip' : true}">
+                                            </md-form-field>
+                                        </div>
+                                        <div class="time-entry firefox-time" *ngIf="record.get('isPunch').value && browserMode.IsUnsupportedBrowser">
+                                            <md-form-field class="form-field" >
+                                                <input mdInput type="text" esubTimeInput formControlName="outValue"
+                                                       (timeChange)="onTimeChange($event, record, 'time', 'out')"
+                                                       (timePeriodChange)="onTimePeriodChange($event, record, 'time', 'out')"
+                                                       [id]="'txtGridFormTimeOutValue-' + cardIndex + '-' + rowIndex"
+                                                       mdTooltip="{{getTimeEntryErrorMessage(record, 'outValue', 'time')}}" [mdTooltipPosition]="'below'"
+                                                       [mdTooltipDisabled]="checkIfTimeEntryErrorDisplayed(record, 'outValue', 'time')"
+                                                       [mdTooltipClass]="{'error-tooltip' : true}">
+                                            </md-form-field>
+                                            <md-select [ngClass]="{'ie-offset': browserMode.IsIE }" formControlName="outPeriod">
+                                                <md-option [value]="'AM'">AM</md-option>
+                                                <md-option [value]="'PM'">PM</md-option>
+                                            </md-select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="order:8;" class="table-cell table-time-entry max-width-4">
+                                <md-form-field class="form-field">
+                                    <input mdInput type="number" formControlName="standardHours" maxlength="5" step="0.25" min="0" max="24"
+                                           [id]="'txtGridFormST-' + cardIndex + '-' + rowIndex">
+                                </md-form-field>
+                            </div>
+                            <div style="order:9;" class="table-cell table-time-entry max-width-4">
+                                <md-form-field class="form-field">
+                                    <input mdInput type="number" formControlName="overtimeHours" maxlength="5" step="0.25" min="0" max="24"
+                                           [id]="'txtGridFormOT-' + cardIndex + '-' + rowIndex">
+                                </md-form-field>
+                            </div>
+                            <div style="order:10;" class="table-cell table-time-entry max-width-4">
+                                <md-form-field class="form-field">
+                                    <input mdInput type="number" formControlName="doubleTimeHours" maxlength="5" step="0.25" min="0" max="24"
+                                           [id]="'txtGridFormDT-' + cardIndex + '-' + rowIndex">
+                                </md-form-field>
+                            </div>
+
+                            <div style="order:14;" class="table-cell max-width-3" >
+                                <i class="material-icons" mdTooltip="Copy" (click)="copyRow(record, card)"
+                                   [mdTooltipPosition]="'after'" [id]="'btnGridFormCopyRow-' + cardIndex + '-' + rowIndex">content_copy</i>
+                                <i class="material-icons" mdTooltip="Note" (click)="openNotesModal(record)"
+                                   [mdTooltipPosition]="'after'" [id]="'btnGridFormNote-' + cardIndex + '-' + rowIndex">description</i>
+                                <i class="material-icons" mdTooltip="Delete" (click)="deleteRow(record, rowIndex, card, cardIndex)"
+                                   [mdTooltipPosition]="'after'" [id]="'btnGridFormDeleteRow-' + cardIndex + '-' + rowIndex">delete</i>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="esub-table" *ngIf="card.get('indirectRows')['controls'].length > 0">
+
+                    <div formArrayName="indirectRows">
+                        <label class="title-light" *ngIf="groupCardsBy !== 'Project'">Indirect Costs</label>
+                        <div class="table-row">
+                            <div style="order:1; width:15%" class="table-cell table-header">Date</div>
+                            <div style="order:2; width:25%" class="table-cell table-header">Employee</div>
+                            <div style="order:3; width:25%" class="table-cell table-header">CostCode</div>
+                            <div style="order:4; width:32%" class="table-cell table-header">ST</div>
+                            <div style="order:5; width:03%" class="table-cell table-header"></div>
+                        </div>
+
+                        <div class="table-row" *ngFor="let record of card.get('indirectRows')['controls']; let rowIndex = index" [formGroupName]="rowIndex">
+                            <div style="order:1; width:15%" class="table-cell" >
+                                <div *ngIf="groupCardsBy === 'Date'">
+                                    <label>{{record.get('date').value.format(dateFormat)}}</label>
+                                </div>
+                                <div *ngIf="groupCardsBy !== 'Date'" class="date-field">
+                                    <md-form-field>
+                                        <input mdInput [mdDatepicker]="picker" [ngModel]="record.get('date').value.toISOString()"
+                                               [ngModelOptions]="{'standalone': true }" [max]="maxDate" (ngModelChange)="indirectDateChange($event, record)"
+                                               [id]="'txtGridFormIndirectDate-' + cardIndex + '-' + rowIndex">
+                                        <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
+                                        <md-datepicker #picker startView="day"></md-datepicker>
+                                    </md-form-field>
+                                </div>
+                            </div>
+                            <div style="order:2; width:25%" class="table-cell" >
+                                <div *ngIf="groupCardsBy === 'Employee'">
+                                    <label mdTooltip="{{record.get('employee').value.Name}}" [mdTooltipPosition]="'below'" class="label-regular">
+                                        {{record.get('employee').value.Name}}</label>
+                                </div>
+                                <div *ngIf="groupCardsBy !== 'Employee'">
+                                    <div *ngIf="groupCardsBy === 'Employee'">
+                                        <label mdTooltip="{{record.get('employee').value.Name}}" [mdTooltipPosition]="'below'" class="label-regular">
+                                            {{record.get('employee').value.Name}}</label>
+                                    </div>
+                                    <div *ngIf="groupCardsBy !== 'Employee'">
+                                        <md-form-field class="form-field">
+                                            <input type="text" mdInput [mdAutocomplete]="autoIndirectEmployee" formControlName="employee"
+                                                   (focus)="openIndirectEmployees()" (input)="changeIndirectEmployee($event.target.value)"
+                                                   [id]="'txtGridFormIndirectEmployee-' + cardIndex + '-' + rowIndex">
+                                        </md-form-field>
+                                        <md-autocomplete #autoIndirectEmployee="mdAutocomplete" [displayWith]="displayFormatted"
+                                                         (optionSelected)="indirectEmployeeSelected($event, record)">
+                                            <md-option *ngFor="let employee of filteredEmployees | async"
+                                                       [value]="employee">
+                                                {{employee.Number}} - {{employee.Name}}
+                                            </md-option>
+                                        </md-autocomplete>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="order:3; width:25%" class="table-cell" >
+                                <md-form-field class="form-field">
+                                    <input type="text" mdInput [mdAutocomplete]="autoIndirectCost" formControlName="costCode"
+                                           (focus)="openIndirectCostCodes(record)" (input)="changeIndirectCostCodes($event.target.value)"
+                                           [id]="'txtGridFormIndirectCostCode-' + cardIndex + '-' + rowIndex">
+                                </md-form-field>
+                                <md-autocomplete #autoIndirectCost="mdAutocomplete" [displayWith]="displayCode"
+                                                 (optionSelected)="indirectCostSelected($event, record)">
+                                    <md-option *ngFor="let costCode of filteredCostCodes | async"
+                                               [value]="costCode">
+                                        {{costCode.Code}} - {{costCode.Name}}
+                                    </md-option>
+                                </md-autocomplete>
+                            </div>
+                            <div style="order:4; width:32%" class="table-cell table-time-entry">
+                                <div class="row">
+                                    <div class="col-md-12 no-gutters">
+                                        <md-form-field class="form-field">
+                                            <input mdInput type="number" formControlName="standardHours" maxlength="5" step="0.25" min="0" max="24"
+                                                   [id]="'txtGridFormIndirectST-' + cardIndex + '-' + rowIndex">
+                                        </md-form-field>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="order:5; width:03%" class="table-cell" >
+                                <i class="material-icons" mdTooltip="Copy" (click)="copyIndirectRow(record, card)"
+                                   [mdTooltipPosition]="'after'" [id]="'btnGridFormIndirectCopyRow-' + cardIndex + '-' + rowIndex">content_copy</i>
+                                <i class="material-icons" mdTooltip="Note" (click)="openNotesModal(record)"
+                                   [mdTooltipPosition]="'after'" [id]="'btnGridFormIndirectNote-' + cardIndex + '-' + rowIndex">description</i>
+                                <i class="material-icons" mdTooltip="Delete" (click)="deleteIndirectRow(record, rowIndex, card, cardIndex)"
+                                   [mdTooltipPosition]="'after'" [id]="'btnGridFormIndirectDeleteRow-' + cardIndex + '-' + rowIndex">delete</i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <button md-raised-button type="button" [id]="'btnGridSubmit'" class="esub-button secondary" [disabled]="enterTimeGrid.invalid"
+                        (click)="submitTime()">Submit Time</button>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+
+
