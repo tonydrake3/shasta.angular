@@ -53,7 +53,7 @@ export class EnterTimeFilterService {
                 return employee.Name.toLowerCase().includes(match.toLowerCase()) ||
                     (employee.Number && employee.Number.toLowerCase().includes(match.toLowerCase())) ||
                     (employee.Number &&
-                    (employee.Number.toLowerCase() + ' - ' + employee.Name.toLowerCase()).includes(match.toLowerCase()));
+                        (employee.Number.toLowerCase() + ' - ' + employee.Name.toLowerCase()).includes(match.toLowerCase()));
             });
 
             if (selectedEmployees && selectedEmployees.length > 0) {
@@ -99,25 +99,28 @@ export class EnterTimeFilterService {
         return Observable.of(filtered);
     }
 
-    public filterByKeyValuePair<T>(collection: Array<T>, dictionary: any): Observable<T[]> {
+    public filterByKeyValuePair<T>(collection: Array<T>, dictionary: any): T[] {
         let filtered = [];
 
         filtered = _.filter(collection, (item) => {
 
             for (const key of Object.keys(dictionary)) {
 
-             if (item[key] && item[key].includes(dictionary[key])) { return true }
+                const searchText = String(dictionary[key]).toLowerCase();
+                const fieldValue = String(item[key]).toLowerCase();
+
+                if (fieldValue && fieldValue.includes(searchText)) { return true }
 
             }
 
             return false;
         });
 
-        return Observable.of(filtered);
+        return filtered;
     }
 
-    public filterCollectionByKey<T>(collection: Array<T>, value: string, withPropertyKeys: string[] = ['Name', 'Number']): Observable<T[]> {
-        let filteredCollection: Observable<T[]>;
+    public filterCollectionByKey<T>(collection: Array<T>, value: string, withPropertyKeys: string[] = ['Name', 'Number']): T[] {
+        let filteredCollection: T[];
 
         if (value) {
             const dictionary = withPropertyKeys.reduce((previous, current) => {
@@ -128,7 +131,7 @@ export class EnterTimeFilterService {
 
         } else {
 
-            filteredCollection = Observable.of(collection);
+            filteredCollection = collection;
 
         }
         return filteredCollection

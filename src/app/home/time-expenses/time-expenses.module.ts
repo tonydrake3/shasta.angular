@@ -35,6 +35,7 @@ import { EnterTimeBatchService } from './enter-time/enter-time-batch.service';
 import { EnterTimeFilterService } from './enter-time/enter-time-filter.service';
 import { EnterTimeTransformService } from './enter-time/enter-time-transform.service';
 import { EntityDisplayFormatterService } from '../shared/services/entity-display-formatter.service';
+import {TimeRecordUpdaterService} from './time-record-detail-modal/time-record-updater.service';
 
 @NgModule({
     imports: [
@@ -68,6 +69,7 @@ import { EntityDisplayFormatterService } from '../shared/services/entity-display
     ],
     providers: [
         TimeRecordsService,
+        TimeRecordUpdaterService,
         EnterTimeBatchService,
       	TimeExpensesService,
         EnterTimeFilterService,
