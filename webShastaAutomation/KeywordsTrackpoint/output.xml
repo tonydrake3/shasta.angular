@@ -1,24 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generated="20170926 10:56:36.331" generator="Robot 3.0.2 (Python 2.7.13 on darwin)">
-<suite source="/Users/tonydrake/gitrepos/shasta.angular/webShastaAutomation/KeywordsTrackpoint/costCode.robot" id="s1" name="costCode">
-<test id="s1-t1" name="Edit Current Labor Activity">
-<kw name="Edit Current Labor Activity">
+<robot generated="20170929 11:54:54.533" generator="Robot 3.0.2 (Python 2.7.13 on darwin)">
+<suite source="/Users/tonydrake/gitrepos/shasta.angular/webShastaAutomation/KeywordsTrackpoint/administration.robot" id="s1" name="Administration">
+<test id="s1-t1" name="Login and Logout">
+<kw name="Login and Logout">
 <kw name="Open Browser" library="Selenium2Library">
 <doc>Opens a new browser instance to given URL.</doc>
 <arguments>
-<arg>https://www.esubonline.com/TRACKpoint/</arg>
+<arg>https://staging.esubonline.com/TRACKpoint/</arg>
 <arg>Chrome</arg>
 </arguments>
-<msg timestamp="20170926 10:56:36.438" level="INFO">Opening browser 'Chrome' to base url 'https://www.esubonline.com/TRACKpoint/'</msg>
-<status status="PASS" endtime="20170926 10:56:39.468" starttime="20170926 10:56:36.437"></status>
+<msg timestamp="20170929 11:54:54.634" level="INFO">Opening browser 'Chrome' to base url 'https://staging.esubonline.com/TRACKpoint/'</msg>
+<status status="PASS" endtime="20170929 11:54:57.759" starttime="20170929 11:54:54.634"></status>
+</kw>
+<kw name="Set Window Size" library="Selenium2Library">
+<doc>Sets the `width` and `height` of the current window to the specified values.</doc>
+<arguments>
+<arg>${1600}</arg>
+<arg>${900}</arg>
+</arguments>
+<status status="PASS" endtime="20170929 11:54:57.941" starttime="20170929 11:54:57.760"></status>
 </kw>
 <kw name="Sleep" library="BuiltIn">
 <doc>Pauses the test executed for the given time.</doc>
 <arguments>
 <arg>3s</arg>
 </arguments>
-<msg timestamp="20170926 10:56:42.469" level="INFO">Slept 3 seconds</msg>
-<status status="PASS" endtime="20170926 10:56:42.469" starttime="20170926 10:56:39.468"></status>
+<msg timestamp="20170929 11:55:00.942" level="INFO">Slept 3 seconds</msg>
+<status status="PASS" endtime="20170929 11:55:00.943" starttime="20170929 11:54:57.941"></status>
 </kw>
 <kw name="Input Text" library="Selenium2Library">
 <doc>Types the given `text` into text field identified by `locator`.</doc>
@@ -26,55 +34,47 @@
 <arg>id=loginName</arg>
 <arg>TrialDiaz</arg>
 </arguments>
-<msg timestamp="20170926 10:56:42.470" level="INFO">Typing text 'TrialDiaz' into text field 'id=loginName'</msg>
-<status status="PASS" endtime="20170926 10:56:42.613" starttime="20170926 10:56:42.470"></status>
+<msg timestamp="20170929 11:55:00.943" level="INFO">Typing text 'TrialDiaz' into text field 'id=loginName'</msg>
+<status status="PASS" endtime="20170929 11:55:01.081" starttime="20170929 11:55:00.943"></status>
 </kw>
 <kw name="Sleep" library="BuiltIn">
 <doc>Pauses the test executed for the given time.</doc>
 <arguments>
 <arg>1s</arg>
 </arguments>
-<msg timestamp="20170926 10:56:43.614" level="INFO">Slept 1 second</msg>
-<status status="PASS" endtime="20170926 10:56:43.614" starttime="20170926 10:56:42.613"></status>
+<msg timestamp="20170929 11:55:02.081" level="INFO">Slept 1 second</msg>
+<status status="PASS" endtime="20170929 11:55:02.082" starttime="20170929 11:55:01.081"></status>
 </kw>
 <kw name="Click Button" library="Selenium2Library">
 <doc>Clicks a button identified by `locator`.</doc>
 <arguments>
 <arg>id=Image1</arg>
 </arguments>
-<msg timestamp="20170926 10:56:43.615" level="INFO">Clicking button 'id=Image1'.</msg>
-<status status="PASS" endtime="20170926 10:56:44.438" starttime="20170926 10:56:43.614"></status>
-</kw>
-<kw name="Sleep" library="BuiltIn">
-<doc>Pauses the test executed for the given time.</doc>
-<arguments>
-<arg>3s</arg>
-</arguments>
-<msg timestamp="20170926 10:56:47.439" level="INFO">Slept 3 seconds</msg>
-<status status="PASS" endtime="20170926 10:56:47.439" starttime="20170926 10:56:44.438"></status>
+<msg timestamp="20170929 11:55:02.082" level="INFO">Clicking button 'id=Image1'.</msg>
+<status status="PASS" endtime="20170929 11:55:02.804" starttime="20170929 11:55:02.082"></status>
 </kw>
 <kw name="Capture Page Screenshot" library="Selenium2Library">
 <doc>Takes a screenshot of the current page and embeds it into the log.</doc>
 <arguments>
 <arg>Filename=SubscriberValid.png</arg>
 </arguments>
-<msg timestamp="20170926 10:56:47.693" html="yes" level="INFO">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="Filename%3DSubscriberValid.png"&gt;&lt;img src="Filename%3DSubscriberValid.png" width="800px"&gt;&lt;/a&gt;</msg>
-<status status="PASS" endtime="20170926 10:56:47.693" starttime="20170926 10:56:47.439"></status>
+<msg timestamp="20170929 11:55:03.094" html="yes" level="INFO">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="Filename%3DSubscriberValid.png"&gt;&lt;img src="Filename%3DSubscriberValid.png" width="800px"&gt;&lt;/a&gt;</msg>
+<status status="PASS" endtime="20170929 11:55:03.095" starttime="20170929 11:55:02.804"></status>
 </kw>
 <kw name="Wait Until Page Contains" library="Selenium2Library">
 <doc>Waits until `text` appears on current page.</doc>
 <arguments>
 <arg>eSUB</arg>
 </arguments>
-<status status="PASS" endtime="20170926 10:56:47.712" starttime="20170926 10:56:47.693"></status>
+<status status="PASS" endtime="20170929 11:55:03.115" starttime="20170929 11:55:03.095"></status>
 </kw>
 <kw name="Sleep" library="BuiltIn">
 <doc>Pauses the test executed for the given time.</doc>
 <arguments>
 <arg>2s</arg>
 </arguments>
-<msg timestamp="20170926 10:56:49.713" level="INFO">Slept 2 seconds</msg>
-<status status="PASS" endtime="20170926 10:56:49.713" starttime="20170926 10:56:47.712"></status>
+<msg timestamp="20170929 11:55:05.116" level="INFO">Slept 2 seconds</msg>
+<status status="PASS" endtime="20170929 11:55:05.116" starttime="20170929 11:55:03.115"></status>
 </kw>
 <kw name="Input Text" library="Selenium2Library">
 <doc>Types the given `text` into text field identified by `locator`.</doc>
@@ -82,16 +82,16 @@
 <arg>name=username</arg>
 <arg>support@esubinc.com</arg>
 </arguments>
-<msg timestamp="20170926 10:56:49.714" level="INFO">Typing text 'support@esubinc.com' into text field 'name=username'</msg>
-<status status="PASS" endtime="20170926 10:56:49.855" starttime="20170926 10:56:49.713"></status>
+<msg timestamp="20170929 11:55:05.117" level="INFO">Typing text 'support@esubinc.com' into text field 'name=username'</msg>
+<status status="PASS" endtime="20170929 11:55:05.259" starttime="20170929 11:55:05.117"></status>
 </kw>
 <kw name="Sleep" library="BuiltIn">
 <doc>Pauses the test executed for the given time.</doc>
 <arguments>
 <arg>2s</arg>
 </arguments>
-<msg timestamp="20170926 10:56:51.856" level="INFO">Slept 2 seconds</msg>
-<status status="PASS" endtime="20170926 10:56:51.856" starttime="20170926 10:56:49.855"></status>
+<msg timestamp="20170929 11:55:07.262" level="INFO">Slept 2 seconds</msg>
+<status status="PASS" endtime="20170929 11:55:07.262" starttime="20170929 11:55:05.259"></status>
 </kw>
 <kw name="Input Text" library="Selenium2Library">
 <doc>Types the given `text` into text field identified by `locator`.</doc>
@@ -99,295 +99,130 @@
 <arg>id=Password1</arg>
 <arg>Tr@pointe$ub</arg>
 </arguments>
-<msg timestamp="20170926 10:56:51.857" level="INFO">Typing text 'Tr@pointe$ub' into text field 'id=Password1'</msg>
-<status status="PASS" endtime="20170926 10:56:51.961" starttime="20170926 10:56:51.857"></status>
+<msg timestamp="20170929 11:55:07.262" level="INFO">Typing text 'Tr@pointe$ub' into text field 'id=Password1'</msg>
+<status status="PASS" endtime="20170929 11:55:07.364" starttime="20170929 11:55:07.262"></status>
 </kw>
 <kw name="Sleep" library="BuiltIn">
 <doc>Pauses the test executed for the given time.</doc>
 <arguments>
 <arg>1s</arg>
 </arguments>
-<msg timestamp="20170926 10:56:52.963" level="INFO">Slept 1 second</msg>
-<status status="PASS" endtime="20170926 10:56:52.963" starttime="20170926 10:56:51.961"></status>
+<msg timestamp="20170929 11:55:08.365" level="INFO">Slept 1 second</msg>
+<status status="PASS" endtime="20170929 11:55:08.365" starttime="20170929 11:55:07.364"></status>
 </kw>
 <kw name="Click Button" library="Selenium2Library">
 <doc>Clicks a button identified by `locator`.</doc>
 <arguments>
 <arg>id=Image1</arg>
 </arguments>
-<msg timestamp="20170926 10:56:52.964" level="INFO">Clicking button 'id=Image1'.</msg>
-<status status="PASS" endtime="20170926 10:56:55.641" starttime="20170926 10:56:52.964"></status>
+<msg timestamp="20170929 11:55:08.366" level="INFO">Clicking button 'id=Image1'.</msg>
+<status status="PASS" endtime="20170929 11:55:11.549" starttime="20170929 11:55:08.366"></status>
 </kw>
 <kw name="Wait Until Page Contains" library="Selenium2Library">
 <doc>Waits until `text` appears on current page.</doc>
 <arguments>
 <arg>eSUB</arg>
 </arguments>
-<status status="PASS" endtime="20170926 10:56:55.678" starttime="20170926 10:56:55.642"></status>
+<status status="PASS" endtime="20170929 11:55:11.565" starttime="20170929 11:55:11.550"></status>
 </kw>
 <kw name="Sleep" library="BuiltIn">
 <doc>Pauses the test executed for the given time.</doc>
 <arguments>
 <arg>3s</arg>
 </arguments>
-<msg timestamp="20170926 10:56:58.681" level="INFO">Slept 3 seconds</msg>
-<status status="PASS" endtime="20170926 10:56:58.681" starttime="20170926 10:56:55.678"></status>
-</kw>
-<kw name="Mouse Over" library="Selenium2Library">
-<doc>Simulates hovering mouse over the element specified by `locator`.</doc>
-<arguments>
-<arg>Xpath=/html/body/font/div[1]/a[2]</arg>
-</arguments>
-<msg timestamp="20170926 10:56:58.682" level="INFO">Simulating Mouse Over on element 'Xpath=/html/body/font/div[1]/a[2]'</msg>
-<status status="PASS" endtime="20170926 10:56:58.725" starttime="20170926 10:56:58.682"></status>
-</kw>
-<kw name="Sleep" library="BuiltIn">
-<doc>Pauses the test executed for the given time.</doc>
-<arguments>
-<arg>2s</arg>
-</arguments>
-<msg timestamp="20170926 10:57:00.726" level="INFO">Slept 2 seconds</msg>
-<status status="PASS" endtime="20170926 10:57:00.726" starttime="20170926 10:56:58.725"></status>
-</kw>
-<kw name="Click Element" library="Selenium2Library">
-<doc>Click element identified by `locator`.</doc>
-<arguments>
-<arg>Xpath=//*[@id="optionNav"]/a[1]</arg>
-</arguments>
-<msg timestamp="20170926 10:57:00.727" level="INFO">Clicking element 'Xpath=//*[@id="optionNav"]/a[1]'.</msg>
-<status status="PASS" endtime="20170926 10:57:01.585" starttime="20170926 10:57:00.726"></status>
+<msg timestamp="20170929 11:55:14.566" level="INFO">Slept 3 seconds</msg>
+<status status="PASS" endtime="20170929 11:55:14.566" starttime="20170929 11:55:11.565"></status>
 </kw>
 <kw name="Wait Until Page Contains" library="Selenium2Library">
 <doc>Waits until `text` appears on current page.</doc>
 <arguments>
 <arg>eSUB</arg>
 </arguments>
-<status status="PASS" endtime="20170926 10:57:01.619" starttime="20170926 10:57:01.585"></status>
+<status status="PASS" endtime="20170929 11:55:14.580" starttime="20170929 11:55:14.566"></status>
 </kw>
 <kw name="Sleep" library="BuiltIn">
 <doc>Pauses the test executed for the given time.</doc>
 <arguments>
 <arg>2s</arg>
 </arguments>
-<msg timestamp="20170926 10:57:03.621" level="INFO">Slept 2 seconds</msg>
-<status status="PASS" endtime="20170926 10:57:03.621" starttime="20170926 10:57:01.619"></status>
-</kw>
-<kw name="Input Text" library="Selenium2Library">
-<doc>Types the given `text` into text field identified by `locator`.</doc>
-<arguments>
-<arg>Xpath=//*[@id="ProjectNumber"]</arg>
-<arg>765</arg>
-</arguments>
-<msg timestamp="20170926 10:57:03.622" level="INFO">Typing text '765' into text field 'Xpath=//*[@id="ProjectNumber"]'</msg>
-<status status="PASS" endtime="20170926 10:57:03.760" starttime="20170926 10:57:03.621"></status>
-</kw>
-<kw name="Sleep" library="BuiltIn">
-<doc>Pauses the test executed for the given time.</doc>
-<arguments>
-<arg>2s</arg>
-</arguments>
-<msg timestamp="20170926 10:57:05.761" level="INFO">Slept 2 seconds</msg>
-<status status="PASS" endtime="20170926 10:57:05.761" starttime="20170926 10:57:03.760"></status>
-</kw>
-<kw name="Mouse Over" library="Selenium2Library">
-<doc>Simulates hovering mouse over the element specified by `locator`.</doc>
-<arguments>
-<arg>xpath=//*[@id="status"]</arg>
-</arguments>
-<msg timestamp="20170926 10:57:05.762" level="INFO">Simulating Mouse Over on element 'xpath=//*[@id="status"]'</msg>
-<status status="PASS" endtime="20170926 10:57:05.800" starttime="20170926 10:57:05.762"></status>
+<msg timestamp="20170929 11:55:16.581" level="INFO">Slept 2 seconds</msg>
+<status status="PASS" endtime="20170929 11:55:16.581" starttime="20170929 11:55:14.580"></status>
 </kw>
 <kw name="Click Element" library="Selenium2Library">
 <doc>Click element identified by `locator`.</doc>
 <arguments>
-<arg>Xpath=//*[@id="status"]/option[2]</arg>
+<arg>id=eSUBTopLogo</arg>
 </arguments>
-<msg timestamp="20170926 10:57:05.801" level="INFO">Clicking element 'Xpath=//*[@id="status"]/option[2]'.</msg>
-<status status="PASS" endtime="20170926 10:57:05.859" starttime="20170926 10:57:05.800"></status>
-</kw>
-<kw name="Sleep" library="BuiltIn">
-<doc>Pauses the test executed for the given time.</doc>
-<arguments>
-<arg>2s</arg>
-</arguments>
-<msg timestamp="20170926 10:57:07.860" level="INFO">Slept 2 seconds</msg>
-<status status="PASS" endtime="20170926 10:57:07.861" starttime="20170926 10:57:05.859"></status>
-</kw>
-<kw name="Mouse Over" library="Selenium2Library">
-<doc>Simulates hovering mouse over the element specified by `locator`.</doc>
-<arguments>
-<arg>xpath=//*[@id="status"]</arg>
-</arguments>
-<msg timestamp="20170926 10:57:07.861" level="INFO">Simulating Mouse Over on element 'xpath=//*[@id="status"]'</msg>
-<status status="PASS" endtime="20170926 10:57:07.881" starttime="20170926 10:57:07.861"></status>
-</kw>
-<kw name="Click Element" library="Selenium2Library">
-<doc>Click element identified by `locator`.</doc>
-<arguments>
-<arg>Xpath=//*[@id="status"]/option[3]</arg>
-</arguments>
-<msg timestamp="20170926 10:57:07.881" level="INFO">Clicking element 'Xpath=//*[@id="status"]/option[3]'.</msg>
-<status status="PASS" endtime="20170926 10:57:07.933" starttime="20170926 10:57:07.881"></status>
-</kw>
-<kw name="Sleep" library="BuiltIn">
-<doc>Pauses the test executed for the given time.</doc>
-<arguments>
-<arg>2s</arg>
-</arguments>
-<msg timestamp="20170926 10:57:09.935" level="INFO">Slept 2 seconds</msg>
-<status status="PASS" endtime="20170926 10:57:09.935" starttime="20170926 10:57:07.933"></status>
-</kw>
-<kw name="Mouse Over" library="Selenium2Library">
-<doc>Simulates hovering mouse over the element specified by `locator`.</doc>
-<arguments>
-<arg>xpath=//*[@id="status"]</arg>
-</arguments>
-<msg timestamp="20170926 10:57:09.936" level="INFO">Simulating Mouse Over on element 'xpath=//*[@id="status"]'</msg>
-<status status="PASS" endtime="20170926 10:57:09.956" starttime="20170926 10:57:09.936"></status>
-</kw>
-<kw name="Click Element" library="Selenium2Library">
-<doc>Click element identified by `locator`.</doc>
-<arguments>
-<arg>Xpath=//*[@id="status"]/option[5]</arg>
-</arguments>
-<msg timestamp="20170926 10:57:09.956" level="INFO">Clicking element 'Xpath=//*[@id="status"]/option[5]'.</msg>
-<status status="PASS" endtime="20170926 10:57:10.014" starttime="20170926 10:57:09.956"></status>
-</kw>
-<kw name="Sleep" library="BuiltIn">
-<doc>Pauses the test executed for the given time.</doc>
-<arguments>
-<arg>2s</arg>
-</arguments>
-<msg timestamp="20170926 10:57:12.016" level="INFO">Slept 2 seconds</msg>
-<status status="PASS" endtime="20170926 10:57:12.016" starttime="20170926 10:57:10.014"></status>
-</kw>
-<kw name="Input Text" library="Selenium2Library">
-<doc>Types the given `text` into text field identified by `locator`.</doc>
-<arguments>
-<arg>id=ProjectName</arg>
-<arg>New Testing Company for testing</arg>
-</arguments>
-<msg timestamp="20170926 10:57:12.017" level="INFO">Typing text 'New Testing Company for testing' into text field 'id=ProjectName'</msg>
-<status status="PASS" endtime="20170926 10:57:12.492" starttime="20170926 10:57:12.017"></status>
-</kw>
-<kw name="Sleep" library="BuiltIn">
-<doc>Pauses the test executed for the given time.</doc>
-<arguments>
-<arg>4s</arg>
-</arguments>
-<msg timestamp="20170926 10:57:16.493" level="INFO">Slept 4 seconds</msg>
-<status status="PASS" endtime="20170926 10:57:16.493" starttime="20170926 10:57:12.492"></status>
-</kw>
-<kw name="Click Element" library="Selenium2Library">
-<doc>Click element identified by `locator`.</doc>
-<arguments>
-<arg>Xpath=//*[@id="Table1"]/tbody/tr[11]/td[2]/select</arg>
-</arguments>
-<msg timestamp="20170926 10:57:16.494" level="INFO">Clicking element 'Xpath=//*[@id="Table1"]/tbody/tr[11]/td[2]/select'.</msg>
-<status status="PASS" endtime="20170926 10:57:16.611" starttime="20170926 10:57:16.493"></status>
-</kw>
-<kw name="Sleep" library="BuiltIn">
-<doc>Pauses the test executed for the given time.</doc>
-<arguments>
-<arg>2s</arg>
-</arguments>
-<msg timestamp="20170926 10:57:18.612" level="INFO">Slept 2 seconds</msg>
-<status status="PASS" endtime="20170926 10:57:18.612" starttime="20170926 10:57:16.611"></status>
-</kw>
-<kw name="Click Element" library="Selenium2Library">
-<doc>Click element identified by `locator`.</doc>
-<arguments>
-<arg>id=Checkbox1</arg>
-</arguments>
-<msg timestamp="20170926 10:57:18.613" level="INFO">Clicking element 'id=Checkbox1'.</msg>
-<status status="PASS" endtime="20170926 10:57:18.824" starttime="20170926 10:57:18.612"></status>
-</kw>
-<kw name="Sleep" library="BuiltIn">
-<doc>Pauses the test executed for the given time.</doc>
-<arguments>
-<arg>2s</arg>
-</arguments>
-<msg timestamp="20170926 10:57:20.825" level="INFO">Slept 2 seconds</msg>
-<status status="PASS" endtime="20170926 10:57:20.825" starttime="20170926 10:57:18.824"></status>
-</kw>
-<kw name="Input Text" library="Selenium2Library">
-<doc>Types the given `text` into text field identified by `locator`.</doc>
-<arguments>
-<arg>id=fldComments</arg>
-<arg>//*[1]//*[1]//*[1]//*[1]//*[1]//*[1]//*[1]//*[5] The gradle menu on the right has also disappeared. How do I get these back? And finally to make it worse: Unregistered VCS roots detected: The following directories are roots of VCS … repositories, but they are not registered in the Settings: // C:\Users\Users\IdeaProjects\demo3\demo3 // C:\Users\Users</arg>
-</arguments>
-<msg timestamp="20170926 10:57:20.826" level="INFO">Typing text '//*[1]//*[1]//*[1]//*[1]//*[1]//*[1]//*[1]//*[5] The gradle menu on the right has also disappeared. How do I get these back? And finally to make it worse: Unregistered VCS roots detected: The following directories are roots of VCS … repositories, but they are not registered in the Settings: // C:UsersUsersIdeaProjectsdemo3demo3 // C:UsersUsers' into text field 'id=fldComments'</msg>
-<status status="PASS" endtime="20170926 10:57:24.760" starttime="20170926 10:57:20.826"></status>
-</kw>
-<kw name="Sleep" library="BuiltIn">
-<doc>Pauses the test executed for the given time.</doc>
-<arguments>
-<arg>5s</arg>
-</arguments>
-<msg timestamp="20170926 10:57:29.761" level="INFO">Slept 5 seconds</msg>
-<status status="PASS" endtime="20170926 10:57:29.762" starttime="20170926 10:57:24.760"></status>
-</kw>
-<kw name="Click Element" library="Selenium2Library">
-<doc>Click element identified by `locator`.</doc>
-<arguments>
-<arg>id=Submit</arg>
-</arguments>
-<msg timestamp="20170926 10:57:29.762" level="INFO">Clicking element 'id=Submit'.</msg>
-<status status="PASS" endtime="20170926 10:57:30.377" starttime="20170926 10:57:29.762"></status>
+<msg timestamp="20170929 11:55:16.582" level="INFO">Clicking element 'id=eSUBTopLogo'.</msg>
+<status status="PASS" endtime="20170929 11:55:17.686" starttime="20170929 11:55:16.582"></status>
 </kw>
 <kw name="Wait Until Page Contains" library="Selenium2Library">
 <doc>Waits until `text` appears on current page.</doc>
 <arguments>
 <arg>eSUB</arg>
 </arguments>
-<status status="PASS" endtime="20170926 10:57:30.423" starttime="20170926 10:57:30.377"></status>
+<status status="PASS" endtime="20170929 11:55:17.702" starttime="20170929 11:55:17.686"></status>
 </kw>
 <kw name="Sleep" library="BuiltIn">
 <doc>Pauses the test executed for the given time.</doc>
 <arguments>
-<arg>3s</arg>
+<arg>2s</arg>
 </arguments>
-<msg timestamp="20170926 10:57:33.424" level="INFO">Slept 3 seconds</msg>
-<status status="PASS" endtime="20170926 10:57:33.424" starttime="20170926 10:57:30.423"></status>
+<msg timestamp="20170929 11:55:19.703" level="INFO">Slept 2 seconds</msg>
+<status status="PASS" endtime="20170929 11:55:19.703" starttime="20170929 11:55:17.702"></status>
+</kw>
+<kw name="Mouse Over" library="Selenium2Library">
+<doc>Simulates hovering mouse over the element specified by `locator`.</doc>
+<arguments>
+<arg>Xpath=//*[@id="rightMenu"]/a</arg>
+</arguments>
+<msg timestamp="20170929 11:55:19.704" level="INFO">Simulating Mouse Over on element 'Xpath=//*[@id="rightMenu"]/a'</msg>
+<status status="PASS" endtime="20170929 11:55:19.748" starttime="20170929 11:55:19.703"></status>
 </kw>
 <kw name="Sleep" library="BuiltIn">
 <doc>Pauses the test executed for the given time.</doc>
 <arguments>
-<arg>3s</arg>
+<arg>2s</arg>
 </arguments>
-<msg timestamp="20170926 10:57:36.426" level="INFO">Slept 3 seconds</msg>
-<status status="PASS" endtime="20170926 10:57:36.426" starttime="20170926 10:57:33.425"></status>
+<msg timestamp="20170929 11:55:21.749" level="INFO">Slept 2 seconds</msg>
+<status status="PASS" endtime="20170929 11:55:21.750" starttime="20170929 11:55:19.748"></status>
 </kw>
 <kw name="Click Element" library="Selenium2Library">
 <doc>Click element identified by `locator`.</doc>
 <arguments>
-<arg>Xpath=//*[@id="Table1"]/tbody/tr[6]/td[3]/input</arg>
+<arg>Xpath=//*[@id="userMenu"]/a[5]</arg>
 </arguments>
-<msg timestamp="20170926 10:57:36.427" level="INFO">Clicking element 'Xpath=//*[@id="Table1"]/tbody/tr[6]/td[3]/input'.</msg>
-<kw name="Capture Page Screenshot" library="Selenium2Library">
-<doc>Takes a screenshot of the current page and embeds it into the log.</doc>
-<msg timestamp="20170926 10:57:36.754" html="yes" level="INFO">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-1.png"&gt;&lt;img src="selenium-screenshot-1.png" width="800px"&gt;&lt;/a&gt;</msg>
-<status status="PASS" endtime="20170926 10:57:36.754" starttime="20170926 10:57:36.447"></status>
+<msg timestamp="20170929 11:55:21.750" level="INFO">Clicking element 'Xpath=//*[@id="userMenu"]/a[5]'.</msg>
+<status status="PASS" endtime="20170929 11:55:22.810" starttime="20170929 11:55:21.750"></status>
 </kw>
-<msg timestamp="20170926 10:57:36.755" level="FAIL">ValueError: Element locator 'Xpath=//*[@id="Table1"]/tbody/tr[6]/td[3]/input' did not match any elements.</msg>
-<status status="FAIL" endtime="20170926 10:57:36.755" starttime="20170926 10:57:36.427"></status>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>3s</arg>
+</arguments>
+<msg timestamp="20170929 11:55:25.812" level="INFO">Slept 3 seconds</msg>
+<status status="PASS" endtime="20170929 11:55:25.812" starttime="20170929 11:55:22.811"></status>
 </kw>
-<status status="FAIL" endtime="20170926 10:57:36.755" starttime="20170926 10:56:36.437"></status>
+<kw name="Close Browser" library="Selenium2Library">
+<doc>Closes the current browser.</doc>
+<status status="PASS" endtime="20170929 11:55:25.880" starttime="20170929 11:55:25.812"></status>
 </kw>
-<status status="FAIL" endtime="20170926 10:57:36.755" critical="yes" starttime="20170926 10:56:36.436">ValueError: Element locator 'Xpath=//*[@id="Table1"]/tbody/tr[6]/td[3]/input' did not match any elements.</status>
+<status status="PASS" endtime="20170929 11:55:25.880" starttime="20170929 11:54:54.634"></status>
+</kw>
+<status status="PASS" endtime="20170929 11:55:25.881" critical="yes" starttime="20170929 11:54:54.633"></status>
 </test>
-<doc>Cost Codes for Shasta Time</doc>
-<status status="FAIL" endtime="20170926 10:57:36.756" starttime="20170926 10:56:36.339"></status>
+<doc>administration / Login</doc>
+<status status="PASS" endtime="20170929 11:55:25.882" starttime="20170929 11:54:54.541"></status>
 </suite>
 <statistics>
 <total>
-<stat fail="1" pass="0">Critical Tests</stat>
-<stat fail="1" pass="0">All Tests</stat>
+<stat fail="0" pass="1">Critical Tests</stat>
+<stat fail="0" pass="1">All Tests</stat>
 </total>
 <tag>
 </tag>
 <suite>
-<stat fail="1" id="s1" name="costCode" pass="0">costCode</stat>
+<stat fail="0" id="s1" name="Administration" pass="1">Administration</stat>
 </suite>
 </statistics>
 <errors>

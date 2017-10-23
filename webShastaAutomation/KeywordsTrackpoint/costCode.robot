@@ -3,9 +3,13 @@ Documentation    Cost Codes for Shasta Time
 Library    Selenium2Library
 
 
+
+#Staging link  https://staging.esubonline.com/TRACKpoint/
+
 *** Keywords ***
 Create New Cost Code
-    Open Browser    https://www.esubonline.com/TRACKpoint/   Chrome
+    Open Browser    https://staging.esubonline.com/TRACKpoint/   Chrome
+    Set Window Size    ${1600}    ${900}
     Sleep     3s
     Input Text    id=loginName    TrialDiaz
     Sleep    1s
@@ -33,34 +37,73 @@ Create New Cost Code
     click element    Xpath=//*[@id="Table1"]/tbody/tr[10]/td[2]/a
     wait until page contains    eSUB
     Sleep    3s
-    input text    id=Text2     619
+    input text    id=ActivityCode     12345
     Sleep    3s
-    input text    id=Aname     Electrical Wiring
+    input text    id=Aname     97 Bags of Pavers
     Sleep    2s
-    mouse over    id=Select1
+    mouse over    id=selectAll
     Sleep    2s
-    click element    id=Select1
+    click element    id=selectAll
+    Sleep    3s
+    click element    Xpath=//*[@id="Table2"]/tbody/tr[8]/td/div/div[1]/div/a
+    Sleep    5s
+    Click element    Xpath=//*[@id="Table2"]/tbody/tr[8]/td/div/div[1]/div/a
+    Sleep    3s
+    input text    id=quickBooksServiceItemName    Demolition and Reconstruction
+    Sleep    3s
+    input text    Xpath=//*[@id="Table4"]/tbody/tr[1]/td[2]/nobr/input    Concrete
     Sleep    2s
-    click element    Xpath=//*[@id="Select1"]/option[2]
+    click element    ID=Select1
     Sleep    2s
-    Click element    id=Radio2
+    click element    Xpath=//*[@id="Select1"]/option[3]
     Sleep    3s
-    input text    id=quickBooksServiceItemName    Roof Repair and Water Damage Control
-    sleep    3s
-    click button    id=Submit
+    click element    id=selectNonLabor
     Sleep    3s
-    click element    Xpath=//*[@id="Select1"]/option[1]
+    click element    id=selectNone
     Sleep    3s
-    click element    name=FilterString3
+    click element    id=costCodeTypesCheckboxList_3
     Sleep    3s
-    click element    Xpath=//*[@id="Table1"]/tbody/tr[10]/td[1]/a/img
-    wait until page contains    eSUB
+    click element    id=costCodeTypesCheckboxList_5
     Sleep    3s
-    input text    id=Desc   Registered Drywall Repair & Director, Head of CEEMA (Central and Eastern Europe, Middle East & Africa) and Latin America Equity Focus, Institutional Client Group - Fundamental Equity, Corporate & Institutional Banking - Global Markets
+    click element    id=costCodeTypesCheckboxList_1
+    Sleep    4s
+    click element     Xpath=//*[@id="Select1"]/option[1]
     Sleep    3s
-    click element    Xpath=//*[@id="Table1"]/tbody/tr[1]/td[2]/a
+    clear element text    id=Aname
+    Sleep    3s
+    click element    id=IsOverheadActivityRadio2
+    Sleep    3s
+    input text    id=Aname    ID Tag # 1013 24 Lumber Pieces
+    Sleep    3s
+    click element    id=Submit2
+
+
+
+
+
+
+
+
+
+    #sleep    4s
+    #click button    id=Submit
+
+
+
+
+    #Sleep    3s
+    #click element    Xpath=//*[@id="Select1"]/option[1]
+    #Sleep    3s
+    #click element    name=FilterString3
+    #Sleep    3s
+    #click element    Xpath=//*[@id="Table1"]/tbody/tr[10]/td[1]/a/img
+    #wait until page contains    eSUB
+    #Sleep    3s
+    #input text    id=Desc   Registered Drywall Repair & Director, Head of CEEMA (Central and Eastern Europe, Middle East & South Africa) and Latin America Equity Focus, Institutional Client Group - Fundamental Equity, Corporate & Institutional Banking - Global Markets and Turkish Data
+    #Sleep    3s
+    #click element    Xpath=//*[@id="Table1"]/tbody/tr[1]/td[2]/a
     #capture page screenshot    Filename=hideallbutone.png
-    Sleep    3s
+    #Sleep    3s
     #go back
     #wait until page contains    eSUB
     #Sleep    3s
@@ -68,7 +111,7 @@ Create New Cost Code
 
 
 
-#Configure Project and Navigate to Shasta Time - (this is TBD until Shasta Time is Implemented)
+Configure Project and Navigate to Shasta Time - (this is TBD until Shasta Time is Implemented)
     Open Browser    https://www.esubonline.com/TRACKpoint/   Chrome
     #Set Window Size    ${1600}    ${900}
     Sleep     3s
@@ -323,6 +366,72 @@ Click to Collapse / Expand
     close browser
 
 
+Edit Current Labor Activity
+    Open Browser    https://staging.esubonline.com/TRACKpoint/   Chrome
+    Set Window Size    ${1600}    ${900}
+    Sleep     3s
+    Input Text    id=loginName    TrialDiaz
+    Sleep    1s
+    Click Button    id=Image1
+    Capture Page Screenshot    Filename=SubscriberValid.png
+    wait until page contains    eSUB
+    Sleep    2s
+    Input Text    name=username    support@esubinc.com
+    Sleep    2s
+    Input Text    id=Password1    Tr@pointe$ub
+    Sleep    1s
+    Click Button    id=Image1
+    wait until page contains    eSUB
+    Sleep    3s
+    click element    Xpath=/html/body/font/div[1]/a[2]
+    Sleep    3s
+    mouse over    Xpath=//*[@id="optionNav"]/a[2]
+    Sleep    1s
+    click element    Xpath=//*[@id="optionNav"]/a[2]
+    Sleep    3s
+    mouse over    Xpath=//*[@id="optionNav"]/a[2]
+    Sleep    1s
+    wait until page contains    eSUB
+    SLEEP    3s
+    click element    Xpath=//*[@id="Table3"]/tbody/tr/td/a
+    wait until page contains    eSUB
+    sleep    3s
+    click element    Xpath=//*[@id="Table1"]/tbody/tr[10]/td[2]/a
+    wait until page contains    eSUB
+    Sleep    3s
+    wait until page contains    eSUB
+    Sleep    3s
+    input text    id=ActivityCode     10212343434445556565655666656556390799080
+    Sleep    3s
+    input text    id=Aname     20-Bags of Sand and Turf
+    Sleep    2s
+    mouse over    id=selectAll
+    Sleep    2s
+    input text    Xpath=//*[@id="Table4"]/tbody/tr[1]/td[2]/nobr/input    Concrete
+    Sleep    5s
+    click element    id=costCodeTypesCheckboxList_3
+    Sleep    3s
+    click element    id=costCodeTypesCheckboxList_6
+    Sleep    3s
+    Click element    ID=Submit2
+    Sleep    4s
+    wait until page contains    eSUB
+    click element    Xpath=//*[@id="Table1"]/tbody/tr[3]/td[1]/a/img
+    Sleep    3s
+    wait until page contains    eSUB
+    input text    ID=Desc     Concrete pour and framing
+    Sleep    4s
+    click element    id=newProjectsHide
+    Sleep    5s
+    click element    id=newProjectsDisplay
+    Sleep    3s
+    input text    id=quickBooksServiceItemName    36 Bags of infill, two story drywall material
+    Sleep    3s
+    click element    Xpath=//*[@id="Table1"]/tbody/tr[22]/td[4]/input
+    Sleep    3s
+    Click element    id=Submit
+    Sleep    2s
+    close browser
 
 
 
@@ -333,10 +442,6 @@ Click to Collapse / Expand
 
 
 
+*** Test Cases ***
 
-
-
-
-
-
-
+Edit Current Labor Activity    Edit Current Labor Activity
