@@ -5,18 +5,28 @@ Library    Selenium2Library
 # ***Environment - Dev ***
 
 *** Test Cases ***
-Enter Indirect Costs    Enter Indirect Costs
-    Successful Login
-    Return to Enter Hours Field
-    Select 100 System Beta Zero in order to populate the Phase Field
-    Change System Field to remove the Phase Field
-    Enter New Hours Worked
-    Delete One Card By Selecting The Trash Can Icon
-    Clear Overtime Hours From the Grid Form
-    Change to an Invalid Project Inside The Grid Form
-    Modify Employee Field to an Incorrect Name
+#Enter Indirect Costs    Enter Indirect Costs
+    #Successful Login
+    #Return to Enter Hours Field
+    #Select 100 System Beta Zero in order to populate the Phase Field
+    #Change System Field to remove the Phase Field
+    #Enter New Hours Worked
+    #Delete One Card By Selecting The Trash Can Icon
+    #Clear Overtime Hours From the Grid Form
+    #Change to an Invalid Project Inside The Grid Form
+    #Modify Employee Field to an Incorrect Name
 
-#Modify Timecard    Modify Timecard
+Modify Timecard    Modify Timecard
+    project information
+    Employees Information
+    Dates Entry
+    Hours Worked Information
+    Enter Notes
+    Change Note
+    Modify System
+    Modify OT Hours
+    Copy Timecard and Sign out
+
 #Enter Hours Field    Enter Hours Field
     #Enter Project Information
     #Enter Employee Information
@@ -28,7 +38,7 @@ Enter Indirect Costs    Enter Indirect Costs
 *** Keywords ***
 Enter Hours Field
     [Tags]    Smoke
-    Open Browser    http://web.develop.shasta.esubonline.com/#/login    Chrome
+    Open Browser    http://web.develop.shasta.esubonline.com/#/login    Firefox
     Set Window Size    ${1600}    ${1000}
     Wait Until Page Contains    eSUB
     Sleep    3s
@@ -39,9 +49,13 @@ Enter Hours Field
     Click Button    id=btnLogin
     Wait Until Page Contains    eSUB
     Sleep    5s
-	click element    Xpath=//*[@id="page-container"]/div/div/div/esub-time-expenses/div/div[1]/div[3]/button
-	wait until page contains    Enter Hours    timeout=30
+	Sleep    4s
+    mouse over    Xpath=//*[@id="page-container"]/esub-trackpoint-header/section/div/div[2]/ul/li[1]/button/span
     Sleep    3s
+    click element    Xpath=//*[@id="page-container"]/esub-trackpoint-header/section/div/div[2]/ul/li[1]/button/span
+    Sleep    4s
+    click element    Xpath=//*[@id="cdk-overlay-0"]/div/div/button[1]
+	sleep    3s
 
 Enter Project Information
     input text    id=txtFormProject    Random Auto Dealership
@@ -95,17 +109,14 @@ Modify Timecard
     Click Button    id=btnLogin
     Wait Until Page Contains    eSUB
     Sleep    5s
-	click element    Xpath=//*[@id="page-container"]/div/div/div/esub-time-expenses/div/div[1]/div[3]/button
-	wait until page contains    Enter Hours
-    Sleep    2s
-    go back
-    wait until page contains    eSUB
-    Sleep    7s
-    go to    http://web.develop.shasta.esubonline.com/#/time/timesheets
-    wait until page contains    eSUB
-    click element    id=btnEnterTime
-    wait until page contains    eSUB
+	Wait Until Page Contains    Employee
+	Sleep    4s
+    mouse over    Xpath=//*[@id="page-container"]/esub-trackpoint-header/section/div/div[2]/ul/li[1]/button/span
     Sleep    3s
+    click element    Xpath=//*[@id="page-container"]/esub-trackpoint-header/section/div/div[2]/ul/li[1]/button/span
+    Sleep    4s
+    click element    Xpath=//*[@id="cdk-overlay-0"]/div/div/button[1]
+	sleep    3s
 Project information
     input text    id=txtFormProject    Random Auto Dealership
     Sleep    7s
@@ -142,20 +153,48 @@ Enter Notes
     Sleep    5s
     capture page screenshot    Filename=enterHours.png
     Sleep    5s
-Edit Time Card
+Change Note
     Wait until page contains    eSUB
     Click Element    id=btnGridFormNote-0-0
     Sleep    3s
-    wait until element contains    Change note
+    wait until page contains    Change note
+    clear element text    id=txtEnterTimeGridNote
+    Sleep    3s
     Input Text    id=txtEnterTimeGridNote    Testing this once more to verify note changes
     Sleep    3s
-    click element    Xpath=//*[@id="cdk-overlay-18"]/md-dialog-container/esub-notes-entry-dialog/md-dialog-actions/button[1]/span
+    mouse over    Xpath=//*[@id="cdk-overlay-5"]/md-dialog-container/esub-notes-entry-dialog/md-dialog-actions/button[2]
     Sleep    3s
+    click Button    Xpath=//*[@id="cdk-overlay-5"]/md-dialog-container/esub-notes-entry-dialog/md-dialog-actions/button[2]
+    Sleep    3s
+Modify System
+    wait until page contains    Employee    timeout=30s
+    clear element text    id=txtGridFormSystem-0-0
+    sleep    3s
+    input text    id=txtGridFormSystem-0-0    0 - System 4286
+    Sleep    3s
+Modify OT Hours
+    clear element text    id=txtGridFormOT-0-0
+    sleep    3s
+    input text    id=txtGridFormOT-0-0    1
+    sleep    3s
+Copy Timecard and Sign out
+    click element    id=btnGridFormCopyRow-0-0
+    sleep    2s
+    click button    id=btnGridSubmit
+    Sleep    3s
+    wait until page contains    Employee
+    mouse over    Xpath=//*[@id="page-container"]/esub-trackpoint-header/section/div/div[3]/ul/li[2]/button
+    Sleep    3s
+    click element    Xpath=//*[@id="page-container"]/esub-trackpoint-header/section/div/div[3]/ul/li[2]/button
+    Sleep    3s
+    click element    Xpath=//*[@id="cdk-overlay-8"]/div/div/button
+    Sleep    2s
     close browser
+
 
 Enter Indirect Costs
     [Tags]    Smoke
-    Open Browser    http://web.develop.shasta.esubonline.com/    Chrome
+    Open Browser    http://web.develop.shasta.esubonline.com/    Firefox
     Set Window Size     ${1600}    ${1000}
     Wait Until Page Contains    eSUB
     Sleep    3s
