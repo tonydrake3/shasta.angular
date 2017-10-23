@@ -170,8 +170,6 @@ export class EnterTimeTransformService {
         return record;
     }
 
-
-
     // private recordToLine (record: TimeRecord): LineToSubmit {
     //
     //     const line: LineToSubmit = {
