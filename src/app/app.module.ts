@@ -76,7 +76,8 @@ import { TimeRecordDetailModalComponent } from './home/time-expenses/time-record
         NotesEntryDialogComponent,
         NotificationComponent,
         TimeRecordDetailModalComponent,
-	TimeCardTimeDetailComponent, TimesheetCardPinComponent
+        TimeCardTimeDetailComponent,
+        TimesheetCardPinComponent
     ]
 })
 
