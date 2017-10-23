@@ -100,7 +100,6 @@ export class BannerItem {
 
 export interface TimeModal {
     displayMode: TimeModalMode;
-    displayData: TimeModalDisplayData;
     didTapCancelButton(): void;
 }
 

@@ -51,13 +51,14 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
     private ngUnsubscribe: Subject<void> = new Subject<void>();
     private timeRecord: TimeRecord;
 
-    // Subjects
+    // Private Subjects
     private timeRecordSubject = new BehaviorSubject<TimeRecord>(new TimeRecord());
     private projectsSubject = new BehaviorSubject<Project[]>([]);
     private systemsSubject = new BehaviorSubject<System[]>([]);
     private phasesSubject = new BehaviorSubject<Phase[]>([]);
     private costCodeSubject = new BehaviorSubject<CostCode[]>([]);
     private indirectCostsSubject = new BehaviorSubject<IndirectCost[]>([]);
+    private commentsSubject = new BehaviorSubject<Comment[]>([]);
 
     // Public
     public enterTimeForm: FormGroup;
@@ -65,9 +66,9 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
     public filteredSystems: Observable<System[]>;
     public filteredPhases: Observable<Phase[]>;
     public filteredIndirectCostCodes: Observable<IndirectCost[]>;
-    public filteredCostCodes: Observable<CostCode[]>; // Duplicated
+    public filteredCostCodes: Observable<CostCode[]>;
+    public comments: Observable<Comment[]>;
 
-    public displayData: TimeModalDisplayData;
     public displayMode: TimeModalMode;
     public loading;
 
@@ -98,9 +99,9 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
 
     ngOnInit () {
         this.initializeTimeRecordFromInputData();
-        this.initializeTimeRecordInputData();
         this.displayMode = this.data.displayMode;
         this.buildForm();
+
         // For now we are just getting all of the projects but we will want to probably use the
         // Lookup functionality from the server
         this._projectService.getLatest();
@@ -676,25 +677,6 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
         this.timeRecordSubject.next(this.timeRecord);
     }
 
-    private initializeTimeRecordInputData() {
-        if (this.timeRecord.IndirectCost) { // Initialize with Indirect Cost Data
-            console.log('Initializing Modal Data from Indirect Cost Record');
-            this.displayData = new IndirectCostTimeModalDisplayData(this.timeRecord);
-            console.log(this.displayData);
-        } else if (this.timeRecord.Project) {
-
-            if (this.timeRecord.ManualHours) { // Hours only
-
-                this.displayData = new ProjectManualHoursDisplayData(this.timeRecord);
-
-            } else { // Punch In Punch Out
-
-                this.displayData = new ProjectPunchDisplayData(this.timeRecord);
-
-            }
-
-        }
-    }
 }
 
 class TimeModalFormKeys {
