@@ -1,30 +1,28 @@
 import {ChangeDetectorRef, Component, Injector, OnDestroy, OnInit} from '@angular/core';
+import {NavigationCancel, Router} from '@angular/router';
 import * as moment from 'moment';
 import * as _ from 'lodash';
-
-
-import { BaseComponent } from '../../shared/components/base.component';
-
-// Model Imports
+import {Subject} from 'rxjs/Subject';
 import {Observable} from 'rxjs/Observable';
-import {EnterTimeStatusService} from './enter-time-status.service';
+
+// Component/Service Imports
+import { BaseComponent } from '../../shared/components/base.component';
 import {ConfirmationDialogComponent} from '../../shared/components/confirmation-dialog.component';
-import {NavigationCancel, Router} from '@angular/router';
-import {ConfirmationDialogService} from '../../shared/services/confirmation-dialog.service';
-import {DialogData, DialogServiceReference} from '../../../models/DialogData';
 import {EnterTimePreloadManager} from './enter-time-preload.manager';
 import {EnterTimeManager} from './enter-time.manager';
+
+// Model Imports
+import {ConfirmationDialogService} from '../../shared/services/confirmation-dialog.service';
+import {DialogData, DialogServiceReference} from '../../../models/DialogData';
 
 @Component({
     templateUrl: './enter-time.component.html'
 })
 export class EnterTimeComponent extends BaseComponent implements OnInit, OnDestroy {
 
+    private ngUnsubscribe: Subject<void> = new Subject<void>();
     private _isNavigationBlocked: boolean;
     private _confirmationService: ConfirmationDialogService;
-    private _preloadSubscription;
-    private _enterTimeManagerSubscription;
-    private _routerSubscription;
 
     // working model to add
     public showGrid: boolean;
@@ -65,7 +63,8 @@ export class EnterTimeComponent extends BaseComponent implements OnInit, OnDestr
      ******************************************************************************************************************/
     ngOnInit () {
 
-        this._preloadSubscription = this._preloadService.loading$
+        this._preloadService.loading$
+            .takeUntil(this.ngUnsubscribe)
             .subscribe(
                 (loading) => {
 
@@ -75,7 +74,8 @@ export class EnterTimeComponent extends BaseComponent implements OnInit, OnDestr
                     this._cdr.detectChanges();
                 });
 
-        this._enterTimeManagerSubscription = this._enterTimeManager.processing$
+        this._enterTimeManager.processing$
+            .takeUntil(this.ngUnsubscribe)
             .subscribe(
                 (processing) => {
 
@@ -88,7 +88,8 @@ export class EnterTimeComponent extends BaseComponent implements OnInit, OnDestr
 
         // TODO: Remove when angular issue 11836 (CanDeactivateChild) is implemented.
         //       https://github.com/angular/angular/issues/11836
-        this._routerSubscription = this._router.events
+        this._router.events
+            .takeUntil(this.ngUnsubscribe)
             .subscribe(
                 (val) => {
 
@@ -116,9 +117,8 @@ export class EnterTimeComponent extends BaseComponent implements OnInit, OnDestr
 
     ngOnDestroy () {
 
-        this._preloadSubscription.unsubscribe();
-        this._enterTimeManagerSubscription.unsubscribe();
-        this._routerSubscription.unsubscribe();
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
     }
 
     /******************************************************************************************************************
@@ -147,10 +147,12 @@ export class EnterTimeComponent extends BaseComponent implements OnInit, OnDestr
 
     public copyLastWeekTimesheet() {
 
+        this.showGrid = true;
     }
 
     public copyYesterdayTimesheet() {
 
+        this.showGrid = true;
     }
 
     public onTimeEntryComplete (event) {
