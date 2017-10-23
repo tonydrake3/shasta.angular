@@ -1,4 +1,6 @@
-// Modules
+import { MessageService } from './timesheet-card/timesheet-card.message';
+
+
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -23,6 +25,9 @@ import { EnterTimeGridComponent } from './enter-time/enter-time-grid/enter-time-
 
 // Services
 import { TimeRecordsService } from './time-records.service';
+import { TimeExpensesService } from './time-expenses.service';
+import { FlashMessagesModule } from 'angular2-flash-messages';
+import { ProjectSummaryService } from '../projects/project-summary/project-summary.service';
 import { EnterTimeManager } from './enter-time/enter-time.manager';
 import { EnterTimeStatusService } from './enter-time/enter-time-status.service';
 import { EnterTimePreloadManager } from './enter-time/enter-time-preload.manager';
@@ -50,7 +55,8 @@ import { EntityDisplayFormatterService } from '../shared/services/entity-display
         MdInputModule,
         MdSelectModule,
         MdTabsModule,
-        MdTooltipModule
+        MdTooltipModule,
+        FlashMessagesModule
     ],
     declarations: [
         TimeExpensesComponent,
@@ -63,10 +69,13 @@ import { EntityDisplayFormatterService } from '../shared/services/entity-display
     providers: [
         TimeRecordsService,
         EnterTimeBatchService,
+      	TimeExpensesService,
         EnterTimeFilterService,
         EnterTimeManager,
+      	MessageService,
         EnterTimeStatusService,
         EnterTimePreloadManager,
+      	ProjectSummaryService,
         EnterTimeTransformService,
         EntityDisplayFormatterService
     ]
