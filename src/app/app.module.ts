@@ -1,3 +1,5 @@
+import { OnlyNumber } from './home/shared/directives/onlyNumber.directive';
+
 import { NgModule, ApplicationRef } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
@@ -29,10 +31,12 @@ import {LookupDataService} from './home/shared/services/lookup-data.service';
 
 // entry components
 import { CommentsComponent } from './home/shared/components/comments.component';
+import { TimeCardTimeDetailComponent } from './home/time-expenses/timesheet-card/timesheet-card-timedetail.component';
 import { ConfirmationDialogComponent } from './home/shared/components/confirmation-dialog.component';
 import { NotesEntryDialogComponent } from './home/shared/components/notes-entry.component';
 import { NotificationComponent } from './home/notifications/notifications.component';
 import { PermissionsService } from './shared/services/authorization/permissions.service';
+import { TimesheetCardPinComponent } from 'app/home/time-expenses/timesheet-card/timesheet-card-pin.component';
 import { TimeRecordDetailModalComponent } from './home/time-expenses/time-record-detail-modal/time-record-detail-modal.component';
 
 @NgModule({
@@ -72,7 +76,8 @@ import { TimeRecordDetailModalComponent } from './home/time-expenses/time-record
         ConfirmationDialogComponent,
         NotesEntryDialogComponent,
         NotificationComponent,
-        TimeRecordDetailModalComponent
+        TimeRecordDetailModalComponent,
+	TimeCardTimeDetailComponent, TimesheetCardPinComponent
     ]
 })
 

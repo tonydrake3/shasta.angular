@@ -13,7 +13,10 @@ export const apiRoutes = {
     'projects': 'Shared/Projects',
     'system': 'Shared/Systems',
     'timeRecords': 'Time/TimeRecords/Full',
-    'timeSettings': 'Time/Settings'
+    'timeReject': 'Time/TimeRecords/Reject',
+    'timeApprove': 'Time/TimeRecords/Approve',
+    'timeSettings': 'Time/Settings',
+    'timeUpdate': 'Time/TimeRecords'
 };
 
 export const externalApiRoutes = {

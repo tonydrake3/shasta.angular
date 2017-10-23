@@ -6,7 +6,7 @@ import 'rxjs/add/operator/map';
 
 export class BaseStore extends BaseHttpService {
 
-    private _route: string;
+    protected _route: string;
     private _isLoadDisabled: boolean;
 
     protected _entity$ = new Subject();

@@ -1,47 +1,58 @@
 <div class="container-fluid time-expenses">
+    <div class="row">
 
-  <div class="row">
+        <div class="col-md-2 groupings">
+            <label>Group by</label>
 
-    <div class="col-md-6">
-      <esub-week-selector (dateChange)="dateChanged($event)"></esub-week-selector>
+            <a [ngClass]="{active: groupTimesheetsBy == 'employee'}" (click)="groupTimesheets('employee')" id="time-expenses.group-by-employee">Employee</a>
+            <a [ngClass]="{active: groupTimesheetsBy == 'project'}" (click)="groupTimesheets('project')" id="time-expenses.group-by-project">Project</a>
+
+            <label>&nbsp;Show</label>
+
+            <a [ngClass]="{active: showFilter == 'all'}" (click)="filterResults('all')" id="time-expenses.filter-to-all">All</a>
+            <a [ngClass]="{active: showFilter == 'mine'}" (click)="filterResults('mine')" id="time-expenses.filter-to-mine">Mine</a>
+        </div>
+        <div class="col-md-6">
+            <flash-messages></flash-messages>
+        </div>
+
+        <!-- <div class="col-md-3">
+            <md-select>Default</md-select>
+        </div> -->
     </div>
 
-    <div class="col-md-3 groupings">
-      <label>Group by</label>
+    <div class="row">
+        <div class="offset-md-4"></div>
+        <div class="col-md-4">
+            <esub-week-selector (dateChange)="dateChanged($event)"></esub-week-selector>
 
-      <a [ngClass]="{active: groupTimesheetsBy == 'employee'}" (click)="groupTimesheets('employee')" id="time-expenses.group-by-employee">Employee</a>
-      <a [ngClass]="{active: groupTimesheetsBy == 'project'}" (click)="groupTimesheets('project')" id="time-expenses.group-by-project">Project</a>
-
-      <label>&nbsp;Show</label>
-
-      <a [ngClass]="{active: showFilter == 'all'}" (click)="filterResults('all')" id="time-expenses.filter-to-all">All</a>
-      <a [ngClass]="{active: showFilter == 'mine'}" (click)="filterResults('mine')" id="time-expenses.filter-to-mine">Mine</a>
+        </div>
     </div>
 
-    <div class="col-md-3 text-right">
-        <button md-raised-button [id]="'btnEnterTime'" class="esub-button secondary" (click)="enterTime()">Enter Time</button>
+    <div class="button-row" [ngSwitch]="view">
+
+        <div *ngSwitchCase="'timesheets'" class="esub-button-group">
+            <button md-raised-button (click)="newTimesheet()" class="primary">New Timesheet</button>
+            <button md-raised-button (click)="copyLastWeekTimesheet()" class="primary">Copy Last Week's Time</button>
+            <button md-raised-button (click)="copyYesterdayTimesheet()" class="primary">Copy Last Day's Time</button>
+        </div>
+
+        <div *ngSwitchCase="'approve-time'" class="esub-button-group">
+            <!-- <button md-raised-button class="danger">reject</button> [(disabled)]="!isSelected" -->
+            <div class="offset-md-10"></div>
+
+            <!-- <button md-raised-button class="success" (click)="approve($event)" [(disabled)]="!isSelected" >approve</button> -->
+            <div class="col-md-2">
+            <button type="button" class="btn btn-success" (click)="approve($event)" [(disabled)]="!isSelected">approve</button>
+        </div>
+        </div>
+
+        <div *ngSwitchCase="'export-time'">
+            <button md-raised-button class="esub-button secondary">export time</button>
+        </div>
+
     </div>
 
-  </div>
-
-  <div class="button-row" [ngSwitch]="view">
-
-    <div *ngSwitchCase="'timesheets'" class="esub-button-group">
-    </div>
-
-    <div *ngSwitchCase="'approve-time'" class="esub-button-group">
-      <button md-raised-button class="danger">reject</button>
-      <button md-raised-button class="success">approve</button>
-    </div>
-
-    <div *ngSwitchCase="'export-time'">
-      <button md-raised-button class="esub-button secondary">export time</button>
-    </div>
-
-  </div>
-
-    <button md-raised-button [id]="'btnShowModal'" class="esub-button primary" (click)="onTimeRecordClicked()">Time Record Detail</button>
-
-  <esub-timesheet-card #timesheets [loading]="loading" [view]="view"></esub-timesheet-card>
+    <esub-timesheet-card #timesheets [loading]="loading" [view]="view" (onDatePicked)="UpdateApprove($event)"></esub-timesheet-card>
 
 </div>

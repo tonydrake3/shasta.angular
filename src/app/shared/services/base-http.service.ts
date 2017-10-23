@@ -47,6 +47,15 @@ export class BaseHttpService {
             .catch(this.processError);
     }
 
+  postData(url: string, payload: any): Observable<any> {
+    const headers = new Headers();
+    this.addHeaders(headers);
+    const options = new RequestOptions({ headers: headers });
+    return this._http
+      .post(url, payload, options)
+      .map(this.processIsSuccess)
+      .catch(this.processError);
+  }
     postForm (url: string, data: any): Observable<any> {
 
         const headers = new Headers();
@@ -80,6 +89,15 @@ export class BaseHttpService {
             .catch(this.processError);
     }
 
+  putData(url: string, payload: any): Observable<any> {
+    const headers = new Headers();
+    this.addHeaders(headers);
+
+    return this._http
+      .put(url, payload, { headers: headers })
+      .map(this.processIsSuccess)
+      .catch(this.processError);
+  }
     delete (url: string) {
 
         const headers = new Headers();
@@ -132,6 +150,9 @@ export class BaseHttpService {
         return body.data || body;
     }
 
+  private processIsSuccess(response: Response) {
+    return response.status;
+  }
     private processError (error: Response | any) {
 
         let errMsg: string;

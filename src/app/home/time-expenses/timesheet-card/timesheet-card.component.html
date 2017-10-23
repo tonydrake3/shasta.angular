@@ -1,97 +1,194 @@
 <esub-base-card *ngIf="timecards?.length == 0 && !loading" class="timesheet-card">
-  <div class="row card-title text-center">
-    No results found. Please update your filters above.
-  </div>
+    <div class="row card-title text-center">
+        No results found. Please update your filters above.
+    </div>
 </esub-base-card>
+<md-checkbox type="checkbox" *ngIf="timecards.length > 0" [(ngModel)]="isAllTimecardsSelected" (change)="onAllTimecardsSelected($event)">Select All Time Cards</md-checkbox>
 
-<esub-base-card *ngIf="(timecards?.length == 0 && loading) || !timecards" class="timesheet-card" [loading]="true"></esub-base-card>
 
 <esub-base-card *ngFor="let timecard of timecards" class="timesheet-card">
+    <!-- {{  getTimecardGrid(timecard) }} -->
+    <!-- header row -->
+    <div class="row">
 
-  <!-- header row -->
-  <div class="row">
-
-    <!-- name/project heading area -->
-    <div class="col-md-4 card-heading">
-      <p class="card-title">
-        {{timecard.cardTitle}}
-      </p>
-      <div class="icon-holder" (click)="timecard.expanded = !timecard.expanded">
-        <i class="material-icons" *ngIf="!timecard.expanded">keyboard_arrow_down</i>
-        <i class="material-icons" *ngIf="timecard.expanded">keyboard_arrow_up</i>
-      </div>
-      <p class="card-subtitle">
-        {{timecard.subTitle}}
-      </p>
-    </div>
-
-    <!-- repeater for each day -->
-    <div class="col-md-1 card-day" *ngFor='let day of dateRange'>
-      {{day.dayString}}
-      <p class="card-date">
-        {{day.dateString}}
-      </p>
-    </div>
-
-  </div>
-
-  <!-- repeater section for each grouping of employee/project/system/phase/costcode -->
-  <section *ngFor="let section of timecard.sections | keys" [hidden]="!timecard.expanded">
-    <div *ngFor="let systemPhase of section.value | keys">
-
-      <!-- section & hours -->
-      <div class="row">
-        <div class="col-md-4">
-          <span class="card-section">{{section.key}}</span>
-          <span class="card-subsection">{{systemPhase.key}}</span>
-        </div>
-        <div class="col-md-1 card-hours" *ngFor="let day of dateRange"
-          [ngClass]="{'card-hours-disabled': timesheetCardManager.getTimecardTotalHours(timecard, day, section.key, systemPhase.key) == 0}">
-          {{timesheetCardManager.getTimecardTotalHours(timecard, day, section.key, systemPhase.key) | number:'1.0-2'}}
-        </div>
-      </div>
-
-      <div *ngFor="let costCode of systemPhase.value | keys">
-
-        <!-- costCode & comments -->
-        <div class="row">
-          <div class="col-md-4 label-regular">
-            {{costCode.value.costCode}}
-          </div>
-          <div class="col-md-1" *ngFor="let day of costCode.value.days | keys">
-            <esub-badged-hour [day]="day.value" [showBadges]="showBadges"></esub-badged-hour>
-          </div>
-        </div>
-
-        <!-- select links & checkboxes -->
-        <div class="row" *ngIf="showCheckboxes">
-          <div class="col-md-4 card-link">
+        <div class="container">
             <div class="row">
-              <div class="col-md-4" (click)="markAll(costCode.value, true)">
-                Select All
-              </div>
-              <div class="col-md-4" (click)="markAll(costCode.value, false)">
-                Unselect All
-              </div>
+                <div class="col-md-6 card-title">
+                    <span style="font-weight:bold; font-size:17px">{{timecard.cardTitle}}</span>
+                    <span class="badge badge-danger" style="margin-left:1rem" *ngIf="timecard.rejected">Rejected</span>
+                </div>
+                <div class="offset-md-5"></div>
+                <div class="col-md-1">
+                    <div class="icon-holder" (click)="timecard.expanded = !timecard.expanded">
+                        <i class="material-icons" *ngIf="timecard.expanded">keyboard_arrow_up</i>
+                        <i class="material-icons" *ngIf="!timecard.expanded">keyboard_arrow_down</i>
+                    </div>
+                </div>
+
             </div>
-          </div>
-          <div class="col-md-1" *ngFor="let day of costCode.value.days | keys">
-            <md-checkbox [hidden]="day.value.hours == 0" [(ngModel)]="day.value.selected"></md-checkbox>
-          </div>
+            <div class="row">
+                <div class="col-md-7">
+                    <!-- repeater for each day -->
+                    <div class="row">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th *ngFor='let weekday of timecard.WeekDayHours'>{{weekday.dayString}}<span class="card-date" style="font-size:11px">
+                                                        ({{weekday.dateString}})
+                                                    </span></th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="text-align: center">
+                                    {{BuildWeeDayHours(timecard)}}
+                                    <td *ngFor='let weekday of timecard.WeekDayHours'>{{weekday.hours | number:'1.0-2' }}</td>
+                                    <!-- <td>{{sunday | number:'1.0-2'}}</td>
+                                    <td>{{monday | number:'1.0-2'}}</td>
+                                    <td>{{tuesday | number:'1.0-2'}}</td>
+                                    <td>{{wednesday | number:'1.0-2'}}</td>
+                                    <td>{{thursday | number:'1.0-2'}}</td>
+                                    <td>{{friday | number:'1.0-2'}}</td>
+                                    <td>{{saterday | number:'1.0-2'}}</td> -->
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!-- <div class="col-md-1 card-day" *ngFor='let weekday of timecard.WeekDayHours'>
+
+                            <span style="position:absolute;margin-top:-23px; margin-left:-11px ">{{weekday.hours | number:'1.0-2' }}</span>
+
+                        </div> -->
+                    </div>
+
+
+                </div>
+
+                <div class="col-md-5">
+                    <table class="table" style="border-top: none;">
+                        <thead>
+                            <tr>
+                                <th>ST</th>
+                                <th>OT</th>
+                                <th>DT</th>
+                                <th>Total</th>
+                                <th>Location</th>
+                                <th>Comments</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="text-align: center">
+                                {{displaySTOTDT(timecard)}}
+                                <!-- <th scope="row">{{timesheetCardManager.getTimecardTotalHours(timecard) | number:'1.0-2'}}</th> -->
+                                <td>{{ st | number:'1.0-2'}}</td>
+                                <td>{{ ot | number:'1.0-2'}}</td>
+                                <td>{{ dt | number:'1.0-2'}}</td>
+                                <th scope="row" style="text-align: center">{{ total | number:'1.0-2'}}</th>
+
+                                <td scope="row"><i class="material-icons" style="color:red">place</i></td>
+                                <td scope="row">
+
+                                    <i class="material-icons" *ngIf="timecard.isComment" style="color:blue">insert_comment</i>
+                                    <i class="material-icons" *ngIf="!timecard.isComment" style="color:black">insert_comment</i>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+            </div>
+
+
+            <!-- Display the grid START -->
+            <div class="row" [hidden]="timecard.expanded===false">
+
+                <!-- <table class="table table-strip">
+                                 </table> -->
+                <span [hidden]="true"></span>
+                <div class="table-responsive col-md-12">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <!-- *ngIf="timecards.length > 0"  -->
+                                    <!-- (change)="onAllTimecardsSelected($event)" -->
+                                    <!-- <md-checkbox type="checkbox" [(ngModel)]="timecard.selected" (click)="markSingleTimeCard(timecard)" ></md-checkbox> -->
+                                    <!-- <div class="btn-group" data-toggle="buttons">
+                                                    <label class="btn btn-success active">
+                                                            <input type="checkbox" autocomplete="off" checked>
+                                                            <span class="glyphicon glyphicon-ok"></span>
+                                                        </label>
+                                                    </div> -->
+                                    <div class="checkbox checkbox-primary">
+
+                                        <md-checkbox id="checkbox" type="checkbox" *ngIf="timecard.timecardGrid && timecard.timecardGrid.length>0" [(ngModel)]="timecard.selected"
+                                            (click)="markSingleTimeCard(timecard)"></md-checkbox>
+
+                                    </div>
+
+                                </th>
+                                <th>Status</th>
+                                <th>Day</th>
+
+                                <th [hidden]="groupBy==='project'">Job</th>
+                                <th [hidden]="groupBy==='employee'">Employee</th>
+
+                                <th>CostCode</th>
+                                <th>TimeIn</th>
+                                <th>TimeOut</th>
+                                <th>Break</th>
+
+                                <th>ST</th>
+                                <th>OT</th>
+                                <th>DT</th>
+
+
+
+                                <th>Total</th>
+                                <th>Location</th>
+                                <th>Comment</th>
+
+                                <th>Details</th>
+                                <th>Reject</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let grid of timecard.timecardGrid; let i=index">
+                                <td>
+                                    <md-checkbox type="checkbox" value="{{grid.isSelected}}" (ngModelChange)="onSelectSingleCheckBox(timecard, grid, $event)"
+                                        [disabled]="grid.status=='Approved'|| grid.status=='Rejected'" [(ngModel)]="grid.isSelected"></md-checkbox>
+                                </td>
+                                <td>{{grid.status}}</td>
+                                <td>{{grid.day |date: 'MM/dd/yyyy'}}</td>
+                                <td>{{grid.job}}</td>
+                                <td>{{grid.costCode}}
+                                    <span style='font-size:9px'>{{grid.systemPhrase}}</span>
+                                </td>
+
+                                <td>{{grid.punchIn |date:'mediumTime'}}</td>
+
+                                <td>{{grid.punchOut| date:'mediumTime'}}</td>
+                                <td></td>
+                                <td> {{grid.Regulartime | number:'1.0-2'}}</td>
+                                <td>{{grid.Overtime | number:'1.0-2' }}</td>
+                                <td>{{grid.Doubletime | number:'1.0-2'}}</td>
+
+                                <td>{{grid.hourlyValues | number:'1.0-2'}}</td>
+                                <td style="text-align: center" (click)="onHourlyValues(grid)"><i class="material-icons" style="color:red">place</i> </td>
+                                <td style="text-align: center" (click)="onHourlyValues(grid)"><i class="material-icons" [ngClass]="{'comment': grid.comments && grid.comments.length >0 }">insert_comment</i></td>
+
+                                <td style="text-align: center" (click)="onHourlyValues(grid)"><i class="material-icons">search</i> </td>
+                                <td style="text-align: center" (click)="onHourlyValues(grid)"> <i class="material-icons" [ngClass]="{'reject': grid.status==='Rejected' }">do_not_disturb_alt</i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
 
-      </div>
     </div>
-  </section>
 
-  <!-- footer row with totals -->
-  <div class="row hours-total">
-    <div class="col-md-4 card-hours">
-      {{timesheetCardManager.getTimecardTotalHours(timecard) | number:'1.0-2'}} Hours Total
-    </div>
-    <div class="col-md-1 card-total-hours" *ngFor='let day of dateRange'>
-      {{timesheetCardManager.getTimecardTotalHours(timecard, day) | number:'1.0-2'}}
-    </div>
-  </div>
-
+    <!-- Display the grid END -->
 </esub-base-card>

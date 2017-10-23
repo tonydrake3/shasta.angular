@@ -22,7 +22,7 @@ import { IndirectCostCodesService } from '../../shared/services/indirect-cost-co
 import { TimeSettingsService } from '../services/time-settings.service';
 import {PermissionsService} from '../../../shared/services/authorization/permissions.service';
 import {CurrentEmployeeService} from '../services/user/current-employee.service';
-
+import { TimeExpensesService } from '../../time-expenses/time-expenses.service';
 // child component passes in array of these to super(), BaseComponent facilitates DI of them and provides references
 class AutomaticInjectionRequest {
     service: string;
@@ -70,6 +70,7 @@ export class BaseComponent implements OnDestroy {
         // list of services to automatically inject, if requested by child component
         //   must provide them in the constructor
         this.autoInjections = [
+      { key: 'ProjectService', serviceObject: ProjectService, subject: 'projects$', initializer: 'getLatest' },
             { key: 'CurrentEmployeeService', serviceObject: CurrentEmployeeService, subject: 'currentEmployee$', initializer: 'getLatest' },
             { key: 'IndirectCostCodesService', serviceObject: IndirectCostCodesService, subject: 'indirectCostCodes$',
                 initializer: 'getLatest' },
