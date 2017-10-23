@@ -5,7 +5,7 @@ import {
     IndirectCostTimeModalDisplayData, TimeModal, TimeModalDisplayData, TimeModalMode, DisplayModeSpecifying,
     ProjectManualHoursDisplayData, ProjectPunchDisplayData
 } from './ModalModels';
-import {FormBuilder, FormControl, FormGroup, Validators, AbstractControl} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators, AbstractControl, FormArray} from '@angular/forms';
 import {EnterTimeFilterService} from '../enter-time/enter-time-filter.service';
 import {Observable} from 'rxjs/Observable';
 import {Project} from '../../../models/domain/Project';
@@ -288,6 +288,14 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
             })
             .takeUntil(this.ngUnsubscribe)
             .subscribe();
+
+        this.commentsSubject
+            .do((subjects) => {
+                console.log('next comments');
+                console.log(subjects);
+            })
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe();
     }
 
     ngOnDestroy() {
@@ -326,6 +334,9 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
             standardHours: [this.timeRecord.Hours.RegularTime, [Validators.max(24)]],
             overtimeHours: [this.timeRecord.Hours.Overtime, [Validators.max(24)]],
             doubleTimeHours: [this.timeRecord.Hours.DoubleTime, [Validators.max(24)]],
+            comments: this._formBuilder.array(
+                this.timeRecord.Comments.map(comment => this._formBuilder.group(comment))
+            )
         });
 
         this.observeProjectChanges();
@@ -363,6 +374,16 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
 
         this.enterTimeForm.patchValue({ selectedIndirectCost: event.option.value });
 
+    }
+
+    private get commentsFormArray(): FormArray {
+        return this.enterTimeForm.get('comments') as FormArray;
+    }
+
+    public setComments(comments: Comment[]) {
+        const commentFormGroups = comments.map(comments => this._formBuilder.group(comments));
+        const commentsFormArray = this._formBuilder.array(commentFormGroups);
+        this.enterTimeForm.setControl('comments', commentsFormArray);
     }
 
     observeIndirectCostCodeChanges() {

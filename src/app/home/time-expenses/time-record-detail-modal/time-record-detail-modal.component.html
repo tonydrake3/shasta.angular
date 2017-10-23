@@ -149,6 +149,30 @@
 
             <h3>Comments</h3>
 
+            <div formArrayName="comments" class="well well-lg">
+
+                <div *ngFor="let comment of commentsFormArray.controls; let i = index" [formGroupName]="i">
+
+                    <md-card>
+
+                        <md-card-title>
+                            Comment Title
+                        </md-card-title>
+
+                        <md-card-subtitule>
+                            Comment subtitle
+                        </md-card-subtitule>
+
+                        <md-card-content>
+                            Comment content
+                        </md-card-content>
+
+                    </md-card>
+
+                </div>
+
+            </div>
+
         </div>
 
     </div>
