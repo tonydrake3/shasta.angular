@@ -79,7 +79,10 @@ export class NotificationService extends BaseHttpService {
     private pollEndpoint () {
 
         this.interval = setInterval(() => {
-            this.load();
+
+            if (JSON.parse(sessionStorage.getItem('tenant'))) {
+                this.load();
+            }
         }, this.pollingPeriod)
     }
 

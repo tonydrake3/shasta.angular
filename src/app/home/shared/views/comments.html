@@ -1,0 +1,67 @@
+<div class="esub-comments">
+    <!-- <p class="text-center title-bold">Comments</p> -->
+    <md-toolbar>
+        <div class="col-md-11">Comments</div>
+        <div class="col-md-1 pull-right">
+            <button md-icon-button md-mini-fab color="primary" md-dialog-close>
+                        <md-icon  class="material-icons">cancel</md-icon>
+                      </button>
+        </div>
+    </md-toolbar>
+
+    <div id="card-container">
+
+        <!-- <md-card   *ngFor="let comment of comments">
+                <md-card-title>{{comment.Timestamps.Updated | date : 'short' }}</md-card-title>
+                <md-card-content class="card-block h6">
+                  {{comment.Value}}
+                      </md-card-content>
+                 <md-card-footer>
+                        <md-progress-bar mode="determinate"></md-progress-bar>
+                      </md-card-footer>
+            </md-card> -->
+
+
+
+
+        <div class="card card-inverse" *ngFor="let comment of comments"     >
+            <div class="card-block myComments" *ngIf="getCss(comment.UserId)"  >
+                <span class="card-title">{{comment.Timestamps.Updated | date : 'short' }}</span>
+                <h6 class="card-text"> {{comment.Value}}</h6>
+                <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+            </div>
+
+            <div class="card-block youComments" *ngIf="!getCss(comment.UserId)">
+                <span class="card-title">{{comment.Timestamps.Updated | date : 'short' }}</span>
+                <h6 class="card-text"> {{comment.Value}}</h6>
+                <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+            </div>
+        </div>
+
+    </div>
+
+    <br>
+
+    <div class="container">
+        <div class="row">
+
+            <div class="form-group col-md-11">
+
+                <textarea class="form-control" rows="2" #newComment id="newComment" name="newComment"></textarea>
+
+            </div>
+            <div class="form-group col-md-1">
+
+                <!-- <button type="button" class="btn btn-primary" (click)="addComment(newComment)"   [disabled]="newComment.value==''">
+                    <span [hidden] ="loading"> Add</span>
+                    <md-spinner [hidden] ="!loading"  md-diameter="3" md-mode="indeterminate" [color]="'warn'"></md-spinner>
+                </button> -->
+
+                <button type="button" class="btn btn-primary" (click)="addComment(newComment)" [disabled]="newComment.value.trim()==''">
+                    <span [hidden] ="loading"> Add</span>
+                    <i class="fa fa-spinner fa-spin" [hidden] ="!loading"></i>
+                </button>
+
+            </div>
+        </div>
+    </div>

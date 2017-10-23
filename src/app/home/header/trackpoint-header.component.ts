@@ -1,4 +1,4 @@
-import {Component, Injector, OnInit} from '@angular/core';
+import {Component, Injector, OnDestroy, OnInit} from '@angular/core';
 import { APPCONFIG } from '../../config'
 import {AuthenticationService} from '../../shared/services/authentication/authentication.service';
 import {Router} from '@angular/router';
@@ -6,6 +6,10 @@ import {BaseComponent} from '../shared/components/base.component';
 import {NotificationService} from '../notifications/notification.service';
 import {PopoverService} from '../shared/services/popover.service';
 import {PopoverOptions} from '../../models/configuration/PopoverOptions';
+import {HeaderUpdateService} from './header-update.service';
+import {Subject} from 'rxjs/Subject';
+import {CurrentEmployeeService} from '../shared/services/user/current-employee.service';
+import {Observable} from 'rxjs/Observable';
 
 @Component({
     selector: 'esub-trackpoint-header',
@@ -13,53 +17,77 @@ import {PopoverOptions} from '../../models/configuration/PopoverOptions';
     templateUrl: './trackpoint-header.component.html'
 })
 
-export class TrackpointHeaderComponent extends BaseComponent implements OnInit {
+export class TrackpointHeaderComponent implements OnInit, OnDestroy {
 
+    private ngUnsubscribe: Subject<void> = new Subject<void>();
     AppConfig: any;
 
     public notificationCount: string;
     public fullName: string;
+    public tenant: string;
 
     constructor(protected _injector: Injector, private _authService: AuthenticationService, private _router: Router,
-                private _popoverService: PopoverService) {
-
-        super(_injector, [
-            {
-                service: 'CurrentEmployeeService',
-                callback: 'employeeCallback'
-            },
-            {
-                service: 'NotificationService',
-                callback: 'notificationCallback'
-            }
-        ]);
+                private _popoverService: PopoverService, private headerUpdates: HeaderUpdateService,
+                private notificationService: NotificationService, private currentEmployeeService: CurrentEmployeeService) {
 
         this.notificationCount = '0';
     }
 
-    employeeCallback (employee) {
+    ngOnInit() {
+        this.AppConfig = APPCONFIG;
 
-        // console.log(employee['Value']);
-        this.fullName = employee['Value'].FirstName + ' ' + employee['Value'].LastName;
-    }
+        this.notificationService.notifications$
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe(
+                (notifications) => {
 
-    notificationCallback (notifications) {
+                    if (notifications) {
 
-        // console.log(notifications);
-        if (notifications) {
+                        if (notifications.length < 9) {
 
-            if (notifications.length < 9) {
+                            this.notificationCount = notifications.length.toString();
+                        } else {
 
-                this.notificationCount = notifications.length.toString();
-            } else {
+                            this.notificationCount = '9+';
+                        }
+                    }
+                }
+            );
 
-                this.notificationCount = '9+';
-            }
+        this.currentEmployeeService.currentEmployee$
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe(
+                (employee) => {
+
+                    console.log(employee);
+                    this.fullName = employee['Value'].FirstName + ' ' + employee['Value'].LastName;
+                }
+            );
+
+        this.headerUpdates.shouldUpdate$
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe(
+                (update) => {
+
+                    if (update) {
+                        this.tenant = JSON.parse(sessionStorage.getItem('tenant'));
+                        this.notificationService.getLatest();
+                        this.currentEmployeeService.getLatest();
+                    }
+                }
+            );
+
+        if (JSON.parse(sessionStorage.getItem('tenant'))) {
+            this.tenant = JSON.parse(sessionStorage.getItem('tenant'));
+            this.notificationService.getLatest();
+            this.currentEmployeeService.getLatest();
         }
     }
 
-    ngOnInit() {
-        this.AppConfig = APPCONFIG;
+    ngOnDestroy () {
+
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
     }
 
     logout () {

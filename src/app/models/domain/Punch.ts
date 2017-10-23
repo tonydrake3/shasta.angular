@@ -1,4 +1,15 @@
+import { DbGeography } from 'app/models/domain/DbGeography';
+
 export class Punch {
+punchIn?: Date;
+  punchInLocation?: DbGeography;
+  punchInUserId?: number;
+  punchOut?: Date;
+  punchOutLocation?: DbGeography;
+  punchOutUserId?: number;
+  timeRecordId?: number;
+  tenantId?: number;
+  
     PunchIn?: string;
     PunchInLocation?: Location;
     PunchInUserId?: number;
