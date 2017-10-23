@@ -2,8 +2,10 @@ import { Project } from '../../../models/domain/Project';
 import { expand } from 'rxjs/operator/expand';
 import { Punch } from './../../../models/domain/Punch';
 import { Hours } from '../../../models/domain/Hours';
-import { Employee } from '../../../models/time/TimeRecord';
+import {Employee} from 'app/models/domain/Employee';
 import * as moment from 'moment';
+import {TimeRecordConvertible} from '../time-record-detail-modal/ModalModels';
+import {TimeRecord} from '../../../models/domain/TimeRecord';
 
 // internal to timesheet-card ecosystem, not to be confused with TimeRecords, just used to help manage UI
 export class Timecard {
@@ -40,7 +42,7 @@ export class Badges {
   mapError: boolean;
 }
 
-export class HoursApproval {
+export class HoursApproval implements TimeRecordConvertible {
 
     status: string;
     day: string;
@@ -61,8 +63,34 @@ export class HoursApproval {
     employee: Employee;
     punchIn?: Date;
     punchOut?: Date;
-    break?: string
+    break?: string;
     systemPhrase?: string;
+
+    asTimeRecord(): TimeRecord {
+        const timeRecord = new TimeRecord();
+
+        timeRecord.Hours = new Hours();
+        timeRecord.Hours.RegularTime = this.Regulartime;
+        timeRecord.Hours.DoubleTime = this.Doubletime;
+        timeRecord.Hours.Overtime = this.Overtime;
+
+        timeRecord.Punch = this.punch;
+
+        /* I NEED THESE PLEASE :) */
+        // timeRecord.Project = this.Project;
+        // timeRecord.CostCode = this.CostCode;
+        // timeRecord.TimeRecordStatus = this.TimeRecordStatus;
+        // timeRecord.Breaks = this.Breaks;
+        // timeRecord.IndirectCost = this.IndirectCost;
+        // timeRecord.System = this.System;
+        // timeRecord.Phase = this.Phase;
+
+        timeRecord.Comments = this.comments;
+        timeRecord.Id = this.TimeRecordId;
+        timeRecord.Employee = this.employee;
+
+        return timeRecord;
+    }
 }
 
 
@@ -72,3 +100,4 @@ export class WeekDayHours {
     hours: string;
     date:  moment.Moment;
 }
+
