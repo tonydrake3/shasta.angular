@@ -1,0 +1,96 @@
+<form class="TimeDetails-form" novalidate (ngSubmit)="onSubmit(TimeDetailsGroup)" [formGroup]="TimeDetailsGroup" role="TimeDetailsGroup">
+
+    <md-toolbar color="primary">
+        <span>Time Details</span>
+    </md-toolbar><br>
+
+    <div class="row">
+        <div class="col-md-7">
+            <div id="Punch" *ngIf="hoursApproval.punchIn!=null">
+                <md-input-container>
+                    <input mdInput placeholder="Punch In" formControlName="punchIn" class="PunchWidth">
+                </md-input-container>
+
+                <md-input-container>
+                    <input mdInput placeholder="Punch Out" formControlName="punchOut" class="PunchWidth">
+                </md-input-container>
+            </div>
+            <br>
+            <div id="sdo">
+                <md-input-container>
+                    <input mdInput esub-OnlyNumber="true" DecimalPlaces="2" minValue="0.00" maxValue="23.00" placeholder="Regular Time" formControlName="regularTime"
+                        class="PunchWidth">
+                    <div class="error" style="color:red" *ngIf="TimeDetailsGroup.get('regularTime').hasError('required') && TimeDetailsGroup.get('regularTime').touched">
+                        is required
+                    </div>
+
+
+                </md-input-container>
+
+                <md-input-container class="PunchOver">
+                    <input mdInput esub--OnlyNumber="true" DecimalPlaces="2" minValue="0.00" maxValue="23.00" placeholder="Over Time" formControlName="overTime">
+
+
+                </md-input-container>
+
+                <md-input-container class="example-full-width">
+                    <input mdInput esub--OnlyNumber="true" DecimalPlaces="2" minValue="0.00" maxValue="23.00" placeholder="Double Time" formControlName="doubleTime">
+
+                </md-input-container>
+            </div>
+
+            <div>
+                Note :
+                <textarea class="form-control form-rounded" rows="2" formControlName="note"></textarea>
+
+            </div>
+
+            <br>
+
+            <div style="height:15em">
+            <esub-timecardmap [projectId]="projectId" [punch]="punch"></esub-timecardmap>
+            </div>
+        </div>
+
+        <div class="col-md-5  summary-map">
+                <div>
+                        <md-radio-group style="display: inline-flex;
+                flex-direction: row; " formControlName="status">
+                            <md-radio-button value="Approved"> Approve</md-radio-button> &nbsp; &nbsp;&nbsp; &nbsp;
+                            <md-radio-button value="Rejected" (click)="onReject($event)"> Reject</md-radio-button> &nbsp; &nbsp;&nbsp; &nbsp;
+                            <md-radio-button value="Pending"> Pending</md-radio-button> &nbsp; &nbsp;&nbsp; &nbsp;
+                        </md-radio-group>
+                        {{status}}
+                    </div>
+                    <br>
+                    <label>Comments:</label>
+                    <br>
+                    <div style="max-height: 20em;overflow-y: auto;">
+                        <div class="card" *ngFor="let comment of comments">
+                            <div class="card-header">
+                                {{comment.Timestamps.Updated | date : 'short' }}:
+                            </div>
+
+                            <div class="card-block h6">{{comment.Value}}</div>
+                        </div>
+
+                    </div>
+
+
+                    <div [(hidden)]="!isComment">
+
+                        <textarea autofocus class="form-control form-rounded" rows="3" #myInput formControlName="comment"></textarea>
+                        <div class="alert" style="color:red" *ngIf="TimeDetailsGroup.get('comment').hasError('required') && TimeDetailsGroup.get('comment').touched">
+                            is required
+                        </div>
+                    </div>
+        </div>
+    </div>
+
+    <br><br>
+    <div class="pull-right">
+        <button md-raised-button (click)="Close($event)">Cancel </button>
+        <button md-raised-button class="esub-button secondary pull-right" [disabled]="TimeDetailsGroup.invalid" type="submit">Save</button>
+
+    </div>
+</form>
