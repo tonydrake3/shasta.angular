@@ -227,8 +227,8 @@ export class TimeExpensesComponent implements OnInit, AfterViewInit {
 
   exportTime() {}
 
-    onTimeRecordClicked() {
-        console.log('Clicked TimeRecord Detail. Sending a record:');
+    onTimeRecordClicked(timeRecordId: string) {
+        console.log('Clicked TimeRecord Detail. Sending a record with id: ', timeRecordId);
         console.log(this.timerecords);
         const timeRecordsWithProjects = this.timerecords
             .filter((record) => { return record.project });

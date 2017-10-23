@@ -1,7 +1,7 @@
 import {TimeRecord} from '../../../models/domain/TimeRecord';
-import {Employee} from '../../../models/domain/Employee';
 import {Punch} from '../../../models/domain/Punch';
 import {Hours} from '../../../models/domain/Hours';
+import {Employee} from '../../../models/time/TimeRecord';
 
 export const enum TimeModalMode {
     view,
@@ -119,7 +119,7 @@ export interface TimeRecordConvertible {
     asTimeRecord(): TimeRecord
 }
 
-export class HoursApproval implements TimeRecordConvertible {
+export class HoursApproval {
 
     status: string;
     day: string;
@@ -140,22 +140,5 @@ export class HoursApproval implements TimeRecordConvertible {
     employee: Employee;
     punchIn?: Date;
     punchOut?: Date;
-
-    asTimeRecord(): TimeRecord {
-        const timeRecord = new TimeRecord();
-        timeRecord.TimeRecordStatus = this.status;
-        // timeRecord.ManualHours = //???//We need a good way to figure out if we should set Manual Hours.
-        // timeRecord.Hours = new Hours(this.Regulartime, this.Overtime, this.Doubletime, ????) // what is the date?
-        timeRecord.Employee = this.employee;
-        timeRecord.Comments = this.comments;
-        timeRecord.Id = this.TimeRecordId;
-        // timeRecord.Breaks = ???? Breaks?
-        // timeRecord.IndirectCost = ???
-        timeRecord.CostCode = this.costCode;
-        // timeRecord.Project = ???this.projectId?
-        // timeRecord.PhaseId = ????
-
-        return timeRecord
-    }
 }
 

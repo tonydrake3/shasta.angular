@@ -42,7 +42,7 @@ export class Badges {
   mapError: boolean;
 }
 
-export class HoursApproval implements TimeRecordConvertible {
+export class HoursApproval {
 
     status: string;
     day: string;
@@ -66,31 +66,31 @@ export class HoursApproval implements TimeRecordConvertible {
     break?: string;
     systemPhrase?: string;
 
-    asTimeRecord(): TimeRecord {
-        const timeRecord = new TimeRecord();
-
-        timeRecord.Hours = new Hours();
-        timeRecord.Hours.RegularTime = this.Regulartime;
-        timeRecord.Hours.DoubleTime = this.Doubletime;
-        timeRecord.Hours.Overtime = this.Overtime;
-
-        timeRecord.Punch = this.punch;
-
-        /* I NEED THESE PLEASE :) */
-        // timeRecord.Project = this.Project;
-        // timeRecord.CostCode = this.CostCode;
-        // timeRecord.TimeRecordStatus = this.TimeRecordStatus;
-        // timeRecord.Breaks = this.Breaks;
-        // timeRecord.IndirectCost = this.IndirectCost;
-        // timeRecord.System = this.System;
-        // timeRecord.Phase = this.Phase;
-
-        timeRecord.Comments = this.comments;
-        timeRecord.Id = this.TimeRecordId;
-        timeRecord.Employee = this.employee;
-
-        return timeRecord;
-    }
+    // asTimeRecord(): TimeRecord {
+    //     const timeRecord = new TimeRecord();
+    //
+    //     timeRecord.Hours = new Hours();
+    //     timeRecord.Hours.RegularTime = this.Regulartime;
+    //     timeRecord.Hours.DoubleTime = this.Doubletime;
+    //     timeRecord.Hours.Overtime = this.Overtime;
+    //
+    //     timeRecord.Punch = this.punch;
+    //
+    //     /* I NEED THESE PLEASE :) */
+    //     // timeRecord.Project = this.Project;
+    //     // timeRecord.CostCode = this.CostCode;
+    //     // timeRecord.TimeRecordStatus = this.TimeRecordStatus;
+    //     // timeRecord.Breaks = this.Breaks;
+    //     // timeRecord.IndirectCost = this.IndirectCost;
+    //     // timeRecord.System = this.System;
+    //     // timeRecord.Phase = this.Phase;
+    //
+    //     timeRecord.Comments = this.comments;
+    //     timeRecord.Id = this.TimeRecordId;
+    //     timeRecord.Employee = this.employee;
+    //
+    //     return timeRecord;
+    // }
 }
 
 
