@@ -8,15 +8,22 @@ import {BaseStore} from '../../../shared/services/base-store.service';
 export class EnterTimeCopyService extends BaseStore {
 
     constructor(protected _httpPassthrough: Http) {
+
         super(_httpPassthrough);
-        this.init(apiRoutes.timeRecords);
+    }
+
+    public initialize (params: Array<[string, string]>) {
+
+        this.init(apiRoutes.timeRecords, undefined, params);
     }
 
     public getLatest(): Promise<any> {
+
         return this.load();
     }
 
     get timeRecords$() {
+
         return this._entity$.asObservable();
     }
 }

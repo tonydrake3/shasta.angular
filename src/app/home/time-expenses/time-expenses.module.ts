@@ -35,6 +35,7 @@ import { EnterTimeBatchService } from './enter-time/enter-time-batch.service';
 import { EnterTimeFilterService } from './enter-time/enter-time-filter.service';
 import { EnterTimeTransformService } from './enter-time/enter-time-transform.service';
 import { EntityDisplayFormatterService } from '../shared/services/entity-display-formatter.service';
+import {EnterTimeCopyService} from './enter-time/enter-time-copy.service';
 
 @NgModule({
     imports: [
@@ -77,7 +78,8 @@ import { EntityDisplayFormatterService } from '../shared/services/entity-display
         EnterTimePreloadManager,
       	ProjectSummaryService,
         EnterTimeTransformService,
-        EntityDisplayFormatterService
+        EntityDisplayFormatterService,
+        EnterTimeCopyService
     ]
 })
 
