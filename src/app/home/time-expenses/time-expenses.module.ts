@@ -1,25 +1,17 @@
 import { MessageService } from './timesheet-card/timesheet-card.message';
 
+
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import {
-  MdChipsModule,
-  MdSelectModule,
-  MdCheckboxModule,
-  MdProgressBarModule,
-  MdAutocompleteModule,
-  MdTabsModule,
-  MdTooltipModule,
-  MdInputModule,
-  MdButtonModule,
-  MdDatepickerModule,
-  MdDialogModule
+    MdChipsModule, MdSelectModule, MdCheckboxModule, MdProgressBarModule,
+    MdAutocompleteModule, MdTabsModule, MdTooltipModule, MdInputModule, MdButtonModule, MdDatepickerModule,
+    MdDialogModule
 } from '@angular/material';
 import { DpDatePickerModule } from 'ng2-date-picker';
 
 import { SharedModule } from '../../shared/shared.module';
-import { SharedHomeModule } from '../shared/shared.home.module';
 import { TimeExpensesRoutingModule } from './time-expenses-routing.module';
 
 // Components
@@ -32,6 +24,11 @@ import { EnterTimeGridComponent } from './enter-time/enter-time-grid/enter-time-
 
 // Services
 import { TimeRecordsService } from './time-records.service';
+
+import { SharedHomeModule } from '../shared/shared.home.module';
+import {TimeSettingsComponent} from './time-settings/time-settings.component';
+import {TimeSettingsService} from './time-settings/time-settings.service';
+
 import { TimeExpensesService } from './time-expenses.service';
 import { FlashMessagesModule } from 'angular2-flash-messages';
 import { ProjectSummaryService } from '../projects/project-summary/project-summary.service';
@@ -42,49 +39,56 @@ import { EnterTimeBatchService } from './enter-time/enter-time-batch.service';
 import { EnterTimeFilterService } from './enter-time/enter-time-filter.service';
 import { EnterTimeTransformService } from './enter-time/enter-time-transform.service';
 import { EntityDisplayFormatterService } from '../shared/services/entity-display-formatter.service';
+import {TimeRecordUpdaterService} from './time-record-detail-modal/time-record-updater.service';
+
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MdCheckboxModule,
-    MdProgressBarModule,
-    TimeExpensesRoutingModule,
-    SharedModule,
-    SharedHomeModule,
-    DpDatePickerModule,
-    MdAutocompleteModule,
-    MdButtonModule,
-    MdChipsModule,
-    MdDatepickerModule,
-    MdDialogModule,
-    MdInputModule,
-    MdSelectModule,
-    MdTabsModule,
-    MdTooltipModule,
-    FlashMessagesModule
-  ],
-  declarations: [
-    TimeExpensesComponent,
-    TimesheetCardComponent,
-    BadgedHourComponent,
-    EnterTimeComponent,
-    EnterTimeFormComponent,
-    EnterTimeGridComponent
-  ],
-  providers: [
-    TimeRecordsService,
-    EnterTimeBatchService,
-    TimeExpensesService,
-    EnterTimeFilterService,
-    EnterTimeManager,
-    MessageService,
-    EnterTimeStatusService,
-    EnterTimePreloadManager,
-    ProjectSummaryService,
-    EnterTimeTransformService,
-    EntityDisplayFormatterService
-  ]
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MdCheckboxModule,
+        MdProgressBarModule,
+        TimeExpensesRoutingModule,
+        SharedModule,
+        SharedHomeModule,
+        DpDatePickerModule,
+        MdAutocompleteModule,
+        MdButtonModule,
+        MdChipsModule,
+        MdDatepickerModule,
+        MdDialogModule,
+        MdInputModule,
+        MdSelectModule,
+        MdTabsModule,
+        MdTooltipModule,
+        FlashMessagesModule
+    ],
+    declarations: [
+        TimeExpensesComponent,
+        TimesheetCardComponent,
+        BadgedHourComponent,
+        EnterTimeComponent,
+        EnterTimeFormComponent,
+        EnterTimeGridComponent,
+        TimeSettingsComponent,
+    ],
+    providers: [
+        TimeRecordsService,
+        TimeRecordUpdaterService,
+        EnterTimeBatchService,
+        TimeExpensesService,
+        EnterTimeFilterService,
+        EnterTimeManager,
+        MessageService,
+        EnterTimeStatusService,
+        EnterTimePreloadManager,
+        ProjectSummaryService,
+        EnterTimeTransformService,
+        EntityDisplayFormatterService,
+        TimeSettingsService
+
+    ]
 })
+
 export class TimeExpensesModule {}

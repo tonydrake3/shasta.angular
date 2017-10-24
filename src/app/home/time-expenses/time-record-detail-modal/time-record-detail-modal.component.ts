@@ -18,39 +18,60 @@ import {Subject} from 'rxjs/Subject';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {System} from '../../../models/domain/System';
 import {Phase} from '../../../models/domain/Phase';
+import * as _ from 'lodash';
+import {Hours} from '../../../models/domain/Hours';
+import {Punch} from '../../../models/domain/Punch';
+import {TimeRecordUpdaterService} from './time-record-updater.service';
 
 @Component({
     selector: 'esub-time-record-detail-modal',
     templateUrl: './time-record-detail-modal.component.html',
     styleUrls: ['./time-record-detail-modal.component.scss']
 })
-export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeModal {
-    private ngUnsubscribe: Subject<void> = new Subject<void>();
 
-    // Private
+export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeModal {
+    /* Form Keys for use instead of */
+    private formKeys: TimeModalFormKeys = {
+        project: 'project',
+        selectedProject: 'selectedProject',
+        system: 'system',
+        selectedSystem: 'selectedSystem',
+        phase: 'phase',
+        selectedPhase: 'selectedPhase',
+        costCode: 'costCode',
+        selectedCostCode: 'selectedCostCode',
+        indirectCostCode: 'indirectCostCode',
+        selectedIndirectCostCode: 'selectedIndirectCostCode',
+        date: 'date',
+        standardHours: 'standardHours',
+        overtimeHours: 'overtimeHours',
+        doubleTimeHours: 'doubleTimeHours'
+    };
+
+    private ngUnsubscribe: Subject<void> = new Subject<void>();
     private timeRecord: TimeRecord;
 
     // Subjects
     private timeRecordSubject = new BehaviorSubject<TimeRecord>(new TimeRecord());
+    private projectsSubject = new BehaviorSubject<Project[]>([]);
     private systemsSubject = new BehaviorSubject<System[]>([]);
     private phasesSubject = new BehaviorSubject<Phase[]>([]);
     private costCodeSubject = new BehaviorSubject<CostCode[]>([]);
-    // Selected Subjects
+    private indirectCostsSubject = new BehaviorSubject<IndirectCost[]>([]);
 
     // Public
-    public enterTimeForm: FormGroup; // Duplicated
-    public projects: Project[];   // Duplicated
-    public indirectCostCodes: IndirectCost[];
-    public filteredProjects: Observable<Project[]>; // Duplicated
-    public filteredSystems: Observable<System[]>; // Duplicated
+    public enterTimeForm: FormGroup;
+    public filteredProjects: Observable<Project[]>;
+    public filteredSystems: Observable<System[]>;
     public filteredPhases: Observable<Phase[]>;
-    public filteredIndirectCostCodes: Observable<IndirectCost[]>; // Duplicated
-    public filteredCostCodes: Observable<IndirectCost[]>; // Duplicated
+    public filteredIndirectCostCodes: Observable<IndirectCost[]>;
+    public filteredCostCodes: Observable<CostCode[]>; // Duplicated
 
     public displayData: TimeModalDisplayData;
     public displayMode: TimeModalMode;
+    public loading;
 
-    // Duplicated... This is here because of a weird TSlint error that comes up
+    /* This is here because of a weird TSlint error that comes up :shrug: */
     public autoProject;
     public autoSystem;
     public autoPhase;
@@ -71,49 +92,37 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
         private _formBuilder: FormBuilder,
         private _filterService: EnterTimeFilterService,
         private _projectService: ProjectService,
-        private _indirectCostsService: IndirectCostCodesService, // reused Filter Service... yay!
+        private _timeRecordUpdater: TimeRecordUpdaterService,
         public entityFormatter: EntityDisplayFormatterService
-    ) {
-
-        // Duplicated from Enter-time-preload-manager
-        this._projectService.getLatest();
-        this._indirectCostsService.getLatest();
-        this._projectService.projects$
-            .subscribe(
-                (result) => {
-                    this.projects = result['Value'];
-                }
-            );
-
-        // Duplicated from Enter-time-preload-manager
-        this._indirectCostsService.indirectCostCodes$
-            .subscribe( (result) => {
-                this.indirectCostCodes = result['Value'];
-            });
-
-        this.timeRecordSubject.asObservable()
-            .subscribe( (result) => {
-                console.log('next timerecordsubject', result);
-            })
-    }
+    ) {}
 
     ngOnInit () {
-        console.log('Initializing modal. The data is');
-        console.log(this.data);
         this.initializeTimeRecordFromInputData();
         this.initializeTimeRecordInputData();
         this.displayMode = this.data.displayMode;
         this.buildForm();
-        this.indirectCostCodes = [];
-        this.projects = [];
+        // For now we are just getting all of the projects but we will want to probably use the
+        // Lookup functionality from the server
+        this._projectService.getLatest();
+        this.loading = true;
+        this._projectService.projects$
+            .do(
+                (result) => {
+                    console.log('got projects');
+                    this.projectsSubject.next(result['Value']);
+                    this.loading = false;
+                }
+            )
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe();
 
-        // Bindings
+        /* Visibility Bindings */
         this.showIndirectCostView = this.timeRecordSubject
             .map((record) => {
                 return record && record.IndirectCost != null;
             })
-            .do((showindirectcostView) =>  {
-                console.log('show indirect cost view', showindirectcostView);
+            .do((showIndirectCostView) =>  {
+                console.log('show indirect cost view', showIndirectCostView);
             })
             .takeUntil(this.ngUnsubscribe);
 
@@ -137,7 +146,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
 
         this.showSystemView = Observable
             .combineLatest(
-                this.enterTimeForm.get('selectedProject').valueChanges,
+                this.enterTimeForm.get(this.formKeys.selectedProject).valueChanges,
                 this.systemsSubject,
                 (selectedProject, systems) => {
                     return selectedProject != null && !(systems.length === 0);
@@ -150,7 +159,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
 
         this.showPhaseView = Observable
             .combineLatest(
-                this.enterTimeForm.get('selectedSystem').valueChanges,
+                this.enterTimeForm.get(this.formKeys.selectedSystem).valueChanges,
                 this.phasesSubject,
                 (selectedSystem, phases) => {
                     return selectedSystem != null && !(phases.length === 0);
@@ -161,19 +170,112 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
             })
             .takeUntil(this.ngUnsubscribe);
 
-        // DEBUGGING
+        this.filteredProjects = Observable.combineLatest(
+            this.enterTimeForm.get(this.formKeys.project).valueChanges,
+            this.projectsSubject,
+            (filterText, projects) => {
+                console.log('filtering projects with text', filterText);
+                console.log('currently have ' + projects.length + ' projects total');
+                return this._filterService
+                    .filterCollectionByKey(projects, filterText)
+            }
+        )
+            .do((projects) => {
+                console.log('filtering projects');
+                console.log(projects);
+            })
+            .takeUntil(this.ngUnsubscribe);
+
+        this.filteredCostCodes = Observable.combineLatest(
+            this.enterTimeForm.get(this.formKeys.costCode).valueChanges,
+            this.costCodeSubject,
+            (filterText, costCodes) => {
+                console.log('filtering cost codes with text', filterText);
+                console.log('currently have ' + costCodes.length + ' cost codes total');
+                return this._filterService
+                    .filterCollectionByKey(costCodes, filterText)
+            }
+        )
+            .do((costCodes) => {
+                console.log('filtering costCodes');
+                console.log(costCodes);
+            })
+            .takeUntil(this.ngUnsubscribe);
+
+        this.filteredIndirectCostCodes = Observable.combineLatest(
+            this.enterTimeForm.get(this.formKeys.indirectCostCode).valueChanges,
+            this.indirectCostsSubject,
+            (filterText, indirectCostCodes) => {
+                console.log('filtering cost codes with text', filterText);
+                console.log('currently have ' + indirectCostCodes.length + ' indirect costcodes total');
+                return this._filterService
+                    .filterCollectionByKey(indirectCostCodes, filterText)
+            }
+        )
+            .do((indirectCostCodes) => {
+                console.log('filtering indirect costcodes');
+                console.log(indirectCostCodes);
+            })
+            .takeUntil(this.ngUnsubscribe);
+
+        this.filteredSystems = Observable.combineLatest(
+            this.enterTimeForm.get(this.formKeys.system).valueChanges,
+            this.systemsSubject,
+            (filterText, systems) => {
+
+                return this._filterService.filterCollectionByKey(systems, filterText)
+
+            }
+        )
+            .do((systems) => {
+                console.log('filtering systems');
+                console.log(systems);
+            })
+            .takeUntil(this.ngUnsubscribe);
+
+        this.filteredPhases = Observable.combineLatest(
+            this.enterTimeForm.get(this.formKeys.phase).valueChanges,
+            this.phasesSubject,
+            (filterText, phases) => {
+
+                return this._filterService.filterCollectionByKey(phases, filterText)
+
+            }
+        )
+            .do((phases) => {
+                console.log('filtering phases');
+                console.log(phases);
+            })
+            .takeUntil(this.ngUnsubscribe);
+
+        /* When the collection of systems changes, we automatically select the first one and pass on the phases */
         this.systemsSubject
-            .do((subjects) => {
-                console.log('next systems');
-                console.log(subjects);
+            .do((systems) => {
+
+                const autoSelectedSystem = systems[0];
+                this.enterTimeForm.patchValue({
+                    system: autoSelectedSystem || '',
+                    selectedSystem: autoSelectedSystem || ''
+                });
+
+                const phases = autoSelectedSystem ? autoSelectedSystem.Phases : [];
+
+                this.phasesSubject.next(phases);
+
             })
             .takeUntil(this.ngUnsubscribe)
             .subscribe();
 
+        /* When the collection of phases changes, we will automatically the first one if it is there. */
         this.phasesSubject
-            .do((subjects) => {
-                console.log('next phases');
-                console.log(subjects);
+            .do((phases) => {
+
+                const autoSelectedPhase = phases[0];
+                this.enterTimeForm.patchValue({
+                    phase: autoSelectedPhase || '',
+                    selectedPhase: autoSelectedPhase || ''
+                });
+
             })
             .takeUntil(this.ngUnsubscribe)
             .subscribe();
@@ -192,10 +294,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
         this.ngUnsubscribe.complete();
     }
 
-    // Duplicated from Enter Form... refactor?
     private buildForm() {
-        console.log('Building form. The display data is');
-        console.log(this.displayData);
 
         let project: Project;
         let system: System;
@@ -230,57 +329,10 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
 
         this.observeProjectChanges();
         this.observeSystemChanges();
+        this.observePhaseChanges();
         this.observeCostCodeChanges();
         this.observeIndirectCostCodeChanges();
         this.observeStandardTimeHoursChanges();
-    }
-
-    public close () {
-        console.log('Close modal without saving');
-        this.dialogRef.close();
-    }
-
-    public save () {
-        console.log('Save this record');
-        this.dialogRef.close();
-    }
-
-    public projectsTypeAheadHasFocus (value) {
-        console.log('projectsTypeAheadHasFocus');
-        this.filterProjectsBy(value);
-
-    }
-
-    private filterProjectsBy(value) {
-        this.filteredProjects = this._filterService
-            .filterCollectionByKey(this.projects, value);
-    }
-
-    public systemTypeAheadHasFocus(value) {
-
-        this.filteredSystems = this._filterService
-            .filterCollectionByKey(this.systemsSubject.getValue(), value);
-
-    }
-
-    public phaseTypeAheadHasFocus(value) {
-
-        this.filteredPhases = this._filterService
-            .filterCollectionByKey(this.phasesSubject.getValue(), value);
-
-    }
-
-    public costCodesTypeAheadHasFocus (value) {
-
-        this.filteredCostCodes = this._filterService
-            .filterCollectionByKey(this.costCodeSubject.getValue(), value, ['Code', 'Name']);
-
-    }
-
-    public indirectCostCodesTypeAheadHasFocus (value) {
-
-        this.filteredIndirectCostCodes = this._filterService.filterCollectionByKey(this.indirectCostCodes, value, ['Description']);
-
     }
 
     public projectWasSelected (event) {
@@ -309,21 +361,16 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
     public indirectCostCodeWasSelected (event) {
 
         this.enterTimeForm.patchValue({ selectedIndirectCost: event.option.value });
+
     }
 
-    // Duplicated
     observeIndirectCostCodeChanges() {
-        console.log('Indirect Cost Code changed');
-        const indirectCostCodeField = this.enterTimeForm.get('indirectCostCode');
-        const indirectCostCodeSelection = this.enterTimeForm.get('selectedIndirectCostCode');
 
-        console.log(indirectCostCodeField);
-        console.log(indirectCostCodeSelection);
+        const indirectCostCodeField = this.enterTimeForm.get(this.formKeys.indirectCostCode);
+        const indirectCostCodeSelection = this.enterTimeForm.get(this.formKeys.selectedIndirectCostCode);
 
         indirectCostCodeField.valueChanges.subscribe(
             (indirectCostCodeFieldText) => {
-                console.log('next indirect cost code field change');
-                console.log(indirectCostCodeFieldText);
 
                 if (indirectCostCodeFieldText || indirectCostCodeFieldText === '') {
 
@@ -331,19 +378,8 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
                         selectedIndirectCostCode: ''
                     });
 
-                    if (this.indirectCostCodes.length > 0) {
+                    indirectCostCodeField.setErrors({'invalid' : true});
 
-                        this.filteredIndirectCostCodes = this._filterService
-                            .filterByKeyValuePair(this.indirectCostCodes, {'Description': indirectCostCodeFieldText});
-
-                    } else {
-
-                        indirectCostCodeField.setErrors({'invalid' : true});
-
-                        this.filteredIndirectCostCodes = this._filterService
-                            .filterByKeyValuePair(this.indirectCostCodes, {'Description': indirectCostCodeFieldText});
-
-                    }
                 }
             }
         );
@@ -351,8 +387,11 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
         indirectCostCodeSelection.valueChanges.subscribe(
             (selectedIndirectCostCode) => {
 
-                if (selectedIndirectCostCode && this.indirectCostCodes.length === 0) {
+                if (selectedIndirectCostCode) {
+
                     indirectCostCodeField.setErrors(null);
+                    indirectCostCodeSelection.markAsDirty();
+
                 }
 
             }
@@ -360,9 +399,10 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
     }
 
     observeProjectChanges() {
-        const projectField = this.enterTimeForm.get('project');
-        const projectSelection = this.enterTimeForm.get('selectedProject');
-        const costCodeSelection = this.enterTimeForm.get('selectedCostCode');
+
+        const projectField = this.enterTimeForm.get(this.formKeys.project);
+        const projectSelection = this.enterTimeForm.get(this.formKeys.selectedProject);
+        const costCodeSelection = this.enterTimeForm.get(this.formKeys.selectedCostCode);
 
         projectField.valueChanges.subscribe(
             (projectText) => {
@@ -376,21 +416,27 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
                     costCode: ''
                 };
                 this.resetField(projectText, projectField, fieldsToClear);
-                this.filterProjectsBy(projectText);
 
             }
         );
 
         projectSelection.valueChanges.subscribe (
+
             (selectedProject) => {
 
                 if (selectedProject) {
 
                     projectField.setErrors(null);
-                    this.checkDefaultSystem(selectedProject.Systems);
-                    this.checkDefaultCostCode(selectedProject.CostCodes);
-                    // costCodeSelection.clearValidators();
-                    // costCodeSelection.setErrors(null);
+
+                    // we need to do this explicitly since we set the selectedProject field programmatically
+                    projectSelection.markAsDirty();
+
+                    this.systemsSubject.next(selectedProject.Systems);
+
+                    this.costCodeSubject.next(selectedProject.CostCodes);
+
+                    costCodeSelection.clearValidators();
+                    costCodeSelection.setErrors(null);
 
                 }
             }
@@ -398,72 +444,38 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
     }
 
     observeStandardTimeHoursChanges() {
-        const standardTimeField = this.enterTimeForm.get('standardHours');
-        const overtimeField = this.enterTimeForm.get('overtimeHours');
-        const doubleTimeField = this.enterTimeForm.get('doubleTimeHours');
+        const standardTimeField = this.enterTimeForm.get(this.formKeys.standardHours);
+        const overtimeField = this.enterTimeForm.get(this.formKeys.overtimeHours);
+        const doubleTimeField = this.enterTimeForm.get(this.formKeys.doubleTimeHours);
 
         standardTimeField.valueChanges.subscribe(
             (standardTime) => {
-                console.log('standard time changed');
-                console.log(standardTime);
+
+                standardTimeField.markAsDirty();
+
             }
-        )
+        );
 
         overtimeField.valueChanges.subscribe(
             (overtime) => {
-                console.log('overtime changed');
-                console.log(overtime);
+
+                overtimeField.markAsDirty();
+
             }
-        )
+        );
 
         doubleTimeField.valueChanges.subscribe(
             (doubleTime) => {
-                console.log('doubleTime changed');
-                console.log(doubleTime);
+
+                doubleTimeField.markAsDirty();
+
             }
-        )
-    }
-
-//     if (systems && systems.length >= 1) {
-//     this.systemsSubject.next(systems);
-//
-//     this.enterTimeForm.patchValue({
-//                                       system: systems[0],
-//                                       selectedSystem: systems[0]
-//                                   });
-//     this.checkDefaultPhase(systems[0].Phases);
-// } else {
-//     this.systemsSubject.next([]);
-//
-//     this.enterTimeForm.patchValue({
-//         system: '',
-//         selectedSystem: ''
-//     });
-//     this.phasesSubject.next([]);
-// }
-
-    private checkDefaultCostCode (costCodes: CostCode[]) {
-
-        if (costCodes && costCodes.length >= 1) {
-            this.costCodeSubject.next(costCodes);
-
-            // this.enterTimeForm.patchValue({
-            //     costCode: costCodes[0],
-            //     selectedCostCode: costCodes[0]
-            // });
-
-        } else {
-
-            this.enterTimeForm.patchValue({
-                costCode: '',
-                selectedCostCode: ''
-            });
-        }
+        );
     }
 
     observeSystemChanges() {
-        const systemField = this.enterTimeForm.get('system');
-        const systemSelection = this.enterTimeForm.get('selectedSystem');
+        const systemField = this.enterTimeForm.get(this.formKeys.system);
+        const systemSelection = this.enterTimeForm.get(this.formKeys.selectedSystem);
 
         systemField.valueChanges.subscribe(
             (systemText) => {
@@ -484,8 +496,36 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
                 if (selectedSystem) {
 
                     systemField.setErrors(null);
-                    this.checkDefaultPhase(selectedSystem.Phases);
+                    this.phasesSubject.next(selectedSystem.Phases);
 
+                }
+
+            }
+        )
+    }
+
+    observePhaseChanges() {
+        const phaseField = this.enterTimeForm.get(this.formKeys.phase);
+        const phaseSelection = this.enterTimeForm.get(this.formKeys.selectedPhase);
+
+        phaseField.valueChanges.subscribe(
+            (phaseText) => {
+
+                const fieldsToClear = {
+                    selectedPhase: '',
+                };
+                this.resetField(phaseText, phaseField, fieldsToClear)
+
+            }
+        )
+
+        phaseSelection.valueChanges.subscribe(
+            (selectedPhase) => {
+
+                if (selectedPhase) {
+
+                    phaseField.setErrors(null);
+                    phaseSelection.markAsDirty();
                 }
 
             }
@@ -496,89 +536,24 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
         if (fieldValue || fieldValue === '') {
 
             this.enterTimeForm.patchValue(fieldsToClear);
-            this.costCodeSubject.next([]);
             field.setErrors({'invalid': true});
 
         }
     }
 
-// Duplicated... convert to observables
-    private checkDefaultSystem (systems: System[]) {
-
-        if (systems && systems.length >= 1) {
-            this.systemsSubject.next(systems);
-
-            this.enterTimeForm.patchValue({
-                system: systems[0],
-                selectedSystem: systems[0]
-            });
-            this.checkDefaultPhase(systems[0].Phases);
-        } else {
-            this.systemsSubject.next([]);
-
-            this.enterTimeForm.patchValue({
-                system: '',
-                selectedSystem: ''
-            });
-            this.phasesSubject.next([]);
-        }
-    }
-
-    // Duplicated
-    private checkDefaultPhase (phases: Array<Phase>) {
-        console.log('checkDefaultPhase');
-        console.log(phases);
-        this.phasesSubject.next(phases);
-        if (phases.length >= 1) {
-
-            this.enterTimeForm.patchValue({
-                phase: phases[0],
-                selectedPhase: phases[0]
-            });
-        } else {
-
-            this.enterTimeForm.patchValue({
-                phase: '',
-                selectedPhase: ''
-            });
-        }
-    }
-
     observeCostCodeChanges() {
 
-        const costCodeField = this.enterTimeForm.get('costCode');
-        const costCodeSelection = this.enterTimeForm.get('selectedCostCode');
+        const costCodeField = this.enterTimeForm.get(this.formKeys.costCode);
+        const costCodeSelection = this.enterTimeForm.get(this.formKeys.selectedCostCode);
 
         costCodeField.valueChanges.subscribe(
             (costCodeFieldText) => {
-                console.log('next cost code field change');
-                console.log(costCodeFieldText);
 
                 if (costCodeFieldText || costCodeFieldText === '') {
 
-                    this.enterTimeForm.patchValue({
-                        selectedCostCode: ''
-                    });
+                    const fieldsToClear = { selectedCostCode: '' };
+                    this.resetField(costCodeFieldText, costCodeField, fieldsToClear);
 
-                    if (this.costCodeSubject.getValue().length > 0) {
-
-                        this.filteredCostCodes = this._filterService
-                            .filterByKeyValuePair(this.costCodeSubject.getValue(), {
-                                'Code': costCodeFieldText,
-                                'Name': costCodeFieldText
-                            });
-
-                    } else {
-
-                        costCodeField.setErrors({'invalid' : true});
-
-                        this.filteredCostCodes = this._filterService
-                            .filterByKeyValuePair(this.costCodeSubject.getValue(), {
-                                'Code': costCodeFieldText,
-                                'Name': costCodeFieldText
-                            });
-
-                    }
                 }
             }
         );
@@ -586,23 +561,97 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
         costCodeSelection.valueChanges.subscribe(
             (selectedCostCode) => {
 
-                if (selectedCostCode && this.costCodeSubject.getValue().length === 0) {
+                if (selectedCostCode) {
 
                     costCodeField.setErrors(null);
-
+                    costCodeSelection.markAsDirty();
                 }
 
             }
         );
     }
 
-    public onSubmit(form: FormGroup) {
-        console.log('Submitted form');
-        console.log(form);
+    public didTapSaveButton() {
+        console.log('Saving TimeRecord');
+        this.loading = true;
+        const timeRecord = this.prepareTimeRecordToSave();
+        this._timeRecordUpdater.updateTimeRecord(timeRecord)
+            .then((data) => {
+                console.log('update was successful with data', data);
+                this.dialogRef.close();
+            })
+            .catch((error) => {
+                console.log('there was an error updating', error);
+            })
+            .then(() => {
+                this.loading = false;
+            });
+    }
+
+    private prepareTimeRecordToSave(): TimeRecord {
+        const timeRecordToSave = new TimeRecord();
+        timeRecordToSave.Id = this.timeRecord.Id;
+
+        const formValues = this.enterTimeForm.value;
+        const changedProperties = this.getChangedProperties();
+
+        if (changedProperties.includes(this.formKeys.selectedProject)) {
+            timeRecordToSave.ProjectId = formValues.selectedProject.Id;
+
+            /* The API requires a cost code to be sent whenever a project is sent so we make sure to populate it here. */
+            timeRecordToSave.CostCodeId = formValues.selectedCostCode.Id;
+        }
+
+        if (changedProperties.includes(this.formKeys.selectedPhase)) {
+            timeRecordToSave.PhaseId = formValues.selectedPhase.Id;
+        }
+
+        if (changedProperties.includes(this.formKeys.selectedCostCode)) {
+            timeRecordToSave.CostCodeId = formValues.selectedCostCode.Id;
+        }
+
+        if (this.hoursChanged(changedProperties)) {
+            timeRecordToSave.Hours = new Hours();
+            timeRecordToSave.Hours.RegularTime = formValues.standardHours;
+            timeRecordToSave.Hours.Overtime = formValues.overtimeHours;
+            timeRecordToSave.Hours.DoubleTime = formValues.doubleTimeHours;
+        } else if (this.timeInTimeOutChanged(changedProperties)) {
+            timeRecordToSave.Punch = new Punch(Date(), Date());
+            timeRecordToSave.Punch.PunchIn = Date();
+            timeRecordToSave.Punch.PunchOut = Date();
+        }
+
+        return timeRecordToSave;
+    }
+
+    private hoursChanged(changedProperties: string[]): boolean {
+        return changedProperties.includes(this.formKeys.standardHours) ||
+            changedProperties.includes(this.formKeys.overtimeHours) ||
+            changedProperties.includes(this.formKeys.doubleTimeHours)
+    }
+    // TODO
+    private timeInTimeOutChanged(changedProperties: string[]): boolean {
+        return false
+    }
+
+    private getChangedProperties(): string[] {
+        const changedProperties = [];
+
+        Object.keys(this.enterTimeForm.controls).forEach((name) => {
+            const currentControl = this.enterTimeForm.controls[name];
+
+            if (currentControl.dirty) {
+                changedProperties.push(name);
+            }
+
+        });
+
+        return changedProperties;
     }
 
     didTapCancelButton(): void {
         console.log('View Modal Tapped Cancel Button');
+        this.dialogRef.close();
     }
 
     private initializeTimeRecordFromInputData() {
@@ -646,4 +695,21 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
 
         }
     }
+}
+
+class TimeModalFormKeys {
+    project: string;
+    selectedProject: string;
+    system: string;
+    selectedSystem: string;
+    phase: string;
+    selectedPhase: string;
+    costCode: string;
+    selectedCostCode: string;
+    indirectCostCode: string;
+    selectedIndirectCostCode: string;
+    date: string;
+    standardHours: string;
+    overtimeHours: string;
+    doubleTimeHours: string;
 }

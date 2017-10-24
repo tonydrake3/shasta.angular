@@ -1,7 +1,6 @@
 import { TestBed, inject } from '@angular/core/testing';
 import {EnterTimeFilterService} from './enter-time-filter.service';
 import {Project} from '../../../models/domain/Project';
-import {TestScheduler} from 'rxjs/Rx';
 import {Observable} from 'rxjs/Observable';
 
 describe('EntityDisplayFormatterService', () => {
@@ -37,8 +36,8 @@ describe('EntityDisplayFormatterService', () => {
                 (service: EnterTimeFilterService
                 ) => {
 
-                    const expected: Observable<Project[]> = Observable.of([]);
-                    expect(service.filterByKeyValuePair(projects, { 'Nothing': ''})).toEqual(expected);
+                    const expected: Project[] = [];
+                    expect(service.filterByKeyValuePair(projects, { 'Nothing': 'nothing'})).toEqual(expected);
 
                 }));
 
@@ -47,7 +46,7 @@ describe('EntityDisplayFormatterService', () => {
                 (service: EnterTimeFilterService
                 ) => {
 
-                    const expected: Observable<Project[]> = Observable.of([]);
+                    const expected: Project[] = [];
                     expect(service.filterByKeyValuePair(projects, {'Name': 'apples'})).toEqual(expected);
 
                 }));
@@ -57,8 +56,18 @@ describe('EntityDisplayFormatterService', () => {
                 (service: EnterTimeFilterService
                 ) => {
 
-                    const expected: Observable<Project[]> = Observable.of(projects);
+                    const expected: Project[] = projects;
                     expect(service.filterByKeyValuePair(projects, {'Name': 'Project'})).toEqual(expected);
+
+                }));
+
+        it('collection should match case does not match',
+            inject([EnterTimeFilterService],
+                (service: EnterTimeFilterService
+                ) => {
+
+                    const expected: Project[] = projects;
+                    expect(service.filterByKeyValuePair(projects, {'Name': 'project'})).toEqual(expected);
 
                 }));
 
@@ -67,12 +76,12 @@ describe('EntityDisplayFormatterService', () => {
                 (service: EnterTimeFilterService
                 ) => {
 
-                    const expected: Observable<Project[]> = Observable.of([projects[0]]);
+                    const expected: Project[] = [projects[0]];
                     expect(service.filterByKeyValuePair(projects, {'Number': '12'})).toEqual(expected);
 
                 }));
 
-    })
+    });
 
     describe('filterCollectionByKey', () => {
 
@@ -81,7 +90,7 @@ describe('EntityDisplayFormatterService', () => {
                 (service: EnterTimeFilterService
                 ) => {
 
-                    const expected: Observable<Project[]> = Observable.of([]);
+                    const expected: Project[] = [];
                     expect(service.filterCollectionByKey(projects, 'apples')).toEqual(expected);
 
                 }));
@@ -91,7 +100,7 @@ describe('EntityDisplayFormatterService', () => {
                 (service: EnterTimeFilterService
                 ) => {
 
-                    const expected: Observable<Project[]> = Observable.of(projects);
+                    const expected: Project[] = projects;
                     expect(service.filterCollectionByKey(projects, 'Project')).toEqual(expected);
 
                 }));
@@ -101,7 +110,7 @@ describe('EntityDisplayFormatterService', () => {
                 (service: EnterTimeFilterService
                 ) => {
 
-                    const expected: Observable<Project[]> = Observable.of([projects[0]]);
+                    const expected: Project[] = [projects[0]];
                     expect(service.filterCollectionByKey(projects, '12')).toEqual(expected);
 
                 }));
@@ -110,8 +119,8 @@ describe('EntityDisplayFormatterService', () => {
             inject([EnterTimeFilterService],
                 (service: EnterTimeFilterService
                 ) => {
-
-                    const expected: Observable<Project[]> = Observable.of([projects[0]]);
+                    const projectArray: Project[] = [projects[0]];
+                    const expected: Observable<Project[]> = Observable.of(projectArray);
                     expect(service.filterCollection('123 - P', projects)).toEqual(expected);
 
                 }));

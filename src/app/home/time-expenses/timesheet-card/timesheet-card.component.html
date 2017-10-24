@@ -9,10 +9,10 @@
 <esub-base-card *ngFor="let timecard of timecards" class="timesheet-card">
     <!-- {{  getTimecardGrid(timecard) }} -->
     <!-- header row -->
-    <div class="row timesheet-card" style="width:100%">
+    <div class="row">
 
-        <div class="container timesheet-card">
-            <div class="row timesheet-card">
+        <div class="container">
+            <div class="row">
                 <div class="col-md-6 card-title">
                     <span style="font-weight:bold; font-size:17px">{{timecard.cardTitle}}</span>
                     <span class="badge badge-danger" style="margin-left:1rem" *ngIf="timecard.rejected">Rejected</span>
@@ -26,10 +26,10 @@
                 </div>
 
             </div>
-            <div class="row timesheet-card">
-                <div class="col-md-7 timesheet-card">
+            <div class="row">
+                <div class="col-md-7">
                     <!-- repeater for each day -->
-                    <div class="row timesheet-card">
+                    <div class="row">
                         <table class="table">
                             <thead>
                                 <tr>
@@ -57,7 +57,7 @@
 
                 </div>
 
-                <div class="col-md-5 timesheet-card">
+                <div class="col-md-5">
                     <table class="table" style="border-top: none;">
                         <thead>
                             <tr>
@@ -94,12 +94,12 @@
 
 
             <!-- Display the grid START -->
-            <div class="row timesheet-card" [hidden]="timecard.expanded===false">
+            <div class="row" [hidden]="timecard.expanded===false">
 
                 <!-- <table class="table table-strip">
                                  </table> -->
                 <span [hidden]="true"></span>
-                <div class="table-responsive timesheet-card">
+                <div class="table-responsive col-md-12">
                     <table class="table table-bordered">
                         <thead>
                             <tr>

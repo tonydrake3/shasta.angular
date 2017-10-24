@@ -83,7 +83,7 @@ export class TimesheetCardComponent extends BaseComponent
   public isAllTimecardsSelected = false;
   public isComment: boolean;
   public groupBy: string;
-  public pin: any;
+  public pin: string;
   public correctPin: string;
 
   // view management
@@ -92,7 +92,6 @@ export class TimesheetCardComponent extends BaseComponent
 
   public showBadges: Badges;
   public showCheckboxes: boolean;
-  public showApproveButton: boolean;
   public subscription: Subscription;
   public totalCount: number;
   public isReject = false;
@@ -126,7 +125,6 @@ export class TimesheetCardComponent extends BaseComponent
 
   ngOnInit() {
     this.totalCount = 0;
-
 
     this._messageService.messageSource$.subscribe((notifcation: any) => {
       console.log('Message: ', notifcation);
@@ -899,7 +897,7 @@ export class TimesheetCardComponent extends BaseComponent
     }
   }
 
-  // used on route change to update default view settings for timecards
+  // used on route change to update default view time-settings for timecards
   public updateViewSettings() {
     switch (this._view) {
       case 'timesheets':
