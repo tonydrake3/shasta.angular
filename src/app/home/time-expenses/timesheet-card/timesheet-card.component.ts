@@ -908,8 +908,7 @@ export class TimesheetCardComponent extends BaseComponent
           statusError: true,
           mapError: true
         };
-        this.showCheckboxes = false;
-        this.showApproveButton = false
+        // this.showCheckboxes = false;
         this.expandAllDetails(true);
         break;
       case 'approve-time':
@@ -918,7 +917,7 @@ export class TimesheetCardComponent extends BaseComponent
           statusError: true,
           mapError: true
         };
-        this.showCheckboxes = true;
+        // this.showCheckboxes = true;
         this.expandAllDetails(true);
         break;
       case 'export-time':

@@ -13,7 +13,7 @@ import { AppComponent } from './app.component';
 import { NotificationModule } from './home/notifications/notification.module';
 
 // Pages
-import { LoginComponent } from './login/login.component'
+import { LoginComponent } from './login/login.component';
 
 // Sub modules
 import { HomeModule } from './home/home.module';
@@ -24,10 +24,10 @@ import { SettingsModule } from './home/settings/settings.module';
 
 // hmr
 import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
-import {AuthenticationService} from './shared/services/authentication/authentication.service';
-import {AuthGuard} from './shared/services/guards/auth-guard.service';
-import {DataSyncService} from './home/shared/services/data-sync.service';
-import {LookupDataService} from './home/shared/services/lookup-data.service';
+import { AuthenticationService } from './shared/services/authentication/authentication.service';
+import { AuthGuard } from './shared/services/guards/auth-guard.service';
+import { DataSyncService } from './home/shared/services/data-sync.service';
+import { LookupDataService } from './home/shared/services/lookup-data.service';
 
 // entry components
 import { CommentsComponent } from './home/shared/components/comments.component';
@@ -40,62 +40,62 @@ import { TimesheetCardPinComponent } from 'app/home/time-expenses/timesheet-card
 import { TimeRecordDetailModalComponent } from './home/time-expenses/time-record-detail-modal/time-record-detail-modal.component';
 
 @NgModule({
-    imports: [
-        BrowserModule,
-        HttpModule,
-        FormsModule,
-        ReactiveFormsModule,
-        BrowserAnimationsModule,
-        AppRoutingModule,
-        NotificationModule,
+  imports: [
+    BrowserModule,
+    HttpModule,
+    FormsModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    AppRoutingModule,
+    NotificationModule,
 
-        // Sub modules
-        LoginModule,
-        HomeModule,
-        SharedModule,
-        MdInputModule,
-        MdProgressSpinnerModule,
+    // Sub modules
+    LoginModule,
+    HomeModule,
+    SharedModule,
+    MdInputModule,
+    MdProgressSpinnerModule,
 
-        CompanyModule,
+    CompanyModule
 
-        // ProjectModule
-    ],
-    declarations: [
-        AppComponent
-    ],
-    providers: [
-        AuthenticationService,
-        AuthGuard,
-        DataSyncService,
-        LookupDataService,
-        PermissionsService
-    ],
-    bootstrap: [AppComponent],
-    entryComponents: [
-        CommentsComponent,
-        ConfirmationDialogComponent,
-        NotesEntryDialogComponent,
-        NotificationComponent,
-        TimeRecordDetailModalComponent,
-	TimeCardTimeDetailComponent, TimesheetCardPinComponent
-    ]
+    // ProjectModule
+  ],
+  declarations: [AppComponent],
+  providers: [
+    AuthenticationService,
+    AuthGuard,
+    DataSyncService,
+    LookupDataService,
+    PermissionsService
+  ],
+  bootstrap: [AppComponent],
+  entryComponents: [
+    CommentsComponent,
+    ConfirmationDialogComponent,
+    NotesEntryDialogComponent,
+    NotificationComponent,
+    TimeRecordDetailModalComponent,
+    TimeCardTimeDetailComponent,
+    TimesheetCardPinComponent
+  ]
 })
-
 export class AppModule {
-    constructor(public appRef: ApplicationRef) {}
-    hmrOnInit(store) {
-        console.log('HMR store', store);
-    }
-    hmrOnDestroy(store) {
-        const cmpLocation = this.appRef.components.map(cmp => cmp.location.nativeElement);
-        // recreate elements
-        store.disposeOldHosts = createNewHosts(cmpLocation);
-        // remove styles
-        removeNgStyles();
-    }
-    hmrAfterDestroy(store) {
-        // display new elements
-        store.disposeOldHosts();
-        delete store.disposeOldHosts;
-    }
+  constructor(public appRef: ApplicationRef) {}
+  hmrOnInit(store) {
+    console.log('HMR store', store);
+  }
+  hmrOnDestroy(store) {
+    const cmpLocation = this.appRef.components.map(
+      cmp => cmp.location.nativeElement
+    );
+    // recreate elements
+    store.disposeOldHosts = createNewHosts(cmpLocation);
+    // remove styles
+    removeNgStyles();
+  }
+  hmrAfterDestroy(store) {
+    // display new elements
+    store.disposeOldHosts();
+    delete store.disposeOldHosts;
+  }
 }
