@@ -279,9 +279,9 @@ export class TimesheetCardComponent extends BaseComponent
         console.log(`Dialog result: ${result.pin}`);
         this.pin = result.pin;
 
-        if (type === this.TYPE && hoursApproval) {
-          this.onHourlyValues(hoursApproval);
-        }
+        // if (type === this.TYPE && hoursApproval) {
+        //   this.onHourlyValues(hoursApproval);
+        // }
       }
     });
 
@@ -747,10 +747,10 @@ export class TimesheetCardComponent extends BaseComponent
 
   // open hour values modal
   public onHourlyValues(hoursApproval: HoursApproval) {
-    if (!this.pin || this.pin === '' || this.pin !== this.correctPin) {
-      this.credentialPIN('onHourlyValues', hoursApproval);
-      return;
-    }
+    // if (!this.pin || this.pin === '' || this.pin !== this.correctPin) {
+    //   this.credentialPIN('onHourlyValues', hoursApproval);
+    //   return;
+    // }
     const data = hoursApproval;
     if (hoursApproval) {
       let width, height;
@@ -888,6 +888,13 @@ export class TimesheetCardComponent extends BaseComponent
     if (user && user[0] && user[0].ApprovalPin) {
       this.correctPin = user[0].ApprovalPin;
     }
+
+    this.pin = this._messageService.media;
+    if (!this.pin || this.pin === '' || this.pin !== this.correctPin) {
+      this.pin =  this.credentialPIN('', null);
+      this._messageService.media = this.pin;
+      return;
+    }
   }
 
   // used on route change to update default view time-settings for timecards
@@ -899,8 +906,8 @@ export class TimesheetCardComponent extends BaseComponent
           statusError: true,
           mapError: true
         };
-        this.showCheckboxes = false;
-        this.expandAllDetails(false);
+        // this.showCheckboxes = false;
+        this.expandAllDetails(true);
         break;
       case 'approve-time':
         this.showBadges = {
@@ -908,7 +915,7 @@ export class TimesheetCardComponent extends BaseComponent
           statusError: true,
           mapError: true
         };
-        this.showCheckboxes = true;
+        // this.showCheckboxes = true;
         this.expandAllDetails(true);
         break;
       case 'export-time':

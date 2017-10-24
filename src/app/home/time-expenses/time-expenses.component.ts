@@ -87,9 +87,9 @@ export class TimeExpensesComponent implements OnInit, AfterViewInit {
           this.failedConfirm(message);
           this.LoadTimecard();
           break;
-        case 'pinEntered':
-          this.saveApprove();
-          break;
+        // case 'pinEntered':
+        //   this.saveApprove();
+        //   break;
       }
       console.log('Message: ', notifcation);
     });
@@ -141,14 +141,14 @@ export class TimeExpensesComponent implements OnInit, AfterViewInit {
   public approve(event) {
     event.preventDefault();
     // Check the PIN
-    if (
-      !this.timesheetsComponent.pin ||
-      this.timesheetsComponent.pin === '' ||
-      this.timesheetsComponent.pin !== this.timesheetsComponent.correctPin
-    ) {
-      this.pin = this.timesheetsComponent.credentialPIN('', null);
-      return;
-    }
+    // if (
+    //   !this.timesheetsComponent.pin ||
+    //   this.timesheetsComponent.pin === '' ||
+    //   this.timesheetsComponent.pin !== this.timesheetsComponent.correctPin
+    // ) {
+    // //  this.pin = this.timesheetsComponent.credentialPIN('', null);
+    //   return;
+    // }
 
     this.saveApprove();
   }

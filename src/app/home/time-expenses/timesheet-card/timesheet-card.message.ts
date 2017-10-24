@@ -7,6 +7,8 @@ import { Observable, BehaviorSubject } from 'rxjs/Rx';
 export class MessageService {
     private subject = new Subject<any>();
 
+    public media: string;
+
     public messageSource$: BehaviorSubject<any> = new BehaviorSubject('');
     sendMessage(message: any) {
         this.subject.next({text: message});

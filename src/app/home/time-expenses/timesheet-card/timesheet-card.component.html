@@ -3,7 +3,7 @@
         No results found. Please update your filters above.
     </div>
 </esub-base-card>
-<md-checkbox type="checkbox" *ngIf="timecards.length > 0" [(ngModel)]="isAllTimecardsSelected" (change)="onAllTimecardsSelected($event)">Select All Time Cards</md-checkbox>
+<md-checkbox type="checkbox" *ngIf="timecards.length > 0" [hidden]="_view==='timesheets'" [(ngModel)]="isAllTimecardsSelected" (change)="onAllTimecardsSelected($event)">Select All Time Cards</md-checkbox>
 
 
 <esub-base-card *ngFor="let timecard of timecards" class="timesheet-card">
@@ -43,13 +43,7 @@
                                 <tr style="text-align: center">
                                     {{BuildWeeDayHours(timecard)}}
                                     <td *ngFor='let weekday of timecard.WeekDayHours'>{{weekday.hours | number:'1.0-2' }}</td>
-                                    <!-- <td>{{sunday | number:'1.0-2'}}</td>
-                                    <td>{{monday | number:'1.0-2'}}</td>
-                                    <td>{{tuesday | number:'1.0-2'}}</td>
-                                    <td>{{wednesday | number:'1.0-2'}}</td>
-                                    <td>{{thursday | number:'1.0-2'}}</td>
-                                    <td>{{friday | number:'1.0-2'}}</td>
-                                    <td>{{saterday | number:'1.0-2'}}</td> -->
+                                
                                 </tr>
                             </tbody>
                         </table>
@@ -109,7 +103,7 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>
+                                <th  [hidden]="_view==='timesheets'">
                                     <!-- *ngIf="timecards.length > 0"  -->
                                     <!-- (change)="onAllTimecardsSelected($event)" -->
                                     <!-- <md-checkbox type="checkbox" [(ngModel)]="timecard.selected" (click)="markSingleTimeCard(timecard)" ></md-checkbox> -->
@@ -155,7 +149,7 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let grid of timecard.timecardGrid; let i=index">
-                                <td>
+                                <td  [hidden]="_view==='timesheets'">
                                     <md-checkbox type="checkbox" value="{{grid.isSelected}}" (ngModelChange)="onSelectSingleCheckBox(timecard, grid, $event)"
                                         [disabled]="grid.status=='Approved'|| grid.status=='Rejected'" [(ngModel)]="grid.isSelected"></md-checkbox>
                                 </td>
