@@ -12,7 +12,6 @@ import {
 import { DpDatePickerModule } from 'ng2-date-picker';
 
 import { SharedModule } from '../../shared/shared.module';
-import { SharedHomeModule } from '../shared/shared.home.module';
 import { TimeExpensesRoutingModule } from './time-expenses-routing.module';
 
 // Components
@@ -25,6 +24,11 @@ import { EnterTimeGridComponent } from './enter-time/enter-time-grid/enter-time-
 
 // Services
 import { TimeRecordsService } from './time-records.service';
+
+import { SharedHomeModule } from '../shared/shared.home.module';
+import {TimeSettingsComponent} from './time-settings/time-settings.component';
+import {TimeSettingsService} from './time-settings/time-settings.service';
+
 import { TimeExpensesService } from './time-expenses.service';
 import { FlashMessagesModule } from 'angular2-flash-messages';
 import { ProjectSummaryService } from '../projects/project-summary/project-summary.service';
@@ -36,6 +40,7 @@ import { EnterTimeFilterService } from './enter-time/enter-time-filter.service';
 import { EnterTimeTransformService } from './enter-time/enter-time-transform.service';
 import { EntityDisplayFormatterService } from '../shared/services/entity-display-formatter.service';
 import {TimeRecordUpdaterService} from './time-record-detail-modal/time-record-updater.service';
+
 
 @NgModule({
     imports: [
@@ -65,21 +70,24 @@ import {TimeRecordUpdaterService} from './time-record-detail-modal/time-record-u
         BadgedHourComponent,
         EnterTimeComponent,
         EnterTimeFormComponent,
-        EnterTimeGridComponent
+        EnterTimeGridComponent,
+        TimeSettingsComponent,
     ],
     providers: [
         TimeRecordsService,
         TimeRecordUpdaterService,
         EnterTimeBatchService,
-      	TimeExpensesService,
+        TimeExpensesService,
         EnterTimeFilterService,
         EnterTimeManager,
-      	MessageService,
+        MessageService,
         EnterTimeStatusService,
         EnterTimePreloadManager,
-      	ProjectSummaryService,
+        ProjectSummaryService,
         EnterTimeTransformService,
-        EntityDisplayFormatterService
+        EntityDisplayFormatterService,
+        TimeSettingsService
+
     ]
 })
 

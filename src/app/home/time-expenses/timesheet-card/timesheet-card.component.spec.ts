@@ -73,7 +73,7 @@ xdescribe('TimesheetCard Component', () => {
     it('should filter results by specified user', () => {
 
     })
-    it('should update view settings', () => {
+    it('should update view time-settings', () => {
 
     })
   })
