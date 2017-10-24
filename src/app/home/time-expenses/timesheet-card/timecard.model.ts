@@ -63,6 +63,8 @@ export class HoursApproval {
     punchOut?: Date;
     break?: string
     systemPhrase?: string;
+    //project: Project;
+   // costCode: Cost
 }
 
 

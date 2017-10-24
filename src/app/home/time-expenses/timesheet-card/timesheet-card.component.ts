@@ -83,7 +83,7 @@ export class TimesheetCardComponent extends BaseComponent
   public isAllTimecardsSelected = false;
   public isComment: boolean;
   public groupBy: string;
-  public pin: string;
+  public pin: any;
   public correctPin: string;
 
   // view management
@@ -92,6 +92,7 @@ export class TimesheetCardComponent extends BaseComponent
 
   public showBadges: Badges;
   public showCheckboxes: boolean;
+  public showApproveButton: boolean;
   public subscription: Subscription;
   public totalCount: number;
   public isReject = false;
@@ -125,6 +126,7 @@ export class TimesheetCardComponent extends BaseComponent
 
   ngOnInit() {
     this.totalCount = 0;
+
 
     this._messageService.messageSource$.subscribe((notifcation: any) => {
       console.log('Message: ', notifcation);
@@ -279,9 +281,9 @@ export class TimesheetCardComponent extends BaseComponent
         console.log(`Dialog result: ${result.pin}`);
         this.pin = result.pin;
 
-        if (type === this.TYPE && hoursApproval) {
-          this.onHourlyValues(hoursApproval);
-        }
+        // if (type === this.TYPE && hoursApproval) {
+        //   this.onHourlyValues(hoursApproval);
+        // }
       }
     });
 
@@ -747,10 +749,10 @@ export class TimesheetCardComponent extends BaseComponent
 
   // open hour values modal
   public onHourlyValues(hoursApproval: HoursApproval) {
-    if (!this.pin || this.pin === '' || this.pin !== this.correctPin) {
-      this.credentialPIN('onHourlyValues', hoursApproval);
-      return;
-    }
+    // if (!this.pin || this.pin === '' || this.pin !== this.correctPin) {
+    //   this.credentialPIN('onHourlyValues', hoursApproval);
+    //   return;
+    // }
     const data = hoursApproval;
     if (hoursApproval) {
       let width, height;
@@ -888,6 +890,13 @@ export class TimesheetCardComponent extends BaseComponent
     if (user && user[0] && user[0].ApprovalPin) {
       this.correctPin = user[0].ApprovalPin;
     }
+
+    this.pin = this._messageService.media;
+    if (!this.pin || this.pin === '' || this.pin !== this.correctPin) {
+      this.pin =  this.credentialPIN('', null);
+      this._messageService.media = this.pin;
+      return;
+    }
   }
 
   // used on route change to update default view settings for timecards
@@ -900,7 +909,8 @@ export class TimesheetCardComponent extends BaseComponent
           mapError: true
         };
         this.showCheckboxes = false;
-        this.expandAllDetails(false);
+        this.showApproveButton = false
+        this.expandAllDetails(true);
         break;
       case 'approve-time':
         this.showBadges = {
