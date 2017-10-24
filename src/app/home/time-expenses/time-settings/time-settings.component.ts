@@ -3,7 +3,7 @@ import {Component} from '@angular/core';
 
 @Component({
     selector: 'esub-time-settings',
-    templateUrl: './settings.html'
+    templateUrl: './time-settings.html'
 })
 export class TimeSettingsComponent {
 

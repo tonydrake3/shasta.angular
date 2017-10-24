@@ -890,7 +890,7 @@ export class TimesheetCardComponent extends BaseComponent
     }
   }
 
-  // used on route change to update default view settings for timecards
+  // used on route change to update default view time-settings for timecards
   public updateViewSettings() {
     switch (this._view) {
       case 'timesheets':

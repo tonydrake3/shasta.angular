@@ -26,8 +26,8 @@ import { EnterTimeGridComponent } from './enter-time/enter-time-grid/enter-time-
 import { TimeRecordsService } from './time-records.service';
 
 import { SharedHomeModule } from '../shared/shared.home.module';
-import {TimeSettingsComponent} from './settings/settings.component';
-import {TimeSettingsService} from './settings/time-settings.service';
+import {TimeSettingsComponent} from './time-settings/time-settings.component';
+import {TimeSettingsService} from './time-settings/time-settings.service';
 
 import { TimeExpensesService } from './time-expenses.service';
 import { FlashMessagesModule } from 'angular2-flash-messages';

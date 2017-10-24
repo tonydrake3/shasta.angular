@@ -1,6 +1,6 @@
 import { Routes, RouterModule } from '@angular/router';
 import { TimeExpensesComponent } from './time-expenses.component';
-import {TimeSettingsComponent} from './settings/settings.component';
+import {TimeSettingsComponent} from './time-settings/time-settings.component';
 import { EnterTimeComponent } from './enter-time/enter-time.component';
 import { CanDeactivateGuard } from '../shared/services/guards/deactivate-guard.service';
 export const TimeExpensesRoutes: Routes = [
