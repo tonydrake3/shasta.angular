@@ -3,7 +3,7 @@
     <div class="row">
         <form [formGroup]="enterTimeForm" (ngSubmit)="didTapSaveButton(enterTimeForm)" novalidate>
 
-        <div class="enter-time-form col-md-8">
+        <div class="enter-time-form col-sm-8">
 
             <h3>Time Record Detail</h3>
 
@@ -144,32 +144,19 @@
                 </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-sm-4">
 
             <h3>Comments</h3>
 
-            <div formArrayName="comments" class="well well-lg">
+                <div *ngFor="let comment of commentsSubject | async">
 
-                <div *ngFor="let comment of commentsFormArray.controls; let i = index" [formGroupName]="i">
-
-                    <md-card>
-
-                        <md-card-title>
-                            Comment Title
-                        </md-card-title>
-
-                        <md-card-subtitle>
-                            Comment subtitle
-                        </md-card-subtitle>
-
-                        <md-card-content>
-                            Comment content
-                        </md-card-content>
-
-                    </md-card>
-
+                    <strong>Comment by: </strong> {{ comment.User.FirstName }} {{ comment.User.LastName }}
+                    <br>
+                    <strong>{{ comment.Timestamps.ClientCreated | date: 'short' }}</strong>
                 </div>
 
+            <div class="well well-sm">
+                <input class="form-control" formControlName="comment"> <button md-raised-button>POST</button>
             </div>
 
         </div>

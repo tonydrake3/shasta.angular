@@ -1,4 +1,4 @@
-import { User } from './../../../models/domain/User';
+import { UserProfile } from './../../../models/domain/UserProfile';
 import { TimeRecord } from '../../../models/domain/TimeRecord';
 import { groupBy } from 'rxjs/operator/groupBy';
 import { MessageService } from './timesheet-card.message';
@@ -952,6 +952,7 @@ export class TimesheetCardComponent extends BaseComponent
                 this.expandAllDetails(true);
                 break;
         }
+<<<<<<< HEAD
     }
 
     // expands or collapses all timecard detail sections
@@ -960,4 +961,299 @@ export class TimesheetCardComponent extends BaseComponent
             card.expanded = expand;
         });
     }
+||||||| merged common ancestors
+      });
+    }
+  }
+
+  private updateSettings(data) {
+    const Id: any = data.$id;
+
+    const targetTimecard = _.find(this.timecards, { Id: Id });
+
+    this.updateReject(targetTimecard, data);
+
+    this.updateComments(targetTimecard, data);
+  }
+
+  // update rejceted
+  private updateReject(targetTimecard, data) {
+    if (targetTimecard) {
+      if (data.isRejected) {
+        targetTimecard.rejected = true;
+      } else {
+        targetTimecard.rejected = false;
+      }
+    }
+  }
+  // udpate comments
+  private updateComments(targetTimecard, data) {
+    const timecardGrid: Array<HoursApproval> = targetTimecard.timecardGrid;
+    const hoursApprovals = _.find(timecardGrid, function(o) {
+      if (o.comments) {
+        return o.comments.length > 0;
+      }
+    });
+
+    if (hoursApprovals) {
+      targetTimecard.isComment = true;
+    } else {
+      targetTimecard.isComment = false;
+    }
+  }
+
+  private TestCommentsModal(timerecords) {
+    //  const timnerecord = _.shuffle(timerecords)[0];
+
+    const timnerecord = _.find(timerecords, {
+      Id: 'ba347e85-f95b-4e9c-8911-0166ce6d7bd3'
+    });
+
+    const ts = _.filter(timerecords, timerecord => {
+      return timerecord['Comments'].length > 0;
+    });
+
+    this.openCommentsModal(timnerecord);
+  }
+
+  public openCommentsModal(timerecord: any) {
+    let width, height;
+    if (window.innerWidth < 750) width = window.innerWidth * 0.2;
+    else if (window.innerWidth < 1100) width = window.innerWidth * 0.3;
+    else if (window.innerWidth < 1420) width = window.innerWidth * 0.37;
+    else width = window.innerWidth * 0.5;
+    height = window.innerHeight * 0.97;
+
+    const commentsDialogRef = this.dialog.open(CommentsComponent, {
+      data: {
+        timerecord: timerecord,
+        currentUserId: this.userId
+      },
+      disableClose: true,
+      hasBackdrop: true, // or false, depending on what you want
+      height: height + 'px',
+      width: width + 'px'
+    });
+    commentsDialogRef.afterClosed().subscribe(result => {
+      // modal closed
+    });
+  }
+
+  // open the comment modal with that day's comments
+  public openChatModal(comments: any) {
+    let width, height;
+    if (window.innerWidth < 750) width = window.innerWidth * 0.1;
+    else if (window.innerWidth < 1100) width = window.innerWidth * 0.2;
+    else if (window.innerWidth < 1420) width = window.innerWidth * 0.3;
+    else width = window.innerWidth * 0.37;
+    height = window.innerHeight * 0.7;
+
+    const commentsDialogRef = this.dialog.open(CommentsComponent, {
+      data: comments,
+      height: height + 'px',
+      width: width + 'px'
+    });
+    commentsDialogRef.afterClosed().subscribe(result => {
+      // modal closed
+    });
+  }
+
+  currentEmployseeCallback(employee) {
+    this.userId = employee.Value.UserId;
+  }
+  currentUserCallback(user) {
+    if (user && user[0] && user[0].ApprovalPin) {
+      this.correctPin = user[0].ApprovalPin;
+    }
+  }
+
+  // used on route change to update default view settings for timecards
+  public updateViewSettings() {
+    switch (this._view) {
+      case 'timesheets':
+        this.showBadges = {
+          comments: true,
+          statusError: true,
+          mapError: true
+        };
+        this.showCheckboxes = false;
+        this.expandAllDetails(false);
+        break;
+      case 'approve-time':
+        this.showBadges = {
+          comments: true,
+          statusError: true,
+          mapError: true
+        };
+        this.showCheckboxes = true;
+        this.expandAllDetails(true);
+        break;
+      case 'export-time':
+        //    TODO Only show records that have been approved if the company does approvals.
+        //    Otherwise display all records matching the current filters
+        this.showBadges = {
+          comments: true,
+          statusError: false,
+          mapError: false
+        };
+        this.showCheckboxes = true;
+        this.expandAllDetails(true);
+        break;
+    }
+  }
+
+  // expands or collapses all timecard detail sections
+  public expandAllDetails(expand: boolean) {
+    this.timecards.forEach(card => {
+      card.expanded = expand;
+    });
+  }
+=======
+      });
+    }
+  }
+
+  private updateSettings(data) {
+    const Id: any = data.$id;
+
+    const targetTimecard = _.find(this.timecards, { Id: Id });
+
+    this.updateReject(targetTimecard, data);
+
+    this.updateComments(targetTimecard, data);
+  }
+
+  // update rejceted
+  private updateReject(targetTimecard, data) {
+    if (targetTimecard) {
+      if (data.isRejected) {
+        targetTimecard.rejected = true;
+      } else {
+        targetTimecard.rejected = false;
+      }
+    }
+  }
+  // udpate comments
+  private updateComments(targetTimecard, data) {
+    const timecardGrid: Array<HoursApproval> = targetTimecard.timecardGrid;
+    const hoursApprovals = _.find(timecardGrid, function(o) {
+      if (o.comments) {
+        return o.comments.length > 0;
+      }
+    });
+
+    if (hoursApprovals) {
+      targetTimecard.isComment = true;
+    } else {
+      targetTimecard.isComment = false;
+    }
+  }
+
+  private TestCommentsModal(timerecords) {
+    //  const timnerecord = _.shuffle(timerecords)[0];
+
+    const timnerecord = _.find(timerecords, {
+      Id: 'ba347e85-f95b-4e9c-8911-0166ce6d7bd3'
+    });
+
+    const ts = _.filter(timerecords, timerecord => {
+      return timerecord['Comments'].length > 0;
+    });
+
+    this.openCommentsModal(timnerecord);
+  }
+
+  public openCommentsModal(timerecord: any) {
+    let width, height;
+    if (window.innerWidth < 750) width = window.innerWidth * 0.2;
+    else if (window.innerWidth < 1100) width = window.innerWidth * 0.3;
+    else if (window.innerWidth < 1420) width = window.innerWidth * 0.37;
+    else width = window.innerWidth * 0.5;
+    height = window.innerHeight * 0.97;
+
+    const commentsDialogRef = this.dialog.open(CommentsComponent, {
+      data: {
+        timerecord: timerecord,
+        currentUserId: this.userId
+      },
+      disableClose: true,
+      hasBackdrop: true, // or false, depending on what you want
+      height: height + 'px',
+      width: width + 'px'
+    });
+    commentsDialogRef.afterClosed().subscribe(result => {
+      // modal closed
+    });
+  }
+
+  // open the comment modal with that day's comments
+  public openChatModal(comments: any) {
+    let width, height;
+    if (window.innerWidth < 750) width = window.innerWidth * 0.1;
+    else if (window.innerWidth < 1100) width = window.innerWidth * 0.2;
+    else if (window.innerWidth < 1420) width = window.innerWidth * 0.3;
+    else width = window.innerWidth * 0.37;
+    height = window.innerHeight * 0.7;
+
+    const commentsDialogRef = this.dialog.open(CommentsComponent, {
+      data: comments,
+      height: height + 'px',
+      width: width + 'px'
+    });
+    commentsDialogRef.afterClosed().subscribe(result => {
+      // modal closed
+    });
+  }
+
+  currentEmployseeCallback(employee) {
+    this.userId = employee.Value.UserId;
+  }
+  currentUserCallback(user) {
+    if (user && user[0] && user[0].ApprovalPin) {
+      this.correctPin = user[0].ApprovalPin;
+    }
+  }
+
+  // used on route change to update default view time-settings for timecards
+  public updateViewSettings() {
+    switch (this._view) {
+      case 'timesheets':
+        this.showBadges = {
+          comments: true,
+          statusError: true,
+          mapError: true
+        };
+        this.showCheckboxes = false;
+        this.expandAllDetails(false);
+        break;
+      case 'approve-time':
+        this.showBadges = {
+          comments: true,
+          statusError: true,
+          mapError: true
+        };
+        this.showCheckboxes = true;
+        this.expandAllDetails(true);
+        break;
+      case 'export-time':
+        //    TODO Only show records that have been approved if the company does approvals.
+        //    Otherwise display all records matching the current filters
+        this.showBadges = {
+          comments: true,
+          statusError: false,
+          mapError: false
+        };
+        this.showCheckboxes = true;
+        this.expandAllDetails(true);
+        break;
+    }
+  }
+
+  // expands or collapses all timecard detail sections
+  public expandAllDetails(expand: boolean) {
+    this.timecards.forEach(card => {
+      card.expanded = expand;
+    });
+  }
+>>>>>>> develop
 }
