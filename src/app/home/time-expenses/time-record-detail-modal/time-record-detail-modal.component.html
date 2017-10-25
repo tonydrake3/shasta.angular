@@ -1,12 +1,12 @@
 <md-dialog-content>
 
     <div class="row">
+        <form [formGroup]="enterTimeForm" (ngSubmit)="didTapSaveButton(enterTimeForm)" novalidate>
 
         <div class="enter-time-form col-md-8">
 
             <h3>Time Record Detail</h3>
 
-            <form [formGroup]="enterTimeForm" (ngSubmit)="didTapSaveButton(enterTimeForm)" novalidate>
 
                 <div class="row" *ngIf="showProjectView | async">
                     <div class="col-md-12">
@@ -142,7 +142,6 @@
 
                     </div>
                 </div>
-            </form>
         </div>
 
         <div class="col-md-4">
@@ -159,9 +158,9 @@
                             Comment Title
                         </md-card-title>
 
-                        <md-card-subtitule>
+                        <md-card-subtitle>
                             Comment subtitle
-                        </md-card-subtitule>
+                        </md-card-subtitle>
 
                         <md-card-content>
                             Comment content
@@ -174,6 +173,7 @@
             </div>
 
         </div>
+        </form>
 
     </div>
 
