@@ -60,6 +60,7 @@ export class TimesheetCardPinComponent implements OnInit, OnDestroy {
 
   public onSubmit({ data, valid }: { data: any; valid: boolean }) {
     if (!valid) return;
+
     // if (this.type === 'onHourlyValues') {
     //   this.dialogRef.close({ pin: this.correctPin });
     // } else {
