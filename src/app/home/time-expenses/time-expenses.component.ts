@@ -63,13 +63,6 @@ export class TimeExpensesComponent implements OnInit, AfterViewInit {
     this.activatedRoute.params.subscribe(params => {
       this.view = params['view'];
     });
-
-    // this.timeRecordsService.getLatest().then(response => {
-    //   this.loading = false;
-    //   this.timerecords = response.Value;
-    //   this.buildTimesheets();
-    // });
-
     this.LoadTimecard();
 
     this.messageService.messageSource$.subscribe((notifcation: any) => {
@@ -87,9 +80,6 @@ export class TimeExpensesComponent implements OnInit, AfterViewInit {
           this.failedConfirm(message);
           this.LoadTimecard();
           break;
-        // case 'pinEntered':
-        //   this.saveApprove();
-        //   break;
       }
       console.log('Message: ', notifcation);
     });
