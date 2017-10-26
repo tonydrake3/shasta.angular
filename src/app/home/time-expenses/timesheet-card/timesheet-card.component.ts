@@ -128,7 +128,6 @@ export class TimesheetCardComponent extends BaseComponent
     this.totalCount = 0;
 
     this.count = 1;
-
   }
 
   /******************************************************************************************************************
@@ -425,6 +424,10 @@ export class TimesheetCardComponent extends BaseComponent
     const temp = this.totalCount;
     this.onDatePicked.emit(this.totalCount > 0);
   }
+
+  public isAllChecked(timecard: any) {
+    //  return timecard.every( _ => _.state);
+  }
   public onSelectSingleCheckBox(timecard: any, timecardGrid: any, event): void {
     const selected = event;
 
@@ -439,7 +442,15 @@ export class TimesheetCardComponent extends BaseComponent
       this.isAllTimecardsSelected = selected;
     }
 
-    if (selected && timecard.timecardGrid.length === 1) {
+    let count = 0;
+
+    _.forEach(timecard.timecardGrid, (item: HoursApproval) => {
+      if (item.isSelected) {
+        count++;
+      }
+    });
+
+    if (count === timecard.timecardGrid.length) {
       timecard.selected = selected;
     }
 
@@ -512,11 +523,12 @@ export class TimesheetCardComponent extends BaseComponent
     const hoursApprovals: HoursApproval = timecard.timecardGrid;
     _.forEach(hoursApprovals, hoursApproval => {
       if (!hoursApproval.isRejected) {
-        if (timecard.selected) {
-          hoursApproval.isSelected = false;
-        } else {
-          hoursApproval.isSelected = true;
-        }
+        hoursApproval.isSelected = event;
+        // if (timecard.selected) {
+        //   hoursApproval.isSelected = true;
+        // } else {
+        //   hoursApproval.isSelected = false;
+        // }
       }
     });
 

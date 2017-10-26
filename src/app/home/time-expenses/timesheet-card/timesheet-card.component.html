@@ -110,8 +110,8 @@
                                   
                                     <div class="checkbox checkbox-primary text-center">
 
-                                        <md-checkbox id="checkbox" type="checkbox" *ngIf="timecard.timecardGrid && timecard.timecardGrid.length>0" [(ngModel)]="timecard.selected"
-                                            (click)="markSingleTimeCard(timecard)"></md-checkbox>
+                                        <md-checkbox name="checkbox" type="checkbox" *ngIf="timecard.timecardGrid && timecard.timecardGrid.length>0" [(ngModel)]="timecard.selected"
+                                            (ngModelChange)="markSingleTimeCard(timecard, $event)"></md-checkbox>
 
                                     </div>
 
