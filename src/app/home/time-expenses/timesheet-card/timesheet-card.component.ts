@@ -504,13 +504,11 @@ export class TimesheetCardComponent extends BaseComponent
     _.forEach(this.timecards, timecard => {
       const hoursApprovals = timecard.timecardGrid;
       _.forEach(hoursApprovals, hoursApproval => {
-        if (hoursApproval.isSelected) {
+        if (hoursApproval.isSelected  && hoursApproval.status.trim().toLowerCase() !== 'approved') {
           count++;
         }
       });
     });
-
-    const result = count;
     return count;
   }
 
