@@ -289,7 +289,6 @@ export class TimesheetCardComponent extends BaseComponent
 
   // creates sections (within a project or employee)
   public buildSections(timerecords: Array<any>, groupTimesheetsBy: string) {
-    // this.groupBy = groupTimesheetsBy;
 
     const nonSortedSections = Array<TimecardSection>();
 
@@ -424,6 +423,7 @@ export class TimesheetCardComponent extends BaseComponent
     const temp = this.totalCount;
     this.onDatePicked.emit(this.totalCount > 0);
   }
+
   public onSelectSingleCheckBox(timecard: any, timecardGrid: any, event): void {
     const selected = event;
 
@@ -520,11 +520,6 @@ export class TimesheetCardComponent extends BaseComponent
     _.forEach(hoursApprovals, hoursApproval => {
       if (!hoursApproval.isRejected) {
         hoursApproval.isSelected = event;
-        // if (timecard.selected) {
-        //   hoursApproval.isSelected = true;
-        // } else {
-        //   hoursApproval.isSelected = false;
-        // }
       }
     });
 
@@ -614,66 +609,6 @@ export class TimesheetCardComponent extends BaseComponent
     return SummeryWeekDayHours;
   }
 
-  //   public getWeekDayHours(
-  //     timecardGrid: Array<HoursApproval>,
-  //     type: string
-  //   ): Array<WeekDayHours> {
-  //     const SummeryWeekDayHours: Array<WeekDayHours> = [];
-
-  //     _.forEach(this.dateRange, day => {
-  //       //   const weekDayHour = new WeekDayHours();
-  //       //   weekDayHour.dayString = day.dayString;
-  //       //   weekDayHour.dateString = day.dateString;
-  //       //   weekDayHour.hours = this.getTimecardTotalHours(timecard, day);
-  //       //   SummeryWeekDayHours.push(weekDayHour);
-  //       const weekDayHour = new WeekDayHours();
-  //       if (timecardGrid && timecardGrid.length === 0) {
-  //         // const weekDayHour = new WeekDayHours();
-  //         weekDayHour.dayString = day.dayString;
-  //         weekDayHour.dateString = day.dateString;
-  //         weekDayHour.hours = '0';
-  //       } else {
-  //         //  const temp = _.groupBy(timecardGrid, day.date.format('YYYY-MM-DD'));
-
-  //         if (type === 'single') {
-  //           weekDayHour.dayString = day.dayString;
-  //           weekDayHour.dateString = day.dateString;
-
-  //           const itemDay = moment(timecardGrid['day']).format('YYYY-MM-DD');
-  //           const dayDate = day.date.format('YYYY-MM-DD');
-
-  //           if (itemDay === dayDate) {
-  //             weekDayHour.hours = (Number(timecardGrid['Regulartime']) +
-  //               Number(timecardGrid['Overtime']) +
-  //               Number(timecardGrid['Doubletime'])
-  //             ).toString();
-  //           } else {
-  //             weekDayHour.hours = '0';
-  //           }
-  //         } else {
-  //           _.forEach(timecardGrid, item => {
-  //             weekDayHour.dayString = day.dayString;
-  //             weekDayHour.dateString = day.dateString;
-
-  //             const itemDay = moment(item['day']).format('YYYY-MM-DD');
-  //             const dayDate = day.date.format('YYYY-MM-DD');
-
-  //             if (itemDay === dayDate) {
-  //               weekDayHour.hours = (Number(item['Regulartime']) +
-  //                 Number(item['Overtime']) +
-  //                 Number(item['Doubletime'])
-  //               ).toString();
-  //             } else {
-  //               weekDayHour.hours = '0';
-  //             }
-  //           });
-  //         }
-  //         SummeryWeekDayHours.push(weekDayHour);
-  //       }
-  //     });
-  //     // timecard.WeekDayHours = SummeryWeekDayHours;
-  //     return SummeryWeekDayHours;
-  //   }
 
   private markSingleCostCode(costCode: any, option: boolean) {
     let count = 0;
@@ -704,7 +639,6 @@ export class TimesheetCardComponent extends BaseComponent
     let regularTime = 0;
     let overTime = 0;
     let doubleTime = 0;
-    // let total = 0;
 
     const timecardGrids: Array<HoursApproval> = timecard.timecardGrid;
 
