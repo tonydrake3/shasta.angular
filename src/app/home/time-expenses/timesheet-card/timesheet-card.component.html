@@ -107,16 +107,8 @@
                         <thead>
                             <tr>
                                 <th [hidden]="_view==='timesheets'">
-                                    <!-- *ngIf="timecards.length > 0"  -->
-                                    <!-- (change)="onAllTimecardsSelected($event)" -->
-                                    <!-- <md-checkbox type="checkbox" [(ngModel)]="timecard.selected" (click)="markSingleTimeCard(timecard)" ></md-checkbox> -->
-                                    <!-- <div class="btn-group" data-toggle="buttons">
-                                                    <label class="btn btn-success active">
-                                                            <input type="checkbox" autocomplete="off" checked>
-                                                            <span class="glyphicon glyphicon-ok"></span>
-                                                        </label>
-                                                    </div> -->
-                                    <div class="checkbox checkbox-primary">
+                                  
+                                    <div class="checkbox checkbox-primary text-center">
 
                                         <md-checkbox id="checkbox" type="checkbox" *ngIf="timecard.timecardGrid && timecard.timecardGrid.length>0" [(ngModel)]="timecard.selected"
                                             (click)="markSingleTimeCard(timecard)"></md-checkbox>
