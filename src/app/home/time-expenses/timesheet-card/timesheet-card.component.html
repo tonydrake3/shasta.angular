@@ -3,7 +3,8 @@
         No results found. Please update your filters above.
     </div>
 </esub-base-card>
-<md-checkbox type="checkbox" *ngIf="timecards.length > 0" [hidden]="_view==='timesheets'" [(ngModel)]="isAllTimecardsSelected" (change)="onAllTimecardsSelected($event)">Select All Time Cards</md-checkbox>
+<md-checkbox type="checkbox" *ngIf="timecards.length > 0" [hidden]="_view==='timesheets'" [(ngModel)]="isAllTimecardsSelected"
+    (change)="onAllTimecardsSelected($event)">Select All Time Cards</md-checkbox>
 
 
 <esub-base-card *ngFor="let timecard of timecards" class="timesheet-card">
@@ -31,17 +32,19 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th *ngFor='let weekday of timecard.WeekDayHours'>{{weekday.dayString}}<span class="card-date" style="font-size:11px">
-                                                        ({{weekday.dateString}})
-                                                    </span></th>
+                                    <th *ngFor='let weekday of timecard.WeekDayHours' class="text-center">{{weekday.dayString}}
+                                        <span class="card-date" style="font-size:11px">
+                                            ({{weekday.dateString}})
+                                        </span>
+                                    </th>
 
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr style="text-align: center">
                                     {{BuildWeeDayHours(timecard)}}
-                                    <td *ngFor='let weekday of timecard.WeekDayHours'>{{weekday.hours | number:'1.0-2' }}</td>
-                                
+                                    <td *ngFor='let weekday of timecard.WeekDayHours' class="text-center">{{weekday.hours | number:'1.0-2' }}</td>
+
                                 </tr>
                             </tbody>
                         </table>
@@ -58,25 +61,27 @@
                 <div class="col-md-5">
                     <table class="table" style="border-top: none;">
                         <thead>
-                            <tr>
-                                <th>ST</th>
-                                <th>OT</th>
-                                <th>DT</th>
-                                <th>Total</th>
-                                <th>Location</th>
-                                <th>Comments</th>
+                            <tr class="text-center">
+                                <th class="text-center">ST</th>
+                                <th class="text-center">OT</th>
+                                <th class="text-center">DT</th>
+                                <th class="text-center">Total</th>
+                                <th class="text-center">Location</th>
+                                <th class="text-center">Comments</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr style="text-align: center">
                                 {{displaySTOTDT(timecard)}}
                                 <!-- <th scope="row">{{timesheetCardManager.getTimecardTotalHours(timecard) | number:'1.0-2'}}</th> -->
-                                <td>{{ st | number:'1.0-2'}}</td>
-                                <td>{{ ot | number:'1.0-2'}}</td>
-                                <td>{{ dt | number:'1.0-2'}}</td>
+                                <td class="text-center">{{ st | number:'1.0-2'}}</td>
+                                <td class="text-center">{{ ot | number:'1.0-2'}}</td>
+                                <td class="text-center" >{{ dt | number:'1.0-2'}}</td>
                                 <th scope="row" style="text-align: center">{{ total | number:'1.0-2'}}</th>
 
-                                <td scope="row"><i class="material-icons" style="color:red">place</i></td>
+                                <td scope="row">
+                                    <i class="material-icons" style="color:red">place</i>
+                                </td>
                                 <td scope="row">
 
                                     <i class="material-icons" *ngIf="timecard.isComment" style="color:blue">insert_comment</i>
@@ -101,7 +106,7 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th  [hidden]="_view==='timesheets'">
+                                <th [hidden]="_view==='timesheets'">
                                     <!-- *ngIf="timecards.length > 0"  -->
                                     <!-- (change)="onAllTimecardsSelected($event)" -->
                                     <!-- <md-checkbox type="checkbox" [(ngModel)]="timecard.selected" (click)="markSingleTimeCard(timecard)" ></md-checkbox> -->
@@ -119,59 +124,68 @@
                                     </div>
 
                                 </th>
-                                <th>Status</th>
-                                <th>Day</th>
+                                <th class="text-center"> Status</th>
+                                <th class="text-center">Day</th>
 
-                                <th [hidden]="groupBy==='project'">Job</th>
-                                <th [hidden]="groupBy==='employee'">Employee</th>
+                                <th [hidden]="groupBy==='project'" class="text-center">Job</th>
+                                <th [hidden]="groupBy==='employee'" class="text-center">Employee</th>
+                                <th class="text-center">Sys.Phrase</th>
+                                <th class="text-center">Cost Code</th>
+                                <th class="text-center">Time In</th>
+                                <th class="text-center">Time Out</th>
+                                <th class="text-center">Break</th>
 
-                                <th>CostCode</th>
-                                <th>TimeIn</th>
-                                <th>TimeOut</th>
-                                <th>Break</th>
-
-                                <th>ST</th>
-                                <th>OT</th>
-                                <th>DT</th>
+                                <th class="text-center">ST</th>
+                                <th class="text-center">OT</th>
+                                <th class="text-center">DT</th>
 
 
 
-                                <th>Total</th>
-                                <th>Location</th>
-                                <th>Comment</th>
+                                <th class="text-center">Total</th>
+                                <th class="text-center">Location</th>
+                                <th class="text-center">Comment</th>
 
-                                <th>Details</th>
-                                <th>Reject</th>
+                                <th class="text-center">Details</th>
+                                <th class="text-center">Reject</th>
 
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let grid of timecard.timecardGrid; let i=index">
-                                <td  [hidden]="_view==='timesheets'">
+                                <td [hidden]="_view==='timesheets'" class="text-center">
                                     <md-checkbox type="checkbox" value="{{grid.isSelected}}" (ngModelChange)="onSelectSingleCheckBox(timecard, grid, $event)"
                                         [disabled]="grid.status=='Approved'|| grid.status=='Rejected'" [(ngModel)]="grid.isSelected"></md-checkbox>
                                 </td>
-                                <td>{{grid.status}}</td>
-                                <td>{{grid.day |date: 'MM/dd/yyyy'}}</td>
-                                <td>{{grid.job}}</td>
-                                <td>{{grid.costCode}}
-                                    <span style='font-size:9px'>{{grid.systemPhrase}}</span>
+                                <td class="text-center">{{grid.status}}</td>
+                                <td class="text-center">{{grid.day |date: 'MM/dd/yyyy'}}</td>
+                                <td class="text-center">{{grid.job}}</td>
+                                <td class="text-center">{{grid.systemPhrase}}</td>
+                                <td class="text-center">{{grid.costCode}}
+                                    <!-- <span style='font-size:9px'>{{grid.systemPhrase}}</span> -->
                                 </td>
 
-                                <td>{{grid.punchIn |date:'mediumTime'}}</td>
+                                <td class="text-center">{{grid.punchIn |date:'mediumTime'}}</td>
 
-                                <td>{{grid.punchOut| date:'mediumTime'}}</td>
-                                <td></td>
-                                <td> {{grid.Regulartime | number:'1.0-2'}}</td>
-                                <td>{{grid.Overtime | number:'1.0-2' }}</td>
-                                <td>{{grid.Doubletime | number:'1.0-2'}}</td>
+                                <td class="text-center">{{grid.punchOut| date:'mediumTime'}}</td>
+                                <td class="text-center"></td>
+                                <td class="text-center"> {{grid.Regulartime | number:'1.0-2'}}</td>
+                                <td class="text-center">{{grid.Overtime | number:'1.0-2' }}</td>
+                                <td class="text-center">{{grid.Doubletime | number:'1.0-2'}}</td>
 
-                                <td>{{grid.hourlyValues | number:'1.0-2'}}</td>
-                                <td style="text-align: center" (click)="onHourlyValues(grid)"><i class="material-icons" style="color:red">place</i> </td>
-                                <td style="text-align: center" (click)="onHourlyValues(grid)"><i class="material-icons" [ngClass]="{'comment': grid.comments && grid.comments.length >0 }">insert_comment</i></td>
+                                <td class="text-center">{{grid.hourlyValues | number:'1.0-2'}}</td>
+                                <td class="text-center" (click)="onHourlyValues(grid)">
+                                    <i class="material-icons" style="color:red">place</i>
+                                </td>
+                                <td class="text-center" (click)="onHourlyValues(grid)">
+                                    <i class="material-icons" [ngClass]="{'comment': grid.comments && grid.comments.length >0 }">insert_comment</i>
+                                </td>
 
-                                <td style="text-align: center" (click)="onHourlyValues(grid)"><i class="material-icons">search</i> </td>
-                                <td style="text-align: center" (click)="onHourlyValues(grid)"> <i class="material-icons" [ngClass]="{'reject': grid.status==='Rejected' }">do_not_disturb_alt</i></td>
+                                <td style="text-align: center" (click)="onHourlyValues(grid)">
+                                    <i class="material-icons">search</i>
+                                </td>
+                                <td style="text-align: center" (click)="onHourlyValues(grid)">
+                                    <i class="material-icons" [ngClass]="{'reject': grid.status==='Rejected' }">do_not_disturb_alt</i>
+                                </td>
                             </tr>
                         </tbody>
                     </table>

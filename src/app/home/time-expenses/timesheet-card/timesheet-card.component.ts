@@ -129,18 +129,6 @@ export class TimesheetCardComponent extends BaseComponent
 
     this.count = 1;
 
-    // this._messageService.messageSource$.subscribe((notifcation: any) => {
-    //   console.log('Message: ', notifcation);
-
-    //   // if ( notifcation === 'approve-time') {
-    //   //   this.pin = this._messageService.media;
-    //   //   if ( this._view === 'approve-time' && (!this.pin || this.pin === '' || this.pin !== this.correctPin)) {
-    //   //     this.pin =  this.credentialPIN('', null);
-    //   //     this._messageService.media = this.pin;
-    //   //     return;
-    //   //   }
-    //   // }
-    // });
   }
 
   /******************************************************************************************************************
