@@ -810,8 +810,8 @@ export class TimesheetCardComponent extends BaseComponent
         console.log(timeRecordToSend);
         const timeRecordDetailModalRef = this.dialog.open(TimeRecordDetailModalComponent, {
             data: timeRecordToSend,
-            height: '500px',
-            width: '800px'
+            height: '700px',
+            width: '100%'
         });
         timeRecordDetailModalRef.afterClosed().subscribe(result => {
             console.log('TimeRecordDetail modal closed.');

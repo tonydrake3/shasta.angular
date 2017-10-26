@@ -3,7 +3,7 @@
     <div class="row">
         <form [formGroup]="enterTimeForm" (ngSubmit)="didTapSaveButton(enterTimeForm)" novalidate>
 
-        <div class="enter-time-form col-sm-8">
+        <div class="enter-time-form col-lg-8">
 
             <h3>Time Record Detail</h3>
 
@@ -144,7 +144,7 @@
                 </div>
         </div>
 
-        <div class="col-sm-4">
+        <div class="col">
 
             <h3>Comments</h3>
 
@@ -153,6 +153,8 @@
                     <strong>Comment by: </strong> {{ comment.User.FirstName }} {{ comment.User.LastName }}
                     <br>
                     <strong>{{ comment.Timestamps.ClientCreated | date: 'short' }}</strong>
+
+                    <p>{{ comment.Value }}</p>
                 </div>
 
             <div class="well well-sm">
