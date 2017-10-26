@@ -424,10 +424,6 @@ export class TimesheetCardComponent extends BaseComponent
     const temp = this.totalCount;
     this.onDatePicked.emit(this.totalCount > 0);
   }
-
-  public isAllChecked(timecard: any) {
-    //  return timecard.every( _ => _.state);
-  }
   public onSelectSingleCheckBox(timecard: any, timecardGrid: any, event): void {
     const selected = event;
 
