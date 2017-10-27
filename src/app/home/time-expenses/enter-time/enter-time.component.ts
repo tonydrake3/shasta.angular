@@ -356,8 +356,6 @@ export class EnterTimeComponent extends BaseComponent implements OnInit, OnDestr
                         }
                     );
 
-                    console.log('processRecords', this.projects);
-
                     const projectLine = this.transformService.transformTimeRecordToLineToSubmit(record, matchingProject[0]);
 
                     if (this.isCopyLastWeek) {
