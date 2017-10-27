@@ -8,12 +8,12 @@
         </md-progress-bar>
     </div>
     <div class="enter-time-overlay" *ngIf="loading"></div>
-    <div class="row" *ngIf="!showGrid">
-        <div class="col-md-6">
-            <button md-raised-button (click)="copyLastWeekTimesheet()" class="primary">Copy Last Week's Time</button>
+    <div *ngIf="!showGrid" class="enter-time-button-group">
+        <div class="copy-last-week-button">
+            <button md-raised-button (click)="copyLastWeekTimesheet()" class="primary esub-button">Copy Last Week's Time</button>
         </div>
-        <div class="col-md-6">
-            <button md-raised-button (click)="copyYesterdayTimesheet()" class="primary">Copy Last Day's Time</button>
+        <div class="copy-yesterday-button">
+            <button md-raised-button (click)="copyYesterdayTimesheet()" class="primary esub-button">Copy Yesterday's Time</button>
         </div>
     </div>
     <div class="esub-card no-hover" *ngIf="!showGrid">

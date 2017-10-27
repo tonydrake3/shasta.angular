@@ -114,7 +114,7 @@ export class EnterTimePreloadManager {
             return {
                 Id: code.Id,
                 Name: code.Description,
-                Code: code.Description
+                Code: code.Code
             };
         });
     }

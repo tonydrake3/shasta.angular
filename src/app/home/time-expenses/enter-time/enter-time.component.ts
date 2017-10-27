@@ -1,5 +1,6 @@
 import {ChangeDetectorRef, Component, Injector, OnDestroy, OnInit} from '@angular/core';
 import {NavigationCancel, Router} from '@angular/router';
+import {MdDialog} from '@angular/material';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import {Subject} from 'rxjs/Subject';
@@ -11,15 +12,18 @@ import {ConfirmationDialogComponent} from '../../shared/components/confirmation-
 import {EnterTimePreloadManager} from './enter-time-preload.manager';
 import {EnterTimeManager} from './enter-time.manager';
 import {PermissionsService} from '../../../shared/services/authorization/permissions.service';
-
-// Model Imports
+import {WarningDialogComponent} from '../../shared/components/warning-dialog.component';
 import {ConfirmationDialogService} from '../../shared/services/confirmation-dialog.service';
-import {DialogData, DialogServiceReference} from '../../../models/DialogData';
 import {EnterTimeCopyService} from './enter-time-copy.service';
-import {Permissions} from '../../../models/domain/Permissions';
 import {CurrentEmployeeService} from '../../shared/services/user/current-employee.service';
 import {UserService} from '../../shared/services/user/user.service';
+
+// Model Imports
+import {DialogData, DialogServiceReference} from '../../../models/DialogData';
+import {Permissions} from '../../../models/domain/Permissions';
 import {Project} from '../../../models/domain/Project';
+import {TimeRecord} from '../../../models/domain/TimeRecord';
+import {EnterTimeTransformService} from './enter-time-transform.service';
 
 @Component({
     templateUrl: './enter-time.component.html'
@@ -31,8 +35,10 @@ export class EnterTimeComponent extends BaseComponent implements OnInit, OnDestr
     private _confirmationService: ConfirmationDialogService;
     private permissions: Permissions;
     private projects: Array<Project>;
+    private timeRecords: Array<TimeRecord>;
     private user;
     private employee;
+    private isCopyLastWeek: boolean;
 
     // working model to add
     public showGrid: boolean;
@@ -43,7 +49,8 @@ export class EnterTimeComponent extends BaseComponent implements OnInit, OnDestr
     constructor(private _injector: Injector, private _router: Router, private _preloadService: EnterTimePreloadManager,
                 private _enterTimeManager: EnterTimeManager, private enterTimeCopyService: EnterTimeCopyService,
                 private permissionsService: PermissionsService, private currentEmployeeService: CurrentEmployeeService,
-                private _cdr: ChangeDetectorRef, private userService: UserService) {
+                private _cdr: ChangeDetectorRef, private userService: UserService, private dialog: MdDialog,
+                private transformService: EnterTimeTransformService) {
 
         super(_injector, []);
 
@@ -68,19 +75,14 @@ export class EnterTimeComponent extends BaseComponent implements OnInit, OnDestr
 
         this.accordionOpen = true;
         this.showGrid = false;
+        this.isCopyLastWeek = false;
+        this.timeRecords = [];
     }
 
     /******************************************************************************************************************
      * Lifecycle Methods
      ******************************************************************************************************************/
     ngOnInit () {
-
-        // Observable.forkJoin([character, characterHomeworld]).subscribe(results => {
-        //     // results[0] is our character
-        //     // results[1] is our character homeworld
-        //     results[0].homeworld = results[1];
-        //     this.loadedCharacter = results[0];
-        // });
 
         this._preloadService.loading$
             .takeUntil(this.ngUnsubscribe)
@@ -115,7 +117,16 @@ export class EnterTimeComponent extends BaseComponent implements OnInit, OnDestr
             .subscribe(
                 (timeRecords) => {
 
-                    console.log('EnterTimeComponent EnterTimeCopyService timerecords', timeRecords);
+                    this.loading = false;
+                    this.timeRecords = timeRecords['Value'];
+                    // console.log('EnterTimeComponent EnterTimeCopyService timerecords', this.timeRecords);
+                    if (this.timeRecords.length === 0) {
+
+                        this.displayNoRecordsModal();
+                    } else {
+
+                        this.processRecords();
+                    }
                 }
             );
 
@@ -126,7 +137,7 @@ export class EnterTimeComponent extends BaseComponent implements OnInit, OnDestr
 
                     if (permissions) {
 
-                        console.log('EnterTimeComponent PermissionsService permissions', permissions);
+                        // console.log('EnterTimeComponent PermissionsService permissions', permissions);
                         this.permissions = permissions;
 
                         if (this.permissions.TimeRecords.CreateOthers) {
@@ -220,14 +231,18 @@ export class EnterTimeComponent extends BaseComponent implements OnInit, OnDestr
     public copyLastWeekTimesheet() {
 
         // this.showGrid = true;
-        // this.getWeekFilters();
+        this.loading = true;
+        this.isCopyLastWeek = true;
         this.enterTimeCopyService.initialize(this.getWeekFilters());
         this.enterTimeCopyService.getLatest();
     }
 
     public copyYesterdayTimesheet() {
 
-        this.showGrid = true;
+        this.loading = true;
+        this.isCopyLastWeek = false;
+        this.enterTimeCopyService.initialize(this.getYesterdayFilters());
+        this.enterTimeCopyService.getLatest();
     }
 
     public onTimeEntryComplete (event) {
@@ -247,18 +262,16 @@ export class EnterTimeComponent extends BaseComponent implements OnInit, OnDestr
 
         const filters = [];
 
-        if (this.permissions.TimeRecords.CreateOthers) {
-
-            filters.push(['startDate', this.getStartOfWeek()]);
-            filters.push(['endDate', this.getEndOfWeek()]);
-            filters.push(['createdBy', this.user.Id]);
-
-            return filters;
-        }
         filters.push(['startDate', this.getStartOfWeek()]);
         filters.push(['endDate', this.getEndOfWeek()]);
-        filters.push(['employeeId', this.employee.Id]);
 
+        if (this.permissions.TimeRecords.CreateOthers) {
+
+            filters.push(['createdBy', this.user.Id]);
+            return filters;
+        }
+
+        filters.push(['employeeId', this.employee.Id]);
         return filters;
     }
 
@@ -282,6 +295,97 @@ export class EnterTimeComponent extends BaseComponent implements OnInit, OnDestr
             return today.subtract(1, 'days').toISOString();
         }
         return moment().day(0).startOf('day').subtract(1, 'days').toISOString();
+    }
+
+    private getYesterdayFilters () {
+
+        const filters = [];
+
+        filters.push(['startDate', moment().startOf('day').subtract(1, 'days').toISOString()]);
+        filters.push(['endDate', moment().startOf('day').toISOString()]);
+
+        if (this.permissions.TimeRecords.CreateOthers) {
+
+            filters.push(['createdBy', this.user.Id]);
+            return filters;
+        }
+
+        filters.push(['employeeId', this.employee.Id]);
+        return filters;
+    }
+
+    private displayNoRecordsModal () {
+
+        let height = '205px';
+
+        const dialogConfig: DialogData = new DialogData();
+        dialogConfig.title = 'No timesheets found';
+
+        if (this.isCopyLastWeek) {
+
+            dialogConfig.contentText = `There are no timesheets from last week to copy.
+            Create a new timesheet.`;
+        } else {
+
+            height = '225px'
+            dialogConfig.contentText = `There are no timesheets from yesterday to copy.
+            Either select Copy Last Week's timesheets or create a new timesheet.`;
+        }
+
+        const warningDialogRef = this.dialog.open(WarningDialogComponent, {
+            data: dialogConfig,
+            height: height,
+            width: '350px'
+        });
+        warningDialogRef.afterClosed().subscribe(result => {
+            // modal closed
+        });
+    }
+
+    private processRecords () {
+
+        this.timeRecords.forEach(
+            (record) => {
+
+                if (record.Project) {
+
+                    // Find project
+                    const matchingProject = _.filter(this.projects,
+                        (project) => {
+                            return project.Id === record.Project.Id;
+                        }
+                    );
+
+                    console.log('processRecords', this.projects);
+
+                    const projectLine = this.transformService.transformTimeRecordToLineToSubmit(record, matchingProject[0]);
+
+                    if (this.isCopyLastWeek) {
+
+                        projectLine.Date.add(7, 'days');
+                    } else {
+
+                        projectLine.Date.add(1, 'days');
+                    }
+
+                    this._enterTimeManager.insertProjectLine(projectLine);
+                } else {
+
+                    const indirectLine = this.transformService.transformTimeRecordToIndirectToSubmit(record);
+
+                    if (this.isCopyLastWeek) {
+
+                        indirectLine.Date.add(7, 'days');
+                    } else {
+
+                        indirectLine.Date.add(1, 'days');
+                    }
+
+                    this._enterTimeManager.insertIndirectLine(indirectLine);
+                }
+            }
+        );
+        this.showGrid = true;
     }
 }
 
