@@ -47,7 +47,10 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
         indirectCostCode: 'indirectCostCode',
         selectedIndirectCostCode: 'selectedIndirectCostCode',
         date: 'date',
-        timeEntry: 'timeEntry',
+        timeEntry: {
+            timeIn: 'timeEntry.time.in',
+            timeOut: 'timeEntry.time.out'
+        },
         standardHours: 'standardHours',
         overtimeHours: 'overtimeHours',
         doubleTimeHours: 'doubleTimeHours',
@@ -383,7 +386,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
         this.observePhaseChanges();
         this.observeCostCodeChanges();
         this.observeIndirectCostCodeChanges();
-        this.observeStandardTimeHoursChanges();
+        this.observeHoursChanges();
         this.observeCommentChanges();
         this.observeTimeEntryChanges();
     }
@@ -570,7 +573,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
         );
     }
 
-    private observeStandardTimeHoursChanges() {
+    private observeHoursChanges() {
         const standardTimeField = this.enterTimeForm.get(this.formKeys.standardHours);
         const overtimeField = this.enterTimeForm.get(this.formKeys.overtimeHours);
         const doubleTimeField = this.enterTimeForm.get(this.formKeys.doubleTimeHours);
@@ -678,6 +681,24 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
     }
 
     private observeTimeChanges() {
+        const timeInField = this.enterTimeForm.get(this.formKeys.timeEntry.timeIn);
+        const timeOutField = this.enterTimeForm.get(this.formKeys.timeEntry.timeOut);
+
+        timeInField.valueChanges.subscribe(
+            (timeIn) => {
+                console.log('Time in changed to: ', timeIn);
+                timeInField.markAsDirty();
+
+            }
+        );
+
+        timeOutField.valueChanges.subscribe(
+            (timeOut) => {
+                console.log('Time out changed to: ', timeOut);
+                timeOutField.markAsDirty();
+
+            }
+        );
 
     }
 
@@ -844,9 +865,14 @@ class TimeModalFormKeys {
     indirectCostCode: string;
     selectedIndirectCostCode: string;
     date: string;
-    timeEntry: string;
+    timeEntry: TimeEntryFormKeys;
     standardHours: string;
     overtimeHours: string;
     doubleTimeHours: string;
     comment: string;
+}
+
+class TimeEntryFormKeys {
+    timeIn: string;
+    timeOut: string;
 }
