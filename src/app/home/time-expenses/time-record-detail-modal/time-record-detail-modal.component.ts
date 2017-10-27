@@ -25,6 +25,7 @@ import {TimeRecordUpdaterService} from './time-record-updater.service';
 import {Comment} from '../../../models/domain/Comment';
 import {UserService} from '../../shared/services/user/user.service';
 import {User} from '../../../models/domain/User';
+import * as moment from 'moment';
 
 @Component({
     selector: 'esub-time-record-detail-modal',
@@ -46,6 +47,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
         indirectCostCode: 'indirectCostCode',
         selectedIndirectCostCode: 'selectedIndirectCostCode',
         date: 'date',
+        timeEntry: 'timeEntry',
         standardHours: 'standardHours',
         overtimeHours: 'overtimeHours',
         doubleTimeHours: 'doubleTimeHours',
@@ -91,6 +93,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
     public showSystemView: Observable<boolean>;
     public showPhaseView: Observable<boolean>;
     public showCostCodeView: Observable<boolean>;
+    public showTimeEntryView: Observable<boolean>;
 
     constructor(private _dialogRef: MdDialogRef<TimeRecordDetailModalComponent>,
                 @Inject(MD_DIALOG_DATA) public data: DisplayModeSpecifying & TimeRecord,
@@ -185,6 +188,17 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
             )
             .do((showPhaseView) => {
                 console.log('show phase view', showPhaseView);
+            })
+            .takeUntil(this.ngUnsubscribe);
+
+        this.showTimeEntryView = Observable
+            .combineLatest(
+                this.timeRecordSubject,
+                (timeRecord) => {
+                    return timeRecord.Punch != null;
+                })
+            .do((showTimeEntryView) => {
+                console.log('show Time Entry View: ', showTimeEntryView);
             })
             .takeUntil(this.ngUnsubscribe);
 
@@ -357,6 +371,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
             indirectCostCode: this.timeRecord.IndirectCost,
             selectedIndirectCostCode: [this.timeRecord.IndirectCost, [Validators.required]],
             date: [this.timeRecord.Hours.Date, [Validators.required]],
+            timeEntry: this._formBuilder.group(this.buildTimeEntryFormGroup()),
             standardHours: [this.timeRecord.Hours.RegularTime, [Validators.max(24)]],
             overtimeHours: [this.timeRecord.Hours.Overtime, [Validators.max(24)]],
             doubleTimeHours: [this.timeRecord.Hours.DoubleTime, [Validators.max(24)]],
@@ -370,6 +385,72 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
         this.observeIndirectCostCodeChanges();
         this.observeStandardTimeHoursChanges();
         this.observeCommentChanges();
+        this.observeTimeEntryChanges();
+    }
+
+    private buildTimeEntryFormGroup () {
+
+        return {
+
+            time: this._formBuilder.group(this.buildTimeDetailFormGroup()),
+            // {validator: validateTime('in', 'out', 'startAfterEnd')}),
+            break: this._formBuilder.group(this.buildBreakFormGroup())
+            // {validator: validateTime('in', 'out', 'breakStartAfterEnd')})
+        };
+    }
+
+    private buildTimeDetailFormGroup() {
+
+        let punchIn: string;
+        let punchOut: string;
+
+        const punch = this.timeRecord.Punch;
+
+        if (punch && punch.hasOwnProperty('PunchIn')) {
+            punchIn = moment(punch.PunchIn).format('HH:mm');
+            console.log('punch in populated with: ', punchIn);
+        }
+
+        if (punch && punch.hasOwnProperty('PunchOut')) {
+            punchOut = moment(punch.PunchOut).format('HH:mm');
+            console.log('punch out populated with: ', punchOut);
+        }
+
+        return {
+
+            in: punchIn,
+            out: punchOut
+
+        }
+    }
+
+    private buildBreakFormGroup() {
+
+        let breakIn: string;
+        let breakOut: string;
+
+        const breaks = this.timeRecord.Breaks;
+
+        if (breaks.length === 0) { return { in: '', out: '' } }
+
+        const currentBreak = breaks[0];
+
+        if (currentBreak && currentBreak.hasOwnProperty('TimeIn')) {
+            breakIn = moment(currentBreak.TimeIn).format('HH:mm');
+            console.log('punch in populated with: ', breakIn);
+        }
+
+        if (currentBreak && currentBreak.hasOwnProperty('TimeOut')) {
+            breakOut = moment(currentBreak.TimeOut).format('HH:mm');
+            console.log('punch out populated with: ', breakOut);
+        }
+
+        return {
+
+            in: breakIn,
+            out: breakOut
+
+        }
     }
 
     public projectWasSelected(event) {
@@ -411,7 +492,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
         this.enterTimeForm.setControl('comments', commentsFormArray);
     }
 
-    observeIndirectCostCodeChanges() {
+    private observeIndirectCostCodeChanges() {
 
         const indirectCostCodeField = this.enterTimeForm.get(this.formKeys.indirectCostCode);
         const indirectCostCodeSelection = this.enterTimeForm.get(this.formKeys.selectedIndirectCostCode);
@@ -445,7 +526,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
         );
     }
 
-    observeProjectChanges() {
+    private observeProjectChanges() {
 
         const projectField = this.enterTimeForm.get(this.formKeys.project);
         const projectSelection = this.enterTimeForm.get(this.formKeys.selectedProject);
@@ -489,7 +570,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
         );
     }
 
-    observeStandardTimeHoursChanges() {
+    private observeStandardTimeHoursChanges() {
         const standardTimeField = this.enterTimeForm.get(this.formKeys.standardHours);
         const overtimeField = this.enterTimeForm.get(this.formKeys.overtimeHours);
         const doubleTimeField = this.enterTimeForm.get(this.formKeys.doubleTimeHours);
@@ -519,7 +600,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
         );
     }
 
-    observeCommentChanges() {
+    private observeCommentChanges() {
         const commentField = this.enterTimeForm.get(this.formKeys.comment);
 
         commentField.valueChanges.subscribe(
@@ -532,7 +613,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
 
     }
 
-    observeSystemChanges() {
+    private observeSystemChanges() {
         const systemField = this.enterTimeForm.get(this.formKeys.system);
         const systemSelection = this.enterTimeForm.get(this.formKeys.selectedSystem);
 
@@ -563,7 +644,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
         )
     }
 
-    observePhaseChanges() {
+    private observePhaseChanges() {
         const phaseField = this.enterTimeForm.get(this.formKeys.phase);
         const phaseSelection = this.enterTimeForm.get(this.formKeys.selectedPhase);
 
@@ -589,6 +670,19 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
 
             }
         )
+    }
+
+    private observeTimeEntryChanges() {
+        this.observeTimeChanges();
+        this.observeBreakChanges();
+    }
+
+    private observeTimeChanges() {
+
+    }
+
+    private observeBreakChanges() {
+
     }
 
     private resetField(fieldValue: string, field: AbstractControl, fieldsToClear: any) {
@@ -750,6 +844,7 @@ class TimeModalFormKeys {
     indirectCostCode: string;
     selectedIndirectCostCode: string;
     date: string;
+    timeEntry: string;
     standardHours: string;
     overtimeHours: string;
     doubleTimeHours: string;

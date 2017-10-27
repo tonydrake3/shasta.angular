@@ -1,12 +1,10 @@
 <md-dialog-content>
 
-    <div class="row">
         <form [formGroup]="enterTimeForm" (ngSubmit)="didTapSaveButton(enterTimeForm)" novalidate>
 
-        <div class="enter-time-form col-lg-8">
+        <div class="enter-time-form col-md-12">
 
             <h3>Time Record Detail</h3>
-
 
                 <div class="row" *ngIf="showProjectView | async">
                     <div class="col-md-12">
@@ -93,7 +91,7 @@
                     </div>
                 </div>
 
-                <div class="row" *ngIf="showCostCodeView">
+                <div class="row" *ngIf="showCostCodeView | async">
                     <div class="col-md-12">
                         <md-form-field class="form-field">
                             <input type="text"
@@ -114,6 +112,50 @@
                         </md-autocomplete>
                     </div>
                 </div>
+
+            <!--Duplicated from enter time form... try to remove the parts that are not necessary -->
+            <div class="col-md-12" *ngIf="showTimeEntryView | async" formGroupName="timeEntry">
+                <div class="row"><!---->
+                    <div class="col-md-2" formGroupName="time">
+                        <div class="time-entry">
+                            <md-form-field class="form-field" >
+                                <input mdInput placeholder="Time in" type="time" formControlName="in" [id]="'txtFormTimeIn'">
+                            </md-form-field>
+                        </div>
+                    </div>
+                    <div class="col-md-2" formGroupName="time">
+                        <div class="time-entry">
+                            <md-form-field class="form-field" >
+                                <input mdInput placeholder="Time out" type="time" formControlName="out" [id]="'txtFormTimeIn'">
+                            </md-form-field>
+                        </div>
+                    </div>
+                    <div class="col-md-2 offset-1" formGroupName="break">
+                        <div class="time-entry">
+                            <md-form-field class="form-field">
+                                <input mdInput placeholder="Break in" type="time" formControlName="in" [id]="'txtFormBreakIn'">
+                            </md-form-field>
+                        </div>
+                    </div>
+                    <div class="col-md-2" formGroupName="break">
+                        <div class="time-entry">
+                            <md-form-field class="form-field">
+                                <input mdInput placeholder="Break out" type="time" formControlName="out" [id]="'txtFormBreakIn'">
+                            </md-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-error-container">
+                    <div class="col-md-4">
+                        <span class="form-error" *ngIf="enterTimeForm.get('timeEntry').get('time').hasError('startAfterEnd')">Time in cannot occur after time out.</span>
+                    </div>
+                    <div class="col-md-4 offset-1">
+                        <span class="form-error" *ngIf="enterTimeForm.get('timeEntry').get('break').hasError('breakStartAfterEnd')">Break in cannot occur after break out.</span>
+                        <span class="form-error" *ngIf="enterTimeForm.get('timeEntry').hasError('breakOutsideOfTime') &&
+                            !enterTimeForm.get('timeEntry').get('break').hasError('breakStartAfterEnd')">Break cannot occur outside of time in/out.</span>
+                    </div>
+                </div>
+            </div>
 
                 <div class="row">
                     <div class="col-md-12">
@@ -163,8 +205,6 @@
 
         </div>
         </form>
-
-    </div>
 
 </md-dialog-content>
 
