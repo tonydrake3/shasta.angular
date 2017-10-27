@@ -58,7 +58,6 @@ export class TrackpointHeaderComponent implements OnInit, OnDestroy {
             .subscribe(
                 (user) => {
 
-                    console.log(user);
                     this.fullName = user[0]['FirstName'] + ' ' + user[0]['LastName'];
                 }
             );
