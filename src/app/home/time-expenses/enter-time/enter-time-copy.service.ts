@@ -14,7 +14,7 @@ export class EnterTimeCopyService extends BaseStore {
 
     public initialize (params: Array<[string, string]>) {
 
-        this.init(apiRoutes.timeRecords, undefined, params);
+        this.init(apiRoutes.timeRecordsFull, undefined, params);
     }
 
     public getLatest(): Promise<any> {
