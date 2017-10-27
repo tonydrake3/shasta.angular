@@ -49,7 +49,6 @@ Enter Hours Field
     Click Button    id=btnLogin
     Wait Until Page Contains    eSUB
     Sleep    5s
-	Sleep    4s
     mouse over    Xpath=//*[@id="page-container"]/esub-trackpoint-header/section/div/div[2]/ul/li[1]/button/span
     Sleep    3s
     click element    Xpath=//*[@id="page-container"]/esub-trackpoint-header/section/div/div[2]/ul/li[1]/button/span

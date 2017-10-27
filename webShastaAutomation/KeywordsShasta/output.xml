@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generated="20171023 10:29:47.560" generator="Robot 3.0.2 (Python 2.7.13 on darwin)">
-<suite source="/Users/tonydrake/gitrepos/shasta.angular/webShastaAutomation/KeywordsShasta/enterTime.robot" id="s1" name="enterTime">
-<test id="s1-t1" name="Modify Timecard">
-<kw name="Modify Timecard">
+<robot generated="20171027 10:15:52.970" generator="Robot 3.0.2 (Python 2.7.13 on darwin)">
+<suite source="/Users/tonydrake/gitrepos/shasta.angular/webShastaAutomation/KeywordsShasta/gridForm.robot" id="s1" name="gridForm">
+<test id="s1-t1" name="Grid Form Verification - Enter Time In / Time Out">
+<kw name="Grid Form Verification - Enter Time In / Time Out">
 <tags>
 <tag>Smoke</tag>
 </tags>
 <kw name="Open Browser" library="Selenium2Library">
 <doc>Opens a new browser instance to given URL.</doc>
 <arguments>
-<arg>http://web.develop.shasta.esubonline.com/#/login</arg>
+<arg>http://web.develop.shasta.esubonline.com/</arg>
 <arg>Chrome</arg>
 </arguments>
-<msg timestamp="20171023 10:29:47.664" level="INFO">Opening browser 'Chrome' to base url 'http://web.develop.shasta.esubonline.com/#/login'</msg>
-<status status="PASS" endtime="20171023 10:29:51.738" starttime="20171023 10:29:47.663"></status>
+<msg timestamp="20171027 10:15:53.078" level="INFO">Opening browser 'Chrome' to base url 'http://web.develop.shasta.esubonline.com/'</msg>
+<status status="PASS" endtime="20171027 10:15:57.158" starttime="20171027 10:15:53.078"></status>
 </kw>
 <kw name="Set Window Size" library="Selenium2Library">
 <doc>Sets the `width` and `height` of the current window to the specified values.</doc>
@@ -21,22 +21,22 @@
 <arg>${1600}</arg>
 <arg>${1000}</arg>
 </arguments>
-<status status="PASS" endtime="20171023 10:29:51.887" starttime="20171023 10:29:51.739"></status>
+<status status="PASS" endtime="20171027 10:15:57.319" starttime="20171027 10:15:57.158"></status>
 </kw>
 <kw name="Wait Until Page Contains" library="Selenium2Library">
 <doc>Waits until `text` appears on current page.</doc>
 <arguments>
 <arg>eSUB</arg>
 </arguments>
-<status status="PASS" endtime="20171023 10:29:51.907" starttime="20171023 10:29:51.887"></status>
+<status status="PASS" endtime="20171027 10:15:57.344" starttime="20171027 10:15:57.319"></status>
 </kw>
 <kw name="Sleep" library="BuiltIn">
 <doc>Pauses the test executed for the given time.</doc>
 <arguments>
 <arg>3s</arg>
 </arguments>
-<msg timestamp="20171023 10:29:54.908" level="INFO">Slept 3 seconds</msg>
-<status status="PASS" endtime="20171023 10:29:54.909" starttime="20171023 10:29:51.907"></status>
+<msg timestamp="20171027 10:16:00.344" level="INFO">Slept 3 seconds</msg>
+<status status="PASS" endtime="20171027 10:16:00.345" starttime="20171027 10:15:57.344"></status>
 </kw>
 <kw name="Input Text" library="Selenium2Library">
 <doc>Types the given `text` into text field identified by `locator`.</doc>
@@ -44,16 +44,16 @@
 <arg>id=txtUsername</arg>
 <arg>Tonyd@esub.com</arg>
 </arguments>
-<msg timestamp="20171023 10:29:54.909" level="INFO">Typing text 'Tonyd@esub.com' into text field 'id=txtUsername'</msg>
-<status status="PASS" endtime="20171023 10:29:55.113" starttime="20171023 10:29:54.909"></status>
+<msg timestamp="20171027 10:16:00.345" level="INFO">Typing text 'Tonyd@esub.com' into text field 'id=txtUsername'</msg>
+<status status="PASS" endtime="20171027 10:16:00.541" starttime="20171027 10:16:00.345"></status>
 </kw>
 <kw name="Sleep" library="BuiltIn">
 <doc>Pauses the test executed for the given time.</doc>
 <arguments>
 <arg>3s</arg>
 </arguments>
-<msg timestamp="20171023 10:29:58.116" level="INFO">Slept 3 seconds</msg>
-<status status="PASS" endtime="20171023 10:29:58.116" starttime="20171023 10:29:55.113"></status>
+<msg timestamp="20171027 10:16:03.543" level="INFO">Slept 3 seconds</msg>
+<status status="PASS" endtime="20171027 10:16:03.543" starttime="20171027 10:16:00.541"></status>
 </kw>
 <kw name="Input Text" library="Selenium2Library">
 <doc>Types the given `text` into text field identified by `locator`.</doc>
@@ -61,138 +61,1104 @@
 <arg>id=txtPassword</arg>
 <arg>Test1234</arg>
 </arguments>
-<msg timestamp="20171023 10:29:58.116" level="INFO">Typing text 'Test1234' into text field 'id=txtPassword'</msg>
-<status status="PASS" endtime="20171023 10:29:58.226" starttime="20171023 10:29:58.116"></status>
+<msg timestamp="20171027 10:16:03.544" level="INFO">Typing text 'Test1234' into text field 'id=txtPassword'</msg>
+<status status="PASS" endtime="20171027 10:16:03.646" starttime="20171027 10:16:03.543"></status>
 </kw>
 <kw name="Sleep" library="BuiltIn">
 <doc>Pauses the test executed for the given time.</doc>
 <arguments>
 <arg>3s</arg>
 </arguments>
-<msg timestamp="20171023 10:30:01.227" level="INFO">Slept 3 seconds</msg>
-<status status="PASS" endtime="20171023 10:30:01.227" starttime="20171023 10:29:58.226"></status>
+<msg timestamp="20171027 10:16:06.649" level="INFO">Slept 3 seconds</msg>
+<status status="PASS" endtime="20171027 10:16:06.649" starttime="20171027 10:16:03.646"></status>
 </kw>
 <kw name="Click Button" library="Selenium2Library">
 <doc>Clicks a button identified by `locator`.</doc>
 <arguments>
 <arg>id=btnLogin</arg>
 </arguments>
-<msg timestamp="20171023 10:30:01.228" level="INFO">Clicking button 'id=btnLogin'.</msg>
-<status status="PASS" endtime="20171023 10:30:01.320" starttime="20171023 10:30:01.227"></status>
+<msg timestamp="20171027 10:16:06.649" level="INFO">Clicking button 'id=btnLogin'.</msg>
+<status status="PASS" endtime="20171027 10:16:06.734" starttime="20171027 10:16:06.649"></status>
 </kw>
 <kw name="Wait Until Page Contains" library="Selenium2Library">
 <doc>Waits until `text` appears on current page.</doc>
 <arguments>
-<arg>eSUB</arg>
+<arg>Employee</arg>
+<arg>timeout=30</arg>
 </arguments>
-<status status="PASS" endtime="20171023 10:30:01.331" starttime="20171023 10:30:01.320"></status>
+<status status="PASS" endtime="20171027 10:16:09.305" starttime="20171027 10:16:06.734"></status>
 </kw>
 <kw name="Sleep" library="BuiltIn">
 <doc>Pauses the test executed for the given time.</doc>
 <arguments>
 <arg>5s</arg>
 </arguments>
-<msg timestamp="20171023 10:30:06.331" level="INFO">Slept 5 seconds</msg>
-<status status="PASS" endtime="20171023 10:30:06.332" starttime="20171023 10:30:01.331"></status>
+<msg timestamp="20171027 10:16:14.308" level="INFO">Slept 5 seconds</msg>
+<status status="PASS" endtime="20171027 10:16:14.308" starttime="20171027 10:16:09.305"></status>
 </kw>
-<kw name="Wait Until Page Contains" library="Selenium2Library">
-<doc>Waits until `text` appears on current page.</doc>
+<kw name="Click Element" library="Selenium2Library">
+<doc>Click element identified by `locator`.</doc>
 <arguments>
-<arg>Employee</arg>
+<arg>id=time-expenses.filter-to-mine</arg>
 </arguments>
-<status status="PASS" endtime="20171023 10:30:06.351" starttime="20171023 10:30:06.332"></status>
+<msg timestamp="20171027 10:16:14.309" level="INFO">Clicking element 'id=time-expenses.filter-to-mine'.</msg>
+<status status="PASS" endtime="20171027 10:16:15.333" starttime="20171027 10:16:14.309"></status>
 </kw>
 <kw name="Sleep" library="BuiltIn">
 <doc>Pauses the test executed for the given time.</doc>
 <arguments>
-<arg>4s</arg>
+<arg>5s</arg>
 </arguments>
-<msg timestamp="20171023 10:30:10.351" level="INFO">Slept 4 seconds</msg>
-<status status="PASS" endtime="20171023 10:30:10.352" starttime="20171023 10:30:06.351"></status>
+<msg timestamp="20171027 10:16:20.335" level="INFO">Slept 5 seconds</msg>
+<status status="PASS" endtime="20171027 10:16:20.335" starttime="20171027 10:16:15.334"></status>
+</kw>
+<kw name="Wait Until Page Contains" library="Selenium2Library">
+<doc>Waits until `text` appears on current page.</doc>
+<arguments>
+<arg>Project</arg>
+<arg>timeout=30</arg>
+</arguments>
+<status status="PASS" endtime="20171027 10:16:20.354" starttime="20171027 10:16:20.335"></status>
 </kw>
 <kw name="Mouse Over" library="Selenium2Library">
 <doc>Simulates hovering mouse over the element specified by `locator`.</doc>
 <arguments>
-<arg>Xpath=//*[@id="page-container"]/esub-trackpoint-header/section/div/div[2]/ul/li[1]/button/span</arg>
+<arg>Xpath=//*[@id="page-container"]/esub-trackpoint-header/section/div/div[2]/ul/li[1]/button</arg>
 </arguments>
-<msg timestamp="20171023 10:30:10.352" level="INFO">Simulating Mouse Over on element 'Xpath=//*[@id="page-container"]/esub-trackpoint-header/section/div/div[2]/ul/li[1]/button/span'</msg>
-<status status="PASS" endtime="20171023 10:30:10.393" starttime="20171023 10:30:10.352"></status>
+<msg timestamp="20171027 10:16:20.354" level="INFO">Simulating Mouse Over on element 'Xpath=//*[@id="page-container"]/esub-trackpoint-header/section/div/div[2]/ul/li[1]/button'</msg>
+<status status="PASS" endtime="20171027 10:16:20.388" starttime="20171027 10:16:20.354"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>2s</arg>
+</arguments>
+<msg timestamp="20171027 10:16:22.389" level="INFO">Slept 2 seconds</msg>
+<status status="PASS" endtime="20171027 10:16:22.389" starttime="20171027 10:16:20.388"></status>
+</kw>
+<kw name="Click Element" library="Selenium2Library">
+<doc>Click element identified by `locator`.</doc>
+<arguments>
+<arg>Xpath=//*[@id="page-container"]/esub-trackpoint-header/section/div/div[2]/ul/li[1]/button</arg>
+</arguments>
+<msg timestamp="20171027 10:16:22.389" level="INFO">Clicking element 'Xpath=//*[@id="page-container"]/esub-trackpoint-header/section/div/div[2]/ul/li[1]/button'.</msg>
+<status status="PASS" endtime="20171027 10:16:22.469" starttime="20171027 10:16:22.389"></status>
 </kw>
 <kw name="Sleep" library="BuiltIn">
 <doc>Pauses the test executed for the given time.</doc>
 <arguments>
 <arg>3s</arg>
 </arguments>
-<msg timestamp="20171023 10:30:13.394" level="INFO">Slept 3 seconds</msg>
-<status status="PASS" endtime="20171023 10:30:13.395" starttime="20171023 10:30:10.393"></status>
-</kw>
-<kw name="Click Element" library="Selenium2Library">
-<doc>Click element identified by `locator`.</doc>
-<arguments>
-<arg>Xpath=//*[@id="page-container"]/esub-trackpoint-header/section/div/div[2]/ul/li[1]/button/span</arg>
-</arguments>
-<msg timestamp="20171023 10:30:13.395" level="INFO">Clicking element 'Xpath=//*[@id="page-container"]/esub-trackpoint-header/section/div/div[2]/ul/li[1]/button/span'.</msg>
-<status status="PASS" endtime="20171023 10:30:13.478" starttime="20171023 10:30:13.395"></status>
-</kw>
-<kw name="Sleep" library="BuiltIn">
-<doc>Pauses the test executed for the given time.</doc>
-<arguments>
-<arg>4s</arg>
-</arguments>
-<msg timestamp="20171023 10:30:17.479" level="INFO">Slept 4 seconds</msg>
-<status status="PASS" endtime="20171023 10:30:17.479" starttime="20171023 10:30:13.478"></status>
+<msg timestamp="20171027 10:16:25.471" level="INFO">Slept 3 seconds</msg>
+<status status="PASS" endtime="20171027 10:16:25.471" starttime="20171027 10:16:22.470"></status>
 </kw>
 <kw name="Click Element" library="Selenium2Library">
 <doc>Click element identified by `locator`.</doc>
 <arguments>
 <arg>Xpath=//*[@id="cdk-overlay-0"]/div/div/button[1]</arg>
 </arguments>
-<msg timestamp="20171023 10:30:17.479" level="INFO">Clicking element 'Xpath=//*[@id="cdk-overlay-0"]/div/div/button[1]'.</msg>
-<status status="PASS" endtime="20171023 10:30:17.724" starttime="20171023 10:30:17.479"></status>
+<msg timestamp="20171027 10:16:25.472" level="INFO">Clicking element 'Xpath=//*[@id="cdk-overlay-0"]/div/div/button[1]'.</msg>
+<status status="PASS" endtime="20171027 10:16:25.695" starttime="20171027 10:16:25.471"></status>
+</kw>
+<status status="PASS" endtime="20171027 10:16:25.695" starttime="20171027 10:15:53.078"></status>
+</kw>
+<status status="PASS" endtime="20171027 10:16:25.696" critical="yes" starttime="20171027 10:15:53.077"></status>
+</test>
+<test id="s1-t2" name="Clear Form after Project entry">
+<kw name="Clear Form after Project entry">
+<kw name="Wait Until Page Contains" library="Selenium2Library">
+<doc>Waits until `text` appears on current page.</doc>
+<arguments>
+<arg>Enter Hours</arg>
+<arg>timeout=30</arg>
+</arguments>
+<status status="PASS" endtime="20171027 10:16:28.602" starttime="20171027 10:16:25.698"></status>
 </kw>
 <kw name="Sleep" library="BuiltIn">
 <doc>Pauses the test executed for the given time.</doc>
 <arguments>
 <arg>3s</arg>
 </arguments>
-<msg timestamp="20171023 10:30:20.726" level="INFO">Slept 3 seconds</msg>
-<status status="PASS" endtime="20171023 10:30:20.726" starttime="20171023 10:30:17.724"></status>
+<msg timestamp="20171027 10:16:31.603" level="INFO">Slept 3 seconds</msg>
+<status status="PASS" endtime="20171027 10:16:31.603" starttime="20171027 10:16:28.603"></status>
 </kw>
-<status status="PASS" endtime="20171023 10:30:20.726" starttime="20171023 10:29:47.663"></status>
-</kw>
-<kw name="Project information">
-<kw name="Input Text" library="Selenium2Library">
-<doc>Types the given `text` into text field identified by `locator`.</doc>
+<kw name="Click Element" library="Selenium2Library">
+<doc>Click element identified by `locator`.</doc>
 <arguments>
-<arg>id=txtFormProject</arg>
-<arg>Random Auto Dealership</arg>
+<arg>id=md-tab-label-0-1</arg>
 </arguments>
-<msg timestamp="20171023 10:30:20.727" level="INFO">Typing text 'Random Auto Dealership' into text field 'id=txtFormProject'</msg>
-<status status="PASS" endtime="20171023 10:30:21.313" starttime="20171023 10:30:20.727"></status>
+<msg timestamp="20171027 10:16:31.604" level="INFO">Clicking element 'id=md-tab-label-0-1'.</msg>
+<status status="PASS" endtime="20171027 10:16:31.705" starttime="20171027 10:16:31.603"></status>
 </kw>
 <kw name="Sleep" library="BuiltIn">
 <doc>Pauses the test executed for the given time.</doc>
 <arguments>
-<arg>7s</arg>
+<arg>3s</arg>
 </arguments>
-<msg timestamp="20171023 10:30:28.314" level="INFO">Slept 7 seconds</msg>
-<status status="PASS" endtime="20171023 10:30:28.314" starttime="20171023 10:30:21.313"></status>
+<msg timestamp="20171027 10:16:34.707" level="INFO">Slept 3 seconds</msg>
+<status status="PASS" endtime="20171027 10:16:34.707" starttime="20171027 10:16:31.706"></status>
+</kw>
+<kw name="Input Text" library="Selenium2Library">
+<doc>Types the given `text` into text field identified by `locator`.</doc>
+<arguments>
+<arg>id=txtFormProject</arg>
+<arg>10000 - Frank's House</arg>
+</arguments>
+<msg timestamp="20171027 10:16:34.707" level="INFO">Typing text '10000 - Frank's House' into text field 'id=txtFormProject'</msg>
+<status status="PASS" endtime="20171027 10:16:35.258" starttime="20171027 10:16:34.707"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>5s</arg>
+</arguments>
+<msg timestamp="20171027 10:16:40.259" level="INFO">Slept 5 seconds</msg>
+<status status="PASS" endtime="20171027 10:16:40.259" starttime="20171027 10:16:35.259"></status>
 </kw>
 <kw name="Click Element" library="Selenium2Library">
 <doc>Click element identified by `locator`.</doc>
 <arguments>
 <arg>id=md-autocomplete-0</arg>
 </arguments>
-<msg timestamp="20171023 10:30:28.315" level="INFO">Clicking element 'id=md-autocomplete-0'.</msg>
-<status status="PASS" endtime="20171023 10:30:28.597" starttime="20171023 10:30:28.315"></status>
+<msg timestamp="20171027 10:16:40.260" level="INFO">Clicking element 'id=md-autocomplete-0'.</msg>
+<status status="PASS" endtime="20171027 10:16:40.585" starttime="20171027 10:16:40.260"></status>
 </kw>
 <kw name="Sleep" library="BuiltIn">
 <doc>Pauses the test executed for the given time.</doc>
 <arguments>
 <arg>4s</arg>
 </arguments>
-<msg timestamp="20171023 10:30:32.598" level="INFO">Slept 4 seconds</msg>
-<status status="PASS" endtime="20171023 10:30:32.598" starttime="20171023 10:30:28.597"></status>
+<msg timestamp="20171027 10:16:44.588" level="INFO">Slept 4 seconds</msg>
+<status status="PASS" endtime="20171027 10:16:44.588" starttime="20171027 10:16:40.585"></status>
+</kw>
+<kw name="Input Text" library="Selenium2Library">
+<doc>Types the given `text` into text field identified by `locator`.</doc>
+<arguments>
+<arg>id=txtFormPhases</arg>
+<arg>1 - New Phase A</arg>
+</arguments>
+<msg timestamp="20171027 10:16:44.589" level="INFO">Typing text '1 - New Phase A' into text field 'id=txtFormPhases'</msg>
+<status status="PASS" endtime="20171027 10:16:45.286" starttime="20171027 10:16:44.588"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>4s</arg>
+</arguments>
+<msg timestamp="20171027 10:16:49.288" level="INFO">Slept 4 seconds</msg>
+<status status="PASS" endtime="20171027 10:16:49.288" starttime="20171027 10:16:45.286"></status>
+</kw>
+<kw name="Click Element" library="Selenium2Library">
+<doc>Click element identified by `locator`.</doc>
+<arguments>
+<arg>id=md-autocomplete-1</arg>
+</arguments>
+<msg timestamp="20171027 10:16:49.289" level="INFO">Clicking element 'id=md-autocomplete-1'.</msg>
+<status status="PASS" endtime="20171027 10:16:49.414" starttime="20171027 10:16:49.288"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>3s</arg>
+</arguments>
+<msg timestamp="20171027 10:16:52.414" level="INFO">Slept 3 seconds</msg>
+<status status="PASS" endtime="20171027 10:16:52.415" starttime="20171027 10:16:49.414"></status>
+</kw>
+<kw name="Clear Element Text" library="Selenium2Library">
+<doc>Clears the text value of text entry element identified by `locator`.</doc>
+<arguments>
+<arg>id=txtFormPhases</arg>
+</arguments>
+<status status="PASS" endtime="20171027 10:16:52.432" starttime="20171027 10:16:52.415"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>3s</arg>
+</arguments>
+<msg timestamp="20171027 10:16:55.433" level="INFO">Slept 3 seconds</msg>
+<status status="PASS" endtime="20171027 10:16:55.434" starttime="20171027 10:16:52.433"></status>
+</kw>
+<kw name="Input Text" library="Selenium2Library">
+<doc>Types the given `text` into text field identified by `locator`.</doc>
+<arguments>
+<arg>id=txtFormPhases</arg>
+<arg>1 - Default Phase</arg>
+</arguments>
+<msg timestamp="20171027 10:16:55.434" level="INFO">Typing text '1 - Default Phase' into text field 'id=txtFormPhases'</msg>
+<status status="PASS" endtime="20171027 10:16:55.994" starttime="20171027 10:16:55.434"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>4s</arg>
+</arguments>
+<msg timestamp="20171027 10:16:59.995" level="INFO">Slept 4 seconds</msg>
+<status status="PASS" endtime="20171027 10:16:59.995" starttime="20171027 10:16:55.994"></status>
+</kw>
+<kw name="Click Element" library="Selenium2Library">
+<doc>Click element identified by `locator`.</doc>
+<arguments>
+<arg>id=md-autocomplete-1</arg>
+</arguments>
+<msg timestamp="20171027 10:16:59.996" level="INFO">Clicking element 'id=md-autocomplete-1'.</msg>
+<status status="PASS" endtime="20171027 10:17:00.106" starttime="20171027 10:16:59.996"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>3s</arg>
+</arguments>
+<msg timestamp="20171027 10:17:03.107" level="INFO">Slept 3 seconds</msg>
+<status status="PASS" endtime="20171027 10:17:03.107" starttime="20171027 10:17:00.106"></status>
+</kw>
+<kw name="Input Text" library="Selenium2Library">
+<doc>Types the given `text` into text field identified by `locator`.</doc>
+<arguments>
+<arg>id=txtFormCostCode</arg>
+<arg>888 - Demolition</arg>
+</arguments>
+<msg timestamp="20171027 10:17:03.108" level="INFO">Typing text '888 - Demolition' into text field 'id=txtFormCostCode'</msg>
+<status status="PASS" endtime="20171027 10:17:03.773" starttime="20171027 10:17:03.107"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>4s</arg>
+</arguments>
+<msg timestamp="20171027 10:17:07.775" level="INFO">Slept 4 seconds</msg>
+<status status="PASS" endtime="20171027 10:17:07.776" starttime="20171027 10:17:03.774"></status>
+</kw>
+<kw name="Click Element" library="Selenium2Library">
+<doc>Click element identified by `locator`.</doc>
+<arguments>
+<arg>id=md-autocomplete-2</arg>
+</arguments>
+<msg timestamp="20171027 10:17:07.776" level="INFO">Clicking element 'id=md-autocomplete-2'.</msg>
+<status status="PASS" endtime="20171027 10:17:07.898" starttime="20171027 10:17:07.776"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>3s</arg>
+</arguments>
+<msg timestamp="20171027 10:17:10.899" level="INFO">Slept 3 seconds</msg>
+<status status="PASS" endtime="20171027 10:17:10.900" starttime="20171027 10:17:07.898"></status>
+</kw>
+<kw name="Input Text" library="Selenium2Library">
+<doc>Types the given `text` into text field identified by `locator`.</doc>
+<arguments>
+<arg>id=txtFormEmployees</arg>
+<arg>10001 - String String</arg>
+</arguments>
+<msg timestamp="20171027 10:17:10.900" level="INFO">Typing text '10001 - String String' into text field 'id=txtFormEmployees'</msg>
+<status status="PASS" endtime="20171027 10:17:11.434" starttime="20171027 10:17:10.900"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>5s</arg>
+</arguments>
+<msg timestamp="20171027 10:17:16.435" level="INFO">Slept 5 seconds</msg>
+<status status="PASS" endtime="20171027 10:17:16.436" starttime="20171027 10:17:11.434"></status>
+</kw>
+<kw name="Click Element" library="Selenium2Library">
+<doc>Click element identified by `locator`.</doc>
+<arguments>
+<arg>id=md-autocomplete-3</arg>
+</arguments>
+<msg timestamp="20171027 10:17:16.436" level="INFO">Clicking element 'id=md-autocomplete-3'.</msg>
+<status status="PASS" endtime="20171027 10:17:16.612" starttime="20171027 10:17:16.436"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>4s</arg>
+</arguments>
+<msg timestamp="20171027 10:17:20.615" level="INFO">Slept 4 seconds</msg>
+<status status="PASS" endtime="20171027 10:17:20.616" starttime="20171027 10:17:16.613"></status>
+</kw>
+<kw name="Click Element" library="Selenium2Library">
+<doc>Click element identified by `locator`.</doc>
+<arguments>
+<arg>id=lnkClearEmployees</arg>
+</arguments>
+<msg timestamp="20171027 10:17:20.616" level="INFO">Clicking element 'id=lnkClearEmployees'.</msg>
+<status status="PASS" endtime="20171027 10:17:20.709" starttime="20171027 10:17:20.616"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>3s</arg>
+</arguments>
+<msg timestamp="20171027 10:17:23.711" level="INFO">Slept 3 seconds</msg>
+<status status="PASS" endtime="20171027 10:17:23.711" starttime="20171027 10:17:20.709"></status>
+</kw>
+<kw name="Input Text" library="Selenium2Library">
+<doc>Types the given `text` into text field identified by `locator`.</doc>
+<arguments>
+<arg>id=txtFormEmployees</arg>
+<arg>10001 - String String</arg>
+</arguments>
+<msg timestamp="20171027 10:17:23.712" level="INFO">Typing text '10001 - String String' into text field 'id=txtFormEmployees'</msg>
+<status status="PASS" endtime="20171027 10:17:24.156" starttime="20171027 10:17:23.711"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>3s</arg>
+</arguments>
+<msg timestamp="20171027 10:17:27.159" level="INFO">Slept 3 seconds</msg>
+<status status="PASS" endtime="20171027 10:17:27.159" starttime="20171027 10:17:24.157"></status>
+</kw>
+<kw name="Click Element" library="Selenium2Library">
+<doc>Click element identified by `locator`.</doc>
+<arguments>
+<arg>id=md-autocomplete-3</arg>
+</arguments>
+<msg timestamp="20171027 10:17:27.160" level="INFO">Clicking element 'id=md-autocomplete-3'.</msg>
+<status status="PASS" endtime="20171027 10:17:27.258" starttime="20171027 10:17:27.160"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>3s</arg>
+</arguments>
+<msg timestamp="20171027 10:17:30.260" level="INFO">Slept 3 seconds</msg>
+<status status="PASS" endtime="20171027 10:17:30.260" starttime="20171027 10:17:27.258"></status>
+</kw>
+<kw name="Click Element" library="Selenium2Library">
+<doc>Click element identified by `locator`.</doc>
+<arguments>
+<arg>id=txtFormDates</arg>
+</arguments>
+<msg timestamp="20171027 10:17:30.260" level="INFO">Clicking element 'id=txtFormDates'.</msg>
+<status status="PASS" endtime="20171027 10:17:30.358" starttime="20171027 10:17:30.260"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>3s</arg>
+</arguments>
+<msg timestamp="20171027 10:17:33.359" level="INFO">Slept 3 seconds</msg>
+<status status="PASS" endtime="20171027 10:17:33.359" starttime="20171027 10:17:30.359"></status>
+</kw>
+<kw name="Click Element" library="Selenium2Library">
+<doc>Click element identified by `locator`.</doc>
+<arguments>
+<arg>Xpath=//*[@id="page-container"]/div/div/div/ng-component/div/div/esub-enter-time-form/div[2]/form/div[6]/div/div/esub-daypicker-flyout/div/dp-day-calendar/div/div/div[5]/button[5]</arg>
+</arguments>
+<msg timestamp="20171027 10:17:33.360" level="INFO">Clicking element 'Xpath=//*[@id="page-container"]/div/div/div/ng-component/div/div/esub-enter-time-form/div[2]/form/div[6]/div/div/esub-daypicker-flyout/div/dp-day-calendar/div/div/div[5]/button[5]'.</msg>
+<status status="PASS" endtime="20171027 10:17:33.469" starttime="20171027 10:17:33.359"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>3s</arg>
+</arguments>
+<msg timestamp="20171027 10:17:36.469" level="INFO">Slept 3 seconds</msg>
+<status status="PASS" endtime="20171027 10:17:36.469" starttime="20171027 10:17:33.469"></status>
+</kw>
+<kw name="Input Text" library="Selenium2Library">
+<doc>Types the given `text` into text field identified by `locator`.</doc>
+<arguments>
+<arg>id=txtFormNotes</arg>
+<arg>Clear Notes</arg>
+</arguments>
+<msg timestamp="20171027 10:17:36.470" level="INFO">Typing text 'Clear Notes' into text field 'id=txtFormNotes'</msg>
+<status status="PASS" endtime="20171027 10:17:36.692" starttime="20171027 10:17:36.470"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>4s</arg>
+</arguments>
+<msg timestamp="20171027 10:17:40.695" level="INFO">Slept 4 seconds</msg>
+<status status="PASS" endtime="20171027 10:17:40.695" starttime="20171027 10:17:36.692"></status>
+</kw>
+<kw name="Click Button" library="Selenium2Library">
+<doc>Clicks a button identified by `locator`.</doc>
+<arguments>
+<arg>id=btnFormClear</arg>
+</arguments>
+<msg timestamp="20171027 10:17:40.695" level="INFO">Clicking button 'id=btnFormClear'.</msg>
+<status status="PASS" endtime="20171027 10:17:40.826" starttime="20171027 10:17:40.695"></status>
+</kw>
+<status status="PASS" endtime="20171027 10:17:40.826" starttime="20171027 10:16:25.697"></status>
+</kw>
+<status status="PASS" endtime="20171027 10:17:40.826" critical="yes" starttime="20171027 10:16:25.697"></status>
+</test>
+<test id="s1-t3" name="Resubmit Form">
+<kw name="Resubmit Form">
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>6s</arg>
+</arguments>
+<msg timestamp="20171027 10:17:46.830" level="INFO">Slept 6 seconds</msg>
+<status status="PASS" endtime="20171027 10:17:46.830" starttime="20171027 10:17:40.828"></status>
+</kw>
+<kw name="Input Text" library="Selenium2Library">
+<doc>Types the given `text` into text field identified by `locator`.</doc>
+<arguments>
+<arg>id=txtFormProject</arg>
+<arg>10000 - Frank's House</arg>
+</arguments>
+<msg timestamp="20171027 10:17:46.830" level="INFO">Typing text '10000 - Frank's House' into text field 'id=txtFormProject'</msg>
+<status status="PASS" endtime="20171027 10:17:47.317" starttime="20171027 10:17:46.830"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>7s</arg>
+</arguments>
+<msg timestamp="20171027 10:17:54.320" level="INFO">Slept 7 seconds</msg>
+<status status="PASS" endtime="20171027 10:17:54.320" starttime="20171027 10:17:47.317"></status>
+</kw>
+<kw name="Click Element" library="Selenium2Library">
+<doc>Click element identified by `locator`.</doc>
+<arguments>
+<arg>id=md-autocomplete-0</arg>
+</arguments>
+<msg timestamp="20171027 10:17:54.320" level="INFO">Clicking element 'id=md-autocomplete-0'.</msg>
+<status status="PASS" endtime="20171027 10:17:54.554" starttime="20171027 10:17:54.320"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>4s</arg>
+</arguments>
+<msg timestamp="20171027 10:17:58.556" level="INFO">Slept 4 seconds</msg>
+<status status="PASS" endtime="20171027 10:17:58.556" starttime="20171027 10:17:54.555"></status>
+</kw>
+<kw name="Input Text" library="Selenium2Library">
+<doc>Types the given `text` into text field identified by `locator`.</doc>
+<arguments>
+<arg>id=txtFormPhases</arg>
+<arg>1 - New Phase A</arg>
+</arguments>
+<msg timestamp="20171027 10:17:58.556" level="INFO">Typing text '1 - New Phase A' into text field 'id=txtFormPhases'</msg>
+<status status="PASS" endtime="20171027 10:17:59.217" starttime="20171027 10:17:58.556"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>4s</arg>
+</arguments>
+<msg timestamp="20171027 10:18:03.218" level="INFO">Slept 4 seconds</msg>
+<status status="PASS" endtime="20171027 10:18:03.218" starttime="20171027 10:17:59.217"></status>
+</kw>
+<kw name="Click Element" library="Selenium2Library">
+<doc>Click element identified by `locator`.</doc>
+<arguments>
+<arg>id=md-autocomplete-4</arg>
+</arguments>
+<msg timestamp="20171027 10:18:03.218" level="INFO">Clicking element 'id=md-autocomplete-4'.</msg>
+<status status="PASS" endtime="20171027 10:18:03.338" starttime="20171027 10:18:03.218"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>3s</arg>
+</arguments>
+<msg timestamp="20171027 10:18:06.339" level="INFO">Slept 3 seconds</msg>
+<status status="PASS" endtime="20171027 10:18:06.340" starttime="20171027 10:18:03.338"></status>
+</kw>
+<kw name="Input Text" library="Selenium2Library">
+<doc>Types the given `text` into text field identified by `locator`.</doc>
+<arguments>
+<arg>id=txtFormCostCode</arg>
+<arg>888 - Demolition</arg>
+</arguments>
+<msg timestamp="20171027 10:18:06.340" level="INFO">Typing text '888 - Demolition' into text field 'id=txtFormCostCode'</msg>
+<status status="PASS" endtime="20171027 10:18:06.913" starttime="20171027 10:18:06.340"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>4s</arg>
+</arguments>
+<msg timestamp="20171027 10:18:10.914" level="INFO">Slept 4 seconds</msg>
+<status status="PASS" endtime="20171027 10:18:10.914" starttime="20171027 10:18:06.913"></status>
+</kw>
+<kw name="Click Element" library="Selenium2Library">
+<doc>Click element identified by `locator`.</doc>
+<arguments>
+<arg>id=md-autocomplete-5</arg>
+</arguments>
+<msg timestamp="20171027 10:18:10.915" level="INFO">Clicking element 'id=md-autocomplete-5'.</msg>
+<status status="PASS" endtime="20171027 10:18:11.041" starttime="20171027 10:18:10.915"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>3s</arg>
+</arguments>
+<msg timestamp="20171027 10:18:14.041" level="INFO">Slept 3 seconds</msg>
+<status status="PASS" endtime="20171027 10:18:14.042" starttime="20171027 10:18:11.041"></status>
+</kw>
+<kw name="Click Element" library="Selenium2Library">
+<doc>Click element identified by `locator`.</doc>
+<arguments>
+<arg>id=lnkClearEmployees</arg>
+</arguments>
+<msg timestamp="20171027 10:18:14.042" level="INFO">Clicking element 'id=lnkClearEmployees'.</msg>
+<status status="PASS" endtime="20171027 10:18:14.135" starttime="20171027 10:18:14.042"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>4s</arg>
+</arguments>
+<msg timestamp="20171027 10:18:18.136" level="INFO">Slept 4 seconds</msg>
+<status status="PASS" endtime="20171027 10:18:18.136" starttime="20171027 10:18:14.135"></status>
+</kw>
+<kw name="Click Element" library="Selenium2Library">
+<doc>Click element identified by `locator`.</doc>
+<arguments>
+<arg>id=lnkFormAllEmployees</arg>
+</arguments>
+<msg timestamp="20171027 10:18:18.137" level="INFO">Clicking element 'id=lnkFormAllEmployees'.</msg>
+<status status="PASS" endtime="20171027 10:18:18.242" starttime="20171027 10:18:18.137"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>6s</arg>
+</arguments>
+<msg timestamp="20171027 10:18:24.242" level="INFO">Slept 6 seconds</msg>
+<status status="PASS" endtime="20171027 10:18:24.243" starttime="20171027 10:18:18.242"></status>
+</kw>
+<kw name="Click Element" library="Selenium2Library">
+<doc>Click element identified by `locator`.</doc>
+<arguments>
+<arg>id=txtFormDates</arg>
+</arguments>
+<msg timestamp="20171027 10:18:24.243" level="INFO">Clicking element 'id=txtFormDates'.</msg>
+<status status="PASS" endtime="20171027 10:18:24.324" starttime="20171027 10:18:24.243"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>4s</arg>
+</arguments>
+<msg timestamp="20171027 10:18:28.326" level="INFO">Slept 4 seconds</msg>
+<status status="PASS" endtime="20171027 10:18:28.326" starttime="20171027 10:18:24.325"></status>
+</kw>
+<kw name="Click Element" library="Selenium2Library">
+<doc>Click element identified by `locator`.</doc>
+<arguments>
+<arg>Xpath=//*[@id="page-container"]/div/div/div/ng-component/div/div/esub-enter-time-form/div[2]/form/div[6]/div/div/esub-daypicker-flyout/div/dp-day-calendar/div/div/div[2]/button[6]</arg>
+</arguments>
+<msg timestamp="20171027 10:18:28.327" level="INFO">Clicking element 'Xpath=//*[@id="page-container"]/div/div/div/ng-component/div/div/esub-enter-time-form/div[2]/form/div[6]/div/div/esub-daypicker-flyout/div/dp-day-calendar/div/div/div[2]/button[6]'.</msg>
+<status status="PASS" endtime="20171027 10:18:28.445" starttime="20171027 10:18:28.326"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>5s</arg>
+</arguments>
+<msg timestamp="20171027 10:18:33.447" level="INFO">Slept 5 seconds</msg>
+<status status="PASS" endtime="20171027 10:18:33.448" starttime="20171027 10:18:28.445"></status>
+</kw>
+<kw name="Click Element" library="Selenium2Library">
+<doc>Click element identified by `locator`.</doc>
+<arguments>
+<arg>id=txtFormNotes</arg>
+</arguments>
+<msg timestamp="20171027 10:18:33.448" level="INFO">Clicking element 'id=txtFormNotes'.</msg>
+<status status="PASS" endtime="20171027 10:18:33.527" starttime="20171027 10:18:33.448"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>3s</arg>
+</arguments>
+<msg timestamp="20171027 10:18:36.529" level="INFO">Slept 3 seconds</msg>
+<status status="PASS" endtime="20171027 10:18:36.529" starttime="20171027 10:18:33.527"></status>
+</kw>
+<status status="PASS" endtime="20171027 10:18:36.529" starttime="20171027 10:17:40.827"></status>
+</kw>
+<status status="PASS" endtime="20171027 10:18:36.529" critical="yes" starttime="20171027 10:17:40.827"></status>
+</test>
+<test id="s1-t4" name="Enter Time In and Time Out Hours">
+<kw name="Enter Time In and Time Out Hours">
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>3s</arg>
+</arguments>
+<msg timestamp="20171027 10:18:39.532" level="INFO">Slept 3 seconds</msg>
+<status status="PASS" endtime="20171027 10:18:39.532" starttime="20171027 10:18:36.531"></status>
+</kw>
+<kw name="Press Key" library="Selenium2Library">
+<doc>Simulates user pressing key on element identified by `locator`.</doc>
+<arguments>
+<arg>id=txtFormTimeIn</arg>
+<arg>7:15AM</arg>
+</arguments>
+<status status="PASS" endtime="20171027 10:18:39.663" starttime="20171027 10:18:39.532"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>3s</arg>
+</arguments>
+<msg timestamp="20171027 10:18:42.664" level="INFO">Slept 3 seconds</msg>
+<status status="PASS" endtime="20171027 10:18:42.664" starttime="20171027 10:18:39.663"></status>
+</kw>
+<kw name="Press Key" library="Selenium2Library">
+<doc>Simulates user pressing key on element identified by `locator`.</doc>
+<arguments>
+<arg>id=txtFormTimeOut</arg>
+<arg>5:15PM</arg>
+</arguments>
+<status status="PASS" endtime="20171027 10:18:42.773" starttime="20171027 10:18:42.664"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>4s</arg>
+</arguments>
+<msg timestamp="20171027 10:18:46.774" level="INFO">Slept 4 seconds</msg>
+<status status="PASS" endtime="20171027 10:18:46.775" starttime="20171027 10:18:42.774"></status>
+</kw>
+<kw name="Press Key" library="Selenium2Library">
+<doc>Simulates user pressing key on element identified by `locator`.</doc>
+<arguments>
+<arg>id=txtFormBreakIn</arg>
+<arg>12:00PM</arg>
+</arguments>
+<status status="PASS" endtime="20171027 10:18:46.913" starttime="20171027 10:18:46.775"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>4s</arg>
+</arguments>
+<msg timestamp="20171027 10:18:50.916" level="INFO">Slept 4 seconds</msg>
+<status status="PASS" endtime="20171027 10:18:50.916" starttime="20171027 10:18:46.913"></status>
+</kw>
+<kw name="Press Key" library="Selenium2Library">
+<doc>Simulates user pressing key on element identified by `locator`.</doc>
+<arguments>
+<arg>id=txtFormBreakOut</arg>
+<arg>12:19PM</arg>
+</arguments>
+<status status="PASS" endtime="20171027 10:18:51.030" starttime="20171027 10:18:50.916"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>6s</arg>
+</arguments>
+<msg timestamp="20171027 10:18:57.032" level="INFO">Slept 6 seconds</msg>
+<status status="PASS" endtime="20171027 10:18:57.033" starttime="20171027 10:18:51.030"></status>
+</kw>
+<status status="PASS" endtime="20171027 10:18:57.033" starttime="20171027 10:18:36.530"></status>
+</kw>
+<status status="PASS" endtime="20171027 10:18:57.033" critical="yes" starttime="20171027 10:18:36.530"></status>
+</test>
+<test id="s1-t5" name="Enter Notes">
+<kw name="Enter Notes">
+<kw name="Click Element" library="Selenium2Library">
+<doc>Click element identified by `locator`.</doc>
+<arguments>
+<arg>id=txtFormNotes</arg>
+</arguments>
+<msg timestamp="20171027 10:18:57.034" level="INFO">Clicking element 'id=txtFormNotes'.</msg>
+<status status="PASS" endtime="20171027 10:18:57.109" starttime="20171027 10:18:57.034"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>5s</arg>
+</arguments>
+<msg timestamp="20171027 10:19:02.112" level="INFO">Slept 5 seconds</msg>
+<status status="PASS" endtime="20171027 10:19:02.112" starttime="20171027 10:18:57.109"></status>
+</kw>
+<kw name="Input Text" library="Selenium2Library">
+<doc>Types the given `text` into text field identified by `locator`.</doc>
+<arguments>
+<arg>id=txtFormNotes</arg>
+<arg>Test Notes to see how many characters are entered The average time of these 30 matches is 25 minutes and 25 seconds (25m 25s). This average is greatly affected by the Iron Man match at WM 12, which lasted over an hour in duration. In actuality, 16 of these 30 matches clocked in between 20m0s and 22m 30s.</arg>
+</arguments>
+<msg timestamp="20171027 10:19:02.112" level="INFO">Typing text 'Test Notes to see how many characters are entered The average time of these 30 matches is 25 minutes and 25 seconds (25m 25s). This average is greatly affected by the Iron Man match at WM 12, which lasted over an hour in duration. In actuality, 16 of these 30 matches clocked in between 20m0s and 22m 30s.' into text field 'id=txtFormNotes'</msg>
+<status status="PASS" endtime="20171027 10:19:06.576" starttime="20171027 10:19:02.112"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>6s</arg>
+</arguments>
+<msg timestamp="20171027 10:19:12.579" level="INFO">Slept 6 seconds</msg>
+<status status="PASS" endtime="20171027 10:19:12.580" starttime="20171027 10:19:06.577"></status>
+</kw>
+<kw name="Capture Page Screenshot" library="Selenium2Library">
+<doc>Takes a screenshot of the current page and embeds it into the log.</doc>
+<arguments>
+<arg>Filename=enterHours.png</arg>
+</arguments>
+<msg timestamp="20171027 10:19:12.999" html="yes" level="INFO">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="Filename%3DenterHours.png"&gt;&lt;img src="Filename%3DenterHours.png" width="800px"&gt;&lt;/a&gt;</msg>
+<status status="PASS" endtime="20171027 10:19:12.999" starttime="20171027 10:19:12.580"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>3s</arg>
+</arguments>
+<msg timestamp="20171027 10:19:16.002" level="INFO">Slept 3 seconds</msg>
+<status status="PASS" endtime="20171027 10:19:16.002" starttime="20171027 10:19:12.999"></status>
+</kw>
+<kw name="Click Button" library="Selenium2Library">
+<doc>Clicks a button identified by `locator`.</doc>
+<arguments>
+<arg>id=btnFormCreate</arg>
+</arguments>
+<msg timestamp="20171027 10:19:16.002" level="INFO">Clicking button 'id=btnFormCreate'.</msg>
+<status status="PASS" endtime="20171027 10:19:16.168" starttime="20171027 10:19:16.002"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>5s</arg>
+</arguments>
+<msg timestamp="20171027 10:19:21.170" level="INFO">Slept 5 seconds</msg>
+<status status="PASS" endtime="20171027 10:19:21.171" starttime="20171027 10:19:16.168"></status>
+</kw>
+<status status="PASS" endtime="20171027 10:19:21.171" starttime="20171027 10:18:57.034"></status>
+</kw>
+<status status="PASS" endtime="20171027 10:19:21.171" critical="yes" starttime="20171027 10:18:57.033"></status>
+</test>
+<test id="s1-t6" name="Filter By Employee">
+<kw name="Filter By Employee">
+<kw name="Wait Until Page Contains" library="Selenium2Library">
+<doc>Waits until `text` appears on current page.</doc>
+<arguments>
+<arg>Employee</arg>
+</arguments>
+<status status="PASS" endtime="20171027 10:19:21.195" starttime="20171027 10:19:21.172"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>3s</arg>
+</arguments>
+<msg timestamp="20171027 10:19:24.197" level="INFO">Slept 3 seconds</msg>
+<status status="PASS" endtime="20171027 10:19:24.197" starttime="20171027 10:19:21.196"></status>
+</kw>
+<kw name="Click Element" library="Selenium2Library">
+<doc>Click element identified by `locator`.</doc>
+<arguments>
+<arg>id=md-tab-label-1-1</arg>
+</arguments>
+<msg timestamp="20171027 10:19:24.198" level="INFO">Clicking element 'id=md-tab-label-1-1'.</msg>
+<status status="PASS" endtime="20171027 10:19:24.343" starttime="20171027 10:19:24.197"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>3s</arg>
+</arguments>
+<msg timestamp="20171027 10:19:27.345" level="INFO">Slept 3 seconds</msg>
+<status status="PASS" endtime="20171027 10:19:27.345" starttime="20171027 10:19:24.343"></status>
+</kw>
+<status status="PASS" endtime="20171027 10:19:27.345" starttime="20171027 10:19:21.172"></status>
+</kw>
+<status status="PASS" endtime="20171027 10:19:27.345" critical="yes" starttime="20171027 10:19:21.171"></status>
+</test>
+<test id="s1-t7" name="Filter By Project">
+<kw name="Filter By Project">
+<kw name="Click Element" library="Selenium2Library">
+<doc>Click element identified by `locator`.</doc>
+<arguments>
+<arg>id=md-tab-label-1-2</arg>
+</arguments>
+<msg timestamp="20171027 10:19:27.347" level="INFO">Clicking element 'id=md-tab-label-1-2'.</msg>
+<status status="PASS" endtime="20171027 10:19:27.499" starttime="20171027 10:19:27.347"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>3s</arg>
+</arguments>
+<msg timestamp="20171027 10:19:30.500" level="INFO">Slept 3 seconds</msg>
+<status status="PASS" endtime="20171027 10:19:30.500" starttime="20171027 10:19:27.499"></status>
+</kw>
+<status status="PASS" endtime="20171027 10:19:30.500" starttime="20171027 10:19:27.346"></status>
+</kw>
+<status status="PASS" endtime="20171027 10:19:30.500" critical="yes" starttime="20171027 10:19:27.346"></status>
+</test>
+<test id="s1-t8" name="Modify the time In and Time out under Grid View">
+<kw name="Modify the time In and Time out under Grid View">
+<kw name="Wait Until Page Contains" library="Selenium2Library">
+<doc>Waits until `text` appears on current page.</doc>
+<arguments>
+<arg>Employee</arg>
+<arg>timeout=30</arg>
+</arguments>
+<status status="PASS" endtime="20171027 10:19:30.515" starttime="20171027 10:19:30.502"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>3s</arg>
+</arguments>
+<msg timestamp="20171027 10:19:33.516" level="INFO">Slept 3 seconds</msg>
+<status status="PASS" endtime="20171027 10:19:33.516" starttime="20171027 10:19:30.515"></status>
+</kw>
+<kw name="Press Key" library="Selenium2Library">
+<doc>Simulates user pressing key on element identified by `locator`.</doc>
+<arguments>
+<arg>id=txtGridFormTimeIn-0-0</arg>
+<arg>5:15AM</arg>
+</arguments>
+<status status="PASS" endtime="20171027 10:19:33.760" starttime="20171027 10:19:33.516"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>3s</arg>
+</arguments>
+<msg timestamp="20171027 10:19:36.761" level="INFO">Slept 3 seconds</msg>
+<status status="PASS" endtime="20171027 10:19:36.761" starttime="20171027 10:19:33.760"></status>
+</kw>
+<kw name="Press Key" library="Selenium2Library">
+<doc>Simulates user pressing key on element identified by `locator`.</doc>
+<arguments>
+<arg>id=txtGridFormTimeOut-0-0</arg>
+<arg>5:15PM</arg>
+</arguments>
+<status status="PASS" endtime="20171027 10:19:36.960" starttime="20171027 10:19:36.761"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>4s</arg>
+</arguments>
+<msg timestamp="20171027 10:19:40.961" level="INFO">Slept 4 seconds</msg>
+<status status="PASS" endtime="20171027 10:19:40.961" starttime="20171027 10:19:36.960"></status>
+</kw>
+<status status="PASS" endtime="20171027 10:19:40.961" starttime="20171027 10:19:30.501"></status>
+</kw>
+<status status="PASS" endtime="20171027 10:19:40.961" critical="yes" starttime="20171027 10:19:30.501"></status>
+</test>
+<test id="s1-t9" name="Modify The Break In and Break Out under Grid View">
+<kw name="Modify The Break In and Break Out under Grid View">
+<kw name="Press Key" library="Selenium2Library">
+<doc>Simulates user pressing key on element identified by `locator`.</doc>
+<arguments>
+<arg>id=txtGridFormBreakIn-0-0</arg>
+<arg>12:00PM</arg>
+</arguments>
+<status status="PASS" endtime="20171027 10:19:41.198" starttime="20171027 10:19:40.963"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>4s</arg>
+</arguments>
+<msg timestamp="20171027 10:19:45.199" level="INFO">Slept 4 seconds</msg>
+<status status="PASS" endtime="20171027 10:19:45.199" starttime="20171027 10:19:41.198"></status>
+</kw>
+<kw name="Press Key" library="Selenium2Library">
+<doc>Simulates user pressing key on element identified by `locator`.</doc>
+<arguments>
+<arg>id=txtGridFormBreakOut-0-0</arg>
+<arg>1:PM</arg>
+</arguments>
+<status status="PASS" endtime="20171027 10:19:45.367" starttime="20171027 10:19:45.199"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>4s</arg>
+</arguments>
+<msg timestamp="20171027 10:19:49.369" level="INFO">Slept 4 seconds</msg>
+<status status="PASS" endtime="20171027 10:19:49.369" starttime="20171027 10:19:45.367"></status>
+</kw>
+<status status="PASS" endtime="20171027 10:19:49.370" starttime="20171027 10:19:40.963"></status>
+</kw>
+<status status="PASS" endtime="20171027 10:19:49.370" critical="yes" starttime="20171027 10:19:40.962"></status>
+</test>
+<test id="s1-t10" name="Modify Employee Field to an Incorrect Name">
+<kw name="Modify Employee Field to an Incorrect Name">
+<kw name="Input Text" library="Selenium2Library">
+<doc>Types the given `text` into text field identified by `locator`.</doc>
+<arguments>
+<arg>id=txtGridFormEmployee-0-0</arg>
+<arg>ABSCDEFRHAHH Joe Willis XIV</arg>
+</arguments>
+<msg timestamp="20171027 10:19:49.371" level="INFO">Typing text 'ABSCDEFRHAHH Joe Willis XIV' into text field 'id=txtGridFormEmployee-0-0'</msg>
+<status status="PASS" endtime="20171027 10:19:50.702" starttime="20171027 10:19:49.371"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>4s</arg>
+</arguments>
+<msg timestamp="20171027 10:19:54.704" level="INFO">Slept 4 seconds</msg>
+<status status="PASS" endtime="20171027 10:19:54.704" starttime="20171027 10:19:50.702"></status>
+</kw>
+<kw name="Input Text" library="Selenium2Library">
+<doc>Types the given `text` into text field identified by `locator`.</doc>
+<arguments>
+<arg>id=txtGridFormEmployee-0-1</arg>
+<arg>Dinosaur Brother Leroy Jenkins</arg>
+</arguments>
+<msg timestamp="20171027 10:19:54.704" level="INFO">Typing text 'Dinosaur Brother Leroy Jenkins' into text field 'id=txtGridFormEmployee-0-1'</msg>
+<status status="PASS" endtime="20171027 10:19:56.030" starttime="20171027 10:19:54.704"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>3s</arg>
+</arguments>
+<msg timestamp="20171027 10:19:59.030" level="INFO">Slept 3 seconds</msg>
+<status status="PASS" endtime="20171027 10:19:59.031" starttime="20171027 10:19:56.030"></status>
+</kw>
+<kw name="Capture Page Screenshot" library="Selenium2Library">
+<doc>Takes a screenshot of the current page and embeds it into the log.</doc>
+<arguments>
+<arg>Filename=StringChange.png</arg>
+</arguments>
+<msg timestamp="20171027 10:19:59.306" html="yes" level="INFO">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="Filename%3DStringChange.png"&gt;&lt;img src="Filename%3DStringChange.png" width="800px"&gt;&lt;/a&gt;</msg>
+<status status="PASS" endtime="20171027 10:19:59.306" starttime="20171027 10:19:59.031"></status>
+</kw>
+<kw name="Click Button" library="Selenium2Library">
+<doc>Clicks a button identified by `locator`.</doc>
+<arguments>
+<arg>id=btnGridSubmit</arg>
+</arguments>
+<msg timestamp="20171027 10:19:59.306" level="INFO">Clicking button 'id=btnGridSubmit'.</msg>
+<status status="PASS" endtime="20171027 10:19:59.442" starttime="20171027 10:19:59.306"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>3s</arg>
+</arguments>
+<msg timestamp="20171027 10:20:02.444" level="INFO">Slept 3 seconds</msg>
+<status status="PASS" endtime="20171027 10:20:02.444" starttime="20171027 10:19:59.442"></status>
+</kw>
+<status status="PASS" endtime="20171027 10:20:02.445" starttime="20171027 10:19:49.371"></status>
+</kw>
+<status status="PASS" endtime="20171027 10:20:02.445" critical="yes" starttime="20171027 10:19:49.370"></status>
+</test>
+<test id="s1-t11" name="Add More Lines">
+<kw name="Add More Lines">
+<kw name="Wait Until Page Contains" library="Selenium2Library">
+<doc>Waits until `text` appears on current page.</doc>
+<arguments>
+<arg>Employee</arg>
+<arg>timeout=30</arg>
+</arguments>
+<status status="PASS" endtime="20171027 10:20:02.458" starttime="20171027 10:20:02.446"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>3s</arg>
+</arguments>
+<msg timestamp="20171027 10:20:05.459" level="INFO">Slept 3 seconds</msg>
+<status status="PASS" endtime="20171027 10:20:05.460" starttime="20171027 10:20:02.458"></status>
+</kw>
+<kw name="Mouse Over" library="Selenium2Library">
+<doc>Simulates hovering mouse over the element specified by `locator`.</doc>
+<arguments>
+<arg>id=btnGridAddLines</arg>
+</arguments>
+<msg timestamp="20171027 10:20:05.460" level="INFO">Simulating Mouse Over on element 'id=btnGridAddLines'</msg>
+<status status="PASS" endtime="20171027 10:20:05.494" starttime="20171027 10:20:05.460"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>3s</arg>
+</arguments>
+<msg timestamp="20171027 10:20:08.496" level="INFO">Slept 3 seconds</msg>
+<status status="PASS" endtime="20171027 10:20:08.497" starttime="20171027 10:20:05.495"></status>
+</kw>
+<kw name="Click Button" library="Selenium2Library">
+<doc>Clicks a button identified by `locator`.</doc>
+<arguments>
+<arg>id=btnGridAddLines</arg>
+</arguments>
+<msg timestamp="20171027 10:20:08.497" level="INFO">Clicking button 'id=btnGridAddLines'.</msg>
+<status status="PASS" endtime="20171027 10:20:08.686" starttime="20171027 10:20:08.497"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>3s</arg>
+</arguments>
+<msg timestamp="20171027 10:20:11.688" level="INFO">Slept 3 seconds</msg>
+<status status="PASS" endtime="20171027 10:20:11.689" starttime="20171027 10:20:08.686"></status>
+</kw>
+<kw name="Wait Until Page Contains" library="Selenium2Library">
+<doc>Waits until `text` appears on current page.</doc>
+<arguments>
+<arg>Enter Hours</arg>
+<arg>timeout=30</arg>
+</arguments>
+<status status="PASS" endtime="20171027 10:20:11.709" starttime="20171027 10:20:11.689"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>3s</arg>
+</arguments>
+<msg timestamp="20171027 10:20:14.709" level="INFO">Slept 3 seconds</msg>
+<status status="PASS" endtime="20171027 10:20:14.710" starttime="20171027 10:20:11.709"></status>
+</kw>
+<kw name="Click Element" library="Selenium2Library">
+<doc>Click element identified by `locator`.</doc>
+<arguments>
+<arg>id=md-tab-label-2-1</arg>
+</arguments>
+<msg timestamp="20171027 10:20:14.710" level="INFO">Clicking element 'id=md-tab-label-2-1'.</msg>
+<status status="PASS" endtime="20171027 10:20:14.797" starttime="20171027 10:20:14.710"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>3s</arg>
+</arguments>
+<msg timestamp="20171027 10:20:17.799" level="INFO">Slept 3 seconds</msg>
+<status status="PASS" endtime="20171027 10:20:17.800" starttime="20171027 10:20:14.798"></status>
+</kw>
+<kw name="Input Text" library="Selenium2Library">
+<doc>Types the given `text` into text field identified by `locator`.</doc>
+<arguments>
+<arg>id=txtFormProject</arg>
+<arg>1 - Fancy Restaurant</arg>
+</arguments>
+<msg timestamp="20171027 10:20:17.800" level="INFO">Typing text '1 - Fancy Restaurant' into text field 'id=txtFormProject'</msg>
+<status status="PASS" endtime="20171027 10:20:18.294" starttime="20171027 10:20:17.800"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>7s</arg>
+</arguments>
+<msg timestamp="20171027 10:20:25.297" level="INFO">Slept 7 seconds</msg>
+<status status="PASS" endtime="20171027 10:20:25.297" starttime="20171027 10:20:18.294"></status>
+</kw>
+<kw name="Click Element" library="Selenium2Library">
+<doc>Click element identified by `locator`.</doc>
+<arguments>
+<arg>id=md-autocomplete-85</arg>
+</arguments>
+<msg timestamp="20171027 10:20:25.298" level="INFO">Clicking element 'id=md-autocomplete-85'.</msg>
+<status status="PASS" endtime="20171027 10:20:25.528" starttime="20171027 10:20:25.297"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>4s</arg>
+</arguments>
+<msg timestamp="20171027 10:20:29.531" level="INFO">Slept 4 seconds</msg>
+<status status="PASS" endtime="20171027 10:20:29.531" starttime="20171027 10:20:25.528"></status>
 </kw>
 <kw name="Input Text" library="Selenium2Library">
 <doc>Types the given `text` into text field identified by `locator`.</doc>
@@ -200,503 +1166,214 @@
 <arg>id=txtFormCostCode</arg>
 <arg>777 - Install</arg>
 </arguments>
-<msg timestamp="20171023 10:30:32.599" level="INFO">Typing text '777 - Install' into text field 'id=txtFormCostCode'</msg>
-<status status="PASS" endtime="20171023 10:30:33.094" starttime="20171023 10:30:32.598"></status>
+<msg timestamp="20171027 10:20:29.531" level="INFO">Typing text '777 - Install' into text field 'id=txtFormCostCode'</msg>
+<status status="PASS" endtime="20171027 10:20:30.067" starttime="20171027 10:20:29.531"></status>
 </kw>
 <kw name="Sleep" library="BuiltIn">
 <doc>Pauses the test executed for the given time.</doc>
 <arguments>
 <arg>4s</arg>
 </arguments>
-<msg timestamp="20171023 10:30:37.095" level="INFO">Slept 4 seconds</msg>
-<status status="PASS" endtime="20171023 10:30:37.095" starttime="20171023 10:30:33.094"></status>
+<msg timestamp="20171027 10:20:34.069" level="INFO">Slept 4 seconds</msg>
+<status status="PASS" endtime="20171027 10:20:34.069" starttime="20171027 10:20:30.067"></status>
 </kw>
 <kw name="Click Element" library="Selenium2Library">
 <doc>Click element identified by `locator`.</doc>
 <arguments>
-<arg>id=md-autocomplete-1</arg>
+<arg>id=md-autocomplete-86</arg>
 </arguments>
-<msg timestamp="20171023 10:30:37.096" level="INFO">Clicking element 'id=md-autocomplete-1'.</msg>
-<status status="PASS" endtime="20171023 10:30:37.222" starttime="20171023 10:30:37.095"></status>
+<msg timestamp="20171027 10:20:34.070" level="INFO">Clicking element 'id=md-autocomplete-86'.</msg>
+<status status="PASS" endtime="20171027 10:20:34.200" starttime="20171027 10:20:34.069"></status>
 </kw>
 <kw name="Sleep" library="BuiltIn">
 <doc>Pauses the test executed for the given time.</doc>
 <arguments>
-<arg>2s</arg>
+<arg>3s</arg>
 </arguments>
-<msg timestamp="20171023 10:30:39.224" level="INFO">Slept 2 seconds</msg>
-<status status="PASS" endtime="20171023 10:30:39.224" starttime="20171023 10:30:37.222"></status>
+<msg timestamp="20171027 10:20:37.203" level="INFO">Slept 3 seconds</msg>
+<status status="PASS" endtime="20171027 10:20:37.203" starttime="20171027 10:20:34.201"></status>
 </kw>
-<status status="PASS" endtime="20171023 10:30:39.225" starttime="20171023 10:30:20.727"></status>
-</kw>
-<kw name="Employees Information">
 <kw name="Input Text" library="Selenium2Library">
 <doc>Types the given `text` into text field identified by `locator`.</doc>
 <arguments>
 <arg>id=txtFormEmployees</arg>
-<arg>eSUB Support</arg>
+<arg>10001 - String String</arg>
 </arguments>
-<msg timestamp="20171023 10:30:39.226" level="INFO">Typing text 'eSUB Support' into text field 'id=txtFormEmployees'</msg>
-<status status="PASS" endtime="20171023 10:30:39.605" starttime="20171023 10:30:39.226"></status>
+<msg timestamp="20171027 10:20:37.203" level="INFO">Typing text '10001 - String String' into text field 'id=txtFormEmployees'</msg>
+<status status="PASS" endtime="20171027 10:20:37.679" starttime="20171027 10:20:37.203"></status>
 </kw>
 <kw name="Sleep" library="BuiltIn">
 <doc>Pauses the test executed for the given time.</doc>
 <arguments>
 <arg>4s</arg>
 </arguments>
-<msg timestamp="20171023 10:30:43.606" level="INFO">Slept 4 seconds</msg>
-<status status="PASS" endtime="20171023 10:30:43.607" starttime="20171023 10:30:39.606"></status>
+<msg timestamp="20171027 10:20:41.681" level="INFO">Slept 4 seconds</msg>
+<status status="PASS" endtime="20171027 10:20:41.681" starttime="20171027 10:20:37.679"></status>
 </kw>
 <kw name="Click Element" library="Selenium2Library">
 <doc>Click element identified by `locator`.</doc>
 <arguments>
-<arg>id=md-autocomplete-2</arg>
+<arg>id=md-autocomplete-87</arg>
 </arguments>
-<msg timestamp="20171023 10:30:43.607" level="INFO">Clicking element 'id=md-autocomplete-2'.</msg>
-<status status="PASS" endtime="20171023 10:30:43.775" starttime="20171023 10:30:43.607"></status>
+<msg timestamp="20171027 10:20:41.682" level="INFO">Clicking element 'id=md-autocomplete-87'.</msg>
+<status status="PASS" endtime="20171027 10:20:41.793" starttime="20171027 10:20:41.681"></status>
 </kw>
-<status status="PASS" endtime="20171023 10:30:43.775" starttime="20171023 10:30:39.225"></status>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>3s</arg>
+</arguments>
+<msg timestamp="20171027 10:20:44.795" level="INFO">Slept 3 seconds</msg>
+<status status="PASS" endtime="20171027 10:20:44.795" starttime="20171027 10:20:41.793"></status>
 </kw>
-<kw name="Dates Entry">
 <kw name="Click Element" library="Selenium2Library">
 <doc>Click element identified by `locator`.</doc>
 <arguments>
 <arg>id=txtFormDates</arg>
 </arguments>
-<msg timestamp="20171023 10:30:43.776" level="INFO">Clicking element 'id=txtFormDates'.</msg>
-<status status="PASS" endtime="20171023 10:30:43.922" starttime="20171023 10:30:43.776"></status>
+<msg timestamp="20171027 10:20:44.796" level="INFO">Clicking element 'id=txtFormDates'.</msg>
+<status status="PASS" endtime="20171027 10:20:44.893" starttime="20171027 10:20:44.795"></status>
 </kw>
 <kw name="Sleep" library="BuiltIn">
 <doc>Pauses the test executed for the given time.</doc>
 <arguments>
-<arg>4s</arg>
+<arg>3s</arg>
 </arguments>
-<msg timestamp="20171023 10:30:47.923" level="INFO">Slept 4 seconds</msg>
-<status status="PASS" endtime="20171023 10:30:47.923" starttime="20171023 10:30:43.922"></status>
+<msg timestamp="20171027 10:20:47.894" level="INFO">Slept 3 seconds</msg>
+<status status="PASS" endtime="20171027 10:20:47.894" starttime="20171027 10:20:44.893"></status>
 </kw>
-<kw name="Click Element" library="Selenium2Library">
-<doc>Click element identified by `locator`.</doc>
+<kw name="Click Button" library="Selenium2Library">
+<doc>Clicks a button identified by `locator`.</doc>
 <arguments>
-<arg>Xpath=//*[@id="page-container"]/div/div/div/ng-component/div/div/esub-enter-time-form/div[2]/form/div[5]/div/div/esub-daypicker-flyout/div/dp-day-calendar/div/div/div[3]/button[3]</arg>
+<arg>Xpath=//*[@id="page-container"]/div/div/div/ng-component/div/div[2]/esub-enter-time-form/div[2]/form/div[5]/div/div/esub-daypicker-flyout/div/dp-day-calendar/div/div/div[5]/button[6]</arg>
 </arguments>
-<msg timestamp="20171023 10:30:47.924" level="INFO">Clicking element 'Xpath=//*[@id="page-container"]/div/div/div/ng-component/div/div/esub-enter-time-form/div[2]/form/div[5]/div/div/esub-daypicker-flyout/div/dp-day-calendar/div/div/div[3]/button[3]'.</msg>
-<status status="PASS" endtime="20171023 10:30:48.029" starttime="20171023 10:30:47.923"></status>
-</kw>
-<kw name="Sleep" library="BuiltIn">
-<doc>Pauses the test executed for the given time.</doc>
-<arguments>
-<arg>5s</arg>
-</arguments>
-<msg timestamp="20171023 10:30:53.031" level="INFO">Slept 5 seconds</msg>
-<status status="PASS" endtime="20171023 10:30:53.031" starttime="20171023 10:30:48.030"></status>
-</kw>
-<status status="PASS" endtime="20171023 10:30:53.031" starttime="20171023 10:30:43.776"></status>
-</kw>
-<kw name="Hours Worked Information">
-<kw name="Click Element" library="Selenium2Library">
-<doc>Click element identified by `locator`.</doc>
-<arguments>
-<arg>id=txtFormST</arg>
-</arguments>
-<msg timestamp="20171023 10:30:53.032" level="INFO">Clicking element 'id=txtFormST'.</msg>
-<status status="PASS" endtime="20171023 10:30:53.125" starttime="20171023 10:30:53.032"></status>
+<msg timestamp="20171027 10:20:47.894" level="INFO">Clicking button 'Xpath=//*[@id="page-container"]/div/div/div/ng-component/div/div[2]/esub-enter-time-form/div[2]/form/div[5]/div/div/esub-daypicker-flyout/div/dp-day-calendar/div/div/div[5]/button[6]'.</msg>
+<status status="PASS" endtime="20171027 10:20:48.003" starttime="20171027 10:20:47.894"></status>
 </kw>
 <kw name="Sleep" library="BuiltIn">
 <doc>Pauses the test executed for the given time.</doc>
 <arguments>
 <arg>5s</arg>
 </arguments>
-<msg timestamp="20171023 10:30:58.126" level="INFO">Slept 5 seconds</msg>
-<status status="PASS" endtime="20171023 10:30:58.126" starttime="20171023 10:30:53.125"></status>
+<msg timestamp="20171027 10:20:53.005" level="INFO">Slept 5 seconds</msg>
+<status status="PASS" endtime="20171027 10:20:53.005" starttime="20171027 10:20:48.003"></status>
 </kw>
-<kw name="Input Text" library="Selenium2Library">
-<doc>Types the given `text` into text field identified by `locator`.</doc>
+<kw name="Press Key" library="Selenium2Library">
+<doc>Simulates user pressing key on element identified by `locator`.</doc>
 <arguments>
-<arg>id=txtFormST</arg>
-<arg>8</arg>
+<arg>id=txtFormTimeIn</arg>
+<arg>7:15AM</arg>
 </arguments>
-<msg timestamp="20171023 10:30:58.127" level="INFO">Typing text '8' into text field 'id=txtFormST'</msg>
-<status status="PASS" endtime="20171023 10:30:58.206" starttime="20171023 10:30:58.127"></status>
+<status status="PASS" endtime="20171027 10:20:53.102" starttime="20171027 10:20:53.005"></status>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>3s</arg>
+</arguments>
+<msg timestamp="20171027 10:20:56.105" level="INFO">Slept 3 seconds</msg>
+<status status="PASS" endtime="20171027 10:20:56.105" starttime="20171027 10:20:53.102"></status>
+</kw>
+<kw name="Press Key" library="Selenium2Library">
+<doc>Simulates user pressing key on element identified by `locator`.</doc>
+<arguments>
+<arg>id=txtFormTimeOut</arg>
+<arg>5:15PM</arg>
+</arguments>
+<status status="PASS" endtime="20171027 10:20:56.208" starttime="20171027 10:20:56.105"></status>
 </kw>
 <kw name="Sleep" library="BuiltIn">
 <doc>Pauses the test executed for the given time.</doc>
 <arguments>
 <arg>4s</arg>
 </arguments>
-<msg timestamp="20171023 10:31:02.207" level="INFO">Slept 4 seconds</msg>
-<status status="PASS" endtime="20171023 10:31:02.208" starttime="20171023 10:30:58.206"></status>
+<msg timestamp="20171027 10:21:00.209" level="INFO">Slept 4 seconds</msg>
+<status status="PASS" endtime="20171027 10:21:00.209" starttime="20171027 10:20:56.208"></status>
 </kw>
-<kw name="Input Text" library="Selenium2Library">
-<doc>Types the given `text` into text field identified by `locator`.</doc>
+<kw name="Press Key" library="Selenium2Library">
+<doc>Simulates user pressing key on element identified by `locator`.</doc>
 <arguments>
-<arg>id=txtFormOT</arg>
-<arg>2</arg>
+<arg>id=txtFormBreakIn</arg>
+<arg>12:00PM</arg>
 </arguments>
-<msg timestamp="20171023 10:31:02.208" level="INFO">Typing text '2' into text field 'id=txtFormOT'</msg>
-<status status="PASS" endtime="20171023 10:31:02.331" starttime="20171023 10:31:02.208"></status>
+<status status="PASS" endtime="20171027 10:21:00.301" starttime="20171027 10:21:00.209"></status>
 </kw>
 <kw name="Sleep" library="BuiltIn">
 <doc>Pauses the test executed for the given time.</doc>
 <arguments>
 <arg>4s</arg>
 </arguments>
-<msg timestamp="20171023 10:31:06.333" level="INFO">Slept 4 seconds</msg>
-<status status="PASS" endtime="20171023 10:31:06.333" starttime="20171023 10:31:02.331"></status>
+<msg timestamp="20171027 10:21:04.302" level="INFO">Slept 4 seconds</msg>
+<status status="PASS" endtime="20171027 10:21:04.302" starttime="20171027 10:21:00.302"></status>
 </kw>
-<kw name="Input Text" library="Selenium2Library">
-<doc>Types the given `text` into text field identified by `locator`.</doc>
+<kw name="Press Key" library="Selenium2Library">
+<doc>Simulates user pressing key on element identified by `locator`.</doc>
 <arguments>
-<arg>id=txtFormDT</arg>
-<arg>0.75</arg>
+<arg>id=txtFormBreakOut</arg>
+<arg>12:45PM</arg>
 </arguments>
-<msg timestamp="20171023 10:31:06.333" level="INFO">Typing text '0.75' into text field 'id=txtFormDT'</msg>
-<status status="PASS" endtime="20171023 10:31:06.481" starttime="20171023 10:31:06.333"></status>
+<status status="PASS" endtime="20171027 10:21:04.400" starttime="20171027 10:21:04.302"></status>
 </kw>
 <kw name="Sleep" library="BuiltIn">
 <doc>Pauses the test executed for the given time.</doc>
 <arguments>
 <arg>4s</arg>
 </arguments>
-<msg timestamp="20171023 10:31:10.483" level="INFO">Slept 4 seconds</msg>
-<status status="PASS" endtime="20171023 10:31:10.483" starttime="20171023 10:31:06.482"></status>
-</kw>
-<status status="PASS" endtime="20171023 10:31:10.483" starttime="20171023 10:30:53.032"></status>
-</kw>
-<kw name="Enter Notes">
-<kw name="Input Text" library="Selenium2Library">
-<doc>Types the given `text` into text field identified by `locator`.</doc>
-<arguments>
-<arg>id=txtFormNotes</arg>
-<arg>Test notes - Development Environment</arg>
-</arguments>
-<msg timestamp="20171023 10:31:10.484" level="INFO">Typing text 'Test notes - Development Environment' into text field 'id=txtFormNotes'</msg>
-<status status="PASS" endtime="20171023 10:31:10.950" starttime="20171023 10:31:10.484"></status>
-</kw>
-<kw name="Sleep" library="BuiltIn">
-<doc>Pauses the test executed for the given time.</doc>
-<arguments>
-<arg>6s</arg>
-</arguments>
-<msg timestamp="20171023 10:31:16.951" level="INFO">Slept 6 seconds</msg>
-<status status="PASS" endtime="20171023 10:31:16.951" starttime="20171023 10:31:10.950"></status>
+<msg timestamp="20171027 10:21:08.402" level="INFO">Slept 4 seconds</msg>
+<status status="PASS" endtime="20171027 10:21:08.402" starttime="20171027 10:21:04.400"></status>
 </kw>
 <kw name="Click Button" library="Selenium2Library">
 <doc>Clicks a button identified by `locator`.</doc>
 <arguments>
 <arg>id=btnFormCreate</arg>
 </arguments>
-<msg timestamp="20171023 10:31:16.952" level="INFO">Clicking button 'id=btnFormCreate'.</msg>
-<status status="PASS" endtime="20171023 10:31:17.108" starttime="20171023 10:31:16.952"></status>
+<msg timestamp="20171027 10:21:08.402" level="INFO">Clicking button 'id=btnFormCreate'.</msg>
+<status status="PASS" endtime="20171027 10:21:08.527" starttime="20171027 10:21:08.402"></status>
 </kw>
 <kw name="Sleep" library="BuiltIn">
 <doc>Pauses the test executed for the given time.</doc>
 <arguments>
-<arg>5s</arg>
+<arg>4s</arg>
 </arguments>
-<msg timestamp="20171023 10:31:22.110" level="INFO">Slept 5 seconds</msg>
-<status status="PASS" endtime="20171023 10:31:22.111" starttime="20171023 10:31:17.108"></status>
+<msg timestamp="20171027 10:21:12.529" level="INFO">Slept 4 seconds</msg>
+<status status="PASS" endtime="20171027 10:21:12.529" starttime="20171027 10:21:08.527"></status>
 </kw>
 <kw name="Capture Page Screenshot" library="Selenium2Library">
 <doc>Takes a screenshot of the current page and embeds it into the log.</doc>
 <arguments>
-<arg>Filename=enterHours.png</arg>
+<arg>Filename=SubmitTime.png</arg>
 </arguments>
-<msg timestamp="20171023 10:31:28.464" html="yes" level="INFO">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="Filename%3DenterHours.png"&gt;&lt;img src="Filename%3DenterHours.png" width="800px"&gt;&lt;/a&gt;</msg>
-<status status="PASS" endtime="20171023 10:31:28.465" starttime="20171023 10:31:22.111"></status>
-</kw>
-<kw name="Sleep" library="BuiltIn">
-<doc>Pauses the test executed for the given time.</doc>
-<arguments>
-<arg>5s</arg>
-</arguments>
-<msg timestamp="20171023 10:31:33.466" level="INFO">Slept 5 seconds</msg>
-<status status="PASS" endtime="20171023 10:31:33.467" starttime="20171023 10:31:28.465"></status>
-</kw>
-<status status="PASS" endtime="20171023 10:31:33.467" starttime="20171023 10:31:10.484"></status>
-</kw>
-<kw name="Change Note">
-<kw name="Wait Until Page Contains" library="Selenium2Library">
-<doc>Waits until `text` appears on current page.</doc>
-<arguments>
-<arg>eSUB</arg>
-</arguments>
-<status status="PASS" endtime="20171023 10:31:33.489" starttime="20171023 10:31:33.468"></status>
-</kw>
-<kw name="Click Element" library="Selenium2Library">
-<doc>Click element identified by `locator`.</doc>
-<arguments>
-<arg>id=btnGridFormNote-0-0</arg>
-</arguments>
-<msg timestamp="20171023 10:31:33.489" level="INFO">Clicking element 'id=btnGridFormNote-0-0'.</msg>
-<status status="PASS" endtime="20171023 10:31:33.590" starttime="20171023 10:31:33.489"></status>
+<msg timestamp="20171027 10:21:12.805" html="yes" level="INFO">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="Filename%3DSubmitTime.png"&gt;&lt;img src="Filename%3DSubmitTime.png" width="800px"&gt;&lt;/a&gt;</msg>
+<status status="PASS" endtime="20171027 10:21:12.805" starttime="20171027 10:21:12.529"></status>
 </kw>
 <kw name="Sleep" library="BuiltIn">
 <doc>Pauses the test executed for the given time.</doc>
 <arguments>
 <arg>3s</arg>
 </arguments>
-<msg timestamp="20171023 10:31:36.591" level="INFO">Slept 3 seconds</msg>
-<status status="PASS" endtime="20171023 10:31:36.591" starttime="20171023 10:31:33.590"></status>
-</kw>
-<kw name="Wait Until Page Contains" library="Selenium2Library">
-<doc>Waits until `text` appears on current page.</doc>
-<arguments>
-<arg>Change note</arg>
-</arguments>
-<status status="PASS" endtime="20171023 10:31:36.614" starttime="20171023 10:31:36.592"></status>
-</kw>
-<kw name="Clear Element Text" library="Selenium2Library">
-<doc>Clears the text value of text entry element identified by `locator`.</doc>
-<arguments>
-<arg>id=txtEnterTimeGridNote</arg>
-</arguments>
-<status status="PASS" endtime="20171023 10:31:36.654" starttime="20171023 10:31:36.614"></status>
-</kw>
-<kw name="Sleep" library="BuiltIn">
-<doc>Pauses the test executed for the given time.</doc>
-<arguments>
-<arg>3s</arg>
-</arguments>
-<msg timestamp="20171023 10:31:39.654" level="INFO">Slept 3 seconds</msg>
-<status status="PASS" endtime="20171023 10:31:39.655" starttime="20171023 10:31:36.654"></status>
-</kw>
-<kw name="Input Text" library="Selenium2Library">
-<doc>Types the given `text` into text field identified by `locator`.</doc>
-<arguments>
-<arg>id=txtEnterTimeGridNote</arg>
-<arg>Testing this once more to verify note changes</arg>
-</arguments>
-<msg timestamp="20171023 10:31:39.655" level="INFO">Typing text 'Testing this once more to verify note changes' into text field 'id=txtEnterTimeGridNote'</msg>
-<status status="PASS" endtime="20171023 10:31:40.044" starttime="20171023 10:31:39.655"></status>
-</kw>
-<kw name="Sleep" library="BuiltIn">
-<doc>Pauses the test executed for the given time.</doc>
-<arguments>
-<arg>3s</arg>
-</arguments>
-<msg timestamp="20171023 10:31:43.045" level="INFO">Slept 3 seconds</msg>
-<status status="PASS" endtime="20171023 10:31:43.046" starttime="20171023 10:31:40.044"></status>
-</kw>
-<kw name="Mouse Over" library="Selenium2Library">
-<doc>Simulates hovering mouse over the element specified by `locator`.</doc>
-<arguments>
-<arg>Xpath=//*[@id="cdk-overlay-5"]/md-dialog-container/esub-notes-entry-dialog/md-dialog-actions/button[2]</arg>
-</arguments>
-<msg timestamp="20171023 10:31:43.046" level="INFO">Simulating Mouse Over on element 'Xpath=//*[@id="cdk-overlay-5"]/md-dialog-container/esub-notes-entry-dialog/md-dialog-actions/button[2]'</msg>
-<status status="PASS" endtime="20171023 10:31:43.084" starttime="20171023 10:31:43.046"></status>
-</kw>
-<kw name="Sleep" library="BuiltIn">
-<doc>Pauses the test executed for the given time.</doc>
-<arguments>
-<arg>3s</arg>
-</arguments>
-<msg timestamp="20171023 10:31:46.086" level="INFO">Slept 3 seconds</msg>
-<status status="PASS" endtime="20171023 10:31:46.087" starttime="20171023 10:31:43.085"></status>
-</kw>
-<kw name="Click Button" library="Selenium2Library">
-<doc>Clicks a button identified by `locator`.</doc>
-<arguments>
-<arg>Xpath=//*[@id="cdk-overlay-5"]/md-dialog-container/esub-notes-entry-dialog/md-dialog-actions/button[2]</arg>
-</arguments>
-<msg timestamp="20171023 10:31:46.087" level="INFO">Clicking button 'Xpath=//*[@id="cdk-overlay-5"]/md-dialog-container/esub-notes-entry-dialog/md-dialog-actions/button[2]'.</msg>
-<status status="PASS" endtime="20171023 10:31:46.177" starttime="20171023 10:31:46.087"></status>
-</kw>
-<kw name="Sleep" library="BuiltIn">
-<doc>Pauses the test executed for the given time.</doc>
-<arguments>
-<arg>3s</arg>
-</arguments>
-<msg timestamp="20171023 10:31:49.178" level="INFO">Slept 3 seconds</msg>
-<status status="PASS" endtime="20171023 10:31:49.179" starttime="20171023 10:31:46.178"></status>
-</kw>
-<status status="PASS" endtime="20171023 10:31:49.179" starttime="20171023 10:31:33.467"></status>
-</kw>
-<kw name="Modify System">
-<kw name="Wait Until Page Contains" library="Selenium2Library">
-<doc>Waits until `text` appears on current page.</doc>
-<arguments>
-<arg>Employee</arg>
-<arg>timeout=30s</arg>
-</arguments>
-<status status="PASS" endtime="20171023 10:31:49.203" starttime="20171023 10:31:49.180"></status>
-</kw>
-<kw name="Clear Element Text" library="Selenium2Library">
-<doc>Clears the text value of text entry element identified by `locator`.</doc>
-<arguments>
-<arg>id=txtGridFormSystem-0-0</arg>
-</arguments>
-<status status="PASS" endtime="20171023 10:31:49.262" starttime="20171023 10:31:49.203"></status>
-</kw>
-<kw name="Sleep" library="BuiltIn">
-<doc>Pauses the test executed for the given time.</doc>
-<arguments>
-<arg>3s</arg>
-</arguments>
-<msg timestamp="20171023 10:31:52.265" level="INFO">Slept 3 seconds</msg>
-<status status="PASS" endtime="20171023 10:31:52.265" starttime="20171023 10:31:49.262"></status>
-</kw>
-<kw name="Input Text" library="Selenium2Library">
-<doc>Types the given `text` into text field identified by `locator`.</doc>
-<arguments>
-<arg>id=txtGridFormSystem-0-0</arg>
-<arg>0 - System 4286</arg>
-</arguments>
-<msg timestamp="20171023 10:31:52.266" level="INFO">Typing text '0 - System 4286' into text field 'id=txtGridFormSystem-0-0'</msg>
-<status status="PASS" endtime="20171023 10:31:52.472" starttime="20171023 10:31:52.266"></status>
-</kw>
-<kw name="Sleep" library="BuiltIn">
-<doc>Pauses the test executed for the given time.</doc>
-<arguments>
-<arg>3s</arg>
-</arguments>
-<msg timestamp="20171023 10:31:55.473" level="INFO">Slept 3 seconds</msg>
-<status status="PASS" endtime="20171023 10:31:55.473" starttime="20171023 10:31:52.472"></status>
-</kw>
-<status status="PASS" endtime="20171023 10:31:55.473" starttime="20171023 10:31:49.179"></status>
-</kw>
-<kw name="Modify OT Hours">
-<kw name="Clear Element Text" library="Selenium2Library">
-<doc>Clears the text value of text entry element identified by `locator`.</doc>
-<arguments>
-<arg>id=txtGridFormOT-0-0</arg>
-</arguments>
-<status status="PASS" endtime="20171023 10:31:55.518" starttime="20171023 10:31:55.474"></status>
-</kw>
-<kw name="Sleep" library="BuiltIn">
-<doc>Pauses the test executed for the given time.</doc>
-<arguments>
-<arg>3s</arg>
-</arguments>
-<msg timestamp="20171023 10:31:58.520" level="INFO">Slept 3 seconds</msg>
-<status status="PASS" endtime="20171023 10:31:58.520" starttime="20171023 10:31:55.518"></status>
-</kw>
-<kw name="Input Text" library="Selenium2Library">
-<doc>Types the given `text` into text field identified by `locator`.</doc>
-<arguments>
-<arg>id=txtGridFormOT-0-0</arg>
-<arg>1</arg>
-</arguments>
-<msg timestamp="20171023 10:31:58.521" level="INFO">Typing text '1' into text field 'id=txtGridFormOT-0-0'</msg>
-<status status="PASS" endtime="20171023 10:31:58.581" starttime="20171023 10:31:58.521"></status>
-</kw>
-<kw name="Sleep" library="BuiltIn">
-<doc>Pauses the test executed for the given time.</doc>
-<arguments>
-<arg>3s</arg>
-</arguments>
-<msg timestamp="20171023 10:32:01.583" level="INFO">Slept 3 seconds</msg>
-<status status="PASS" endtime="20171023 10:32:01.583" starttime="20171023 10:31:58.581"></status>
-</kw>
-<status status="PASS" endtime="20171023 10:32:01.584" starttime="20171023 10:31:55.473"></status>
-</kw>
-<kw name="Copy Timecard and Sign out">
-<kw name="Click Element" library="Selenium2Library">
-<doc>Click element identified by `locator`.</doc>
-<arguments>
-<arg>id=btnGridFormCopyRow-0-0</arg>
-</arguments>
-<msg timestamp="20171023 10:32:01.585" level="INFO">Clicking element 'id=btnGridFormCopyRow-0-0'.</msg>
-<status status="PASS" endtime="20171023 10:32:01.692" starttime="20171023 10:32:01.584"></status>
-</kw>
-<kw name="Sleep" library="BuiltIn">
-<doc>Pauses the test executed for the given time.</doc>
-<arguments>
-<arg>2s</arg>
-</arguments>
-<msg timestamp="20171023 10:32:03.694" level="INFO">Slept 2 seconds</msg>
-<status status="PASS" endtime="20171023 10:32:03.694" starttime="20171023 10:32:01.692"></status>
-</kw>
-<kw name="Click Button" library="Selenium2Library">
-<doc>Clicks a button identified by `locator`.</doc>
-<arguments>
-<arg>id=btnGridSubmit</arg>
-</arguments>
-<msg timestamp="20171023 10:32:03.695" level="INFO">Clicking button 'id=btnGridSubmit'.</msg>
-<status status="PASS" endtime="20171023 10:32:03.792" starttime="20171023 10:32:03.694"></status>
-</kw>
-<kw name="Sleep" library="BuiltIn">
-<doc>Pauses the test executed for the given time.</doc>
-<arguments>
-<arg>3s</arg>
-</arguments>
-<msg timestamp="20171023 10:32:06.794" level="INFO">Slept 3 seconds</msg>
-<status status="PASS" endtime="20171023 10:32:06.794" starttime="20171023 10:32:03.792"></status>
-</kw>
-<kw name="Wait Until Page Contains" library="Selenium2Library">
-<doc>Waits until `text` appears on current page.</doc>
-<arguments>
-<arg>Employee</arg>
-</arguments>
-<status status="PASS" endtime="20171023 10:32:06.808" starttime="20171023 10:32:06.795"></status>
-</kw>
-<kw name="Mouse Over" library="Selenium2Library">
-<doc>Simulates hovering mouse over the element specified by `locator`.</doc>
-<arguments>
-<arg>Xpath=//*[@id="page-container"]/esub-trackpoint-header/section/div/div[3]/ul/li[2]/button</arg>
-</arguments>
-<msg timestamp="20171023 10:32:06.808" level="INFO">Simulating Mouse Over on element 'Xpath=//*[@id="page-container"]/esub-trackpoint-header/section/div/div[3]/ul/li[2]/button'</msg>
-<status status="PASS" endtime="20171023 10:32:06.846" starttime="20171023 10:32:06.808"></status>
-</kw>
-<kw name="Sleep" library="BuiltIn">
-<doc>Pauses the test executed for the given time.</doc>
-<arguments>
-<arg>3s</arg>
-</arguments>
-<msg timestamp="20171023 10:32:09.847" level="INFO">Slept 3 seconds</msg>
-<status status="PASS" endtime="20171023 10:32:09.847" starttime="20171023 10:32:06.846"></status>
-</kw>
-<kw name="Click Element" library="Selenium2Library">
-<doc>Click element identified by `locator`.</doc>
-<arguments>
-<arg>Xpath=//*[@id="page-container"]/esub-trackpoint-header/section/div/div[3]/ul/li[2]/button</arg>
-</arguments>
-<msg timestamp="20171023 10:32:09.848" level="INFO">Clicking element 'Xpath=//*[@id="page-container"]/esub-trackpoint-header/section/div/div[3]/ul/li[2]/button'.</msg>
-<status status="PASS" endtime="20171023 10:32:09.953" starttime="20171023 10:32:09.848"></status>
-</kw>
-<kw name="Sleep" library="BuiltIn">
-<doc>Pauses the test executed for the given time.</doc>
-<arguments>
-<arg>3s</arg>
-</arguments>
-<msg timestamp="20171023 10:32:12.954" level="INFO">Slept 3 seconds</msg>
-<status status="PASS" endtime="20171023 10:32:12.954" starttime="20171023 10:32:09.953"></status>
-</kw>
-<kw name="Click Element" library="Selenium2Library">
-<doc>Click element identified by `locator`.</doc>
-<arguments>
-<arg>Xpath=//*[@id="cdk-overlay-8"]/div/div/button</arg>
-</arguments>
-<msg timestamp="20171023 10:32:12.955" level="INFO">Clicking element 'Xpath=//*[@id="cdk-overlay-8"]/div/div/button'.</msg>
-<status status="PASS" endtime="20171023 10:32:13.055" starttime="20171023 10:32:12.955"></status>
-</kw>
-<kw name="Sleep" library="BuiltIn">
-<doc>Pauses the test executed for the given time.</doc>
-<arguments>
-<arg>2s</arg>
-</arguments>
-<msg timestamp="20171023 10:32:15.056" level="INFO">Slept 2 seconds</msg>
-<status status="PASS" endtime="20171023 10:32:15.057" starttime="20171023 10:32:13.055"></status>
+<msg timestamp="20171027 10:21:15.805" level="INFO">Slept 3 seconds</msg>
+<status status="PASS" endtime="20171027 10:21:15.806" starttime="20171027 10:21:12.805"></status>
 </kw>
 <kw name="Close Browser" library="Selenium2Library">
 <doc>Closes the current browser.</doc>
-<status status="PASS" endtime="20171023 10:32:15.124" starttime="20171023 10:32:15.057"></status>
+<status status="PASS" endtime="20171027 10:21:15.877" starttime="20171027 10:21:15.806"></status>
 </kw>
-<status status="PASS" endtime="20171023 10:32:15.124" starttime="20171023 10:32:01.584"></status>
+<status status="PASS" endtime="20171027 10:21:15.878" starttime="20171027 10:20:02.446"></status>
 </kw>
-<status status="PASS" endtime="20171023 10:32:15.124" critical="yes" starttime="20171023 10:29:47.662"></status>
+<status status="PASS" endtime="20171027 10:21:15.878" critical="yes" starttime="20171027 10:20:02.445"></status>
 </test>
 <doc>Enter time test suite</doc>
-<status status="PASS" endtime="20171023 10:32:15.125" starttime="20171023 10:29:47.567"></status>
+<status status="PASS" endtime="20171027 10:21:15.882" starttime="20171027 10:15:52.974"></status>
 </suite>
 <statistics>
 <total>
-<stat fail="0" pass="1">Critical Tests</stat>
-<stat fail="0" pass="1">All Tests</stat>
+<stat fail="0" pass="11">Critical Tests</stat>
+<stat fail="0" pass="11">All Tests</stat>
 </total>
 <tag>
 </tag>
 <suite>
-<stat fail="0" id="s1" name="enterTime" pass="1">enterTime</stat>
+<stat fail="0" id="s1" name="gridForm" pass="11">gridForm</stat>
 </suite>
 </statistics>
 <errors>
