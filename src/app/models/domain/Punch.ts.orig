@@ -1,6 +1,7 @@
 import { DbGeography } from 'app/models/domain/DbGeography';
 
 export class Punch {
+<<<<<<< HEAD
     punchIn?: Date;
     punchInLocation?: DbGeography;
     punchInUserId?: number;
@@ -9,6 +10,27 @@ export class Punch {
     punchOutUserId?: number;
     timeRecordId?: number;
     tenantId?: number;
+
+||||||| merged common ancestors
+punchIn?: Date;
+  punchInLocation?: DbGeography;
+  punchInUserId?: number;
+  punchOut?: Date;
+  punchOutLocation?: DbGeography;
+  punchOutUserId?: number;
+  timeRecordId?: number;
+  tenantId?: number;
+  
+=======
+    punchIn?: Date;
+    punchInLocation?: DbGeography;
+    punchInUserId?: number;
+    punchOut?: Date;
+    punchOutLocation?: DbGeography;
+    punchOutUserId?: number;
+    timeRecordId?: number;
+    tenantId?: number;
+>>>>>>> develop
     PunchIn?: string;
     PunchInLocation?: Location;
     PunchInUserId?: number;

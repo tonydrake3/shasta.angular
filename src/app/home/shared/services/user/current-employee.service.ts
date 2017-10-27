@@ -19,6 +19,7 @@ export class CurrentEmployeeService extends BaseStore {
     }
 
     getLatest() {
+
         if (JSON.parse(sessionStorage.getItem('tenant'))) {
 
             this.load()

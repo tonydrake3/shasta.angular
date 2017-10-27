@@ -66,13 +66,6 @@ export class TimeExpensesComponent implements OnInit, AfterViewInit {
     this.activatedRoute.params.subscribe(params => {
       this.view = params['view'];
     });
-
-    // this.timeRecordsService.getLatest().then(response => {
-    //   this.loading = false;
-    //   this.timerecords = response.Value;
-    //   this.buildTimesheets();
-    // });
-
     this.LoadTimecard();
 
     this.messageService.messageSource$.subscribe((notifcation: any) => {
@@ -89,9 +82,6 @@ export class TimeExpensesComponent implements OnInit, AfterViewInit {
             ' Well done ! You successfully REJECTED the all timecards that you selected ';
           this.failedConfirm(message);
           this.LoadTimecard();
-          break;
-        case 'pinEntered':
-          this.saveApprove();
           break;
       }
       console.log('Message: ', notifcation);
@@ -144,14 +134,14 @@ export class TimeExpensesComponent implements OnInit, AfterViewInit {
   public approve(event) {
     event.preventDefault();
     // Check the PIN
-    if (
-      !this.timesheetsComponent.pin ||
-      this.timesheetsComponent.pin === '' ||
-      this.timesheetsComponent.pin !== this.timesheetsComponent.correctPin
-    ) {
-      this.pin = this.timesheetsComponent.credentialPIN('', null);
-      return;
-    }
+    // if (
+    //   !this.timesheetsComponent.pin ||
+    //   this.timesheetsComponent.pin === '' ||
+    //   this.timesheetsComponent.pin !== this.timesheetsComponent.correctPin
+    // ) {
+    // //  this.pin = this.timesheetsComponent.credentialPIN('', null);
+    //   return;
+    // }
 
     this.saveApprove();
   }

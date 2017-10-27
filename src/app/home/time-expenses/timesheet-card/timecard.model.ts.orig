@@ -43,6 +43,8 @@ export class Badges {
 }
 
 export class HoursApproval {
+<<<<<<< HEAD
+
     status: string;
     day: string;
     job: string;
@@ -90,6 +92,52 @@ export class HoursApproval {
     //
     //     return timeRecord;
     // }
+||||||| merged common ancestors
+
+    status: string;
+    day: string;
+    job: string;
+    hourlyValues: string;
+    Regulartime: number;
+    Overtime: number;
+    Doubletime: number;
+    isSelected: boolean;
+    punch: Punch;
+    costCode: string;
+    $id: string;
+    isRejected: boolean;
+    note: string;
+    comments: Array<any>;
+    TimeRecordId: string;
+    projectId: string;
+    employee: Employee;
+    punchIn?: Date;
+    punchOut?: Date;
+    break?: string
+    systemPhrase?: string;
+=======
+  status: string;
+  day: string;
+  job: string;
+  hourlyValues: string;
+  Regulartime: number;
+  Overtime: number;
+  Doubletime: number;
+  isSelected: boolean;
+  punch: Punch;
+  costCode: string;
+  $id: string;
+  isRejected: boolean;
+  note: string;
+  comments: Array<any>;
+  TimeRecordId: string;
+  projectId: string;
+  employee: Employee;
+  punchIn?: Date;
+  punchOut?: Date;
+  break?: string;
+  systemPhrase?: string;
+>>>>>>> develop
 }
 
 export class WeekDayHours {
