@@ -1,4 +1,5 @@
-export class NumberContainingEntity {
+export interface NumberContainingEntity {
     Number: string;
     Name: string;
 }
+

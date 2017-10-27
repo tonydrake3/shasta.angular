@@ -372,7 +372,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
         if (value) {
 
             this.filteredProjects = this._filterService
-                .filterCollectionByKey(this.projects, value);
+                .filterCollection(value, this.projects);
         } else {
 
             this.filteredProjects = Observable.of(this.projects);
@@ -404,7 +404,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
         if (value) {
 
             this.filteredSystems = this._filterService
-                .filterCollectionByKey((<Project>record.get('project').value).Systems, value);
+                .filterCollection(value, (<Project>record.get('project').value).Systems);
         } else {
 
             this.filteredSystems = Observable.of((<Project>record.get('project').value).Systems);
@@ -429,7 +429,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
         if (value) {
 
             this.filteredSystems = this._filterService
-                .filterCollectionByKey((<System>record.get('system').value).Phases, value);
+                .filterCollection(value, (<System>record.get('system').value).Phases);
         } else {
 
             this.filteredSystems = Observable.of((<System>record.get('system').value).Phases);
@@ -456,7 +456,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
         if (value) {
 
             this.filteredEmployees = this._filterService
-                .filterCollectionByKey(this.filterEmployeesByProject(project.Id, this.employees), value, ['Name', 'Numnber']);
+                .filterEmployees(value, this.filterEmployeesByProject(project.Id, this.employees));
         } else {
 
             this.filteredEmployees = Observable.of(this.filterEmployeesByProject(project.Id, this.employees));
@@ -478,7 +478,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
 
         if (value) {
 
-            this.filteredEmployees = this._filterService.filterCollectionByKey(this.employees, value);
+            this.filteredEmployees = this._filterService.filterEmployees(value, this.employees);
         } else {
 
             this.filteredEmployees = Observable.of(this.employees);
@@ -501,7 +501,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
         if (value) {
 
             this.filteredCostCodes = this._filterService
-                .filterCollectionByKey((<Project>record.get('project').value).CostCodes, value);
+                .filterCollection(value, (<Project>record.get('project').value).CostCodes);
         } else {
 
             this.filteredCostCodes = Observable.of((<Project>record.get('project').value).CostCodes);
@@ -576,8 +576,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
             .catch((error) => {
 
                 const errors = JSON.parse(error)['ValidationErrors'];
-
-
+                console.log(errors);
             });
     }
 

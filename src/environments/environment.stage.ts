@@ -4,7 +4,7 @@ export const environment = {
   production: false,
   envName: 'stage',
   gitVersion: versions.GITVERSION,
-  apiUrl: 'http://api.staging.shasta.esubonline.com/',
+  apiUrl: 'http://api.stage.shasta.esubonline.com/',
   mapsUrl: 'https://maps.googleapis.com/maps/api/',
   mapsApiKey: 'AIzaSyDlNxrtp5Tfn5Oi3zx0-4Rlmcu7enBv4Lc',
   weatherUrl: 'https://api.worldweatheronline.com/premium/v1/weather.ashx',

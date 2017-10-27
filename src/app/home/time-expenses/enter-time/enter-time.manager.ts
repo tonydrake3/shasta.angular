@@ -343,12 +343,15 @@ export class EnterTimeManager {
     private generateNewLines (lines) {
 
         // console.log('EnterTimeManager generateNewLines', lines);
-        if (!_.isEmpty(lines.project)) {
+        if (lines) {
 
-            this.processProjectLines(lines);
-        } else {
+            if (!_.isEmpty(lines.project)) {
 
-            this.processIndirectLines(lines);
+                this.processProjectLines(lines);
+            } else {
+
+                this.processIndirectLines(lines);
+            }
         }
 
         // return this.groupLinesToSubmit(this._linesToSubmit, this._indirectToSubmit);

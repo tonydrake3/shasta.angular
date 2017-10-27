@@ -14,7 +14,7 @@ import 'rxjs/add/operator/map';
 export class TimeRecordsService extends BaseStore {
     constructor(protected _httpPassthrough: Http) {
         super(_httpPassthrough);
-        this.init(apiRoutes.timeRecords);
+        this.init(apiRoutes.timeRecordsFull);
     }
 
     public getLatest(): Promise<any> {

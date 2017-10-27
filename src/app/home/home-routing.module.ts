@@ -18,7 +18,6 @@ const routes: Routes = [
             // { path: 'company', component: CompanySelectionComponent },
             { path: 'company', component: CompanySelectionComponent, canActivate: [ CompanyGuard ] },
             { path: 'project', loadChildren: './projects/project.module#ProjectModule' },
-            { path: 'settings', loadChildren: './settings/settings.module#SettingsModule' },
             { path: 'trackpoint', loadChildren: './trackpoint/trackpoint.module#TrackpointModule' },
             { path: 'time', loadChildren: './time-expenses/time-expenses.module#TimeExpensesModule' }
         ]

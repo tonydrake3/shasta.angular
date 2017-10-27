@@ -20,7 +20,6 @@ import { HomeModule } from './home/home.module';
 import { SharedModule } from './shared/shared.module';
 import { CompanyModule } from './home/company/company.module';
 import { LoginModule } from './login/login.module';
-import { SettingsModule } from './home/settings/settings.module';
 
 // hmr
 import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
@@ -36,8 +35,9 @@ import { ConfirmationDialogComponent } from './home/shared/components/confirmati
 import { NotesEntryDialogComponent } from './home/shared/components/notes-entry.component';
 import { NotificationComponent } from './home/notifications/notifications.component';
 import { PermissionsService } from './shared/services/authorization/permissions.service';
-import { TimesheetCardPinComponent } from 'app/home/time-expenses/timesheet-card/timesheet-card-pin.component';
+import { TimesheetCardPinComponent } from './home/time-expenses/timesheet-card/timesheet-card-pin.component';
 import { TimeRecordDetailModalComponent } from './home/time-expenses/time-record-detail-modal/time-record-detail-modal.component';
+import { WarningDialogComponent } from './home/shared/components/warning-dialog.component';
 
 @NgModule({
     imports: [
@@ -77,7 +77,9 @@ import { TimeRecordDetailModalComponent } from './home/time-expenses/time-record
         NotesEntryDialogComponent,
         NotificationComponent,
         TimeRecordDetailModalComponent,
-	TimeCardTimeDetailComponent, TimesheetCardPinComponent
+        TimeCardTimeDetailComponent,
+        TimesheetCardPinComponent,
+        WarningDialogComponent
     ]
 })
 
