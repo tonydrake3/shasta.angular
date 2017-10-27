@@ -487,7 +487,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
     }
 
     public setComments(comments: Comment[]) {
-        const commentFormGroups = comments.map(comments => this._formBuilder.group(comments));
+        const commentFormGroups = comments.map(currentComments => this._formBuilder.group(currentComments));
         const commentsFormArray = this._formBuilder.array(commentFormGroups);
         this.enterTimeForm.setControl('comments', commentsFormArray);
     }

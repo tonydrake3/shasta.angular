@@ -186,24 +186,24 @@
                 </div>
         </div>
 
-        <div class="col">
+        <!--<div class="col">-->
 
-            <h3>Comments</h3>
+            <!--<h3>Comments</h3>-->
 
-                <div *ngFor="let comment of commentsSubject | async">
+                <!--<div *ngFor="let comment of commentsSubject | async">-->
 
-                    <strong>Comment by: </strong> {{ comment.User.FirstName }} {{ comment.User.LastName }}
-                    <br>
-                    <strong>{{ comment.Timestamps.ClientCreated | date: 'short' }}</strong>
+                    <!--<strong>Comment by: </strong> {{ comment.User.FirstName }} {{ comment.User.LastName }}-->
+                    <!--<br>-->
+                    <!--<strong>{{ comment.Timestamps.ClientCreated | date: 'short' }}</strong>-->
 
-                    <p>{{ comment.Value }}</p>
-                </div>
+                    <!--<p>{{ comment.Value }}</p>-->
+                <!--</div>-->
 
-            <div class="well well-sm">
-                <input class="form-control" formControlName="comment"> <button md-raised-button>POST</button>
-            </div>
+            <!--<div class="well well-sm">-->
+                <!--<input class="form-control" formControlName="comment"> <button md-raised-button>POST</button>-->
+            <!--</div>-->
 
-        </div>
+        <!--</div>-->
         </form>
 
 </md-dialog-content>
