@@ -36,28 +36,28 @@ import { TimesheetCardPinComponent } from 'app/home/time-expenses/timesheet-card
   templateUrl: './timesheet-card.component.html',
   styles: [
     `
-        .normal {
-            color: blue;
-            cursor: pointer;
-        }
-        .rejected {
-            color: red;
-            cursor: pointer;
-        }
-        .overTime {
-            color: gold;
-            cursor: none;
-        }
-        .standTime {
-            color: green;
-            cursor: none;
-        }
-        .comment {
-            color: blue;
-        }
-        .reject {
-            color: red;
-        }`
+    .normal {
+        color: blue;
+        cursor: pointer;
+    }
+    .rejected {
+        color: red;
+        cursor: pointer;
+    }
+    .overTime {
+        color: gold;
+        cursor: none;
+    }
+    .standTime {
+        color: green;
+        cursor: none;
+    }
+    .comment {
+        color: blue;
+    }
+    .reject {
+        color: red;
+    }`
   ],
   providers: [TimesheetCardManager, MessageService]
 })
@@ -103,6 +103,7 @@ export class TimesheetCardComponent extends BaseComponent
   public costCodeHours: string;
   public hoursApprovals: Array<HoursApproval>;
   private readonly TYPE = 'onHourlyValues';
+  private count = 0;
 
   constructor(
     protected injector: Injector,
@@ -126,9 +127,7 @@ export class TimesheetCardComponent extends BaseComponent
   ngOnInit() {
     this.totalCount = 0;
 
-    this._messageService.messageSource$.subscribe((notifcation: any) => {
-      console.log('Message: ', notifcation);
-    });
+    this.count = 1;
   }
 
   /******************************************************************************************************************
@@ -258,7 +257,7 @@ export class TimesheetCardComponent extends BaseComponent
     // this.TestCommentsModal(timerecords);
   }
 
-  public credentialPIN(type: string, hoursApproval: HoursApproval): string {
+  public credentialPIN(type: string, hoursApproval: HoursApproval): void {
     const timeCardTimecardPinDialogRef = this.dialog.open(
       TimesheetCardPinComponent,
       {
@@ -275,17 +274,14 @@ export class TimesheetCardComponent extends BaseComponent
     timeCardTimecardPinDialogRef.afterClosed().subscribe(result => {
       // modal closedif()
 
-      if (result) {
+      if (result && result.pin) {
         console.log(`Dialog result: ${result.pin}`);
         this.pin = result.pin;
-
-        if (type === this.TYPE && hoursApproval) {
-          this.onHourlyValues(hoursApproval);
-        }
+        this._messageService.media = result.pin;
       }
     });
 
-    return this.pin;
+    // return this.pin;
   }
   public BuildWeeDayHours(timecard: Timecard) {
     const weekDayHours: Array<WeekDayHours> = timecard.WeekDayHours;
@@ -293,7 +289,6 @@ export class TimesheetCardComponent extends BaseComponent
 
   // creates sections (within a project or employee)
   public buildSections(timerecords: Array<any>, groupTimesheetsBy: string) {
-    // this.groupBy = groupTimesheetsBy;
 
     const nonSortedSections = Array<TimecardSection>();
 
@@ -428,6 +423,7 @@ export class TimesheetCardComponent extends BaseComponent
     const temp = this.totalCount;
     this.onDatePicked.emit(this.totalCount > 0);
   }
+
   public onSelectSingleCheckBox(timecard: any, timecardGrid: any, event): void {
     const selected = event;
 
@@ -442,7 +438,15 @@ export class TimesheetCardComponent extends BaseComponent
       this.isAllTimecardsSelected = selected;
     }
 
-    if (selected && timecard.timecardGrid.length === 1) {
+    let count = 0;
+
+    _.forEach(timecard.timecardGrid, (item: HoursApproval) => {
+      if (item.isSelected) {
+        count++;
+      }
+    });
+
+    if (count === timecard.timecardGrid.length) {
       timecard.selected = selected;
     }
 
@@ -500,13 +504,11 @@ export class TimesheetCardComponent extends BaseComponent
     _.forEach(this.timecards, timecard => {
       const hoursApprovals = timecard.timecardGrid;
       _.forEach(hoursApprovals, hoursApproval => {
-        if (hoursApproval.isSelected) {
+        if (hoursApproval.isSelected  && hoursApproval.status.trim().toLowerCase() !== 'approved') {
           count++;
         }
       });
     });
-
-    const result = count;
     return count;
   }
 
@@ -515,11 +517,7 @@ export class TimesheetCardComponent extends BaseComponent
     const hoursApprovals: HoursApproval = timecard.timecardGrid;
     _.forEach(hoursApprovals, hoursApproval => {
       if (!hoursApproval.isRejected) {
-        if (timecard.selected) {
-          hoursApproval.isSelected = false;
-        } else {
-          hoursApproval.isSelected = true;
-        }
+        hoursApproval.isSelected = event;
       }
     });
 
@@ -609,66 +607,6 @@ export class TimesheetCardComponent extends BaseComponent
     return SummeryWeekDayHours;
   }
 
-  //   public getWeekDayHours(
-  //     timecardGrid: Array<HoursApproval>,
-  //     type: string
-  //   ): Array<WeekDayHours> {
-  //     const SummeryWeekDayHours: Array<WeekDayHours> = [];
-
-  //     _.forEach(this.dateRange, day => {
-  //       //   const weekDayHour = new WeekDayHours();
-  //       //   weekDayHour.dayString = day.dayString;
-  //       //   weekDayHour.dateString = day.dateString;
-  //       //   weekDayHour.hours = this.getTimecardTotalHours(timecard, day);
-  //       //   SummeryWeekDayHours.push(weekDayHour);
-  //       const weekDayHour = new WeekDayHours();
-  //       if (timecardGrid && timecardGrid.length === 0) {
-  //         // const weekDayHour = new WeekDayHours();
-  //         weekDayHour.dayString = day.dayString;
-  //         weekDayHour.dateString = day.dateString;
-  //         weekDayHour.hours = '0';
-  //       } else {
-  //         //  const temp = _.groupBy(timecardGrid, day.date.format('YYYY-MM-DD'));
-
-  //         if (type === 'single') {
-  //           weekDayHour.dayString = day.dayString;
-  //           weekDayHour.dateString = day.dateString;
-
-  //           const itemDay = moment(timecardGrid['day']).format('YYYY-MM-DD');
-  //           const dayDate = day.date.format('YYYY-MM-DD');
-
-  //           if (itemDay === dayDate) {
-  //             weekDayHour.hours = (Number(timecardGrid['Regulartime']) +
-  //               Number(timecardGrid['Overtime']) +
-  //               Number(timecardGrid['Doubletime'])
-  //             ).toString();
-  //           } else {
-  //             weekDayHour.hours = '0';
-  //           }
-  //         } else {
-  //           _.forEach(timecardGrid, item => {
-  //             weekDayHour.dayString = day.dayString;
-  //             weekDayHour.dateString = day.dateString;
-
-  //             const itemDay = moment(item['day']).format('YYYY-MM-DD');
-  //             const dayDate = day.date.format('YYYY-MM-DD');
-
-  //             if (itemDay === dayDate) {
-  //               weekDayHour.hours = (Number(item['Regulartime']) +
-  //                 Number(item['Overtime']) +
-  //                 Number(item['Doubletime'])
-  //               ).toString();
-  //             } else {
-  //               weekDayHour.hours = '0';
-  //             }
-  //           });
-  //         }
-  //         SummeryWeekDayHours.push(weekDayHour);
-  //       }
-  //     });
-  //     // timecard.WeekDayHours = SummeryWeekDayHours;
-  //     return SummeryWeekDayHours;
-  //   }
 
   private markSingleCostCode(costCode: any, option: boolean) {
     let count = 0;
@@ -699,7 +637,6 @@ export class TimesheetCardComponent extends BaseComponent
     let regularTime = 0;
     let overTime = 0;
     let doubleTime = 0;
-    // let total = 0;
 
     const timecardGrids: Array<HoursApproval> = timecard.timecardGrid;
 
@@ -747,10 +684,10 @@ export class TimesheetCardComponent extends BaseComponent
 
   // open hour values modal
   public onHourlyValues(hoursApproval: HoursApproval) {
-    if (!this.pin || this.pin === '' || this.pin !== this.correctPin) {
-      this.credentialPIN('onHourlyValues', hoursApproval);
-      return;
-    }
+    // if (!this.pin || this.pin === '' || this.pin !== this.correctPin) {
+    //   this.credentialPIN('onHourlyValues', hoursApproval);
+    //   return;
+    // }
     const data = hoursApproval;
     if (hoursApproval) {
       let width, height;
@@ -890,8 +827,12 @@ export class TimesheetCardComponent extends BaseComponent
     }
   }
 
-  // used on route change to update default view settings for timecards
+  // used on route change to update default view time-settings for timecards
   public updateViewSettings() {
+    this.pin = '';
+
+    this._messageService.media = '';
+
     switch (this._view) {
       case 'timesheets':
         this.showBadges = {
@@ -899,8 +840,9 @@ export class TimesheetCardComponent extends BaseComponent
           statusError: true,
           mapError: true
         };
-        this.showCheckboxes = false;
-        this.expandAllDetails(false);
+        // this.showCheckboxes = false;
+        this.expandAllDetails(true);
+        this.count = 1;
         break;
       case 'approve-time':
         this.showBadges = {
@@ -908,8 +850,11 @@ export class TimesheetCardComponent extends BaseComponent
           statusError: true,
           mapError: true
         };
-        this.showCheckboxes = true;
+
         this.expandAllDetails(true);
+        if (this.count !== 0) {
+          this.timeApprovePincCheck();
+        }
         break;
       case 'export-time':
         //    TODO Only show records that have been approved if the company does approvals.
@@ -921,7 +866,14 @@ export class TimesheetCardComponent extends BaseComponent
         };
         this.showCheckboxes = true;
         this.expandAllDetails(true);
+
         break;
+    }
+  }
+
+  private timeApprovePincCheck() {
+    if (!this.pin || this.pin === '' || this.pin !== this.correctPin) {
+      this.credentialPIN('', null);
     }
   }
 

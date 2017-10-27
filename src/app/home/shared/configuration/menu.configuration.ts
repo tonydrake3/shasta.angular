@@ -130,15 +130,28 @@ export const timeSidebarConfiguration = [
         'Ordinal': 1,
         'Visible': true,
         'expandFull': false
+    },
+    {
+        '$id': '4',
+        'Action': '/time-expenses/time-settings',
+        'Children': null,
+        'Key': '',
+        'System': 1,
+        'Title': 'Settings',
+        'SidebarId': 'timeSettings',
+        'iconName': '',
+        'Ordinal': 4,
+        'Visible': true,
+        'expandFull': false
     }
 ];
 
 export const settingSidebarConfiguration = [
     {
         '$id': '7',
-        'Action': '/settings',
+        'Action': '/time-settings',
         'Children': null,
-        'Key': 'admin-settings',
+        'Key': 'admin-time-settings',
         'System': 1,
         'Title': 'Admin',
         'SidebarId': 'adminSettings',
@@ -149,7 +162,7 @@ export const settingSidebarConfiguration = [
     },
     {
         '$id': '7',
-        'Action': '/settings',
+        'Action': '/time-settings',
         'Children': null,
         'Key': 'list-management',
         'System': 1,
@@ -162,7 +175,7 @@ export const settingSidebarConfiguration = [
     },
     {
         '$id': '7',
-        'Action': '/settings',
+        'Action': '/time-settings',
         'Children': null,
         'Key': 'project-management',
         'System': 1,
