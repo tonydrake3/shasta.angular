@@ -245,7 +245,6 @@ export class EnterTimeTransformService {
 
     private recordToIndirectLine (record: TimeRecord): LineToSubmit {
 
-        console.log(record);
         const costCode = new CostCode();
         costCode.Id = record.IndirectCost.Id;
         costCode.Code = record.IndirectCost.Code;
