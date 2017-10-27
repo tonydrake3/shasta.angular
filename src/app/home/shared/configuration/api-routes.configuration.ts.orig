@@ -12,12 +12,20 @@ export const apiRoutes = {
     'permissions': 'Identity/Permissions/Current',
     'projects': 'Shared/Projects',
     'system': 'Shared/Systems',
+<<<<<<< HEAD
     'timeRecords': 'Time/TimeRecords',
-    'timeReject': 'Time/TimeRecords/Reject',
     'timeRecordsFull': 'Time/TimeRecords/Full',
-    'timeSettings': 'Time/Settings',
+    'timeSettings': 'Time/Settings'
+||||||| merged common ancestors
+    'timeRecords': 'Time/TimeRecords/Full',
+    'timeSettings': 'Time/Settings'
+=======
+    'timeRecords': 'Time/TimeRecords/Full',
+    'timeReject': 'Time/TimeRecords/Reject',
     'timeApprove': 'Time/TimeRecords/Approve',
+    'timeSettings': 'Time/Settings',
     'timeUpdate': 'Time/TimeRecords'
+>>>>>>> develop
 };
 
 export const externalApiRoutes = {

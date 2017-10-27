@@ -20,7 +20,6 @@ import { HomeModule } from './home/home.module';
 import { SharedModule } from './shared/shared.module';
 import { CompanyModule } from './home/company/company.module';
 import { LoginModule } from './login/login.module';
-import { SettingsModule } from './home/settings/settings.module';
 
 // hmr
 import { removeNgStyles, createNewHosts } from '@angularclass/hmr';

@@ -10,7 +10,7 @@ export const SettingRoutes: Routes = [
         component: SettingsComponent,
         children: [
             {
-                path: 'admin-settings',
+                path: 'admin-time-settings',
                 component: AdminSettingsComponent
             },
             {

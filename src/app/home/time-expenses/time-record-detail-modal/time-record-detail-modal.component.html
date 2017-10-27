@@ -1,19 +1,7 @@
 <md-dialog-content>
 
-    <!--<div *ngIf="displayData.projectTitle">-->
-    <!--<h5>{{displayData.projectTitle}}</h5>-->
-    <!--<h3> {{displayData.projectText}}</h3>-->
-    <!--</div>-->
-    <!--<h5>{{displayData.costCodeTitle}}</h5>-->
-    <!--<h3>{{displayData.costCodeText}}</h3>-->
-    <!--<h5>Employee</h5>-->
-    <!--<h3>{{displayData.employeeText}}</h3>-->
-    <!--<h5>Status</h5>-->
-    <!--<h3>{{displayData.statusText}}</h3>-->
-    <!--<h5>Hours</h5>-->
-    <!--<h3>{{displayData.totalHoursText}}</h3>-->
     <div class="enter-time-form">
-        <form [formGroup]="enterTimeForm" (ngSubmit)="onSubmit(enterTimeForm)" novalidate>
+        <form [formGroup]="enterTimeForm" (ngSubmit)="didTapSaveButton(enterTimeForm)" novalidate>
 
             <div class="row" *ngIf="showProjectView | async">
                 <div class="col-md-12">
@@ -23,7 +11,6 @@
                             mdInput placeholder="Project"
                             formControlName="project"
                             [mdAutocomplete]="autoProject"
-                            (focus)="projectsTypeAheadHasFocus($event.target.value)"
                             [id]="'txtFormProject'"
                         >
                     </md-form-field>
@@ -45,7 +32,6 @@
                             mdInput placeholder="System"
                             formControlName="system"
                             [mdAutocomplete]="autoSystem"
-                            (focus)="systemTypeAheadHasFocus($event.target.value)"
                             [id]="'txtFormSystem'"
                         >
                     </md-form-field>
@@ -67,7 +53,6 @@
                             mdInput placeholder="Phase"
                             formControlName="phase"
                             [mdAutocomplete]="autoPhase"
-                            (focus)="phaseTypeAheadHasFocus($event.target.value)"
                             [id]="'txtFormPhase'"
                         >
                     </md-form-field>
@@ -89,7 +74,6 @@
                                placeholder="{{displayData.costCodeTitle}}"
                                formControlName="indirectCostCode"
                                [mdAutocomplete]="autoIndirectCostCode"
-                               (focus)="indirectCostCodesTypeAheadHasFocus($event.target.value)"
                                [id]="'txtFormIndirectCost'"
                         >
                     </md-form-field>
@@ -112,7 +96,6 @@
                                placeholder="{{displayData.costCodeTitle}}"
                                formControlName="costCode"
                                [mdAutocomplete]="autoCostCode"
-                               (focus)="costCodesTypeAheadHasFocus($event.target.value)"
                                [id]="'txtFormCostCode'"
                         >
                     </md-form-field>
@@ -161,6 +144,7 @@
 </md-dialog-content>
 
 <md-dialog-actions align="end">
-    <button md-button (click)="close()">Cancel</button>
-    <button md-button (click)="save()">Save</button>
+    <md-spinner *ngIf="loading"></md-spinner>
+    <button md-button (click)="didTapCancelButton()">Cancel</button>
+    <button md-button (click)="didTapSaveButton()">Save</button>
 </md-dialog-actions>

@@ -1,0 +1,14 @@
+.time-settings{ 
+  padding-top: 30px; padding: 113px 100px; 
+  .setting-title { 
+    @extend .banner-title;  
+  } 
+  .setting-content{ 
+    @extend .title-regular;  color:$gray-60; 
+  } 
+  .esub-button{
+    @extend .h6;
+    height: 47px;
+    width: 175px;
+  }  
+}
