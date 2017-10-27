@@ -26,6 +26,7 @@ import {Comment} from '../../../models/domain/Comment';
 import {UserService} from '../../shared/services/user/user.service';
 import {User} from '../../../models/domain/User';
 import * as moment from 'moment';
+import {DateHelperService} from 'app/home/shared/services/date-helper.service';
 
 @Component({
     selector: 'esub-time-record-detail-modal',
@@ -105,6 +106,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
                 private _projectService: ProjectService,
                 private _timeRecordUpdater: TimeRecordUpdaterService,
                 private _userService: UserService,
+                private _dateHelper: DateHelperService,
                 public entityFormatter: EntityDisplayFormatterService) {
     }
 
@@ -769,6 +771,9 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
         const formValues = this.enterTimeForm.value;
         const changedProperties = this.getChangedProperties();
 
+        console.log('preparing to save a timerecord with formvalues: ', formValues);
+        console.log('and changed properties: ', changedProperties);
+
         if (changedProperties.includes(this.formKeys.selectedProject)) {
             timeRecordToSave.ProjectId = formValues.selectedProject.Id;
 
@@ -785,16 +790,19 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
         }
 
         if (this.hoursChanged(changedProperties)) {
+            console.log('hours changed');
             timeRecordToSave.Hours = new Hours();
             timeRecordToSave.Hours.RegularTime = formValues.standardHours;
             timeRecordToSave.Hours.Overtime = formValues.overtimeHours;
             timeRecordToSave.Hours.DoubleTime = formValues.doubleTimeHours;
         } else if (this.timeInTimeOutChanged(changedProperties)) {
-            timeRecordToSave.Punch = new Punch(Date(), Date());
-            timeRecordToSave.Punch.PunchIn = Date();
-            timeRecordToSave.Punch.PunchOut = Date();
+            console.log('punch changed');
+            const dateMoment = moment(this.timeRecord.Punch.PunchIn);
+            const punchInTime = formValues.timeEntry.time.in;
+            const punchOutTime = formValues.timeEntry.time.out;
+            timeRecordToSave.Punch = this._dateHelper.buildPunch(dateMoment, punchInTime, punchOutTime)
         }
-
+        console.log('We formatted the time record to save: ', timeRecordToSave);
         return timeRecordToSave;
     }
 
@@ -804,9 +812,8 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
             changedProperties.includes(this.formKeys.doubleTimeHours)
     }
 
-    // TODO
     private timeInTimeOutChanged(changedProperties: string[]): boolean {
-        return false
+        return changedProperties.includes('timeEntry')
     }
 
     private getChangedProperties(): string[] {
