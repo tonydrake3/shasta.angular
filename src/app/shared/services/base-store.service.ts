@@ -1,4 +1,4 @@
-import { Http } from '@angular/http';
+import { Http, URLSearchParams } from '@angular/http';
 import { Subject} from 'rxjs/Rx';
 import { BaseHttpService } from './base-http.service';
 import { environment } from '../../../environments/environment';
@@ -21,10 +21,11 @@ export class BaseStore extends BaseHttpService {
      * Protected Methods
      ******************************************************************************************************************/
 
-    protected init (url?: string, disableLoad?: boolean) {
+    protected init (url?: string, disableLoad?: boolean, queryParams?: Array<[string, string]>) {
 
         this._route = url;
         this._isLoadDisabled = disableLoad;
+        if (queryParams) this.addQueryParameters(queryParams);
     }
 
     protected load (id?: string): Promise<any> {
@@ -130,5 +131,19 @@ export class BaseStore extends BaseHttpService {
                     });
         });
     }
+
+    /******************************************************************************************************************
+     * Private Methods
+     ******************************************************************************************************************/
+    private addQueryParameters(params: Array<[string, string]>) {
+
+        this.queryParams = new URLSearchParams();
+
+        params.forEach((param) => {
+
+            this.queryParams.append(param[0], param[1]);
+        });
+    }
+
 
 }

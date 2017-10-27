@@ -576,8 +576,7 @@ export class EnterTimeGridComponent implements OnInit, OnDestroy {
             .catch((error) => {
 
                 const errors = JSON.parse(error)['ValidationErrors'];
-
-
+                console.log(errors);
             });
     }
 
