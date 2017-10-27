@@ -57,6 +57,9 @@ import { TimesheetCardPinComponent } from 'app/home/time-expenses/timesheet-card
     }
     .reject {
         color: red;
+    }
+    .outRange {
+        color: red;
     }`
   ],
   providers: [TimesheetCardManager, MessageService]
@@ -104,6 +107,8 @@ export class TimesheetCardComponent extends BaseComponent
   public hoursApprovals: Array<HoursApproval>;
   private readonly TYPE = 'onHourlyValues';
   private count = 0;
+
+  private readonly MOCK_DISTANCE = 7710.10;
 
   constructor(
     protected injector: Injector,
@@ -289,7 +294,6 @@ export class TimesheetCardComponent extends BaseComponent
 
   // creates sections (within a project or employee)
   public buildSections(timerecords: Array<any>, groupTimesheetsBy: string) {
-
     const nonSortedSections = Array<TimecardSection>();
 
     // build full details, to then group against
@@ -504,7 +508,10 @@ export class TimesheetCardComponent extends BaseComponent
     _.forEach(this.timecards, timecard => {
       const hoursApprovals = timecard.timecardGrid;
       _.forEach(hoursApprovals, hoursApproval => {
-        if (hoursApproval.isSelected  && hoursApproval.status.trim().toLowerCase() !== 'approved') {
+        if (
+          hoursApproval.isSelected &&
+          hoursApproval.status.trim().toLowerCase() !== 'approved'
+        ) {
           count++;
         }
       });
@@ -606,7 +613,6 @@ export class TimesheetCardComponent extends BaseComponent
     });
     return SummeryWeekDayHours;
   }
-
 
   private markSingleCostCode(costCode: any, option: boolean) {
     let count = 0;
@@ -877,6 +883,30 @@ export class TimesheetCardComponent extends BaseComponent
     }
   }
 
+  /**
+   * getCSSClasses
+   */
+  public getCSSClasses(punchInDistance: number, punchOutDistance: number) {
+    let cssClasses = {
+      outRange: false
+    };
+     cssClasses = {
+        outRange: this.isDistanceOutSettings(punchInDistance, punchOutDistance)
+      };
+    return cssClasses;
+  }
+
+  private isDistanceOutSettings(punchInDistance, punchOutDistance): boolean {
+    if ( punchInDistance && punchInDistance > this.MOCK_DISTANCE) {
+      return true;
+    }
+
+    if ( punchOutDistance && punchOutDistance > this.MOCK_DISTANCE) {
+      return true;
+    }
+
+    return false;
+  }
   // expands or collapses all timecard detail sections
   public expandAllDetails(expand: boolean) {
     this.timecards.forEach(card => {

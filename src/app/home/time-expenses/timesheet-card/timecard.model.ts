@@ -60,6 +60,8 @@ export class HoursApproval {
   employee: Employee;
   punchIn?: Date;
   punchOut?: Date;
+  punchInDistance: number;
+  punchOutDistance: number;
   break?: string;
   systemPhrase?: string;
 }
