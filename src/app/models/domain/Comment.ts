@@ -1,4 +1,6 @@
 import {CommentType} from './CommentType';
+import {Timestamps} from './Timestamps';
+import {User} from './User';
 
 export class Comment {
 
@@ -6,8 +8,8 @@ export class Comment {
     Value?: string;
     CommentType?: CommentType;
     UserId?: number;
-    Created?: string;
-    Updated?: string;
+    Timestamps: Timestamps;
+    User: User;
 
     constructor (value: string, type?: CommentType) {
 
