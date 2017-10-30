@@ -109,6 +109,9 @@ export class TimesheetCardComponent extends BaseComponent
     public hoursApprovals: Array<HoursApproval>;
     private readonly TYPE = 'onHourlyValues';
   private count = 0;
+  public succeed = 0;
+
+  private readonly MOCK_DISTANCE = 7710.10;
 
     constructor(
         protected injector: Injector,
@@ -871,17 +874,18 @@ export class TimesheetCardComponent extends BaseComponent
         // this.showCheckboxes = false;
         this.expandAllDetails(true);
         this.count = 1;
-                break;
-            case 'approve-time':
-                this.showBadges = {
-                    comments: true,
-                    statusError: true,
-                    mapError: true
-                };
+        break;
+      case 'approve-time':
+        this.showBadges = {
+          comments: true,
+          statusError: true,
+          mapError: true
+        };
 
-                this.expandAllDetails(true);
+        this.expandAllDetails(true);
         if (this.count !== 0) {
           this.timeApprovePincCheck();
+          this.succeed = 1;
         }
                 break;
             case 'export-time':
@@ -899,11 +903,32 @@ export class TimesheetCardComponent extends BaseComponent
     }
   }
 
-  private timeApprovePincCheck() {
+  public timeApprovePincCheck() {
     if (!this.pin || this.pin === '' || this.pin !== this.correctPin) {
       this.credentialPIN('', null);
         }
     }
+
+/**
+   * getCSSClasses
+   */
+  public getCSSClasses(punchInDistance: number, punchOutDistance: number) {
+    let cssClasses = {
+      outRange: false
+    };
+     cssClasses = {
+        outRange: this.isDistanceOutSettings(punchInDistance, punchOutDistance)
+      };
+    return cssClasses;
+  }
+
+  private isDistanceOutSettings(punchInDistance, punchOutDistance): boolean {
+    if ( punchInDistance && punchInDistance > this.MOCK_DISTANCE) {
+      return true;
+    }
+
+    return false;
+  }
 
     // expands or collapses all timecard detail sections
     public expandAllDetails(expand: boolean) {
