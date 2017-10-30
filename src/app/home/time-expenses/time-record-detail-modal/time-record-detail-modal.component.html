@@ -1,119 +1,133 @@
 <md-dialog-content>
 
-        <form [formGroup]="enterTimeForm" (ngSubmit)="didTapSaveButton(enterTimeForm)" novalidate>
+    <form [formGroup]="enterTimeForm" (ngSubmit)="didTapSaveButton(enterTimeForm)" novalidate>
 
         <div class="enter-time-form col-md-12">
 
             <h3>Time Record Detail</h3>
 
-                <div class="row" *ngIf="showProjectView | async">
-                    <div class="col-md-12">
-                        <md-form-field class="form-field">
-                            <input
-                                type="text"
-                                mdInput placeholder="Project"
-                                formControlName="project"
-                                [mdAutocomplete]="autoProject"
-                                [id]="'txtFormProject'"
-                            >
-                        </md-form-field>
-                        <md-autocomplete #autoProject="mdAutocomplete"
-                                         [displayWith]="entityFormatter.displayFormatted"
-                                         (optionSelected)="projectWasSelected($event)">
-                            <md-option *ngFor="let project of filteredProjects | async" [value]="project">
-                                {{project.Number}} - {{project.Name}}
-                            </md-option>
-                        </md-autocomplete>
-                    </div>
-                </div>
-
-                <div class="row" *ngIf="showSystemView | async">
-                    <div class="col-md-12">
-                        <md-form-field class="form-field">
-                            <input
-                                type="text"
-                                mdInput placeholder="System"
-                                formControlName="system"
-                                [mdAutocomplete]="autoSystem"
-                                [id]="'txtFormSystem'"
-                            >
-                        </md-form-field>
-                        <md-autocomplete #autoSystem="mdAutocomplete"
-                                         [displayWith]="entityFormatter.displayFormatted"
-                                         (optionSelected)="systemWasSelected($event)">
-                            <md-option *ngFor="let system of filteredSystems | async" [value]="system">
-                                {{system.Number}} - {{system.Name}}
-                            </md-option>
-                        </md-autocomplete>
-                    </div>
-                </div>
-
-                <div class="row" *ngIf="showPhaseView | async">
-                    <div class="col-md-12">
-                        <md-form-field class="form-field">
-                            <input
-                                type="text"
-                                mdInput placeholder="Phase"
-                                formControlName="phase"
-                                [mdAutocomplete]="autoPhase"
-                                [id]="'txtFormPhase'"
-                            >
-                        </md-form-field>
-                        <md-autocomplete #autoPhase="mdAutocomplete"
-                                         [displayWith]="entityFormatter.displayFormatted"
-                                         (optionSelected)="phaseWasSelected($event)">
-                            <md-option *ngFor="let phase of filteredPhases | async" [value]="phase">
-                                {{phase.Number}} - {{phase.Name}}
-                            </md-option>
-                        </md-autocomplete>
-                    </div>
-                </div>
-
-                <div class="row" *ngIf="showIndirectCostView | async">
-                    <div class="col-md-12">
-                        <md-form-field class="form-field">
-                            <input type="text"
-                                   mdInput
-                                   placeholder="Cost Code"
-                                   formControlName="indirectCostCode"
-                                   [mdAutocomplete]="autoIndirectCostCode"
-                                   [id]="'txtFormIndirectCost'"
-                            >
-                        </md-form-field>
-                        <md-autocomplete #autoIndirectCostCode="mdAutocomplete"
-                                         [displayWith]="entityFormatter.displayIndirectCostCode"
-                                         (optionSelected)="indirectCostCodeWasSelected($event)"
+            <div class="row" *ngIf="showProjectView | async">
+                <div class="col-md-12">
+                    <md-form-field class="form-field">
+                        <input
+                            type="text"
+                            mdInput placeholder="Project"
+                            formControlName="project"
+                            [mdAutocomplete]="autoProject"
+                            [id]="'txtFormProject'"
                         >
-                            <md-option *ngFor="let indirectCostCode of filteredIndirectCostCodes | async" [value]="indirectCostCode">
-                                {{indirectCostCode.Code}} - {{indirectCostCode.Description}}
-                            </md-option>
-                        </md-autocomplete>
-                    </div>
+                    </md-form-field>
+                    <md-autocomplete #autoProject="mdAutocomplete"
+                                     [displayWith]="entityFormatter.displayFormatted"
+                                     (optionSelected)="projectWasSelected($event)">
+                        <md-option *ngFor="let project of filteredProjects | async" [value]="project">
+                            {{project.Number}} - {{project.Name}}
+                        </md-option>
+                    </md-autocomplete>
                 </div>
+            </div>
 
-                <div class="row" *ngIf="showCostCodeView | async">
-                    <div class="col-md-12">
-                        <md-form-field class="form-field">
-                            <input type="text"
-                                   mdInput
-                                   placeholder="Cost Code"
-                                   formControlName="costCode"
-                                   [mdAutocomplete]="autoCostCode"
-                                   [id]="'txtFormCostCode'"
-                            >
-                        </md-form-field>
-                        <md-autocomplete #autoCostCode="mdAutocomplete"
-                                         [displayWith]="entityFormatter.displayCostCode"
-                                         (optionSelected)="costCodeWasSelected($event)"
+            <div class="row" *ngIf="showSystemView | async">
+                <div class="col-md-12">
+                    <md-form-field class="form-field">
+                        <input
+                            type="text"
+                            mdInput placeholder="System"
+                            formControlName="system"
+                            [mdAutocomplete]="autoSystem"
+                            [id]="'txtFormSystem'"
                         >
-                            <md-option *ngFor="let costCode of filteredCostCodes | async" [value]="costCode">
-                                {{costCode.Code}} - {{costCode.Name}}
-                            </md-option>
-                        </md-autocomplete>
-                    </div>
+                    </md-form-field>
+                    <md-autocomplete #autoSystem="mdAutocomplete"
+                                     [displayWith]="entityFormatter.displayFormatted"
+                                     (optionSelected)="systemWasSelected($event)">
+                        <md-option *ngFor="let system of filteredSystems | async" [value]="system">
+                            {{system.Number}} - {{system.Name}}
+                        </md-option>
+                    </md-autocomplete>
                 </div>
+            </div>
 
-            <!--Duplicated from enter time form... try to remove the parts that are not necessary -->
+            <div class="row" *ngIf="showPhaseView | async">
+                <div class="col-md-12">
+                    <md-form-field class="form-field">
+                        <input
+                            type="text"
+                            mdInput placeholder="Phase"
+                            formControlName="phase"
+                            [mdAutocomplete]="autoPhase"
+                            [id]="'txtFormPhase'"
+                        >
+                    </md-form-field>
+                    <md-autocomplete #autoPhase="mdAutocomplete"
+                                     [displayWith]="entityFormatter.displayFormatted"
+                                     (optionSelected)="phaseWasSelected($event)">
+                        <md-option *ngFor="let phase of filteredPhases | async" [value]="phase">
+                            {{phase.Number}} - {{phase.Name}}
+                        </md-option>
+                    </md-autocomplete>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="showIndirectCostView | async">
+                <div class="col-md-12">
+                    <md-form-field class="form-field">
+                        <input type="text"
+                               mdInput
+                               placeholder="Cost Code"
+                               formControlName="indirectCostCode"
+                               [mdAutocomplete]="autoIndirectCostCode"
+                               [id]="'txtFormIndirectCost'"
+                        >
+                    </md-form-field>
+                    <md-autocomplete #autoIndirectCostCode="mdAutocomplete"
+                                     [displayWith]="entityFormatter.displayIndirectCostCode"
+                                     (optionSelected)="indirectCostCodeWasSelected($event)"
+                    >
+                        <md-option *ngFor="let indirectCostCode of filteredIndirectCostCodes | async" [value]="indirectCostCode">
+                            {{indirectCostCode.Code}} - {{indirectCostCode.Description}}
+                        </md-option>
+                    </md-autocomplete>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="showCostCodeView | async">
+                <div class="col-md-12">
+                    <md-form-field class="form-field">
+                        <input type="text"
+                               mdInput
+                               placeholder="Cost Code"
+                               formControlName="costCode"
+                               [mdAutocomplete]="autoCostCode"
+                               [id]="'txtFormCostCode'"
+                        >
+                    </md-form-field>
+                    <md-autocomplete #autoCostCode="mdAutocomplete"
+                                     [displayWith]="entityFormatter.displayCostCode"
+                                     (optionSelected)="costCodeWasSelected($event)"
+                    >
+                        <md-option *ngFor="let costCode of filteredCostCodes | async" [value]="costCode">
+                            {{costCode.Code}} - {{costCode.Name}}
+                        </md-option>
+                    </md-autocomplete>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <md-form-field class="form-field">
+                        <input mdInput
+                               placeholder="Choose a date"
+                               formControlName="date"
+                               [mdDatepicker]="datePicker"
+                               [id]="'txtFormDate'"
+                        >
+                        <md-datepicker-toggle [for]="datePicker"></md-datepicker-toggle>
+                    </md-form-field>
+                    <md-datepicker #datePicker></md-datepicker>
+                </div>
+            </div>
+
             <div class="col-md-12" *ngIf="showTimeEntryView | async" formGroupName="timeEntry">
                 <div class="row"><!---->
                     <div class="col-md-2" formGroupName="time">
@@ -157,59 +171,81 @@
                 </div>
             </div>
 
-                <div class="row">
-                    <div class="col-md-12">
-                        <span class="label-bold">Hours Worked</span>
+            <div class="row">
+                <div class="col-md-12">
+                    <span class="label-bold">Hours Worked</span>
 
-                        <div class="row hours-entry">
-                            <div class="col-md-2">
-                                <md-form-field>
-                                    <input mdInput type="number" placeholder="ST" formControlName="standardHours"
-                                           maxlength="5" step="0.25" min="0" max="24" [id]="'txtFormST'">
-                                </md-form-field>
-                            </div>
-                            <div class="col-md-2">
-                                <md-form-field>
-                                    <input mdInput type="number" placeholder="OT" formControlName="overtimeHours"
-                                           maxlength="5" step="0.25" min="0" max="24" [id]="'txtFormOT'">
-                                </md-form-field>
-                            </div>
-                            <div class="col-md-2">
-                                <md-form-field>
-                                    <input mdInput type="number" placeholder="DT" formControlName="doubleTimeHours"
-                                           maxlength="5" step="0.25" min="0" max="24" [id]="'txtFormDT'">
-                                </md-form-field>
-                            </div>
+                    <div class="row hours-entry">
+                        <div class="col-md-2">
+                            <md-form-field>
+                                <input mdInput type="number" placeholder="ST" formControlName="standardHours"
+                                       maxlength="5" step="0.25" min="0" max="24" [id]="'txtFormST'">
+                            </md-form-field>
                         </div>
-
+                        <div class="col-md-2">
+                            <md-form-field>
+                                <input mdInput type="number" placeholder="OT" formControlName="overtimeHours"
+                                       maxlength="5" step="0.25" min="0" max="24" [id]="'txtFormOT'">
+                            </md-form-field>
+                        </div>
+                        <div class="col-md-2">
+                            <md-form-field>
+                                <input mdInput type="number" placeholder="DT" formControlName="doubleTimeHours"
+                                       maxlength="5" step="0.25" min="0" max="24" [id]="'txtFormDT'">
+                            </md-form-field>
+                        </div>
                     </div>
+
                 </div>
+            </div>
+
+            <div class="row">
+                <!--<div class="col-md-12">-->
+                    <!--<button md-raised-button-->
+                            <!--type="button"-->
+                            <!--[id]="'btnLocation'"-->
+                            <!--class="esub-button secondary" [disabled]="enterTimeGrid.invalid"-->
+                            <!--(click)="submitTime()">Submit Time</button>-->
+                <!--</div>-->
+
+            </div>
         </div>
 
         <!--<div class="col">-->
 
-            <!--<h3>Comments</h3>-->
+        <!--<h3>Comments</h3>-->
 
-                <!--<div *ngFor="let comment of commentsSubject | async">-->
+        <!--<div *ngFor="let comment of commentsSubject | async">-->
 
-                    <!--<strong>Comment by: </strong> {{ comment.User.FirstName }} {{ comment.User.LastName }}-->
-                    <!--<br>-->
-                    <!--<strong>{{ comment.Timestamps.ClientCreated | date: 'short' }}</strong>-->
+        <!--<strong>Comment by: </strong> {{ comment.User.FirstName }} {{ comment.User.LastName }}-->
+        <!--<br>-->
+        <!--<strong>{{ comment.Timestamps.ClientCreated | date: 'short' }}</strong>-->
 
-                    <!--<p>{{ comment.Value }}</p>-->
-                <!--</div>-->
+        <!--<p>{{ comment.Value }}</p>-->
+        <!--</div>-->
 
-            <!--<div class="well well-sm">-->
-                <!--<input class="form-control" formControlName="comment"> <button md-raised-button>POST</button>-->
-            <!--</div>-->
+        <!--<div class="well well-sm">-->
+        <!--<input class="form-control" formControlName="comment"> <button md-raised-button>POST</button>-->
+        <!--</div>-->
 
         <!--</div>-->
-        </form>
+    </form>
 
 </md-dialog-content>
 
 <md-dialog-actions align="end">
     <md-spinner *ngIf="loading"></md-spinner>
-    <button md-button (click)="didTapCancelButton()">Cancel</button>
-    <button md-button (click)="didTapSaveButton()">Save</button>
+    <div class="row pt-2">
+        <div class="col-md-6 esub-button-group float-right">
+            <button md-raised-button
+                    type="button"
+                    class="primary"
+                    [id]="'btnFormCancel'"
+                    (click)="didTapCancelButton()">Cancel</button>
+        </div>
+        <div class="col-md-6 esub-button-group">
+            <button md-raised-button type="button" class="secondary" [disabled]="enterTimeForm.invalid" [id]="'btnFormCreate'" (click)="didTapSaveButton()">
+                Save</button>
+        </div>
+    </div>
 </md-dialog-actions>

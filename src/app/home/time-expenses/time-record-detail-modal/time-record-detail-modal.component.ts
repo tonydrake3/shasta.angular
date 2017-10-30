@@ -90,6 +90,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
     public autoCostCode;
     public autoIndirectCostCode;
     public autoEmployee;
+    public datePicker;
 
     // Observable Bindings
     public showIndirectCostView: Observable<boolean>;
@@ -389,6 +390,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
         this.observeCostCodeChanges();
         this.observeIndirectCostCodeChanges();
         this.observeHoursChanges();
+        this.observeDateChanges();
         this.observeCommentChanges();
         this.observeTimeEntryChanges();
     }
@@ -487,15 +489,15 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
 
     }
 
-    private get commentsFormArray(): FormArray {
-        return this.enterTimeForm.get('comments') as FormArray;
-    }
-
-    public setComments(comments: Comment[]) {
-        const commentFormGroups = comments.map(currentComments => this._formBuilder.group(currentComments));
-        const commentsFormArray = this._formBuilder.array(commentFormGroups);
-        this.enterTimeForm.setControl('comments', commentsFormArray);
-    }
+    // private get commentsFormArray(): FormArray {
+    //     return this.enterTimeForm.get('comments') as FormArray;
+    // }
+    //
+    // public setComments(comments: Comment[]) {
+    //     const commentFormGroups = comments.map(currentComments => this._formBuilder.group(currentComments));
+    //     const commentsFormArray = this._formBuilder.array(commentFormGroups);
+    //     this.enterTimeForm.setControl('comments', commentsFormArray);
+    // }
 
     private observeIndirectCostCodeChanges() {
 
@@ -677,6 +679,19 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
         )
     }
 
+    private observeDateChanges() {
+        const dateField = this.enterTimeForm.get(this.formKeys.date);
+
+        dateField.valueChanges.subscribe(
+            (date) => {
+                console.log('Date in changed to: ', date);
+                dateField.markAsDirty();
+
+            }
+        );
+
+    }
+
     private observeTimeEntryChanges() {
         this.observeTimeChanges();
         this.observeBreakChanges();
@@ -795,6 +810,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
             timeRecordToSave.Hours.RegularTime = formValues.standardHours;
             timeRecordToSave.Hours.Overtime = formValues.overtimeHours;
             timeRecordToSave.Hours.DoubleTime = formValues.doubleTimeHours;
+            timeRecordToSave.Hours.Date = formValues.date;
         } else if (this.timeInTimeOutChanged(changedProperties)) {
             console.log('punch changed');
             const dateMoment = moment(this.timeRecord.Punch.PunchIn);
