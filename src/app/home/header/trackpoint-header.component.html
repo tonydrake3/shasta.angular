@@ -35,7 +35,7 @@
                         Utilities
                     </button>
                     <md-menu #utilitiesMenu="mdMenu" [overlapTrigger]="false" class="tp-menu">
-                        <button md-menu-item [routerLink]="['/time/approve-time']">
+                        <button md-menu-item [routerLink]="['/time/approve-time']" *ngIf="permissions?.TimeRecords.Approve">
                             <span>Approve Timecards</span>
                         </button>
                     </md-menu>
