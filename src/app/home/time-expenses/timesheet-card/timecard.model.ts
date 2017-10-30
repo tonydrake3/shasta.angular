@@ -43,29 +43,55 @@ export class Badges {
 }
 
 export class HoursApproval {
-  status: string;
-  day: string;
-  job: string;
-  hourlyValues: string;
-  Regulartime: number;
-  Overtime: number;
-  Doubletime: number;
-  isSelected: boolean;
-  punch: Punch;
-  costCode: string;
-  $id: string;
-  isRejected: boolean;
-  note: string;
-  comments: Array<any>;
-  TimeRecordId: string;
-  projectId: string;
-  employee: Employee;
-  punchIn?: Date;
-  punchOut?: Date;
-  punchInDistance: number;
-  punchOutDistance: number;
-  break?: string;
-  systemPhrase?: string;
+    status: string;
+    day: string;
+    job: string;
+    hourlyValues: string;
+    Regulartime: number;
+    Overtime: number;
+    Doubletime: number;
+    isSelected: boolean;
+    punch: Punch;
+    costCode: string;
+    $id: string;
+    isRejected: boolean;
+    note: string;
+    comments: Array<any>;
+    TimeRecordId: string;
+    projectId: string;
+    employee: Employee;
+    punchIn?: Date;
+    punchOut?: Date;
+    punchInDistance: number;
+    punchOutDistance: number;
+    break?: string;
+    systemPhrase?: string;
+
+    // asTimeRecord(): TimeRecord {
+    //     const timeRecord = new TimeRecord();
+    //
+    //     timeRecord.Hours = new Hours();
+    //     timeRecord.Hours.RegularTime = this.Regulartime;
+    //     timeRecord.Hours.DoubleTime = this.Doubletime;
+    //     timeRecord.Hours.Overtime = this.Overtime;
+    //
+    //     timeRecord.Punch = this.punch;
+    //
+    //     /* I NEED THESE PLEASE :) */
+    //     // timeRecord.Project = this.Project;
+    //     // timeRecord.CostCode = this.CostCode;
+    //     // timeRecord.TimeRecordStatus = this.TimeRecordStatus;
+    //     // timeRecord.Breaks = this.Breaks;
+    //     // timeRecord.IndirectCost = this.IndirectCost;
+    //     // timeRecord.System = this.System;
+    //     // timeRecord.Phase = this.Phase;
+    //
+    //     timeRecord.Comments = this.comments;
+    //     timeRecord.Id = this.TimeRecordId;
+    //     timeRecord.Employee = this.employee;
+    //
+    //     return timeRecord;
+    // }
 }
 
 export class WeekDayHours {
@@ -74,3 +100,4 @@ export class WeekDayHours {
   hours: string;
   date: moment.Moment;
 }
+
