@@ -1,4 +1,4 @@
-import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, Inject, OnDestroy, OnInit, Output} from '@angular/core';
 import {MD_DIALOG_DATA, MdDialogRef} from '@angular/material';
 import {TimeRecord} from '../../../models/domain/TimeRecord';
 import {
@@ -35,6 +35,7 @@ import {DateHelperService} from 'app/home/shared/services/date-helper.service';
 })
 
 export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeModal {
+
     /* Form Keys for use instead of */
     private formKeys: TimeModalFormKeys = {
         project: 'project',
@@ -99,6 +100,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
     public showPhaseView: Observable<boolean>;
     public showCostCodeView: Observable<boolean>;
     public showTimeEntryView: Observable<boolean>;
+    public showLocationButton: Observable<boolean>;
 
     constructor(private _dialogRef: MdDialogRef<TimeRecordDetailModalComponent>,
                 @Inject(MD_DIALOG_DATA) public data: DisplayModeSpecifying & TimeRecord,
@@ -208,6 +210,20 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
             })
             .takeUntil(this.ngUnsubscribe);
 
+        this.showLocationButton = Observable
+            .combineLatest(
+                this.timeRecordSubject,
+                (timeRecord) => {
+                    if (timeRecord.Punch == null) { return false }
+
+                    return timeRecord.Punch.PunchInLocation != null || timeRecord.Punch.PunchOutLocation != null
+                })
+            .do((showLocationButton) => {
+                console.log('show Location Button: ', showLocationButton);
+            })
+            .takeUntil(this.ngUnsubscribe);
+
+        /* Collections */
         this.filteredProjects = Observable.combineLatest(
             this.enterTimeForm.get(this.formKeys.project).valueChanges,
             this.projectsSubject,
@@ -489,16 +505,6 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
 
     }
 
-    // private get commentsFormArray(): FormArray {
-    //     return this.enterTimeForm.get('comments') as FormArray;
-    // }
-    //
-    // public setComments(comments: Comment[]) {
-    //     const commentFormGroups = comments.map(currentComments => this._formBuilder.group(currentComments));
-    //     const commentsFormArray = this._formBuilder.array(commentFormGroups);
-    //     this.enterTimeForm.setControl('comments', commentsFormArray);
-    // }
-
     private observeIndirectCostCodeChanges() {
 
         const indirectCostCodeField = this.enterTimeForm.get(this.formKeys.indirectCostCode);
@@ -769,7 +775,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
         this._timeRecordUpdater.updateTimeRecord(timeRecord)
             .then((data) => {
                 console.log('update was successful with data', data);
-                this._dialogRef.close();
+                this._dialogRef.close(data);
             })
             .catch((error) => {
                 console.log('there was an error updating', error);
@@ -777,6 +783,12 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
             .then(() => {
                 this.loading = false;
             });
+    }
+
+    public didTapLocationButton() {
+        console.log('Open Location Button Tapped');
+
+        // TODO: Open Map modal
     }
 
     private prepareTimeRecordToSave(): TimeRecord {

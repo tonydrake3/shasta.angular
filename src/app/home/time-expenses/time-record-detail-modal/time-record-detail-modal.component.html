@@ -199,14 +199,14 @@
                 </div>
             </div>
 
-            <div class="row">
-                <!--<div class="col-md-12">-->
-                    <!--<button md-raised-button-->
-                            <!--type="button"-->
-                            <!--[id]="'btnLocation'"-->
-                            <!--class="esub-button secondary" [disabled]="enterTimeGrid.invalid"-->
-                            <!--(click)="submitTime()">Submit Time</button>-->
-                <!--</div>-->
+            <div class="row" *ngIf="showLocationButton | async">
+                <div class="col-md-12">
+                    <button md-button
+                            type="button"
+                            [id]="'btnLocation'"
+                            class="esub-button secondary"
+                            (click)="didTapLocationButton()">Punch In/Out Location</button>
+                </div>
 
             </div>
         </div>
@@ -237,14 +237,14 @@
     <md-spinner *ngIf="loading"></md-spinner>
     <div class="row pt-2">
         <div class="col-md-6 esub-button-group float-right">
-            <button md-raised-button
+            <button md-button
                     type="button"
                     class="primary"
                     [id]="'btnFormCancel'"
                     (click)="didTapCancelButton()">Cancel</button>
         </div>
         <div class="col-md-6 esub-button-group">
-            <button md-raised-button type="button" class="secondary" [disabled]="enterTimeForm.invalid" [id]="'btnFormCreate'" (click)="didTapSaveButton()">
+            <button md-raised-button type="button" class="secondary" [id]="'btnFormCreate'" (click)="didTapSaveButton()">
                 Save</button>
         </div>
     </div>

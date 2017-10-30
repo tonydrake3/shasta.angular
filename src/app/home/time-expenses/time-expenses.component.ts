@@ -24,6 +24,7 @@ import * as moment from 'moment';
 import * as _ from 'lodash';
 import {TimeRecordDetailModalComponent} from './time-record-detail-modal/time-record-detail-modal.component';
 import {MdDialog, MdDialogRef} from '@angular/material';
+import {ReloadType} from '../../models/ReloadType';
 
 @Component({
   selector: 'esub-time-expenses',
@@ -51,7 +52,7 @@ export class TimeExpensesComponent implements OnInit, AfterViewInit {
     private activatedRoute: ActivatedRoute,
     private timeExpensesService: TimeExpensesService,
     private _flashMessagesService: FlashMessagesService,
-    protected messageService: MessageService,
+    protected messageService: MessageService<ReloadType>,
     private _dialog: MdDialog
   ) {
     this.loading = true;
@@ -68,16 +69,16 @@ export class TimeExpensesComponent implements OnInit, AfterViewInit {
     });
     this.LoadTimecard();
 
-    this.messageService.messageSource$.subscribe((notifcation: any) => {
+    this.messageService.messageSource$.subscribe((notifcation: ReloadType) => {
       let message = '';
       switch (notifcation) {
-        case 'approved':
+        case ReloadType.approved:
           message =
             ' Well done ! You successfully APPROVED the all timecards that you selected ';
           this.successConfirm(message);
           this._flashMessagesService.grayOut(true);
           break;
-        case 'rejected':
+        case ReloadType.rejected:
           message =
             ' Well done ! You successfully REJECTED the all timecards that you selected ';
           this.failedConfirm(message);

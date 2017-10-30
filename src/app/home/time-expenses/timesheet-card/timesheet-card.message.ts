@@ -4,19 +4,21 @@ import { Observable, BehaviorSubject } from 'rxjs/Rx';
 
 @Injectable()
 
-export class MessageService {
-    private subject = new Subject<any>();
+export class MessageService<T> {
+    private subject = new Subject<T>();
 
     public media: string;
 
     public messageSource$: BehaviorSubject<any> = new BehaviorSubject('');
-    sendMessage(message: any) {
-        this.subject.next({text: message});
+    sendMessage(message: T) {
+        this.subject.next(message);
     }
+
     clearMessage() {
         this.subject.next();
     }
-    getMessage(): Observable<any> {
+
+    getMessage(): Observable<T> {
         return this.subject.asObservable();
     }
 }

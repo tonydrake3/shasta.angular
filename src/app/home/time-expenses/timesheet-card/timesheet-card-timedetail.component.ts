@@ -27,6 +27,7 @@ import { projectSidebarConfiguration } from '../../shared/configuration/menu.con
 import { ProjectSummaryService } from '../../projects/project-summary/project-summary.service';
 import { MapsService } from '../../shared/services/maps.service';
 import { OnChanges } from '@angular/core';
+import {ReloadType} from '../../../models/ReloadType';
 
 @Component({
   selector: 'esub-timedetails',
@@ -69,7 +70,7 @@ export class TimeCardTimeDetailComponent
     private timeRecordsService: TimeRecordsService,
     private _projectSummaryService: ProjectSummaryService,
     private _maps: MapsService,
-    private _messageService: MessageService
+    private _messageService: MessageService<ReloadType>
   ) {
     this.hoursApproval = data.hoursApproval;
     this.timecard = data.targetTimecard;
@@ -209,7 +210,7 @@ export class TimeCardTimeDetailComponent
         this.hoursApproval.isSelected = true;
         this.hoursApproval.status = 'Approved';
 
-        this._messageService.messageSource$.next('approved');
+        this._messageService.messageSource$.next(ReloadType.approved);
       }
     });
   }
@@ -240,7 +241,7 @@ export class TimeCardTimeDetailComponent
     this.timeExpensesService.timeReject(entity).subscribe(resp => {
       const result = resp;
       if (result === 200) {
-        this._messageService.messageSource$.next('rejected');
+        this._messageService.messageSource$.next(ReloadType.rejected);
       }
     });
   }

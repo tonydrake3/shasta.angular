@@ -31,6 +31,7 @@ import { Employee } from '../../../models/time/TimeRecord';
 import { WeekDayHours, Timecard } from './timecard.model';
 import { TimesheetCardPinComponent } from 'app/home/time-expenses/timesheet-card/timesheet-card-pin.component';
 import {TimeRecordDetailModalComponent} from '../time-record-detail-modal/time-record-detail-modal.component';
+import {ReloadType} from '../../../models/ReloadType';
 
 @Component({
     selector: 'esub-timesheet-card',
@@ -108,13 +109,13 @@ export class TimesheetCardComponent extends BaseComponent
     public costCodeHours: string;
     public hoursApprovals: Array<HoursApproval>;
     private readonly TYPE = 'onHourlyValues';
-  private count = 0;
+    private count = 0;
 
     constructor(
         protected injector: Injector,
         public dialog: MdDialog,
         public timesheetCardManager: TimesheetCardManager,
-        private _messageService: MessageService
+        private _messageService: MessageService<ReloadType>
     ) {
         super(injector, [
             { service: 'CurrentEmployeeService', callback: 'currentEmployeeCallback' }
@@ -132,7 +133,7 @@ export class TimesheetCardComponent extends BaseComponent
     ngOnInit() {
         this.totalCount = 0;
 
-    this.count = 1;
+        this.count = 1;
     }
 
     /******************************************************************************************************************
@@ -263,7 +264,7 @@ export class TimesheetCardComponent extends BaseComponent
         // this.TestCommentsModal(timerecords);
     }
 
-  public credentialPIN(type: string, hoursApproval: HoursApproval): void {
+    public credentialPIN(type: string, hoursApproval: HoursApproval): void {
         const timeCardTimecardPinDialogRef = this.dialog.open(
             TimesheetCardPinComponent,
             {
@@ -280,14 +281,14 @@ export class TimesheetCardComponent extends BaseComponent
         timeCardTimecardPinDialogRef.afterClosed().subscribe(result => {
             // modal closedif()
 
-      if (result && result.pin) {
+            if (result && result.pin) {
                 console.log(`Dialog result: ${result.pin}`);
                 this.pin = result.pin;
-        this._messageService.media = result.pin;
+                this._messageService.media = result.pin;
             }
         });
 
-    // return this.pin;
+        // return this.pin;
     }
     public BuildWeeDayHours(timecard: Timecard) {
         const weekDayHours: Array<WeekDayHours> = timecard.WeekDayHours;
@@ -442,17 +443,17 @@ export class TimesheetCardComponent extends BaseComponent
         if (!selected) {
             timecard.selected = selected;
             this.isAllTimecardsSelected = selected;
-    }
-
-    let count = 0;
-
-    _.forEach(timecard.timecardGrid, (item: HoursApproval) => {
-      if (item.isSelected) {
-        count++;
         }
-    });
 
-    if (count === timecard.timecardGrid.length) {
+        let count = 0;
+
+        _.forEach(timecard.timecardGrid, (item: HoursApproval) => {
+            if (item.isSelected) {
+                count++;
+            }
+        });
+
+        if (count === timecard.timecardGrid.length) {
             timecard.selected = selected;
         }
 
@@ -510,7 +511,7 @@ export class TimesheetCardComponent extends BaseComponent
         _.forEach(this.timecards, timecard => {
             const hoursApprovals = timecard.timecardGrid;
             _.forEach(hoursApprovals, hoursApproval => {
-        if (hoursApproval.isSelected  && hoursApproval.status.trim().toLowerCase() !== 'approved') {
+                if (hoursApproval.isSelected  && hoursApproval.status.trim().toLowerCase() !== 'approved') {
                     count++;
                 }
             });
@@ -523,8 +524,8 @@ export class TimesheetCardComponent extends BaseComponent
         const hoursApprovals: HoursApproval = timecard.timecardGrid;
         _.forEach(hoursApprovals, hoursApproval => {
             if (!hoursApproval.isRejected) {
-        hoursApproval.isSelected = event;
-               }
+                hoursApproval.isSelected = event;
+            }
         });
 
         this.isAllTimecardsSelected =
@@ -694,8 +695,8 @@ export class TimesheetCardComponent extends BaseComponent
         this.openDetailModal(hoursApproval.TimeRecordId)
         // console.log('onHourlyValues');
         // if (!this.pin || this.pin === '' || this.pin !== this.correctPin) {
-    //   this.credentialPIN('onHourlyValues', hoursApproval);
-    //   return;
+        //   this.credentialPIN('onHourlyValues', hoursApproval);
+        //   return;
         // }
         // const data = hoursApproval;
         // if (hoursApproval) {
@@ -751,6 +752,11 @@ export class TimesheetCardComponent extends BaseComponent
         });
         timeRecordDetailModalRef.afterClosed().subscribe(result => {
             console.log('TimeRecordDetail modal closed.');
+            if (result) {
+                console.log(result);
+            } else {
+                console.log('no result');
+            }
         });
     }
 
@@ -855,11 +861,11 @@ export class TimesheetCardComponent extends BaseComponent
         }
     }
 
-  // used on route change to update default view time-settings for timecards
+    // used on route change to update default view time-settings for timecards
     public updateViewSettings() {
-    this.pin = '';
+        this.pin = '';
 
-    this._messageService.media = '';
+        this._messageService.media = '';
 
         switch (this._view) {
             case 'timesheets':
@@ -868,9 +874,9 @@ export class TimesheetCardComponent extends BaseComponent
                     statusError: true,
                     mapError: true
                 };
-        // this.showCheckboxes = false;
-        this.expandAllDetails(true);
-        this.count = 1;
+                // this.showCheckboxes = false;
+                this.expandAllDetails(true);
+                this.count = 1;
                 break;
             case 'approve-time':
                 this.showBadges = {
@@ -880,9 +886,9 @@ export class TimesheetCardComponent extends BaseComponent
                 };
 
                 this.expandAllDetails(true);
-        if (this.count !== 0) {
-          this.timeApprovePincCheck();
-        }
+                if (this.count !== 0) {
+                    this.timeApprovePincCheck();
+                }
                 break;
             case 'export-time':
                 //    TODO Only show records that have been approved if the company does approvals.
@@ -896,12 +902,12 @@ export class TimesheetCardComponent extends BaseComponent
                 this.expandAllDetails(true);
 
                 break;
+        }
     }
-  }
 
-  private timeApprovePincCheck() {
-    if (!this.pin || this.pin === '' || this.pin !== this.correctPin) {
-      this.credentialPIN('', null);
+    private timeApprovePincCheck() {
+        if (!this.pin || this.pin === '' || this.pin !== this.correctPin) {
+            this.credentialPIN('', null);
         }
     }
 
