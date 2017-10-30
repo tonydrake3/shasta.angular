@@ -14,12 +14,13 @@ import {FormGroup} from '@angular/forms';
 import {Project} from '../../../models/domain/Project';
 import {Employee} from '../../../models/domain/Employee';
 import {CostCode} from '../../../models/domain/CostCode';
+import {DateHelperService} from '../../shared/services/date-helper.service';
 
 @Injectable()
 export class EnterTimeTransformService {
 
 
-    constructor () {}
+    constructor (private _dateHelper: DateHelperService) {}
 
     /******************************************************************************************************************
      * Public Methods
@@ -166,12 +167,12 @@ export class EnterTimeTransformService {
             record.Hours = new Hours(line.HoursST, line.HoursOT, line.HoursDT, line.Date.toISOString());
             if (line.IsPunch) {
 
-                record.Punch = this.buildPunch(line.Date, line.TimeIn, line.TimeOut);
+                record.Punch = this._dateHelper.buildPunch(line.Date, line.TimeIn, line.TimeOut);
             }
             if (line.BreakIn) {
 
                 record.Breaks = [];
-                record.Breaks.push(this.buildBreak(line.Date, line.BreakIn, line.BreakOut));
+                record.Breaks.push(this._dateHelper.buildBreak(line.Date, line.BreakIn, line.BreakOut));
                 record.BreaksVerified = false;
             }
             if (line.Note && line.Note !== '') {
@@ -265,23 +266,6 @@ export class EnterTimeTransformService {
         line.Employee.Name = record.Employee.FirstName + ' ' + record.Employee.LastName;
 
         return line;
-    }
-
-    // Helpers
-    private buildPunch(date: moment.Moment, timeIn: string, timeOut: string): Punch {
-
-        const punchIn = moment(date.format('YYYY-MM-DD') + ' ' + timeIn);
-        const punchOut = moment(date.format('YYYY-MM-DD') + ' ' + timeOut);
-
-        return new Punch(punchIn.toISOString(), punchOut.toISOString());
-    }
-
-    private buildBreak(date: moment.Moment, brIn: string, brOut: string): Break {
-
-        const breakIn = moment(date.format('YYYY-MM-DD') + ' ' + brIn);
-        const breakOut = moment(date.format('YYYY-MM-DD') + ' ' + brOut);
-
-        return new Break(breakIn.toISOString(), breakOut.toISOString());
     }
 
 }

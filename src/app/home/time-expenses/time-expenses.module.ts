@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 import {
     MdChipsModule, MdSelectModule, MdCheckboxModule, MdProgressBarModule,
     MdAutocompleteModule, MdTabsModule, MdTooltipModule, MdInputModule, MdButtonModule, MdDatepickerModule,
-    MdDialogModule
+    MdDialogModule, MdCardModule
 } from '@angular/material';
 import { DpDatePickerModule } from 'ng2-date-picker';
 
