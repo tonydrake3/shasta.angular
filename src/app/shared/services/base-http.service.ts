@@ -8,7 +8,7 @@ import 'rxjs/add/operator/map';
 @Injectable ()
 export class BaseHttpService {
 
-    _queryParams: URLSearchParams;
+    protected queryParams: URLSearchParams;
 
     constructor (private _http: Http) {}
 
@@ -24,9 +24,9 @@ export class BaseHttpService {
 
         const options = new RequestOptions({headers : headers});
 
-        if (this._queryParams) {
+        if (this.queryParams) {
 
-            options.params = this._queryParams;
+            options.params = this.queryParams;
         }
 
         return this._http.get(url, options)

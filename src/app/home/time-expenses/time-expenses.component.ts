@@ -22,6 +22,8 @@ import { FlashMessagesService } from 'angular2-flash-messages';
 
 import * as moment from 'moment';
 import * as _ from 'lodash';
+import {TimeRecordDetailModalComponent} from './time-record-detail-modal/time-record-detail-modal.component';
+import {MdDialog, MdDialogRef} from '@angular/material';
 
 @Component({
   selector: 'esub-time-expenses',
@@ -49,7 +51,8 @@ export class TimeExpensesComponent implements OnInit, AfterViewInit {
     private activatedRoute: ActivatedRoute,
     private timeExpensesService: TimeExpensesService,
     private _flashMessagesService: FlashMessagesService,
-    protected messageService: MessageService
+    protected messageService: MessageService,
+    private _dialog: MdDialog
   ) {
     this.loading = true;
 
@@ -131,14 +134,17 @@ export class TimeExpensesComponent implements OnInit, AfterViewInit {
   public approve(event) {
     event.preventDefault();
     // Check the PIN
-    // if (
-    //   !this.timesheetsComponent.pin ||
-    //   this.timesheetsComponent.pin === '' ||
-    //   this.timesheetsComponent.pin !== this.timesheetsComponent.correctPin
-    // ) {
-    // //  this.pin = this.timesheetsComponent.credentialPIN('', null);
-    //   return;
-    // }
+    if (
+      !this.timesheetsComponent.pin ||
+      this.timesheetsComponent.pin === '' ||
+      this.timesheetsComponent.pin !== this.timesheetsComponent.correctPin
+    ) {
+      //  this.pin = this.timesheetsComponent.credentialPIN('', null);
+      this.timesheetsComponent.credentialPIN('', null);
+      const message = ' Please enter your correct PIN !!! ';
+      this.failedConfirm(message);
+      return;
+    }
 
     this.saveApprove();
   }
@@ -159,6 +165,7 @@ export class TimeExpensesComponent implements OnInit, AfterViewInit {
       if (result === 200) {
         this.LoadTimecard();
         this.isSelected = false;
+        this.timesheetsComponent.succeed = result;
         const message =
           ' Well done! You successfully approve the all timecards that you selected !';
         this.successConfirm(message);
@@ -213,4 +220,23 @@ export class TimeExpensesComponent implements OnInit, AfterViewInit {
   decline() {}
 
   exportTime() {}
+
+    onTimeRecordClicked(timeRecordId: string) {
+        console.log('Clicked TimeRecord Detail. Sending a record with id: ', timeRecordId);
+        console.log(this.timerecords);
+        const timeRecordsWithProjects = this.timerecords
+            .filter((record) => { return record.project });
+
+        console.log(timeRecordsWithProjects);
+        const timeRecordToSend = timeRecordsWithProjects.pop() || this.timerecords.pop();
+        console.log(timeRecordToSend);
+        const timeRecordDetailModalRef = this._dialog.open(TimeRecordDetailModalComponent, {
+            data: timeRecordToSend,
+            height: '500px',
+            width: '800px'
+        });
+        timeRecordDetailModalRef.afterClosed().subscribe(result => {
+            console.log('TimeRecordDetail modal closed.');
+        });
+    }
 }

@@ -1,4 +1,4 @@
-import { UserProfile } from './../../../models/domain/UserProfile';
+import { User } from './../../../models/domain/User';
 import { TimeRecord } from '../../../models/domain/TimeRecord';
 import { groupBy } from 'rxjs/operator/groupBy';
 import { MessageService } from './timesheet-card.message';
@@ -30,6 +30,7 @@ import { Project } from 'app/models/domain/Project';
 import { Employee } from '../../../models/time/TimeRecord';
 import { WeekDayHours, Timecard } from './timecard.model';
 import { TimesheetCardPinComponent } from 'app/home/time-expenses/timesheet-card/timesheet-card-pin.component';
+import {TimeRecordDetailModalComponent} from '../time-record-detail-modal/time-record-detail-modal.component';
 
 @Component({
   selector: 'esub-timesheet-card',
@@ -74,6 +75,9 @@ export class TimesheetCardComponent extends BaseComponent
     this.updateViewSettings();
   }
   @Output() onDatePicked: EventEmitter<any> = new EventEmitter<any>();
+  /* We temporarily store the time records here so we can access them for the modal. This component needs a lot
+     * of refactoring... */
+    private timeRecords: TimeRecord[];
 
   public timecards: Array<Timecard>; // the built cards, what the template will display
   public dateRange: Array<WeekDateRangeDetails>; // builds the 7 day week based on input dateRange
@@ -107,6 +111,7 @@ export class TimesheetCardComponent extends BaseComponent
   public hoursApprovals: Array<HoursApproval>;
   private readonly TYPE = 'onHourlyValues';
   private count = 0;
+  public succeed = 0;
 
   private readonly MOCK_DISTANCE = 7710.10;
 
@@ -153,7 +158,8 @@ export class TimesheetCardComponent extends BaseComponent
   ) {
     if (!timerecords || timerecords.length === 0) return;
 
-    this.entityLookupTable = [];
+        this.timeRecords = timerecords;
+        this.entityLookupTable = [];
 
     this.dateRange = [];
 
@@ -258,6 +264,7 @@ export class TimesheetCardComponent extends BaseComponent
     // });
 
     console.log(this.timecards);
+
     this.updateViewSettings();
     // this.TestCommentsModal(timerecords);
   }
@@ -508,10 +515,7 @@ export class TimesheetCardComponent extends BaseComponent
     _.forEach(this.timecards, timecard => {
       const hoursApprovals = timecard.timecardGrid;
       _.forEach(hoursApprovals, hoursApproval => {
-        if (
-          hoursApproval.isSelected &&
-          hoursApproval.status.trim().toLowerCase() !== 'approved'
-        ) {
+        if (hoursApproval.isSelected  && hoursApproval.status.trim().toLowerCase() !== 'approved') {
           count++;
         }
       });
@@ -693,44 +697,63 @@ export class TimesheetCardComponent extends BaseComponent
     // if (!this.pin || this.pin === '' || this.pin !== this.correctPin) {
     //   this.credentialPIN('onHourlyValues', hoursApproval);
     //   return;
-    // }
-    const data = hoursApproval;
-    if (hoursApproval) {
-      let width, height;
-      if (window.innerWidth < 750) width = window.innerWidth * 0.21;
-      else if (window.innerWidth < 1100) width = window.innerWidth * 0.33;
-      else if (window.innerWidth < 1420) width = window.innerWidth * 0.39;
-      else width = window.innerWidth * 0.55;
-      height = window.innerHeight * 0.57;
-
-      const targetTimecard: Timecard = _.find(this.timecards, timecard => {
-        return timecard.Id === hoursApproval.$id;
-      });
-
-      const timedetailsDialogRef = this.dialog.open(
-        TimeCardTimeDetailComponent,
-        {
-          data: {
-            hoursApproval: hoursApproval,
-            targetTimecard: targetTimecard
-          },
-          height: height + 'px',
-          width: width + 'px',
-          disableClose: true,
-          hasBackdrop: true // or false, depending on what you want
-        }
-      );
-      timedetailsDialogRef.afterClosed().subscribe(result => {
-        // modal closedif()
-
-        if (result && result.data) {
-          console.log(`Dialog result: ${result.data}`);
-          this.updateSettings(result.data);
-          console.log(`Dialog result: ${result.data}`);
-        }
-      });
+        // }
+        // const data = hoursApproval;
+        // if (hoursApproval) {
+        //     let width, height;
+        //     if (window.innerWidth < 750) width = window.innerWidth * 0.21;
+        //     else if (window.innerWidth < 1100) width = window.innerWidth * 0.33;
+        //     else if (window.innerWidth < 1420) width = window.innerWidth * 0.39;
+        //     else width = window.innerWidth * 0.55;
+        //     height = window.innerHeight * 0.57;
+        //
+        //     const targetTimecard: Timecard = _.find(this.timecards, timecard => {
+        //         return timecard.Id === hoursApproval.$id;
+        //     });
+        //
+        //     const timedetailsDialogRef = this.dialog.open(
+        //         TimeCardTimeDetailComponent,
+        //         {
+        //             data: {
+        //                 hoursApproval: hoursApproval,
+        //                 targetTimecard: targetTimecard
+        //             },
+        //             height: height + 'px',
+        //             width: width + 'px',
+        //             disableClose: true,
+        //             hasBackdrop: true // or false, depending on what you want
+        //         }
+        //     );
+        //     timedetailsDialogRef.afterClosed().subscribe(result => {
+        //         // modal closedif()
+        //
+        //         if (result && result.data) {
+        //             console.log(`Dialog result: ${result.data}`);
+        //             this.updateSettings(result.data);
+        //             console.log(`Dialog result: ${result.data}`);
+        //         }
+        //     });
+        // }
     }
-  }
+
+    private openDetailModal(timeRecordId: string) {
+        console.log('Clicked TimeRecord Detail. Sending a record with id: ', timeRecordId);
+
+        const timeRecordsWithClickedId = this.timeRecords
+            .filter((record) => { return record.Id === timeRecordId });
+
+        if (timeRecordsWithClickedId.length <= 0) { return }
+        const timeRecordToSend = timeRecordsWithClickedId.pop();
+        console.log(timeRecordToSend);
+        const timeRecordDetailModalRef = this.dialog.open(TimeRecordDetailModalComponent, {
+            data: timeRecordToSend,
+            height: '700px',
+            width: '100%'
+        });
+        timeRecordDetailModalRef.afterClosed().subscribe(result => {
+            console.log('TimeRecordDetail modal closed.');
+        });
+    }
 
   private updateSettings(data) {
     const Id: any = data.$id;
@@ -835,7 +858,10 @@ export class TimesheetCardComponent extends BaseComponent
 
   // used on route change to update default view time-settings for timecards
   public updateViewSettings() {
-    this.pin = '';
+ 
+    if (this.succeed !== 200) {
+     this.pin = '';
+    }
 
     this._messageService.media = '';
 
@@ -849,6 +875,7 @@ export class TimesheetCardComponent extends BaseComponent
         // this.showCheckboxes = false;
         this.expandAllDetails(true);
         this.count = 1;
+        this.succeed = 1;
         break;
       case 'approve-time':
         this.showBadges = {
@@ -860,6 +887,7 @@ export class TimesheetCardComponent extends BaseComponent
         this.expandAllDetails(true);
         if (this.count !== 0) {
           this.timeApprovePincCheck();
+          this.succeed = 1;
         }
         break;
       case 'export-time':
@@ -877,7 +905,7 @@ export class TimesheetCardComponent extends BaseComponent
     }
   }
 
-  private timeApprovePincCheck() {
+  public timeApprovePincCheck() {
     if (!this.pin || this.pin === '' || this.pin !== this.correctPin) {
       this.credentialPIN('', null);
     }

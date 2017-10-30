@@ -11,13 +11,20 @@ import {CommentType} from '../../../models/domain/CommentType';
 import {Break} from '../../../models/domain/Break';
 import {Comment} from '../../../models/domain/Comment';
 import {FormGroup} from '@angular/forms';
+import {Project} from '../../../models/domain/Project';
+import {Employee} from '../../../models/domain/Employee';
+import {CostCode} from '../../../models/domain/CostCode';
+import {DateHelperService} from '../../shared/services/date-helper.service';
 
 @Injectable()
 export class EnterTimeTransformService {
 
 
-    constructor () {}
+    constructor (private _dateHelper: DateHelperService) {}
 
+    /******************************************************************************************************************
+     * Public Methods
+     ******************************************************************************************************************/
     public transformFormGroupRowsToLinesToSubmit (formGroups: Array<FormGroup>): Array<LineToSubmit> {
 
         const lines = [];
@@ -122,11 +129,19 @@ export class EnterTimeTransformService {
         return timeRecords;
     }
 
-    // public transformTimeRecordsToLinesToSubmit (records: Array<TimeRecord>): Array<LineToSubmit> {
-    //
-    //
-    // }
+    public transformTimeRecordToLineToSubmit (record: TimeRecord, project: Project): LineToSubmit {
 
+        return this.recordToLine(record, project);
+    }
+
+    public transformTimeRecordToIndirectToSubmit (record: TimeRecord): LineToSubmit {
+
+        return this.recordToIndirectLine(record);
+    }
+
+    /******************************************************************************************************************
+     * Private Methods
+     ******************************************************************************************************************/
     private lineToRecord (line: LineToSubmit, isIndirect?: boolean): TimeRecord {
 
         const record: TimeRecord = new TimeRecord();
@@ -152,12 +167,12 @@ export class EnterTimeTransformService {
             record.Hours = new Hours(line.HoursST, line.HoursOT, line.HoursDT, line.Date.toISOString());
             if (line.IsPunch) {
 
-                record.Punch = this.buildPunch(line.Date, line.TimeIn, line.TimeOut);
+                record.Punch = this._dateHelper.buildPunch(line.Date, line.TimeIn, line.TimeOut);
             }
             if (line.BreakIn) {
 
                 record.Breaks = [];
-                record.Breaks.push(this.buildBreak(line.Date, line.BreakIn, line.BreakOut));
+                record.Breaks.push(this._dateHelper.buildBreak(line.Date, line.BreakIn, line.BreakOut));
                 record.BreaksVerified = false;
             }
             if (line.Note && line.Note !== '') {
@@ -170,44 +185,87 @@ export class EnterTimeTransformService {
         return record;
     }
 
+    private recordToLine (record: TimeRecord, project: Project): LineToSubmit {
 
+        // Get System
+        const matchingSystem = _.filter(project.Systems,
+            (system) => {
+                return system.Id === record.Project.System.Id;
+            }
+        );
 
-    // private recordToLine (record: TimeRecord): LineToSubmit {
-    //
-    //     const line: LineToSubmit = {
-    //         Date: record.,
-    //         Employee: ,
-    //         Project: ,
-    //         CostCode: ,
-    //         System: ,
-    //         Phase: ,
-    //         IsPunch: ,
-    //         HoursST: ,
-    //         HoursOT: ,
-    //         HoursDT: ,
-    //         TimeIn: ,
-    //         TimeOut: ,
-    //         BreakIn: ,
-    //         BreakOut: ,
-    //         Note:
-    //     }
-    // }
+        // Get Phase
+        const matchingPhase = _.filter(matchingSystem[0].Phases,
+            (phase) => {
+                return phase.Id === record.Project.System.Phase.Id;
+            }
+        );
 
-    // Helpers
-    private buildPunch(date: moment.Moment, timeIn: string, timeOut: string): Punch {
+        // Get Cost Code
+        const matchingCode = _.filter(project.CostCodes,
+            (costCode) => {
+                return costCode.Id === record.CostCode.Id;
+            }
+        );
 
-        const punchIn = moment(date.format('YYYY-MM-DD') + ' ' + timeIn);
-        const punchOut = moment(date.format('YYYY-MM-DD') + ' ' + timeOut);
+        const line: LineToSubmit = {
+            Id: record.Id,
+            Date: moment(record.Hours.Date),
+            Employee: record.Employee,
+            Project: project,
+            CostCode: matchingCode[0],
+            System: matchingSystem[0],
+            Phase: matchingPhase[0],
+            IsPunch: record.Punch ? true : false,
+            HoursST: record.Hours.RegularTime,
+            HoursOT: record.Hours.Overtime,
+            HoursDT: record.Hours.DoubleTime,
+            TimeIn: undefined,
+            TimeOut: undefined,
+            BreakIn: undefined,
+            BreakOut: undefined,
+            Note: ''
+        };
 
-        return new Punch(punchIn.toISOString(), punchOut.toISOString());
+        line.Employee.Name = record.Employee.FirstName + ' ' + record.Employee.LastName;
+
+        if (record.Punch) {
+
+            line.TimeIn = moment(record.Punch.PunchIn).format('HH:mm');
+            line.TimeOut = moment(record.Punch.PunchOut).format('HH:mm');
+        }
+
+        if (record.Breaks && record.Breaks.length > 0) {
+
+            line.BreakIn = moment(record.Breaks[0].TimeIn).format('HH:mm');
+            line.BreakOut = moment(record.Breaks[0].TimeOut).format('HH:mm');
+        }
+
+        return line;
     }
 
-    private buildBreak(date: moment.Moment, brIn: string, brOut: string): Break {
+    private recordToIndirectLine (record: TimeRecord): LineToSubmit {
 
-        const breakIn = moment(date.format('YYYY-MM-DD') + ' ' + brIn);
-        const breakOut = moment(date.format('YYYY-MM-DD') + ' ' + brOut);
+        const costCode = new CostCode();
+        costCode.Id = record.IndirectCost.Id;
+        costCode.Code = record.IndirectCost.Code;
+        costCode.Name = record.IndirectCost.Description;
 
-        return new Break(breakIn.toISOString(), breakOut.toISOString());
+        const line: LineToSubmit = {
+            Id: record.Id,
+            Date: moment(record.Hours.Date),
+            Employee: record.Employee,
+            CostCode: costCode,
+            IsPunch: false,
+            HoursST: record.Hours.RegularTime,
+            HoursOT: record.Hours.Overtime,
+            HoursDT: record.Hours.DoubleTime,
+            Note: ''
+        };
+
+        line.Employee.Name = record.Employee.FirstName + ' ' + record.Employee.LastName;
+
+        return line;
     }
 
 }

@@ -57,6 +57,8 @@ import {NotesEntryDialogComponent} from './components/notes-entry.component';
 import { TimesheetCardPinComponent } from 'app/home/time-expenses/timesheet-card/timesheet-card-pin.component';
 import {TimeRecordDetailModalComponent} from '../time-expenses/time-record-detail-modal/time-record-detail-modal.component';
 import {EntityDisplayFormatterService} from './services/entity-display-formatter.service';
+import {WarningDialogComponent} from './components/warning-dialog.component';
+import {DateHelperService} from './services/date-helper.service';
 
 @NgModule({
     imports: [
@@ -98,6 +100,7 @@ import {EntityDisplayFormatterService} from './services/entity-display-formatter
         NotesEntryDialogComponent,
         TimesheetCardPinComponent,
         TimeRecordDetailModalComponent,
+        WarningDialogComponent,
         OnlyNumber
     ],
     providers: [
@@ -115,6 +118,7 @@ import {EntityDisplayFormatterService} from './services/entity-display-formatter
         WeatherService,
         TimeFormatPipe,
         CanDeactivateGuard,
+        DateHelperService,
         CommentsService,
         ConfirmationDialogService,
         EntityDisplayFormatterService

@@ -2,8 +2,10 @@ import { Project } from '../../../models/domain/Project';
 import { expand } from 'rxjs/operator/expand';
 import { Punch } from './../../../models/domain/Punch';
 import { Hours } from '../../../models/domain/Hours';
-import { Employee } from '../../../models/time/TimeRecord';
+import {Employee} from 'app/models/domain/Employee';
 import * as moment from 'moment';
+import {TimeRecordConvertible} from '../time-record-detail-modal/ModalModels';
+import {TimeRecord} from '../../../models/domain/TimeRecord';
 
 // internal to timesheet-card ecosystem, not to be confused with TimeRecords, just used to help manage UI
 export class Timecard {
