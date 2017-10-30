@@ -927,12 +927,9 @@ export class TimesheetCardComponent extends BaseComponent
       return true;
     }
 
-    if ( punchOutDistance && punchOutDistance > this.MOCK_DISTANCE) {
-      return true;
-    }
-
     return false;
   }
+
     // expands or collapses all timecard detail sections
     public expandAllDetails(expand: boolean) {
         this.timecards.forEach(card => {
