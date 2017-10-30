@@ -4,6 +4,8 @@ import {CostCode} from './CostCode';
 import {Project} from './Project';
 import {IndirectCost} from './IndirectCost';
 import {Employee} from 'app/models/domain/Employee';
+import {Comment} from 'app/models/domain/Comment';
+import {Break} from './Break';
 
 export class TimeRecordPost {
     Id: string;
@@ -31,7 +33,7 @@ export class TimeRecord {
     Hours?: Hours;
     HoursOverriden?: boolean;
     Punch?: Punch;
-    Comments?: Array<any>;
+    Comments?: Comment[];
     TimeRecordStatus?: string; // 'Pending', 'Approved', 'Rejected', 'Signed', 'Exported'
     ApprovedByUserId?: string;
     ApprovedDate?: string;
@@ -39,7 +41,7 @@ export class TimeRecord {
     SecondLvlApprovedByUserId?: string;
     SecondLvlApprovedDate?: string;
     Signed?: boolean;
-    Breaks?: Array<any>;
+    Breaks?: Break[];
     BreaksVerified?: boolean;
     RejectionComment?: string;
     SignedDate?: string;
