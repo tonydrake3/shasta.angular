@@ -187,6 +187,8 @@ export class EnterTimeTransformService {
 
     private recordToLine (record: TimeRecord, project: Project): LineToSubmit {
 
+        let matchingPhase = null;
+
         // Get System
         const matchingSystem = _.filter(project.Systems,
             (system) => {
@@ -195,11 +197,14 @@ export class EnterTimeTransformService {
         );
 
         // Get Phase
-        const matchingPhase = _.filter(matchingSystem[0].Phases,
-            (phase) => {
-                return phase.Id === record.Project.System.Phase.Id;
-            }
-        );
+        if (record.Project.System) {
+
+            matchingPhase = _.filter(matchingSystem[0].Phases,
+                (phase) => {
+                    return phase.Id === record.Project.System.Phase.Id;
+                }
+            );
+        }
 
         // Get Cost Code
         const matchingCode = _.filter(project.CostCodes,
@@ -214,8 +219,8 @@ export class EnterTimeTransformService {
             Employee: record.Employee,
             Project: project,
             CostCode: matchingCode[0],
-            System: matchingSystem[0],
-            Phase: matchingPhase[0],
+            System: matchingSystem.length > 0 ? matchingSystem[0] : null,
+            Phase: matchingPhase ? matchingPhase[0] : null,
             IsPunch: record.Punch ? true : false,
             HoursST: record.Hours.RegularTime,
             HoursOT: record.Hours.Overtime,
