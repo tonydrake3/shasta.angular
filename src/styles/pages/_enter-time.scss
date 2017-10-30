@@ -3,6 +3,30 @@
     padding-left: 0 !important;
     padding-right: 0 !important;
 
+    .enter-time-button-group {
+        display: flex;
+        margin: 15px 30px;
+
+        .copy-last-week-button {
+            margin-left: 15px;
+            margin-right: 30px;
+            width: 45%;
+
+            button {
+                width: 100%;
+            }
+        }
+
+        .copy-yesterday-button {
+            margin-left: 30px;
+            width: 45%;
+
+            button {
+                width: 100%;
+            }
+        }
+    }
+
     .enter-time-progress {
         height: 8px !important;
 
@@ -10,7 +34,7 @@
     .enter-time-overlay {
         height: 100%;
         width: 100%;
-        background-color: #000000;
+        background-color: $true-black;
         opacity: .25;
         position: fixed;
         z-index: 949;
@@ -22,6 +46,7 @@
         @include flex;
         @include flex-direction(column);
 
+        clear: both;
         margin-right: 30px;
         margin-left: 30px;
         padding: 30px;
