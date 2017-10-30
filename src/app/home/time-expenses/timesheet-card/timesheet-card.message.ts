@@ -18,7 +18,7 @@ export class MessageService<T> {
         this.subject.next();
     }
 
-    getMessage(): Observable<T> {
+    public get messages(): Observable<T> {
         return this.subject.asObservable();
     }
 }

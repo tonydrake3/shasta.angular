@@ -210,7 +210,7 @@ export class TimeCardTimeDetailComponent
         this.hoursApproval.isSelected = true;
         this.hoursApproval.status = 'Approved';
 
-        this._messageService.messageSource$.next(ReloadType.approved);
+        this._messageService.sendMessage(ReloadType.approved);
       }
     });
   }
@@ -241,7 +241,7 @@ export class TimeCardTimeDetailComponent
     this.timeExpensesService.timeReject(entity).subscribe(resp => {
       const result = resp;
       if (result === 200) {
-        this._messageService.messageSource$.next(ReloadType.rejected);
+        this._messageService.sendMessage(ReloadType.rejected);
       }
     });
   }

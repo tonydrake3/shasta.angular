@@ -176,7 +176,7 @@ export class EnterTimeComponent extends BaseComponent implements OnInit, OnDestr
             .subscribe(
                 (val) => {
 
-                    // When routing event to navigate away is triggered, display the warning message.
+                    // When routing event to navigate away is triggered, display the warning messages.
                     if (val instanceof NavigationCancel) {
                         const navCancel = val as NavigationCancel;
                         // console.log('ngOnInit NavigationCancel', this._navCancel.url);

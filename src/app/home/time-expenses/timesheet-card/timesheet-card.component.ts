@@ -754,6 +754,7 @@ export class TimesheetCardComponent extends BaseComponent
             console.log('TimeRecordDetail modal closed.');
             if (result) {
                 console.log(result);
+                this._messageService.messageSource$.next(ReloadType.edited)
             } else {
                 console.log('no result');
             }

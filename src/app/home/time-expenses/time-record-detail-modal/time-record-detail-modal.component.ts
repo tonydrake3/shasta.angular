@@ -27,6 +27,8 @@ import {UserService} from '../../shared/services/user/user.service';
 import {User} from '../../../models/domain/User';
 import * as moment from 'moment';
 import {DateHelperService} from 'app/home/shared/services/date-helper.service';
+import {ReloadType} from '../../../models/ReloadType';
+import {MessageService} from '../timesheet-card/timesheet-card.message';
 
 @Component({
     selector: 'esub-time-record-detail-modal',
@@ -110,7 +112,8 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
                 private _timeRecordUpdater: TimeRecordUpdaterService,
                 private _userService: UserService,
                 private _dateHelper: DateHelperService,
-                public entityFormatter: EntityDisplayFormatterService) {
+                public entityFormatter: EntityDisplayFormatterService,
+                private _messageService: MessageService<ReloadType>) {
     }
 
     ngOnInit() {
@@ -775,6 +778,8 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
         this._timeRecordUpdater.updateTimeRecord(timeRecord)
             .then((data) => {
                 console.log('update was successful with data', data);
+                this._messageService.messageSource$.next(ReloadType.edited);
+
                 this._dialogRef.close(data);
             })
             .catch((error) => {
