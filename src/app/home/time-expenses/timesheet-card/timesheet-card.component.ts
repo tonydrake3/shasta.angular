@@ -858,7 +858,6 @@ export class TimesheetCardComponent extends BaseComponent
 
   // used on route change to update default view time-settings for timecards
   public updateViewSettings() {
- 
     if (this.succeed !== 200) {
      this.pin = '';
     }
