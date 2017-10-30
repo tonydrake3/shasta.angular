@@ -8,8 +8,7 @@ import {PopoverService} from '../shared/services/popover.service';
 import {PopoverOptions} from '../../models/configuration/PopoverOptions';
 import {HeaderUpdateService} from './header-update.service';
 import {Subject} from 'rxjs/Subject';
-import {CurrentEmployeeService} from '../shared/services/user/current-employee.service';
-import {Observable} from 'rxjs/Observable';
+import {UserService} from '../shared/services/user/user.service';
 
 @Component({
     selector: 'esub-trackpoint-header',
@@ -28,7 +27,7 @@ export class TrackpointHeaderComponent implements OnInit, OnDestroy {
 
     constructor(protected _injector: Injector, private _authService: AuthenticationService, private _router: Router,
                 private _popoverService: PopoverService, private headerUpdates: HeaderUpdateService,
-                private notificationService: NotificationService, private currentEmployeeService: CurrentEmployeeService) {
+                private notificationService: NotificationService, private userService: UserService) {
 
         this.notificationCount = '0';
     }
@@ -54,12 +53,12 @@ export class TrackpointHeaderComponent implements OnInit, OnDestroy {
                 }
             );
 
-        this.currentEmployeeService.currentEmployee$
+        this.userService.currentUserInfo$
             .takeUntil(this.ngUnsubscribe)
             .subscribe(
-                (employee) => {
+                (user) => {
 
-                    this.fullName = employee['Value'].FirstName + ' ' + employee['Value'].LastName;
+                    this.fullName = user[0]['FirstName'] + ' ' + user[0]['LastName'];
                 }
             );
 
@@ -71,7 +70,7 @@ export class TrackpointHeaderComponent implements OnInit, OnDestroy {
                     if (update) {
                         this.tenant = JSON.parse(sessionStorage.getItem('tenant'));
                         this.notificationService.getLatest();
-                        this.currentEmployeeService.getLatest();
+                        this.userService.getLatest();
                     }
                 }
             );
@@ -79,7 +78,7 @@ export class TrackpointHeaderComponent implements OnInit, OnDestroy {
         if (JSON.parse(sessionStorage.getItem('tenant'))) {
             this.tenant = JSON.parse(sessionStorage.getItem('tenant'));
             this.notificationService.getLatest();
-            this.currentEmployeeService.getLatest();
+            this.userService.getLatest();
         }
     }
 
