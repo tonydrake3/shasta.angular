@@ -67,6 +67,7 @@ export class TimeRecordsPermissions extends BaseClass {
 
 export class ProjectPermissions extends BaseClass {
     public Read: boolean;
+    public CanManage: boolean;
 
     constructor (json: any) {
 

@@ -9,6 +9,8 @@ import {PopoverOptions} from '../../models/configuration/PopoverOptions';
 import {HeaderUpdateService} from './header-update.service';
 import {Subject} from 'rxjs/Subject';
 import {UserService} from '../shared/services/user/user.service';
+import {Permissions} from '../../models/domain/Permissions';
+import {PermissionsService} from '../../shared/services/authorization/permissions.service';
 
 @Component({
     selector: 'esub-trackpoint-header',
@@ -24,10 +26,12 @@ export class TrackpointHeaderComponent implements OnInit, OnDestroy {
     public notificationCount: string;
     public fullName: string;
     public tenant: string;
+    public permissions: Permissions;
 
     constructor(protected _injector: Injector, private _authService: AuthenticationService, private _router: Router,
                 private _popoverService: PopoverService, private headerUpdates: HeaderUpdateService,
-                private notificationService: NotificationService, private userService: UserService) {
+                private notificationService: NotificationService, private userService: UserService,
+                private permissionsService: PermissionsService) {
 
         this.notificationCount = '0';
     }
@@ -49,6 +53,19 @@ export class TrackpointHeaderComponent implements OnInit, OnDestroy {
 
                             this.notificationCount = '9+';
                         }
+                    }
+                }
+            );
+
+        this.permissionsService.permissions$
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe(
+                (permissions) => {
+
+                    if (permissions) {
+
+                        // console.log('EnterTimeComponent PermissionsService permissions', permissions);
+                        this.permissions = permissions;
                     }
                 }
             );
@@ -90,6 +107,7 @@ export class TrackpointHeaderComponent implements OnInit, OnDestroy {
 
     logout () {
         this._authService.logout();
+        this.permissionsService.clearPermissions();
         this._router.navigate(['../login']);
     }
 
