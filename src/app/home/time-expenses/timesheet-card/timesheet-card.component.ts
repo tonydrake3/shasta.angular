@@ -909,6 +909,30 @@ export class TimesheetCardComponent extends BaseComponent
         }
     }
 
+/**
+   * getCSSClasses
+   */
+  public getCSSClasses(punchInDistance: number, punchOutDistance: number) {
+    let cssClasses = {
+      outRange: false
+    };
+     cssClasses = {
+        outRange: this.isDistanceOutSettings(punchInDistance, punchOutDistance)
+      };
+    return cssClasses;
+  }
+
+  private isDistanceOutSettings(punchInDistance, punchOutDistance): boolean {
+    if ( punchInDistance && punchInDistance > this.MOCK_DISTANCE) {
+      return true;
+    }
+
+    if ( punchOutDistance && punchOutDistance > this.MOCK_DISTANCE) {
+      return true;
+    }
+
+    return false;
+  }
     // expands or collapses all timecard detail sections
     public expandAllDetails(expand: boolean) {
         this.timecards.forEach(card => {
