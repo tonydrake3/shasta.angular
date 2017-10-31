@@ -7,8 +7,8 @@ import {
 import { selector } from 'rxjs/operator/publish';
 import { Component, OnDestroy, OnInit, Inject } from '@angular/core';
 import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
-import { MessageService } from './timesheet-card.message';
 import {ReloadType} from '../../../models/ReloadType';
+import {MessageService} from './message.service';
 
 @Component({
   selector: 'esub-timesheet-card-pin',

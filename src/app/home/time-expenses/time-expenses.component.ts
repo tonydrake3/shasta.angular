@@ -1,5 +1,4 @@
 import { Subscription } from 'rxjs/Subscription';
-import { MessageService } from './timesheet-card/timesheet-card.message';
 import { TimeExpensesService } from './time-expenses.service';
 import { TimeRecordsService } from './time-records.service';
 import {
@@ -25,6 +24,7 @@ import * as _ from 'lodash';
 import {TimeRecordDetailModalComponent} from './time-record-detail-modal/time-record-detail-modal.component';
 import {MdDialog, MdDialogRef} from '@angular/material';
 import {ReloadType} from '../../models/ReloadType';
+import {MessageService} from './timesheet-card/message.service';
 
 @Component({
     selector: 'esub-time-expenses',

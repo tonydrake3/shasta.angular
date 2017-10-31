@@ -2,7 +2,6 @@ import { Comment } from './../../../models/time/TimeRecord';
 import { TimeExpensesService } from './../time-expenses.service';
 import { TimeRecordsService } from './../time-records.service';
 import { validate } from 'codelyzer/walkerFactory/walkerFn';
-import { MessageService } from './timesheet-card.message';
 import { Timecard, HoursApproval, WeekDayHours } from './timecard.model';
 import {
   Component,
@@ -28,6 +27,7 @@ import { ProjectSummaryService } from '../../projects/project-summary/project-su
 import { MapsService } from '../../shared/services/maps.service';
 import { OnChanges } from '@angular/core';
 import {ReloadType} from '../../../models/ReloadType';
+import {MessageService} from './message.service';
 
 @Component({
   selector: 'esub-timedetails',

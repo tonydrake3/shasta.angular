@@ -28,7 +28,7 @@ import {User} from '../../../models/domain/User';
 import * as moment from 'moment';
 import {DateHelperService} from 'app/home/shared/services/date-helper.service';
 import {ReloadType} from '../../../models/ReloadType';
-import {MessageService} from '../timesheet-card/timesheet-card.message';
+import {MessageService} from '../timesheet-card/message.service';
 
 @Component({
     selector: 'esub-time-record-detail-modal',

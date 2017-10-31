@@ -1,6 +1,3 @@
-import { MessageService } from './timesheet-card/timesheet-card.message';
-
-
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -41,6 +38,7 @@ import { EnterTimeTransformService } from './enter-time/enter-time-transform.ser
 import { EntityDisplayFormatterService } from '../shared/services/entity-display-formatter.service';
 import {EnterTimeCopyService} from './enter-time/enter-time-copy.service';
 import {TimeRecordUpdaterService} from './time-record-detail-modal/time-record-updater.service';
+import {MessageService} from './timesheet-card/message.service';
 
 @NgModule({
     imports: [
