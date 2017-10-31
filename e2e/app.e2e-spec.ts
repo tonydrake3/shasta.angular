@@ -7,7 +7,7 @@ describe('esub-web App', () => {
     page = new EsubWebPage();
   });
 
-  it('should display message saying app works', () => {
+  it('should display messages saying app works', () => {
     page.navigateTo();
     expect(page.getParagraphText()).toEqual('app works!');
   });
