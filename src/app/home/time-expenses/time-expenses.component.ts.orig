@@ -98,7 +98,7 @@ export class TimeExpensesComponent implements OnInit, AfterViewInit {
     });
     this.LoadTimecard();
 
-    this.messageService.messageSource$.subscribe((notifcation: any) => {
+    this.messageService.messages.subscribe((notifcation: any) => {
       let message = '';
       switch (notifcation) {
         case 'approved':
@@ -224,7 +224,7 @@ export class TimeExpensesComponent implements OnInit, AfterViewInit {
     });
     this.LoadTimecard();
 
-    this.messageService.messageSource$.subscribe((notifcation: any) => {
+    this.messageService.messages.subscribe((notifcation: any) => {
       let message = '';
       switch (notifcation) {
         case 'approved':
@@ -326,7 +326,7 @@ export class TimeExpensesComponent implements OnInit, AfterViewInit {
         this.LoadTimecard();
 <<<<<<< HEAD
 
-        this.messageService.messageSource$.subscribe((notification: ReloadType) => {
+        this.messageService.messages.subscribe((notification: ReloadType) => {
             console.log('messageService received a notification');
             console.log(notification);
             let message = '';

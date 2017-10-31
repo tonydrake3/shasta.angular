@@ -69,7 +69,7 @@ export class TimeExpensesComponent implements OnInit, AfterViewInit {
         });
         this.LoadTimecard();
 
-        this.messageService.messageSource$.subscribe((notification: ReloadType) => {
+        this.messageService.messages.subscribe((notification: ReloadType) => {
             console.log('messageService received a notification');
             console.log(notification);
             let message = '';

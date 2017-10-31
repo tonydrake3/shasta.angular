@@ -5,20 +5,14 @@ import { Observable, BehaviorSubject } from 'rxjs/Rx';
 @Injectable()
 
 export class MessageService<T> {
-    private subject = new Subject<T>();
+    public media: string; // TODO: Remove? What is this used for?
 
-    public media: string;
-
-    public messageSource$: BehaviorSubject<any> = new BehaviorSubject('');
+    private messageSource$: BehaviorSubject<T> = new BehaviorSubject({} as T);
     sendMessage(message: T) {
-        this.subject.next(message);
-    }
-
-    clearMessage() {
-        this.subject.next();
+        this.messageSource$.next(message);
     }
 
     public get messages(): Observable<T> {
-        return this.subject.asObservable();
+        return this.messageSource$.asObservable();
     }
 }
