@@ -181,7 +181,8 @@ export class TimeExpensesComponent implements OnInit, AfterViewInit {
                 this._flashMessagesService.grayOut(true);
             } else {
                 const message =
-                    '  Error !  A problem has been occurred while submitting your data. The Approve Time process is failed, please try it again';
+                    ' Error !  A problem has been occurred while submitting your data.' +
+                    ' The Approve Time process has failed, please try it again';
                 this.failedConfirm(message);
             }
         });

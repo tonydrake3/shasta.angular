@@ -109,7 +109,7 @@ export class TrackpointHeaderComponent implements OnInit, OnDestroy {
 
         if (this.permissions.Projects.CanManage) {
 
-            //TODO: Fix when navigation is available
+            // TODO: Fix when navigation is available
             this._router.navigate(['time/timesheets']);
         } else {
 
