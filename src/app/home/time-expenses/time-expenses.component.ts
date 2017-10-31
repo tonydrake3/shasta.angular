@@ -81,7 +81,6 @@ export class TimeExpensesComponent implements OnInit, AfterViewInit {
           message =
             ' Well done ! You successfully REJECTED the all timecards that you selected ';
           this.failedConfirm(message);
-          this.LoadTimecard();
           break;
       }
       console.log('Message: ', notifcation);

@@ -869,9 +869,9 @@ export class TimesheetCardComponent extends BaseComponent
 
   // used on route change to update default view time-settings for timecards
   public updateViewSettings() {
-    if (this.succeed !== 200) {
-      this.pin = '';
-    }
+    // if (this.succeed !== 200) {
+    //   this.pin = '';
+    // }
 
     this._messageService.media = '';
 
@@ -915,8 +915,13 @@ export class TimesheetCardComponent extends BaseComponent
   }
 
   public timeApprovePincCheck() {
+
+
     if (!this.pin || this.pin === '' || this.pin !== this.correctPin) {
       this.credentialPIN('', null);
+    }else if ( this.count === 1 && (this.pin || this.pin !== '')) {
+      this.credentialPIN('', null);
+      this.count = 0;
     }
   }
 
