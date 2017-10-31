@@ -919,6 +919,7 @@ export class TimesheetCardComponent extends BaseComponent
 
     if (!this.pin || this.pin === '' || this.pin !== this.correctPin) {
       this.credentialPIN('', null);
+      this.count = 0;
     }else if ( this.count === 1 && (this.pin || this.pin !== '')) {
       this.credentialPIN('', null);
       this.count = 0;

@@ -1,3 +1,6 @@
+<div class="container-fluids">
+    <flash-messages></flash-messages>
+</div>
 <button md-raised-button [id]="'btnShowModal'" class="esub-button primary" (click)="onTimeRecordClicked()">Time Record Detail</button>
 
 <div class="container-fluid time-expenses">
@@ -15,7 +18,7 @@
             <a [ngClass]="{active: showFilter == 'mine'}" (click)="filterResults('mine')" id="time-expenses.filter-to-mine">Mine</a>
         </div>
         <div class="col-md-6">
-            <flash-messages></flash-messages>
+            <!-- <flash-messages></flash-messages> -->
         </div>
 
         <!-- <div class="col-md-3">
