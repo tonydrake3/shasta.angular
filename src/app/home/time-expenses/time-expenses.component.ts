@@ -143,14 +143,17 @@ export class TimeExpensesComponent implements OnInit, AfterViewInit {
     public approve(event) {
         event.preventDefault();
         // Check the PIN
-        // if (
-        //   !this.timesheetsComponent.pin ||
-        //   this.timesheetsComponent.pin === '' ||
-        //   this.timesheetsComponent.pin !== this.timesheetsComponent.correctPin
-        // ) {
-        // //  this.pin = this.timesheetsComponent.credentialPIN('', null);
-        //   return;
-        // }
+    if (
+      !this.timesheetsComponent.pin ||
+      this.timesheetsComponent.pin === '' ||
+      this.timesheetsComponent.pin !== this.timesheetsComponent.correctPin
+    ) {
+      //  this.pin = this.timesheetsComponent.credentialPIN('', null);
+      this.timesheetsComponent.credentialPIN('', null);
+      const message = ' Please enter your correct PIN !!! ';
+      this.failedConfirm(message);
+      return;
+    }
 
         this.saveApprove();
     }
@@ -171,6 +174,7 @@ export class TimeExpensesComponent implements OnInit, AfterViewInit {
             if (result === 200) {
                 this.LoadTimecard();
                 this.isSelected = false;
+        this.timesheetsComponent.succeed = result;
                 const message =
                     ' Well done! You successfully approve the all timecards that you selected !';
                 this.successConfirm(message);

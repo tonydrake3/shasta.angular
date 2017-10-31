@@ -30,7 +30,7 @@ import { Project } from 'app/models/domain/Project';
 import { Employee } from '../../../models/time/TimeRecord';
 import { WeekDayHours, Timecard } from './timecard.model';
 import { TimesheetCardPinComponent } from 'app/home/time-expenses/timesheet-card/timesheet-card-pin.component';
-import {TimeRecordDetailModalComponent} from '../time-record-detail-modal/time-record-detail-modal.component';
+import { TimeRecordDetailModalComponent } from '../time-record-detail-modal/time-record-detail-modal.component';
 import {ReloadType} from '../../../models/ReloadType';
 
 @Component({
@@ -110,6 +110,9 @@ export class TimesheetCardComponent extends BaseComponent
     public hoursApprovals: Array<HoursApproval>;
     private readonly TYPE = 'onHourlyValues';
     private count = 0;
+  public succeed = 0;
+
+  private readonly MOCK_DISTANCE = 7710.1;
 
     constructor(
         protected injector: Injector,
@@ -296,7 +299,6 @@ export class TimesheetCardComponent extends BaseComponent
 
     // creates sections (within a project or employee)
     public buildSections(timerecords: Array<any>, groupTimesheetsBy: string) {
-
         const nonSortedSections = Array<TimecardSection>();
 
         // build full details, to then group against
@@ -511,7 +513,10 @@ export class TimesheetCardComponent extends BaseComponent
         _.forEach(this.timecards, timecard => {
             const hoursApprovals = timecard.timecardGrid;
             _.forEach(hoursApprovals, hoursApproval => {
-                if (hoursApproval.isSelected  && hoursApproval.status.trim().toLowerCase() !== 'approved') {
+        if (
+          hoursApproval.isSelected &&
+          hoursApproval.status.trim().toLowerCase() !== 'approved'
+        ) {
                     count++;
                 }
             });
@@ -691,8 +696,7 @@ export class TimesheetCardComponent extends BaseComponent
 
     // open hour values modal
     public onHourlyValues(hoursApproval: HoursApproval) {
-
-        this.openDetailModal(hoursApproval.TimeRecordId)
+    this.openDetailModal(hoursApproval.TimeRecordId);
         // console.log('onHourlyValues');
         // if (!this.pin || this.pin === '' || this.pin !== this.correctPin) {
         //   this.credentialPIN('onHourlyValues', hoursApproval);
@@ -737,19 +741,28 @@ export class TimesheetCardComponent extends BaseComponent
     }
 
     private openDetailModal(timeRecordId: string) {
-        console.log('Clicked TimeRecord Detail. Sending a record with id: ', timeRecordId);
+    console.log(
+      'Clicked TimeRecord Detail. Sending a record with id: ',
+      timeRecordId
+    );
 
-        const timeRecordsWithClickedId = this.timeRecords
-            .filter((record) => { return record.Id === timeRecordId });
+    const timeRecordsWithClickedId = this.timeRecords.filter(record => {
+      return record.Id === timeRecordId;
+    });
 
-        if (timeRecordsWithClickedId.length <= 0) { return }
+    if (timeRecordsWithClickedId.length <= 0) {
+      return;
+    }
         const timeRecordToSend = timeRecordsWithClickedId.pop();
         console.log(timeRecordToSend);
-        const timeRecordDetailModalRef = this.dialog.open(TimeRecordDetailModalComponent, {
+    const timeRecordDetailModalRef = this.dialog.open(
+      TimeRecordDetailModalComponent,
+      {
             data: timeRecordToSend,
             height: '700px',
             width: '100%'
-        });
+      }
+    );
         timeRecordDetailModalRef.afterClosed().subscribe(result => {
             console.log('TimeRecordDetail modal closed.');
             if (result) {
@@ -864,7 +877,9 @@ export class TimesheetCardComponent extends BaseComponent
 
     // used on route change to update default view time-settings for timecards
     public updateViewSettings() {
-        this.pin = '';
+    // if (this.succeed !== 200) {
+    //   this.pin = '';
+    // }
 
         this._messageService.media = '';
 
@@ -889,6 +904,7 @@ export class TimesheetCardComponent extends BaseComponent
                 this.expandAllDetails(true);
                 if (this.count !== 0) {
                     this.timeApprovePincCheck();
+          this.succeed = 1;
                 }
                 break;
             case 'export-time':
@@ -906,10 +922,36 @@ export class TimesheetCardComponent extends BaseComponent
         }
     }
 
-    private timeApprovePincCheck() {
+  public timeApprovePincCheck() {
+
+
         if (!this.pin || this.pin === '' || this.pin !== this.correctPin) {
+      this.credentialPIN('', null);
+    }else if ( this.count === 1 && (this.pin || this.pin !== '')) {
             this.credentialPIN('', null);
+      this.count = 0;
         }
+  }
+
+  /**
+   * getCSSClasses
+   */
+  public getCSSClasses(punchInDistance: number, punchOutDistance: number) {
+    let cssClasses = {
+      outRange: false
+    };
+    cssClasses = {
+      outRange: this.isDistanceOutSettings(punchInDistance, punchOutDistance)
+    };
+    return cssClasses;
+  }
+
+  private isDistanceOutSettings(punchInDistance, punchOutDistance): boolean {
+    if (punchInDistance && punchInDistance > this.MOCK_DISTANCE) {
+      return true;
+    }
+
+    return false;
     }
 
     // expands or collapses all timecard detail sections

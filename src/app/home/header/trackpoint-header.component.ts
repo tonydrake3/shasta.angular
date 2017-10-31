@@ -8,8 +8,9 @@ import {PopoverService} from '../shared/services/popover.service';
 import {PopoverOptions} from '../../models/configuration/PopoverOptions';
 import {HeaderUpdateService} from './header-update.service';
 import {Subject} from 'rxjs/Subject';
-import {CurrentEmployeeService} from '../shared/services/user/current-employee.service';
-import {Observable} from 'rxjs/Observable';
+import {UserService} from '../shared/services/user/user.service';
+import {Permissions} from '../../models/domain/Permissions';
+import {PermissionsService} from '../../shared/services/authorization/permissions.service';
 
 @Component({
     selector: 'esub-trackpoint-header',
@@ -25,10 +26,12 @@ export class TrackpointHeaderComponent implements OnInit, OnDestroy {
     public notificationCount: string;
     public fullName: string;
     public tenant: string;
+    public permissions: Permissions;
 
     constructor(protected _injector: Injector, private _authService: AuthenticationService, private _router: Router,
                 private _popoverService: PopoverService, private headerUpdates: HeaderUpdateService,
-                private notificationService: NotificationService, private currentEmployeeService: CurrentEmployeeService) {
+                private notificationService: NotificationService, private userService: UserService,
+                private permissionsService: PermissionsService) {
 
         this.notificationCount = '0';
     }
@@ -54,12 +57,25 @@ export class TrackpointHeaderComponent implements OnInit, OnDestroy {
                 }
             );
 
-        this.currentEmployeeService.currentEmployee$
+        this.permissionsService.permissions$
             .takeUntil(this.ngUnsubscribe)
             .subscribe(
-                (employee) => {
+                (permissions) => {
 
-                    this.fullName = employee['Value'].FirstName + ' ' + employee['Value'].LastName;
+                    if (permissions) {
+
+                        // console.log('EnterTimeComponent PermissionsService permissions', permissions);
+                        this.permissions = permissions;
+                    }
+                }
+            );
+
+        this.userService.currentUserInfo$
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe(
+                (user) => {
+
+                    this.fullName = user[0]['FirstName'] + ' ' + user[0]['LastName'];
                 }
             );
 
@@ -71,7 +87,7 @@ export class TrackpointHeaderComponent implements OnInit, OnDestroy {
                     if (update) {
                         this.tenant = JSON.parse(sessionStorage.getItem('tenant'));
                         this.notificationService.getLatest();
-                        this.currentEmployeeService.getLatest();
+                        this.userService.getLatest();
                     }
                 }
             );
@@ -79,7 +95,7 @@ export class TrackpointHeaderComponent implements OnInit, OnDestroy {
         if (JSON.parse(sessionStorage.getItem('tenant'))) {
             this.tenant = JSON.parse(sessionStorage.getItem('tenant'));
             this.notificationService.getLatest();
-            this.currentEmployeeService.getLatest();
+            this.userService.getLatest();
         }
     }
 
@@ -89,8 +105,21 @@ export class TrackpointHeaderComponent implements OnInit, OnDestroy {
         this.ngUnsubscribe.complete();
     }
 
+    public navigateHome () {
+
+        if (this.permissions.Projects.CanManage) {
+
+            //TODO: Fix when navigation is available
+            this._router.navigate(['time/timesheets']);
+        } else {
+
+            this._router.navigate(['time/timesheets']);
+        }
+    }
+
     logout () {
         this._authService.logout();
+        this.permissionsService.clearPermissions();
         this._router.navigate(['../login']);
     }
 

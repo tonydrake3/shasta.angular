@@ -73,6 +73,7 @@ export class EnterTimeComponent extends BaseComponent implements OnInit, OnDestr
 
         this._confirmationService = super.getDynamicServiceRef('ConfirmationDialogService') as ConfirmationDialogService;
 
+        this.loading = true;
         this.accordionOpen = true;
         this.showGrid = false;
         this.isCopyLastWeek = false;
@@ -196,6 +197,8 @@ export class EnterTimeComponent extends BaseComponent implements OnInit, OnDestr
                         }
                     }
                 });
+
+        this._preloadService.startLoading();
     }
 
     ngOnDestroy () {

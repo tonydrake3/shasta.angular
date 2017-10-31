@@ -22,4 +22,9 @@ export class PermissionsService extends BaseCacheStore {
 
         this.init(apiRoutes.permissions, Permissions, 'Permissions');
     }
+
+    public clearPermissions () {
+
+        this._entity$.next(null);
+    }
 }
