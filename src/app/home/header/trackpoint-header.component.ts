@@ -105,6 +105,18 @@ export class TrackpointHeaderComponent implements OnInit, OnDestroy {
         this.ngUnsubscribe.complete();
     }
 
+    public navigateHome () {
+
+        if (this.permissions.Projects.CanManage) {
+
+            //TODO: Fix when navigation is available
+            this._router.navigate(['time/timesheets']);
+        } else {
+
+            this._router.navigate(['time/timesheets']);
+        }
+    }
+
     logout () {
         this._authService.logout();
         this.permissionsService.clearPermissions();

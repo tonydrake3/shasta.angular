@@ -132,11 +132,6 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
      ******************************************************************************************************************/
     ngOnInit () {
 
-        this.projects = this._enterTimeManager.getProjects();
-        this._tenantEmployees = this._enterTimeManager.getEmployees();
-        this._indirectCodes = this._enterTimeManager.getIndirectCodes();
-        this.timeSettings = this._enterTimeManager.getSettings();
-
         this.preloadSubscription = this._preloadService.loading$
             .subscribe(
                 (loading) => {
@@ -160,16 +155,6 @@ export class EnterTimeFormComponent implements OnInit, AfterViewInit, OnDestroy 
                     }
                 }
             );
-
-        if (this.projects.length === 0 || this._tenantEmployees.length === 0 || this._indirectCodes.length === 0 ||
-            _.isNull(this.timeSettings)) {
-
-            this._preloadService.startLoading();
-            // this._preloadService.load();
-        } else {
-
-            this.tabs = this.getTabs();
-        }
     }
 
     ngOnDestroy () {
