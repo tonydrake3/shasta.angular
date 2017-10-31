@@ -29,7 +29,7 @@
     this.textElement_ = this.element_.querySelector('.' + this.cssClasses_.MESSAGE);
     this.actionElement_ = this.element_.querySelector('.' + this.cssClasses_.ACTION);
     if (!this.textElement_) {
-      throw new Error('There must be a message element for a snackbar.');
+      throw new Error('There must be a messages element for a snackbar.');
     }
     if (!this.actionElement_) {
       throw new Error('There must be an action element for a snackbar.');
@@ -99,10 +99,10 @@
   MaterialSnackbar.prototype.showSnackbar = function(data) {
     if (data === undefined) {
       throw new Error(
-        'Please provide a data object with at least a message to display.');
+        'Please provide a data object with at least a messages to display.');
     }
     if (data['message'] === undefined) {
-      throw new Error('Please provide a message to be displayed.');
+      throw new Error('Please provide a messages to be displayed.');
     }
     if (data['actionHandler'] && !data['actionText']) {
       throw new Error('Please provide action text with the handler.');

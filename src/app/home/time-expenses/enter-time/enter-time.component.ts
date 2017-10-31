@@ -73,6 +73,7 @@ export class EnterTimeComponent extends BaseComponent implements OnInit, OnDestr
 
         this._confirmationService = super.getDynamicServiceRef('ConfirmationDialogService') as ConfirmationDialogService;
 
+        this.loading = true;
         this.accordionOpen = true;
         this.showGrid = false;
         this.isCopyLastWeek = false;
@@ -176,7 +177,7 @@ export class EnterTimeComponent extends BaseComponent implements OnInit, OnDestr
             .subscribe(
                 (val) => {
 
-                    // When routing event to navigate away is triggered, display the warning message.
+                    // When routing event to navigate away is triggered, display the warning messages.
                     if (val instanceof NavigationCancel) {
                         const navCancel = val as NavigationCancel;
                         // console.log('ngOnInit NavigationCancel', this._navCancel.url);
@@ -196,6 +197,8 @@ export class EnterTimeComponent extends BaseComponent implements OnInit, OnDestr
                         }
                     }
                 });
+
+        this._preloadService.startLoading();
     }
 
     ngOnDestroy () {

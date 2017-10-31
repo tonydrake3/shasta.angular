@@ -2,7 +2,6 @@ import { Comment } from './../../../models/time/TimeRecord';
 import { TimeExpensesService } from './../time-expenses.service';
 import { TimeRecordsService } from './../time-records.service';
 import { validate } from 'codelyzer/walkerFactory/walkerFn';
-import { MessageService } from './timesheet-card.message';
 import { Timecard, HoursApproval, WeekDayHours } from './timecard.model';
 import {
   Component,
@@ -27,6 +26,8 @@ import { projectSidebarConfiguration } from '../../shared/configuration/menu.con
 import { ProjectSummaryService } from '../../projects/project-summary/project-summary.service';
 import { MapsService } from '../../shared/services/maps.service';
 import { OnChanges } from '@angular/core';
+import {ReloadType} from '../../../models/ReloadType';
+import {MessageService} from './message.service';
 
 @Component({
   selector: 'esub-timedetails',
@@ -69,7 +70,7 @@ export class TimeCardTimeDetailComponent
     private timeRecordsService: TimeRecordsService,
     private _projectSummaryService: ProjectSummaryService,
     private _maps: MapsService,
-    private _messageService: MessageService
+    private _messageService: MessageService<ReloadType>
   ) {
     this.hoursApproval = data.hoursApproval;
     this.timecard = data.targetTimecard;
@@ -209,7 +210,7 @@ export class TimeCardTimeDetailComponent
         this.hoursApproval.isSelected = true;
         this.hoursApproval.status = 'Approved';
 
-        this._messageService.messageSource$.next('approved');
+        this._messageService.sendMessage(ReloadType.approved);
       }
     });
   }
@@ -240,7 +241,7 @@ export class TimeCardTimeDetailComponent
     this.timeExpensesService.timeReject(entity).subscribe(resp => {
       const result = resp;
       if (result === 200) {
-        this._messageService.messageSource$.next('rejected');
+        this._messageService.sendMessage(ReloadType.rejected);
       }
     });
   }

@@ -166,7 +166,7 @@
 
                                 <td class="text-center">{{grid.hourlyValues | number:'1.0-2'}}</td>
                                 <td class="text-center" (click)="onHourlyValues(grid)">
-                                    <i class="material-icons" style="color:red">place</i>
+                                    <i class="material-icons" [ngClass]="getCSSClasses(grid.punchInDistance, grid.punchOutDistance)">place</i>
                                 </td>
                                 <td class="text-center" (click)="onHourlyValues(grid)">
                                     <i class="material-icons" [ngClass]="{'comment': grid.comments && grid.comments.length >0 }">insert_comment</i>

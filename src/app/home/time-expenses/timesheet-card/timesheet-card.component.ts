@@ -1,7 +1,6 @@
 import { User } from './../../../models/domain/User';
 import { TimeRecord } from '../../../models/domain/TimeRecord';
 import { groupBy } from 'rxjs/operator/groupBy';
-import { MessageService } from './timesheet-card.message';
 import { Subscription } from 'rxjs/Subscription';
 import { TimeCardTimeDetailComponent } from './timesheet-card-timedetail.component';
 import { Punch } from './../../../models/domain/Punch';
@@ -30,7 +29,9 @@ import { Project } from 'app/models/domain/Project';
 import { Employee } from '../../../models/time/TimeRecord';
 import { WeekDayHours, Timecard } from './timecard.model';
 import { TimesheetCardPinComponent } from 'app/home/time-expenses/timesheet-card/timesheet-card-pin.component';
-import {TimeRecordDetailModalComponent} from '../time-record-detail-modal/time-record-detail-modal.component';
+import { TimeRecordDetailModalComponent } from '../time-record-detail-modal/time-record-detail-modal.component';
+import {ReloadType} from '../../../models/ReloadType';
+import {MessageService} from './message.service';
 
 @Component({
     selector: 'esub-timesheet-card',
@@ -108,13 +109,16 @@ export class TimesheetCardComponent extends BaseComponent
     public costCodeHours: string;
     public hoursApprovals: Array<HoursApproval>;
     private readonly TYPE = 'onHourlyValues';
-  private count = 0;
+    private count = 0;
+  public succeed = 0;
+
+  private readonly MOCK_DISTANCE = 7710.1;
 
     constructor(
         protected injector: Injector,
         public dialog: MdDialog,
         public timesheetCardManager: TimesheetCardManager,
-        private _messageService: MessageService
+        private _messageService: MessageService<ReloadType>
     ) {
         super(injector, [
             { service: 'CurrentEmployeeService', callback: 'currentEmployeeCallback' }
@@ -132,7 +136,7 @@ export class TimesheetCardComponent extends BaseComponent
     ngOnInit() {
         this.totalCount = 0;
 
-    this.count = 1;
+        this.count = 1;
     }
 
     /******************************************************************************************************************
@@ -263,7 +267,7 @@ export class TimesheetCardComponent extends BaseComponent
         // this.TestCommentsModal(timerecords);
     }
 
-  public credentialPIN(type: string, hoursApproval: HoursApproval): void {
+    public credentialPIN(type: string, hoursApproval: HoursApproval): void {
         const timeCardTimecardPinDialogRef = this.dialog.open(
             TimesheetCardPinComponent,
             {
@@ -280,14 +284,14 @@ export class TimesheetCardComponent extends BaseComponent
         timeCardTimecardPinDialogRef.afterClosed().subscribe(result => {
             // modal closedif()
 
-      if (result && result.pin) {
+            if (result && result.pin) {
                 console.log(`Dialog result: ${result.pin}`);
                 this.pin = result.pin;
-        this._messageService.media = result.pin;
+                this._messageService.media = result.pin;
             }
         });
 
-    // return this.pin;
+        // return this.pin;
     }
     public BuildWeeDayHours(timecard: Timecard) {
         const weekDayHours: Array<WeekDayHours> = timecard.WeekDayHours;
@@ -295,7 +299,6 @@ export class TimesheetCardComponent extends BaseComponent
 
     // creates sections (within a project or employee)
     public buildSections(timerecords: Array<any>, groupTimesheetsBy: string) {
-
         const nonSortedSections = Array<TimecardSection>();
 
         // build full details, to then group against
@@ -442,17 +445,17 @@ export class TimesheetCardComponent extends BaseComponent
         if (!selected) {
             timecard.selected = selected;
             this.isAllTimecardsSelected = selected;
-    }
-
-    let count = 0;
-
-    _.forEach(timecard.timecardGrid, (item: HoursApproval) => {
-      if (item.isSelected) {
-        count++;
         }
-    });
 
-    if (count === timecard.timecardGrid.length) {
+        let count = 0;
+
+        _.forEach(timecard.timecardGrid, (item: HoursApproval) => {
+            if (item.isSelected) {
+                count++;
+            }
+        });
+
+        if (count === timecard.timecardGrid.length) {
             timecard.selected = selected;
         }
 
@@ -510,7 +513,10 @@ export class TimesheetCardComponent extends BaseComponent
         _.forEach(this.timecards, timecard => {
             const hoursApprovals = timecard.timecardGrid;
             _.forEach(hoursApprovals, hoursApproval => {
-        if (hoursApproval.isSelected  && hoursApproval.status.trim().toLowerCase() !== 'approved') {
+        if (
+          hoursApproval.isSelected &&
+          hoursApproval.status.trim().toLowerCase() !== 'approved'
+        ) {
                     count++;
                 }
             });
@@ -523,8 +529,8 @@ export class TimesheetCardComponent extends BaseComponent
         const hoursApprovals: HoursApproval = timecard.timecardGrid;
         _.forEach(hoursApprovals, hoursApproval => {
             if (!hoursApproval.isRejected) {
-        hoursApproval.isSelected = event;
-               }
+                hoursApproval.isSelected = event;
+            }
         });
 
         this.isAllTimecardsSelected =
@@ -690,12 +696,11 @@ export class TimesheetCardComponent extends BaseComponent
 
     // open hour values modal
     public onHourlyValues(hoursApproval: HoursApproval) {
-
-        this.openDetailModal(hoursApproval.TimeRecordId)
+    this.openDetailModal(hoursApproval.TimeRecordId);
         // console.log('onHourlyValues');
         // if (!this.pin || this.pin === '' || this.pin !== this.correctPin) {
-    //   this.credentialPIN('onHourlyValues', hoursApproval);
-    //   return;
+        //   this.credentialPIN('onHourlyValues', hoursApproval);
+        //   return;
         // }
         // const data = hoursApproval;
         // if (hoursApproval) {
@@ -736,21 +741,36 @@ export class TimesheetCardComponent extends BaseComponent
     }
 
     private openDetailModal(timeRecordId: string) {
-        console.log('Clicked TimeRecord Detail. Sending a record with id: ', timeRecordId);
+    console.log(
+      'Clicked TimeRecord Detail. Sending a record with id: ',
+      timeRecordId
+    );
 
-        const timeRecordsWithClickedId = this.timeRecords
-            .filter((record) => { return record.Id === timeRecordId });
+    const timeRecordsWithClickedId = this.timeRecords.filter(record => {
+      return record.Id === timeRecordId;
+    });
 
-        if (timeRecordsWithClickedId.length <= 0) { return }
+    if (timeRecordsWithClickedId.length <= 0) {
+      return;
+    }
         const timeRecordToSend = timeRecordsWithClickedId.pop();
         console.log(timeRecordToSend);
-        const timeRecordDetailModalRef = this.dialog.open(TimeRecordDetailModalComponent, {
+    const timeRecordDetailModalRef = this.dialog.open(
+      TimeRecordDetailModalComponent,
+      {
             data: timeRecordToSend,
             height: '700px',
             width: '100%'
-        });
+      }
+    );
         timeRecordDetailModalRef.afterClosed().subscribe(result => {
             console.log('TimeRecordDetail modal closed.');
+            if (result) {
+                console.log(result);
+                this._messageService.sendMessage(ReloadType.edited)
+            } else {
+                console.log('no result');
+            }
         });
     }
 
@@ -855,11 +875,13 @@ export class TimesheetCardComponent extends BaseComponent
         }
     }
 
-  // used on route change to update default view time-settings for timecards
+    // used on route change to update default view time-settings for timecards
     public updateViewSettings() {
-    this.pin = '';
+    // if (this.succeed !== 200) {
+    //   this.pin = '';
+    // }
 
-    this._messageService.media = '';
+        this._messageService.media = '';
 
         switch (this._view) {
             case 'timesheets':
@@ -868,9 +890,9 @@ export class TimesheetCardComponent extends BaseComponent
                     statusError: true,
                     mapError: true
                 };
-        // this.showCheckboxes = false;
-        this.expandAllDetails(true);
-        this.count = 1;
+                // this.showCheckboxes = false;
+                this.expandAllDetails(true);
+                this.count = 1;
                 break;
             case 'approve-time':
                 this.showBadges = {
@@ -880,9 +902,10 @@ export class TimesheetCardComponent extends BaseComponent
                 };
 
                 this.expandAllDetails(true);
-        if (this.count !== 0) {
-          this.timeApprovePincCheck();
-        }
+                if (this.count !== 0) {
+                    this.timeApprovePincCheck();
+          this.succeed = 1;
+                }
                 break;
             case 'export-time':
                 //    TODO Only show records that have been approved if the company does approvals.
@@ -896,13 +919,40 @@ export class TimesheetCardComponent extends BaseComponent
                 this.expandAllDetails(true);
 
                 break;
+        }
     }
+
+  public timeApprovePincCheck() {
+
+
+        if (!this.pin || this.pin === '' || this.pin !== this.correctPin) {
+      this.credentialPIN('', null);
+      this.count = 0;
+    }else if ( this.count === 1 && (this.pin || this.pin !== '')) {
+            this.credentialPIN('', null);
+      this.count = 0;
+        }
   }
 
-  private timeApprovePincCheck() {
-    if (!this.pin || this.pin === '' || this.pin !== this.correctPin) {
-      this.credentialPIN('', null);
-        }
+  /**
+   * getCSSClasses
+   */
+  public getCSSClasses(punchInDistance: number, punchOutDistance: number) {
+    let cssClasses = {
+      outRange: false
+    };
+    cssClasses = {
+      outRange: this.isDistanceOutSettings(punchInDistance, punchOutDistance)
+    };
+    return cssClasses;
+  }
+
+  private isDistanceOutSettings(punchInDistance, punchOutDistance): boolean {
+    if (punchInDistance && punchInDistance > this.MOCK_DISTANCE) {
+      return true;
+    }
+
+    return false;
     }
 
     // expands or collapses all timecard detail sections

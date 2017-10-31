@@ -301,6 +301,9 @@ export class TimesheetCardManager {
                       hoursApproval.punchIn = hoursBreakdown['punch'].PunchIn;
                       hoursApproval.punchOut = hoursBreakdown['punch'].PunchOut;
                       hoursApproval.break = Number(hoursBreakdown['Regulartime']) === 8 ? '1' : '';
+                      // hoursApproval.punch =  hoursBreakdown['punch'];
+                      hoursApproval.punchInDistance = hoursBreakdown['punch']['PunchInDistance']
+                      hoursApproval.punchOutDistance = hoursBreakdown['punch']['PunchOutDistance']
                     }
 
                     _.forEach(hoursBreakdown['comments'], comment => {
@@ -357,6 +360,8 @@ export class TimesheetCardManager {
       TimeRecordId: timeRecordId,
       projectId: projectId,
       employee: costCode.employee,
+      punchInDistance: ((costCode.punch && costCode.punch.PunchInDistance) ? costCode.punch.PunchInDistance : 0),
+      punchOutDistance: ((costCode.punch && costCode.punch.PunchOutDistance) ? costCode.punch.PunchOutDistance : 0)
       // systemPhrase: ''
     };
 
