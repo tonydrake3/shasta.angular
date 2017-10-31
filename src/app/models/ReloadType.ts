@@ -1,5 +1,5 @@
 export enum ReloadType {
-    approved = 0,
-    rejected,
-    edited
+    approved = 'approved',
+    rejected = 'rejected',
+    edited = 'edited'
 }

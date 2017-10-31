@@ -1,7 +1,6 @@
 import { User } from './../../../models/domain/User';
 import { TimeRecord } from '../../../models/domain/TimeRecord';
 import { groupBy } from 'rxjs/operator/groupBy';
-import { MessageService } from './timesheet-card.message';
 import { Subscription } from 'rxjs/Subscription';
 import { TimeCardTimeDetailComponent } from './timesheet-card-timedetail.component';
 import { Punch } from './../../../models/domain/Punch';
@@ -32,6 +31,7 @@ import { WeekDayHours, Timecard } from './timecard.model';
 import { TimesheetCardPinComponent } from 'app/home/time-expenses/timesheet-card/timesheet-card-pin.component';
 import { TimeRecordDetailModalComponent } from '../time-record-detail-modal/time-record-detail-modal.component';
 import {ReloadType} from '../../../models/ReloadType';
+import {MessageService} from './message.service';
 
 @Component({
     selector: 'esub-timesheet-card',
