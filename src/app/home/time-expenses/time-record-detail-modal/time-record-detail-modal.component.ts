@@ -1,4 +1,4 @@
-import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, Inject, OnDestroy, OnInit, Output} from '@angular/core';
 import {MD_DIALOG_DATA, MdDialogRef} from '@angular/material';
 import {TimeRecord} from '../../../models/domain/TimeRecord';
 import {
@@ -27,6 +27,8 @@ import {UserService} from '../../shared/services/user/user.service';
 import {User} from '../../../models/domain/User';
 import * as moment from 'moment';
 import {DateHelperService} from 'app/home/shared/services/date-helper.service';
+import {ReloadType} from '../../../models/ReloadType';
+import {MessageService} from '../timesheet-card/message.service';
 
 @Component({
     selector: 'esub-time-record-detail-modal',
@@ -35,6 +37,7 @@ import {DateHelperService} from 'app/home/shared/services/date-helper.service';
 })
 
 export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeModal {
+
     /* Form Keys for use instead of */
     private formKeys: TimeModalFormKeys = {
         project: 'project',
@@ -90,6 +93,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
     public autoCostCode;
     public autoIndirectCostCode;
     public autoEmployee;
+    public datePicker;
 
     // Observable Bindings
     public showIndirectCostView: Observable<boolean>;
@@ -98,6 +102,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
     public showPhaseView: Observable<boolean>;
     public showCostCodeView: Observable<boolean>;
     public showTimeEntryView: Observable<boolean>;
+    public showLocationButton: Observable<boolean>;
 
     constructor(private _dialogRef: MdDialogRef<TimeRecordDetailModalComponent>,
                 @Inject(MD_DIALOG_DATA) public data: DisplayModeSpecifying & TimeRecord,
@@ -107,7 +112,8 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
                 private _timeRecordUpdater: TimeRecordUpdaterService,
                 private _userService: UserService,
                 private _dateHelper: DateHelperService,
-                public entityFormatter: EntityDisplayFormatterService) {
+                public entityFormatter: EntityDisplayFormatterService,
+                private _messageService: MessageService<ReloadType>) {
     }
 
     ngOnInit() {
@@ -207,6 +213,20 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
             })
             .takeUntil(this.ngUnsubscribe);
 
+        this.showLocationButton = Observable
+            .combineLatest(
+                this.timeRecordSubject,
+                (timeRecord) => {
+                    if (timeRecord.Punch == null) { return false }
+
+                    return timeRecord.Punch.PunchInLocation != null || timeRecord.Punch.PunchOutLocation != null
+                })
+            .do((showLocationButton) => {
+                console.log('show Location Button: ', showLocationButton);
+            })
+            .takeUntil(this.ngUnsubscribe);
+
+        /* Collections */
         this.filteredProjects = Observable.combineLatest(
             this.enterTimeForm.get(this.formKeys.project).valueChanges,
             this.projectsSubject,
@@ -389,6 +409,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
         this.observeCostCodeChanges();
         this.observeIndirectCostCodeChanges();
         this.observeHoursChanges();
+        this.observeDateChanges();
         this.observeCommentChanges();
         this.observeTimeEntryChanges();
     }
@@ -485,16 +506,6 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
 
         this.enterTimeForm.patchValue({selectedIndirectCost: event.option.value});
 
-    }
-
-    private get commentsFormArray(): FormArray {
-        return this.enterTimeForm.get('comments') as FormArray;
-    }
-
-    public setComments(comments: Comment[]) {
-        const commentFormGroups = comments.map(currentComments => this._formBuilder.group(currentComments));
-        const commentsFormArray = this._formBuilder.array(commentFormGroups);
-        this.enterTimeForm.setControl('comments', commentsFormArray);
     }
 
     private observeIndirectCostCodeChanges() {
@@ -677,6 +688,19 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
         )
     }
 
+    private observeDateChanges() {
+        const dateField = this.enterTimeForm.get(this.formKeys.date);
+
+        dateField.valueChanges.subscribe(
+            (date) => {
+                console.log('Date in changed to: ', date);
+                dateField.markAsDirty();
+
+            }
+        );
+
+    }
+
     private observeTimeEntryChanges() {
         this.observeTimeChanges();
         this.observeBreakChanges();
@@ -754,7 +778,8 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
         this._timeRecordUpdater.updateTimeRecord(timeRecord)
             .then((data) => {
                 console.log('update was successful with data', data);
-                this._dialogRef.close();
+                this._messageService.sendMessage(ReloadType.edited);
+                this._dialogRef.close(data);
             })
             .catch((error) => {
                 console.log('there was an error updating', error);
@@ -762,6 +787,12 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
             .then(() => {
                 this.loading = false;
             });
+    }
+
+    public didTapLocationButton() {
+        console.log('Open Location Button Tapped');
+
+        // TODO: Open Map modal
     }
 
     private prepareTimeRecordToSave(): TimeRecord {
@@ -795,6 +826,7 @@ export class TimeRecordDetailModalComponent implements OnInit, OnDestroy, TimeMo
             timeRecordToSave.Hours.RegularTime = formValues.standardHours;
             timeRecordToSave.Hours.Overtime = formValues.overtimeHours;
             timeRecordToSave.Hours.DoubleTime = formValues.doubleTimeHours;
+            timeRecordToSave.Hours.Date = formValues.date;
         } else if (this.timeInTimeOutChanged(changedProperties)) {
             console.log('punch changed');
             const dateMoment = moment(this.timeRecord.Punch.PunchIn);
