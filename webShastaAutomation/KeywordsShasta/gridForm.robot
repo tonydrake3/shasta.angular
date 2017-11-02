@@ -12,10 +12,11 @@ Library    Selenium2Library
 #Create Hours Worked    Create Hours Worked
 #Type in Notes    Type in Notes
 
-#Copy Stats from Employee Card (By Date)    Copy Stats from Employee Card (By Date)
-#Copy Stats from Employee Card (By Employee)    Copy Stats from Employee Card (By Employee)
-#Copy Stats from Employee Card (By Project)    Copy Stats from Employee Card (By Project)
-
+Copy Stats from Employee Card (By Date)    Copy Stats from Employee Card (By Date)
+Copy Stats from Employee Card (By Employee)    Copy Stats from Employee Card (By Employee)
+Copy Stats from Employee Card (By Project)    Copy Stats from Employee Card (By Project)
+Navigate to Utilities before Submitting    Navigate to Utilities before Submitting
+Cancel and Navigate to the Enter Time Option    Cancel and Navigate to the Enter Time Option
 #Group by Mine    Group by Mine
 #Grid Form Verification - Enter Hours    Grid Form Verification - Enter Hours
     #Project
@@ -24,18 +25,18 @@ Library    Selenium2Library
     #Hours Worked
     #Notes
 
-Grid Form Verification - Enter Time In / Time Out    Grid Form Verification - Enter Time In / Time Out
-Clear Form after Project entry    Clear Form after Project entry
-Resubmit Form    Resubmit Form
-Enter Time In and Time Out Hours     Enter Time In and Time Out Hours
-Enter Notes    Enter Notes
-Filter By Employee     Filter By Employee
-Filter By Project    Filter By Project
+#Grid Form Verification - Enter Time In / Time Out    Grid Form Verification - Enter Time In / Time Out
+#Clear Form after Project entry    Clear Form after Project entry
+#Resubmit Form    Resubmit Form
+#Enter Time In and Time Out Hours     Enter Time In and Time Out Hours
+#Enter Notes    Enter Notes
+#Filter By Employee     Filter By Employee
+#Filter By Project    Filter By Project
 #Filter By Date    Filter By Date
-Modify the time In and Time out under Grid View    Modify the time In and Time out under Grid View
-Modify The Break In and Break Out under Grid View    Modify The Break In and Break Out under Grid View
-Modify Employee Field to an Incorrect Name    Modify Employee Field to an Incorrect Name
-Add More Lines    Add More Lines
+#Modify the time In and Time out under Grid View    Modify the time In and Time out under Grid View
+#Modify The Break In and Break Out under Grid View    Modify The Break In and Break Out under Grid View
+#Modify Employee Field to an Incorrect Name    Modify Employee Field to an Incorrect Name
+#Add More Lines    Add More Lines
 
 
 *** Keywords ***
@@ -384,6 +385,26 @@ Copy Stats from Employee Card (By Project)
     click element    id=btnGridFormIndirectCopyRow-0-3
     capture page screenshot    Filename=copyCard.png
     Sleep    4s
+Navigate to Utilities before Submitting
+    mouse over    Xpath=//*[@id="page-container"]/esub-trackpoint-header/section/div/div[2]/ul/li[2]/button/span
+    Sleep    3s
+    click element    Xpath=//*[@id="page-container"]/esub-trackpoint-header/section/div/div[2]/ul/li[2]/button/span
+    Sleep    3s
+    click element    Xpath=//*[@id="cdk-overlay-8"]/div/div/button
+    Sleep    3s
+    click element    Xpath=//*[@id="cdk-overlay-9"]/md-dialog-container/esub-confirmation-dialog/md-dialog-actions/button[1]/span
+    Sleep    3s
+Cancel and Navigate to the Enter Time Option
+    click element    Xpath=//*[@id="page-container"]/esub-trackpoint-header/section/div/div[2]/ul/li[1]/button/span
+    Sleep    3s
+    Mouse Over    Xpath=//*[@id="cdk-overlay-0"]/div/div/button[1]
+    Sleep    3s
+    click element    Xpath=//*[@id="cdk-overlay-0"]/div/div/button[1]
+    Sleep    3s
+    #Currently missing the pop up modal - (lost Save Changes) - 11.1.17 - Issue Created by Mike G
+Delete 1 Time Card
+    click element    Xpath=//*[@id="btnGridFormDeleteCard-1"]/span
+    SLeep    5s
     close browser
 
 
