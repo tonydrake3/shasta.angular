@@ -343,7 +343,7 @@ Create a new Daily Report after Editing current Daily Report
     click element    xpath=//*[@id="Select1"]/option[3]
     Sleep   2s
     input text     id=temperature    81
-    Execute JavaScript   return document.getElementById('crewItem').scrollIntoView()
+    Execute JavaScript   window.document.evaluate(Xpath=//*[@id="page-container"]/div/div/div/esub-time-expenses/div/esub-timesheet-card/esub-base-card[4]/div/div/div/div[1]/div[1]/span).scrollIntoView(true);
     Sleep    4s
     click element    xpath=//*[@id="crewSelector__c01_chosen"]/ul/li/input
     Sleep    3s
