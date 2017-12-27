@@ -21,17 +21,17 @@ Submit Time    Submit Time
 *** Keywords ***
 
 Copy Yesterday's Time
-     [Tags]    Smoke
-    Open Browser    http://web.qa.shasta.esubonline.com/    Chrome    timeout=30
-    Set Window Size    ${1600}    ${1000}
+    [Tags]    Smoke
+    Open Browser    http://qa-app.esub.com/#/login    Chrome
     Wait Until Page Contains    eSUB
     Sleep    3s
-    Input Text    id=txtUsername    Tonyd@esub.com
-    Sleep    3s
-    Input Text    id=txtPassword     Test1234
-    Sleep    3s
+    Input Text    id=txtUsername    execadmin@metest1.com
+    Sleep    2s
+    Input Text    id=txtPassword     password
     Click Button    id=btnLogin
-    Wait Until Page Contains    Employee     timeout=10
+    Sleep    3s
+    Wait Until Page Contains    eSUB    timeout=7
+    Sleep    2s
     Sleep    5s
     mouse over    CSS=#page-container > esub-trackpoint-header > section > div > div.top-nav-left > ul > li:nth-child(1) > button > span
     Sleep    5s
